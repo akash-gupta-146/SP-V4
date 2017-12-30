@@ -34,17 +34,7 @@ var PlannerComponent = (function () {
         this.stogareService = stogareService;
         this.utiService = utiService;
         this.router = router;
-        this.fetchOrganizationInfo();
-        // this.router.navigateByUrl("/planner/home");
     }
-    PlannerComponent.prototype.fetchOrganizationInfo = function () {
-        var _this = this;
-        this.utiService.fetchOrganizationInfo().subscribe(function (res) {
-            _this.stogareService.storeData("org_info", res);
-            // this.router.navigateByUrl("/planner/home");			
-        }, function (err) {
-        });
-    };
     PlannerComponent.prototype.logout = function () {
         localStorage.clear();
     };
