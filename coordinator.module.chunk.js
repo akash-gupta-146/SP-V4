@@ -8,7 +8,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".menuBar{\r\n  border: 1px solid #6788be;\r\n  background-color: #93b4df;\r\n}", ""]);
+exports.push([module.i, ".menuBar{\r\n  border: 1px solid #6788be;\r\n  background-color: #93b4df;\r\n}\r\n\r\n.table{\r\n  margin-bottom: 0px;\r\n }\r\n .table .table {\r\n  background-color: inherit;\r\n }", ""]);
 
 // exports
 

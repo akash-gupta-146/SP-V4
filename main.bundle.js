@@ -31,6 +31,7 @@ var map = {
 	],
 	"app/hod/hod.module": [
 		"../../../../../src/app/hod/hod.module.ts",
+		"common",
 		"hod.module"
 	],
 	"app/login/login.module": [

@@ -315,7 +315,8 @@ var InitiativeComponent = (function (_super) {
         this.initiativeForm = this.initForm();
     };
     InitiativeComponent.prototype.get = function (e) {
-        $(e)["0"].height = $(e)["0"].clientHeight;
+        var promise = new Promise(function (resolve, reject) { $(e)["0"].height = $(e)["0"].clientHeight; resolve(); });
+        return promise;
     };
     return InitiativeComponent;
 }(__WEBPACK_IMPORTED_MODULE_4__shared_filters__["a" /* Filters */]));
