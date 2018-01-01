@@ -84,11 +84,12 @@ var LoginComponent = (function () {
             _this.commonService.storeData("userDetails", res.userDetails);
             _this.commonService.storeData("user_roleInfo", res.userDetails.roleInfo);
             _this.role = res.userDetails.roleInfo[0].role;
-            // if(this.role == "planner"||this.role == "admin"){
-            //   this.fetchOrganizationInfo(res);
-            // } else {
-            //   this.onSuccess();
-            // }
+            if (_this.role == "planner" || _this.role == "admin") {
+                _this.fetchOrganizationInfo(res);
+            }
+            else {
+                _this.onSuccess();
+            }
             _this.onSuccess();
         }, function (err) {
             _this.onError();

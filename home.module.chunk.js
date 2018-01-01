@@ -60,17 +60,7 @@ var HomeComponent = (function () {
         });
     }
     HomeComponent.prototype.ngOnInit = function () {
-        this.fetchOrganizationInfo();
-        // this.organizationInfo = this.commonService.getData('org_info');    
-    };
-    HomeComponent.prototype.fetchOrganizationInfo = function () {
-        var _this = this;
-        this.orgSer.fetchOrganizationInfo().subscribe(function (res) {
-            _this.organizationInfo = res;
-            // this.stogareService.storeData("org_info", res); 
-            // this.router.navigateByUrl("/planner/home");			
-        }, function (err) {
-        });
+        this.organizationInfo = this.commonService.getData('org_info');
     };
     HomeComponent.prototype.onValueSubmit = function () {
         var _this = this;
