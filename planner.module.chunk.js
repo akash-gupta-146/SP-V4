@@ -3,7 +3,7 @@ webpackJsonp(["planner.module"],{
 /***/ "../../../../../src/app/planner/planner.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-fixed-top\">\r\n    <div class=\"navbar-header\">\r\n      <a class=\"navbar-brand\" href=\"#\" style=\"font-family: -webkit-pictograph;font-weight: bolder;background: white;color: red;\">UAEU</a>\r\n    </div>\r\n    <ul class=\"nav navbar-nav navbar-right\" style=\"margin-right:0px;\">\r\n      <li routerLinkActive=\"active\"><a routerLink=\"./\">Home</a></li>\r\n      <li routerLinkActive=\"active\" class=\"dropdown\"><a class=\"dropdown-toggle\" data-toggle=\"dropdown\">Strategic plan<span class=\"caret\"></span></a>\r\n        <ul class=\"dropdown-menu\">\r\n          <li><a routerLink=\"./strategic-plan\">Strategic Plan</a></li>\r\n          <li><a routerLink=\"./strategic-goal\">Strategic goals</a></li>\r\n          <li><a routerLink=\"./initiatives\">Proposed Initiatives</a></li>\r\n          <li><a routerLink=\"./activities\" >Proposed Activities</a></li>\r\n          <li><a routerLink=\"./measures\" >Proposed Operational Performance Indicators</a></li>\r\n          <li><a routerLink=\"./spi\" >Strategic Performance Indicators</a></li>          \r\n        </ul>\r\n      </li>\r\n      <!-- <li><a routerLink=\"./home\">Action plan</a></li> -->\r\n      <li><a routerLink=\"/login\" (click)=\"logout()\">Logout</a></li>      \r\n    </ul>\r\n</nav>\r\n<router-outlet></router-outlet>"
+module.exports = "<nav class=\"navbar navbar-fixed-top\">\r\n    <div class=\"navbar-header\">\r\n      <a class=\"navbar-brand\" href=\"\" style=\"font-family: -webkit-pictograph;font-weight: bolder;background:#397cd5;color: red;\">UAEU</a>\r\n    </div>\r\n    <ul class=\"nav navbar-nav navbar-right\" style=\"margin-right:0px;\">\r\n      <li ><a routerLinkActive=\"active\" routerLink=\"home\">Home</a></li>\r\n      <li class=\"dropdown\"><a class=\"dropdown-toggle\" routerLinkActive=\"active\" data-toggle=\"dropdown\">{{selectedMenu}}<span *ngIf=\"!selectedMenu\">Strategic Plan</span><span class=\"caret\"></span></a>\r\n        <ul class=\"dropdown-menu\">\r\n          <li (click)=\"selectedMenu = 'Strategic Plan'\" ><a routerLinkActive=\"active\" routerLink=\"./strategic-plan\">Strategic Plan</a></li>\r\n          <li (click)=\"selectedMenu = 'Strategic goals'\" ><a routerLinkActive=\"active\" routerLink=\"./strategic-goal\">Strategic goals</a></li>\r\n          <li (click)=\"selectedMenu = 'Proposed Initiatives'\" ><a routerLinkActive=\"active\" routerLink=\"./initiatives\">Proposed Initiatives</a></li>\r\n          <li (click)=\"selectedMenu = 'Proposed Activities'\" ><a routerLinkActive=\"active\" routerLink=\"./activities\" >Proposed Activities</a></li>\r\n          <li (click)=\"selectedMenu = 'OPI'\" ><a routerLinkActive=\"active\" routerLink=\"./measures\" >Proposed Operational Performance Indicators</a></li>\r\n          <li (click)=\"selectedMenu = 'SPI'\" ><a routerLinkActive=\"active\" routerLink=\"./spi\" >Strategic Performance Indicators</a></li>          \r\n        </ul>\r\n      </li>\r\n      <li><a routerLink=\"/login\" (click)=\"logout()\">Logout</a></li>      \r\n    </ul>\r\n</nav>\r\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -98,11 +98,14 @@ PlannerModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_6__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["f" /* RouterModule */].forChild([
                 {
+                    path: '', redirectTo: 'home', pathMatch: 'full'
+                },
+                {
                     path: '',
                     component: __WEBPACK_IMPORTED_MODULE_1__planner_component__["a" /* PlannerComponent */],
                     children: [
                         {
-                            path: '',
+                            path: 'home',
                             loadChildren: 'app/planner/home/home.module#HomeModule'
                         },
                         { path: 'strategic-plan', loadChildren: 'app/planner/plan/plan.module#PlanModule' },
