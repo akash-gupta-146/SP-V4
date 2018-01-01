@@ -3,7 +3,7 @@ webpackJsonp(["planner.module"],{
 /***/ "../../../../../src/app/planner/planner.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-fixed-top\">\r\n    <div class=\"navbar-header\">\r\n      <a class=\"navbar-brand\" href=\"#\" style=\"font-family: -webkit-pictograph;font-weight: bolder;background: white;color: red;\">UAEU</a>\r\n    </div>\r\n    <ul class=\"nav navbar-nav navbar-right\" style=\"margin-right:0px;\">\r\n      <li routerLinkActive=\"active\"><a routerLink=\"/home\">Home</a></li>\r\n      <li routerLinkActive=\"active\" class=\"dropdown\"><a class=\"dropdown-toggle\" data-toggle=\"dropdown\">Strategic plan<span class=\"caret\"></span></a>\r\n        <ul class=\"dropdown-menu\">\r\n          <li><a routerLink=\"./strategic-plan\">Strategic Plan</a></li>\r\n          <li><a routerLink=\"./strategic-goal\">Strategic goals</a></li>\r\n          <li><a routerLink=\"./initiatives\">Proposed Initiatives</a></li>\r\n          <li><a routerLink=\"./activities\" >Proposed Activities</a></li>\r\n          <li><a routerLink=\"./measures\" >Proposed Operational Performance Indicators</a></li>\r\n          <li><a routerLink=\"./spi\" >Strategic Performance Indicators</a></li>          \r\n        </ul>\r\n      </li>\r\n      <!-- <li><a routerLink=\"./home\">Action plan</a></li> -->\r\n      <li><a routerLink=\"/login\" (click)=\"logout()\">Logout</a></li>      \r\n    </ul>\r\n</nav>\r\n<router-outlet></router-outlet>"
+module.exports = "<nav class=\"navbar navbar-fixed-top\">\r\n    <div class=\"navbar-header\">\r\n      <a class=\"navbar-brand\" href=\"#\" style=\"font-family: -webkit-pictograph;font-weight: bolder;background: white;color: red;\">UAEU</a>\r\n    </div>\r\n    <ul class=\"nav navbar-nav navbar-right\" style=\"margin-right:0px;\">\r\n      <li routerLinkActive=\"active\"><a routerLink=\"./\">Home</a></li>\r\n      <li routerLinkActive=\"active\" class=\"dropdown\"><a class=\"dropdown-toggle\" data-toggle=\"dropdown\">Strategic plan<span class=\"caret\"></span></a>\r\n        <ul class=\"dropdown-menu\">\r\n          <li><a routerLink=\"./strategic-plan\">Strategic Plan</a></li>\r\n          <li><a routerLink=\"./strategic-goal\">Strategic goals</a></li>\r\n          <li><a routerLink=\"./initiatives\">Proposed Initiatives</a></li>\r\n          <li><a routerLink=\"./activities\" >Proposed Activities</a></li>\r\n          <li><a routerLink=\"./measures\" >Proposed Operational Performance Indicators</a></li>\r\n          <li><a routerLink=\"./spi\" >Strategic Performance Indicators</a></li>          \r\n        </ul>\r\n      </li>\r\n      <!-- <li><a routerLink=\"./home\">Action plan</a></li> -->\r\n      <li><a routerLink=\"/login\" (click)=\"logout()\">Logout</a></li>      \r\n    </ul>\r\n</nav>\r\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -34,17 +34,16 @@ var PlannerComponent = (function () {
         this.stogareService = stogareService;
         this.utiService = utiService;
         this.router = router;
-        this.fetchOrganizationInfo();
+        // this.fetchOrganizationInfo();
         // this.router.navigateByUrl("/planner/home");
     }
-    PlannerComponent.prototype.fetchOrganizationInfo = function () {
-        var _this = this;
-        this.utiService.fetchOrganizationInfo().subscribe(function (res) {
-            _this.stogareService.storeData("org_info", res);
-            _this.router.navigateByUrl("/planner/home");
-        }, function (err) {
-        });
-    };
+    // public fetchOrganizationInfo() {
+    // 	this.utiService.fetchOrganizationInfo().subscribe((res: any) => {
+    // 		this.stogareService.storeData("org_info", res);
+    // 		this.router.navigateByUrl("/planner/home");
+    // 	}, (err: any) => {
+    // 	});
+    // }
     PlannerComponent.prototype.logout = function () {
         localStorage.clear();
     };
@@ -103,7 +102,7 @@ PlannerModule = __decorate([
                     component: __WEBPACK_IMPORTED_MODULE_1__planner_component__["a" /* PlannerComponent */],
                     children: [
                         {
-                            path: 'home',
+                            path: '',
                             loadChildren: 'app/planner/home/home.module#HomeModule'
                         },
                         { path: 'strategic-plan', loadChildren: 'app/planner/plan/plan.module#PlanModule' },

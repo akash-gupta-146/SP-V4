@@ -579,7 +579,7 @@ var Filters = (function () {
         this.goals = [];
     }
     Filters.prototype.initFilters = function (goalsCopy) {
-        // this.filteredGoals = this.filteredActivities = this.filteredInitiatives = this.filteredOpis = goalsCopy;
+        this.filteredGoals = this.filteredActivities = this.filteredInitiatives = this.filteredOpis = goalsCopy;
     };
     Filters.prototype.searchGoal = function (key) {
         this.goals = this.goalsCopy;
