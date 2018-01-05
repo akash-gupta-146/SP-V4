@@ -3,7 +3,7 @@ webpackJsonp(["planner.module"],{
 /***/ "../../../../../src/app/planner/planner.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-fixed-top\">\r\n    <div class=\"navbar-header\">\r\n      <a class=\"navbar-brand\" href=\"\" style=\"font-family: -webkit-pictograph;font-weight: bolder;background:#397cd5;color: red;\">UAEU</a>\r\n    </div>\r\n    <ul class=\"nav navbar-nav navbar-right\" style=\"margin-right:0px;\">\r\n      <li ><a routerLinkActive=\"active\" routerLink=\"home\">Home</a></li>\r\n      <li class=\"dropdown\"><a class=\"dropdown-toggle\" routerLinkActive=\"active\" data-toggle=\"dropdown\">{{selectedMenu}}<span *ngIf=\"!selectedMenu\">Strategic Plan</span><span class=\"caret\"></span></a>\r\n        <ul class=\"dropdown-menu\">\r\n          <li (click)=\"selectedMenu = 'Strategic Plan'\" ><a routerLinkActive=\"active\" routerLink=\"./strategic-plan\">Strategic Plan</a></li>\r\n          <li (click)=\"selectedMenu = 'Strategic goals'\" ><a routerLinkActive=\"active\" routerLink=\"./strategic-goal\">Strategic goals</a></li>\r\n          <li (click)=\"selectedMenu = 'Proposed Initiatives'\" ><a routerLinkActive=\"active\" routerLink=\"./initiatives\">Proposed Initiatives</a></li>\r\n          <li (click)=\"selectedMenu = 'Proposed Activities'\" ><a routerLinkActive=\"active\" routerLink=\"./activities\" >Proposed Activities</a></li>\r\n          <li (click)=\"selectedMenu = 'OPI'\" ><a routerLinkActive=\"active\" routerLink=\"./measures\" >Proposed Operational Performance Indicators</a></li>\r\n          <li (click)=\"selectedMenu = 'SPI'\" ><a routerLinkActive=\"active\" routerLink=\"./spi\" >Strategic Performance Indicators</a></li>          \r\n        </ul>\r\n      </li>\r\n      <li><a routerLink=\"/login\" (click)=\"logout()\">Logout</a></li>      \r\n    </ul>\r\n</nav>\r\n<router-outlet></router-outlet>"
+module.exports = "<nav class=\"navbar navbar-fixed-top\">\r\n  <div class=\"navbar-header\">\r\n    <a class=\"navbar-brand\" href=\"\" style=\"font-family: -webkit-pictograph;font-weight: bolder;background:#397cd5;color: red;\">UAEU</a>\r\n  </div>\r\n  <ul class=\"nav navbar-nav navbar-right\" style=\"margin-right:0px;\">\r\n    <li routerLinkActive=\"active\">\r\n      <a routerLink=\"home\">Home</a>\r\n    </li>\r\n    <li routerLinkActive=\"active\" class=\"dropdown\">\r\n      <a class=\"dropdown-toggle\" data-toggle=\"dropdown\">{{selectedMenu}}\r\n        <span *ngIf=\"!selectedMenu\">Strategic Plan</span>\r\n        <span class=\"caret\"></span>\r\n      </a>\r\n      <ul class=\"dropdown-menu\">\r\n        <li routerLinkActive=\"active\" (click)=\"selectedMenu = 'Strategic Plan'\">\r\n          <a routerLink=\"./strategic-plan\">Strategic Plan</a>\r\n        </li>\r\n        <li routerLinkActive=\"active\" (click)=\"selectedMenu = 'Strategic goals'\">\r\n          <a routerLink=\"./strategic-goal\">Strategic goals</a>\r\n        </li>\r\n        <li routerLinkActive=\"active\" (click)=\"selectedMenu = 'Proposed Initiatives'\">\r\n          <a routerLink=\"./initiatives\">Proposed Initiatives</a>\r\n        </li>\r\n        <li routerLinkActive=\"active\" (click)=\"selectedMenu = 'Proposed Activities'\">\r\n          <a routerLink=\"./activities\">Proposed Activities</a>\r\n        </li>\r\n        <li routerLinkActive=\"active\" (click)=\"selectedMenu = 'KPI'\">\r\n          <a routerLink=\"./kpis\">Proposed Operational Performance Indicators</a>\r\n        </li>\r\n        <li routerLinkActive=\"active\" (click)=\"selectedMenu = 'SPI'\">\r\n          <a routerLink=\"./spi\">Strategic Performance Indicators</a>\r\n        </li>\r\n      </ul>\r\n    </li>\r\n    <!-- <li><a routerLink=\"/login\" (click)=\"logout()\">Logout</a></li>       -->\r\n    <li class=\"dropdown\">\r\n      <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\r\n        <span class=\"glyphicon glyphicon-user\"></span>\r\n        <strong>{{userDetails.firstName}}</strong>\r\n        <span class=\"glyphicon glyphicon-chevron-down\"></span>\r\n      </a>\r\n      <ul class=\"dropdown-menu\">\r\n        <li>\r\n          <div class=\"navbar-login\">\r\n            <div class=\"row\">\r\n              <div class=\"col-lg-4\">\r\n                <p class=\"text-center\">\r\n                  <span class=\"glyphicon glyphicon-user icon-size\"></span>\r\n                </p>\r\n              </div>\r\n              <div class=\"col-lg-8\">\r\n                <p class=\"text-left\">\r\n                  <strong>{{userDetails.firstName}} {{userDetails.lastName}}</strong>\r\n                </p>\r\n                <p class=\"text-left small\">{{userDetails.email}}</p>\r\n                <p class=\"text-left\">\r\n                  <a href=\"#\" class=\"btn btn-primary btn-block btn-sm\">Profile</a>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </li>\r\n        <li class=\"divider\"></li>\r\n        <li>\r\n          <div class=\"navbar-login navbar-login-session\">\r\n            <div class=\"row\">\r\n              <div class=\"col-lg-12\">\r\n                <p>\r\n                  <a routerLink=\"/login\" class=\"btn btn-danger btn-block\" (click)=\"logout()\">Logout</a>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </li>\r\n      </ul>\r\n    </li>\r\n  </ul>\r\n</nav>\r\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -34,16 +34,11 @@ var PlannerComponent = (function () {
         this.stogareService = stogareService;
         this.utiService = utiService;
         this.router = router;
-        // this.fetchOrganizationInfo();
-        // this.router.navigateByUrl("/planner/home");
+        this.userDetails = this.stogareService.getData('userDetails');
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     }
-    // public fetchOrganizationInfo() {
-    // 	this.utiService.fetchOrganizationInfo().subscribe((res: any) => {
-    // 		this.stogareService.storeData("org_info", res);
-    // 		this.router.navigateByUrl("/planner/home");
-    // 	}, (err: any) => {
-    // 	});
-    // }
     PlannerComponent.prototype.logout = function () {
         localStorage.clear();
     };
@@ -112,7 +107,7 @@ PlannerModule = __decorate([
                         { path: 'strategic-goal', loadChildren: 'app/planner/goal/goal.module#GoalModule' },
                         { path: 'initiatives', loadChildren: 'app/planner/initiative/initiative.module#InitiativeModule' },
                         { path: 'activities', loadChildren: 'app/planner/activity/activity.module#ActivityModule' },
-                        { path: 'measures', loadChildren: 'app/planner/measure/measure.module#MeasureModule' },
+                        { path: 'kpis', loadChildren: 'app/planner/measure/measure.module#MeasureModule' },
                         { path: 'spi', loadChildren: 'app/planner/spi/spi.module#SPIModule' }
                     ]
                 },
