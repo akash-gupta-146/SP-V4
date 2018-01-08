@@ -120,7 +120,9 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_alertifyjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -130,6 +132,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 var AppComponent = (function () {
@@ -143,20 +146,21 @@ var AppComponent = (function () {
         });
         if (!localStorage.getItem('access_token'))
             this.router.navigateByUrl('/login');
+        __WEBPACK_IMPORTED_MODULE_1_alertifyjs__["set"]('notifier', 'position', 'bottom-right');
     }
     // Shows and hides the loading spinner during RouterEvent changes
     AppComponent.prototype.navigationInterceptor = function (event) {
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* NavigationStart */]) {
+        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* NavigationStart */]) {
             this.loading = true;
         }
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* NavigationEnd */]) {
+        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
             this.loading = false;
         }
         // Set loading state to false in both of the below events to hide the spinner in case a request fails
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* NavigationCancel */]) {
+        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* NavigationCancel */]) {
             this.loading = false;
         }
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* NavigationError */]) {
+        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* NavigationError */]) {
             this.loading = false;
         }
     };
@@ -168,7 +172,7 @@ AppComponent = __decorate([
         template: "\n  <div class=\"loading-outer-overlay\" *ngIf=\"loading\">\n    <div class=\"loading-overlay\" >\n      <!-- show something fancy here, here with Angular 2 Material's loading bar or circle -->\n      <div class=\"loader\"></div>\n    </div>\n  </div>\n    \n  <router-outlet></router-outlet>\n  ",
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* Router */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["e" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["e" /* Router */]) === "function" && _a || Object])
 ], AppComponent);
 
 var _a;

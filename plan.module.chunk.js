@@ -3,7 +3,7 @@ webpackJsonp(["plan.module"],{
 /***/ "../../../../../src/app/planner/plan/plan.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n  <div class=\"panel add-plan\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" href=\"#collapse1\" class=\"accordion-toggle\">Add Strategic Plan</a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"collapse1\" class=\"panel-collapse collapse\">\r\n      <form [formGroup]=\"cycleForm\" (submit)=\"onSubmit()\">\r\n        <div class=\"panel-body\">\r\n          <div class=\"row\">\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"year\">Plan Year:</label>\r\n                <select id=\"year\" name=\"year\" class=\"form-control\" style=\"width:auto;\" formControlName=\"planYear\">\r\n                  <option value=\"2017\">2017</option>\r\n                  <option value=\"2018\">2018</option>\r\n                  <option value=\"2019\">2019</option>\r\n                  <option value=\"2020\">2020</option>\r\n                  <option value=\"2021\">2021</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"description\">Description:</label>\r\n                <textarea class=\"form-control\" id=\"description\" name=\"description\" formControlName=\"description\"></textarea>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"year\">From Year:</label>\r\n                <select id=\"from-year\" name=\"from-year\" class=\"form-control\" style=\"width:auto;\" formControlName=\"startYear\">\r\n                  <option value=\"2017\">2017</option>\r\n                  <option value=\"2018\">2018</option>\r\n                  <option value=\"2019\">2019</option>\r\n                  <option value=\"2020\">2020</option>\r\n                  <option value=\"2021\">2021</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"year\">To Year:</label>\r\n                <select id=\"to-year\" name=\"to-year\" class=\"form-control\" style=\"width:auto;\" formControlName=\"endYear\">\r\n                  <option value=\"2017\">2017</option>\r\n                  <option value=\"2018\">2018</option>\r\n                  <option value=\"2019\">2019</option>\r\n                  <option value=\"2020\">2020</option>\r\n                  <option value=\"2021\">2021</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <label class=\"checkbox-inline\">\r\n                <input type=\"checkbox\" value=\"\" formControlName=\"active\">\r\n                <b>Active</b>\r\n              </label>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"panel-footer\">\r\n          <button type=\"submit\" class=\"btn btn-default btn-empty\" [disabled]=\"cycleForm.invalid\">\r\n            <i class=\"glyphicon glyphicon-ok\"></i>\r\n          </button>\r\n          <button type=\"button\" class=\"btn btn-danger btn-close\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Reset Form\" (click)=\"reset()\">\r\n            <i class=\"glyphicon glyphicon-remove\"></i>\r\n          </button>\r\n          <div class=\"pull-right\" *ngIf=\"isUpdating\">\r\n          <button type=\"button\" class=\"btn btn-default\">Make it Default</button>\r\n          <button type=\"button\" class=\"btn btn-default\">Make it Disable</button>\r\n          <button type=\"button\" class=\"btn btn-default\" (click)=\"deleteCycle(selectedCycle.cycleId)\">Delete</button>   \r\n          </div>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel detail-plan\">\r\n    <div class=\"panel-heading\">Strategic Plans</div>\r\n    <div class=\"panel-body\">\r\n      <table class=\"table table-bordered table-striped\">\r\n        <thead class=\"header-background\">\r\n          <tr>\r\n            <th>Plan Year</th>\r\n            <th>From Year</th>\r\n            <th>End Year</th>\r\n            <th>Description</th>\r\n            <th>Disabled</th>\r\n            <th>Delete</th>\r\n            <th>Edit</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let c of cycles;let y = index;\">\r\n            <td>{{c.planYear}}</td>\r\n            <td>{{c.startYear}}</td>\r\n            <td>{{c.endYear}}</td>\r\n            <td>{{c.description}}\r\n              <span class=\"pull-right\" style=\"color:green\" *ngIf=\"c.defaultCycle\">*default</span>\r\n            </td>\r\n            <td>\r\n              <input type=\"checkbox\" [checked]=\"c.disable\" (change)=\"changeStatus($event,c)\">\r\n            </td>\r\n            <td>\r\n              <a (click)=\"deleteCycle(c.cycleId)\">\r\n                <i class=\"glyphicon glyphicon-trash\"></i>\r\n              </a>\r\n            </td>\r\n            <td>\r\n              <a (click)=\"editCycle(c)\">\r\n                <i class=\"glyphicon glyphicon-edit\"></i>\r\n              </a>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n  <div class=\"panel add-plan\" id=\"add-plan\" style=\"display:none;\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" href=\"#collapse1\" class=\"accordion-toggle\">Add Strategic Plan</a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"collapse1\" class=\"panel-collapse collapse\">\r\n      <form [formGroup]=\"cycleForm\" (submit)=\"onSubmit()\">\r\n        <div class=\"panel-body\">\r\n          <div class=\"row\">\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"year\">Plan Year:</label>\r\n                <select id=\"year\" name=\"year\" class=\"form-control\" style=\"width:auto;\" formControlName=\"planYear\">\r\n                  <option value=\"2017\">2017</option>\r\n                  <option value=\"2018\">2018</option>\r\n                  <option value=\"2019\">2019</option>\r\n                  <option value=\"2020\">2020</option>\r\n                  <option value=\"2021\">2021</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"description\">Description:</label>\r\n                <textarea class=\"form-control\" id=\"description\" name=\"description\" formControlName=\"description\"></textarea>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"year\">From Year:</label>\r\n                <select id=\"from-year\" name=\"from-year\" class=\"form-control\" style=\"width:auto;\" formControlName=\"startYear\">\r\n                  <option value=\"2017\">2017</option>\r\n                  <option value=\"2018\">2018</option>\r\n                  <option value=\"2019\">2019</option>\r\n                  <option value=\"2020\">2020</option>\r\n                  <option value=\"2021\">2021</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label for=\"year\">To Year:</label>\r\n                <select id=\"to-year\" name=\"to-year\" class=\"form-control\" style=\"width:auto;\" formControlName=\"endYear\">\r\n                  <option value=\"2017\">2017</option>\r\n                  <option value=\"2018\">2018</option>\r\n                  <option value=\"2019\">2019</option>\r\n                  <option value=\"2020\">2020</option>\r\n                  <option value=\"2021\">2021</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-sm-6\">\r\n              <label class=\"checkbox-inline\">\r\n                <input type=\"checkbox\" value=\"\" formControlName=\"active\">\r\n                <b>Active</b>\r\n              </label>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"panel-footer\">\r\n          <button type=\"submit\" class=\"btn btn-default btn-empty\" [disabled]=\"cycleForm.invalid\">\r\n            <i class=\"glyphicon glyphicon-ok\"></i>\r\n          </button>\r\n          <button type=\"button\" class=\"btn btn-danger btn-close\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Reset Form\" (click)=\"reset()\">\r\n            <i class=\"glyphicon glyphicon-remove\"></i>\r\n          </button>\r\n          <div class=\"pull-right\" *ngIf=\"isUpdating\">\r\n          <button type=\"button\" class=\"btn btn-default\">Make it Default</button>\r\n          <button type=\"button\" class=\"btn btn-default\">Make it Disable</button>\r\n          <button type=\"button\" class=\"btn btn-default\" (click)=\"deleteCycle(selectedCycle.cycleId)\">Delete</button>   \r\n          </div>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n  <div class=\"panel detail-plan\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a>Strategic Plans</a>\r\n        <button type=\"button\" class=\"btn-info btn-add pull-right\" (click)=\"addNewPlan()\">\r\n          <span class=\"glyphicon glyphicon-plus\"></span> Add\r\n        </button>\r\n      </h4>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <table class=\"table table-bordered table-striped\">\r\n        <thead class=\"header-background\">\r\n          <tr>\r\n            <th>Plan Year</th>\r\n            <th>From Year</th>\r\n            <th>End Year</th>\r\n            <th>Description</th>\r\n            <th>Disabled</th>\r\n            <th>Delete</th>\r\n            <th>Edit</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr *ngFor=\"let c of cycles;let y = index;\">\r\n            <td>{{c.planYear}}</td>\r\n            <td>{{c.startYear}}</td>\r\n            <td>{{c.endYear}}</td>\r\n            <td>{{c.description}}\r\n              <span class=\"pull-right\" style=\"color:green\" *ngIf=\"c.defaultCycle\">*default</span>\r\n            </td>\r\n            <td>\r\n              <input type=\"checkbox\" [checked]=\"c.disable\" (change)=\"changeStatus($event,c)\">\r\n            </td>\r\n            <td>\r\n              <a (click)=\"deleteCycle(c.cycleId)\">\r\n                <i class=\"glyphicon glyphicon-trash\"></i>\r\n              </a>\r\n            </td>\r\n            <td>\r\n              <a (click)=\"editCycle(c)\">\r\n                <i class=\"glyphicon glyphicon-edit\"></i>\r\n              </a>\r\n            </td>\r\n          </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -55,6 +55,8 @@ PlanModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_storage_service__ = __webpack_require__("../../../../../src/app/shared/storage.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_UTI_service__ = __webpack_require__("../../../../../src/app/shared/UTI.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_alertifyjs__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -64,6 +66,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -85,6 +88,10 @@ var PlanComponent = (function () {
         });
         this.getCycles();
     }
+    PlanComponent.prototype.addNewPlan = function () {
+        $("#add-plan").show();
+        $("#collapse1").collapse('show');
+    };
     PlanComponent.prototype.getCycles = function () {
         var _this = this;
         this.orgService.getCycles().subscribe(function (response) {
@@ -93,20 +100,21 @@ var PlanComponent = (function () {
             }
             else {
                 _this.cycles = response;
-                console.log(_this.cycles);
             }
         });
     };
     PlanComponent.prototype.editCycle = function (c) {
+        $("#add-plan").show();
+        $("#collapse1").collapse('show');
         this.isUpdating = true;
         this.selectedCycle = c;
         this.cycleForm.patchValue(c);
-        $("#collapse1").collapse('show');
     };
     PlanComponent.prototype.onSubmit = function () {
         var _this = this;
         if (!this.isUpdating)
             this.orgService.saveCycle(this.cycleForm.value).subscribe(function (response) {
+                __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You added New Strategic plan.');
                 _this.isUpdating = false;
                 _this.getCycles();
                 _this.cycleForm.reset();
@@ -116,6 +124,7 @@ var PlanComponent = (function () {
             data['description'] = this.cycleForm.value["description"];
             data['endYear'] = this.cycleForm.value["endYear"];
             this.orgService.updateCycle(this.selectedCycle.cycleId, data).subscribe(function (response) {
+                __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You updated Strategic plan.');
                 _this.isUpdating = false;
                 _this.getCycles();
                 _this.cycleForm.reset();
@@ -127,7 +136,7 @@ var PlanComponent = (function () {
             var forDiabled = confirm("Are you sure you want to disable it");
             if (forDiabled) {
                 this.orgService.disableCycle(c.cycleId).subscribe(function (response) {
-                    console.log(response);
+                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You disabled the plan.');
                 });
             }
             else {
@@ -139,7 +148,7 @@ var PlanComponent = (function () {
             var forEnabled = confirm("Are you sure you want to enable it");
             if (forEnabled) {
                 this.orgService.enableCycle(c.cycleId).subscribe(function (response) {
-                    console.log(response);
+                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You enabled the plan.');
                 });
             }
             else {
@@ -149,14 +158,16 @@ var PlanComponent = (function () {
     };
     PlanComponent.prototype.deleteCycle = function (cycleId) {
         var _this = this;
-        if (confirm("Do you Really want to Delete this Cycle??"))
-            this.orgService.deleteCycle(cycleId).subscribe(function (response) {
+        __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["confirm"]("Do you Really want to Delete this Cycle??", function () {
+            _this.orgService.deleteCycle(cycleId).subscribe(function (response) {
                 _this.getCycles();
             }, function (error) {
-                confirm("You Can not Delete this Cycle??");
+                __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["alert"]("You Can not Delete this Cycle??");
             });
+        });
     };
     PlanComponent.prototype.reset = function () {
+        $("#add-plan").hide();
         this.isUpdating = false;
         this.cycleForm.reset();
     };

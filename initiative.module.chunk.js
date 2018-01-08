@@ -21,7 +21,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/planner/initiative/initiative.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n  <div class=\"panel add-plan\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" href=\"#collapse1\" class=\"accordion-toggle\">Add Initiative</a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"collapse1\" class=\"panel-collapse collapse\">\r\n      <form [formGroup]=\"initiativeForm\" (submit)=\"submitInitiative()\">\r\n        <div class=\"panel-body\">\r\n          <div class=\"row\">\r\n            <div class=\"col-lg-6 col-xs-12 col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label class=\"control-label\" for=\"year\">Strategic Plan :</label>\r\n                <select id=\"year\" name=\"year\" class=\"form-control\" formControlName=\"cycleId\" [ngModel]=\"defaultCycle\" (ngModelChange)=\"getObjective($event)\">\r\n                  <option *ngFor=\"let c of cycles;let y = index;\" [value]=\"c.cycleId\">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-lg-6 col-xs-6 col-sm-12\">\r\n              <div class=\"form-group\">\r\n                <label for=\"sel1\">Select Goal:</label>\r\n                <select class=\"form-control\" id=\"sel1\" formControlName=\"goalId\">\r\n                  <option *ngFor=\"let goal of objectives;let i=index;\" [value]=\"goal.goalId\">{{i+1}}. {{goal.goal}}</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-lg-6 col-xs-6 col-sm-12\">\r\n              <div class=\"form-group \">\r\n                <label>Proposed Initiative</label>\r\n                <textarea class=\"form-control\" rows=\"2\" formControlName=\"initiative\"></textarea>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"panel-footer\">\r\n          <button type=\"submit\" class=\"btn btn-success btn-outline-success btn-empty\" [disabled]=\"initiativeForm.invalid\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Submit Form\">\r\n            <i class=\"glyphicon glyphicon-ok\"></i>\r\n          </button>\r\n          <button type=\"button\" class=\"btn btn-danger btn-close\" (click)=\"enableFields();isUpdating=false;\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Reset Form\">\r\n            <i class=\"glyphicon glyphicon-remove\"></i>\r\n          </button>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"panel detail-plan\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" href=\"#collapse2\">Proposed Initiatives</a>\r\n        <div class=\"form-inline pull-right\" style=\"margin-bottom: unset\">\r\n          <div class=\"form-group\">\r\n            <label class=\"control-label\">Strategic Plan</label>\r\n            <select id=\"year\" name=\"year\" class=\"form-control\" [(ngModel)]=\"defaultCycle\" (ngModelChange)=\"getInitiative()\" style=\"width:auto;height: auto;padding: 0px;\">\r\n              <option *ngFor=\"let c of cycles;let y = index;\" [value]=\"c.cycleId\" [attr.selected]=\"c.defaultCycle\">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>\r\n            </select>\r\n          </div>\r\n          <button type=\"button\" class=\"btn-info btn-add\" style=\"display: inline-block;\r\n          vertical-align: top;\" (click)=\"addNewInitiative()\">\r\n            <span class=\"glyphicon glyphicon-plus\"></span> Add\r\n          </button>\r\n        </div>\r\n      </h4>\r\n    </div>\r\n    <div id=\"collapse2\" class=\"panel-collapse collapse in\">\r\n      <div class=\"panel-body\">\r\n        <table class=\"table table-bordered\">\r\n          <colgroup>\r\n            <col style=\"width:30%\">\r\n            <col style=\"width:70%\">\r\n          </colgroup>\r\n          <thead class=\"header-background\" *ngIf=\"goals.length\">\r\n            <tr>\r\n              <th>Goal\r\n                <span class=\"search\">\r\n                  <input type=\"text\" name=\"search\" (keyup)=\"searchGoal($event)\" placeholder=\"Search..\">\r\n                </span>\r\n              </th>\r\n              <th>Initiative\r\n                <span class=\"search\">\r\n                  <input type=\"text\" name=\"search\" (keyup)=\"searchInitiative($event)\" placeholder=\"Search..\">\r\n                </span>\r\n              </th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let goal of goals;let i = index;\">\r\n              <td>{{goal.goal}}</td>\r\n              <td style=\"padding:0px;border:none;\" #element [style.height]=\"get(element)\">\r\n                <table class=\"table table-bordered\" style=\"height: inherit;\">\r\n                  <colgroup>\r\n                    <col style=\"width:80%\">\r\n                    <col style=\"width:10%\">\r\n                    <col style=\"width:10%\">\r\n                  </colgroup>\r\n                  <tr *ngFor=\"let initiate of goal.initiatives;let j=index;\">\r\n                    <td>{{initiate.initiative}}</td>\r\n                    <td>\r\n                      <span data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Edit\">\r\n                        <i class=\"glyphicon glyphicon-edit btn-edit\" style=\"cursor:pointer;\" (click)=\"updateInitiative(goal.goalId,initiate)\" data-toggle=\"collapse\"\r\n                          href=\"#collapse1\"></i>\r\n                      </span>\r\n                    </td>\r\n                    <td>\r\n                      <span data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Delete\">\r\n                        <i style=\"cursor:pointer;\" class=\"glyphicon glyphicon-trash btn-del\" (click)=\"deleteInitiative(initiate.initiativeId,goal.initiatives,j)\"></i>\r\n                      </span>\r\n                    </td>\r\n                  </tr>\r\n                </table>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n          <tfoot *ngIf=\"!goals.length\">\r\n            <tr>\r\n              <td colspan=\"4\" class=\"text-center\">No Data to Display .,.</td>\r\n            </tr>\r\n          </tfoot>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!--popup model-->\r\n<div class=\"modal fade\" id=\"initiativeModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\r\n  <div class=\"modal-dialog\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header color4\">\r\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n        <h4 class=\"modal-title\">Confirm</h4>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <p>You have successfully added a new Initiative.</p>\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-default btn-close\" data-dismiss=\"modal\" data-toggle=\"collapse\" href=\"#collapse2\">\r\n          <i class=\"glyphicon glyphicon-remove\"></i>\r\n        </button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"container-fluid\">\r\n  <div class=\"panel add-plan\" id=\"add-initiative\" style=\"display:none\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" href=\"#collapse1\" class=\"accordion-toggle\">Add Initiative</a>\r\n      </h4>\r\n    </div>\r\n    <div id=\"collapse1\" class=\"panel-collapse collapse\">\r\n      <form [formGroup]=\"initiativeForm\" (submit)=\"submitInitiative()\">\r\n        <div class=\"panel-body\">\r\n          <div class=\"row\">\r\n            <div class=\"col-lg-6 col-xs-12 col-sm-6\">\r\n              <div class=\"form-group\">\r\n                <label class=\"control-label\" for=\"year\">Strategic Plan :</label>\r\n                <select id=\"year\" name=\"year\" class=\"form-control\" formControlName=\"cycleId\" [ngModel]=\"defaultCycle\" (ngModelChange)=\"getObjective($event)\">\r\n                  <option *ngFor=\"let c of cycles;let y = index;\" [value]=\"c.cycleId\">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-lg-6 col-xs-6 col-sm-12\">\r\n              <div class=\"form-group\">\r\n                <label for=\"sel1\">Select Goal:</label>\r\n                <select class=\"form-control\" id=\"sel1\" formControlName=\"goalId\">\r\n                  <option *ngFor=\"let goal of objectives;let i=index;\" [value]=\"goal.goalId\">{{i+1}}. {{goal.goal}}</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-lg-6 col-xs-6 col-sm-12\">\r\n              <div class=\"form-group \">\r\n                <label>Proposed Initiative</label>\r\n                <textarea class=\"form-control\" rows=\"2\" formControlName=\"initiative\"></textarea>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"panel-footer\">\r\n          <button type=\"submit\" class=\"btn btn-success btn-outline-success btn-empty\" [disabled]=\"initiativeForm.invalid\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Submit Form\">\r\n            <i class=\"glyphicon glyphicon-ok\"></i>\r\n          </button>\r\n          <button type=\"button\" class=\"btn btn-danger btn-close\" (click)=\"enableFields();isUpdating=false;\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Reset Form\">\r\n            <i class=\"glyphicon glyphicon-remove\"></i>\r\n          </button>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"panel detail-plan\">\r\n    <div class=\"panel-heading\">\r\n      <h4 class=\"panel-title\">\r\n        <a data-toggle=\"collapse\" href=\"#collapse2\">Proposed Initiatives</a>\r\n        <div class=\"form-inline pull-right\" style=\"margin-bottom: unset\">\r\n          <div class=\"form-group\">\r\n            <label class=\"control-label\">Strategic Plan</label>\r\n            <select id=\"year\" name=\"year\" class=\"form-control\" [(ngModel)]=\"defaultCycle\" (ngModelChange)=\"getInitiative()\" style=\"width:auto;height: auto;padding: 0px;\">\r\n              <option *ngFor=\"let c of cycles;let y = index;\" [value]=\"c.cycleId\" [attr.selected]=\"c.defaultCycle\">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>\r\n            </select>\r\n          </div>\r\n          <button type=\"button\" class=\"btn-info btn-add\" style=\"display: inline-block;\r\n          vertical-align: top;\" (click)=\"addNewInitiative()\">\r\n            <span class=\"glyphicon glyphicon-plus\"></span> Add\r\n          </button>\r\n        </div>\r\n      </h4>\r\n    </div>\r\n    <div id=\"collapse2\" class=\"panel-collapse collapse in\">\r\n      <div class=\"panel-body\">\r\n        <table class=\"table table-bordered\">\r\n          <colgroup>\r\n            <col style=\"width:30%\">\r\n            <col style=\"width:70%\">\r\n          </colgroup>\r\n          <thead class=\"header-background\" *ngIf=\"goals.length\">\r\n            <tr>\r\n              <th>Goal\r\n                <span class=\"search\">\r\n                  <input type=\"text\" name=\"search\" (keyup)=\"searchGoal($event)\" placeholder=\"Search..\">\r\n                </span>\r\n              </th>\r\n              <th>Initiative\r\n                <span class=\"search\">\r\n                  <input type=\"text\" name=\"search\" (keyup)=\"searchInitiative($event)\" placeholder=\"Search..\">\r\n                </span>\r\n              </th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let goal of goals;let i = index;\">\r\n              <td>{{goal.goal}}</td>\r\n              <td style=\"padding:0px;border:none;\" #element [style.height]=\"get(element)\">\r\n                <table class=\"table table-bordered\" style=\"height: inherit;\">\r\n                  <colgroup>\r\n                    <col style=\"width:80%\">\r\n                    <col style=\"width:10%\">\r\n                    <col style=\"width:10%\">\r\n                  </colgroup>\r\n                  <tr *ngFor=\"let initiate of goal.initiatives;let j=index;\">\r\n                    <td>{{initiate.initiative}}</td>\r\n                    <td>\r\n                      <span data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Edit\">\r\n                        <i class=\"glyphicon glyphicon-edit btn-edit\" style=\"cursor:pointer;\" (click)=\"updateInitiative(goal.goalId,initiate)\" data-toggle=\"collapse\"\r\n                          href=\"#collapse1\"></i>\r\n                      </span>\r\n                    </td>\r\n                    <td>\r\n                      <span data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Delete\">\r\n                        <i style=\"cursor:pointer;\" class=\"glyphicon glyphicon-trash btn-del\" (click)=\"deleteInitiative(initiate.initiativeId,goal.initiatives,j)\"></i>\r\n                      </span>\r\n                    </td>\r\n                  </tr>\r\n                </table>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n          <tfoot *ngIf=\"!goals.length\">\r\n            <tr>\r\n              <td colspan=\"4\" class=\"text-center\">No Data to Display .,.</td>\r\n            </tr>\r\n          </tfoot>\r\n        </table>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<!--popup model-->\r\n<div class=\"modal fade\" id=\"initiativeModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\r\n  <div class=\"modal-dialog\" role=\"document\">\r\n    <div class=\"modal-content\">\r\n      <div class=\"modal-header color4\">\r\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\r\n        <h4 class=\"modal-title\">Confirm</h4>\r\n      </div>\r\n      <div class=\"modal-body\">\r\n        <p>You have successfully added a new Initiative.</p>\r\n      </div>\r\n      <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-default btn-close\" data-dismiss=\"modal\" data-toggle=\"collapse\" href=\"#collapse2\">\r\n          <i class=\"glyphicon glyphicon-remove\"></i>\r\n        </button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -113,49 +113,15 @@ var InitiativeComponent = (function (_super) {
         _this.objectives = [];
         _this.isUpdating = false;
         _this.quarter = ["Q1", "Q2", "Q3", "Q4"];
-        // this.orgService.getObjectives().subscribe((response:any)=>{
-        //   this.objectives = response;
-        // });
         _this.getCycleWithChildren();
         _this.initiativeForm = _this.initForm();
         return _this;
     }
-    // emptySearchResult:any;
-    // copyOfGoals:any[];
-    // search(key:any){
-    //   this.goals = this.goalsCopy;
-    //   this.copyOfGoals = this.goals;
-    //   let val = key.target.value;
-    //   if (val && val.trim() != '') {
-    //     this.emptySearchResult = false;
-    //     this.goals = this.goalsCopy.filter((item: any) => {
-    //       return (item.goal.toLowerCase().indexOf(val.toLowerCase()) > -1);
-    //     })
-    //     if (this.goals.length === 0)
-    //       this.emptySearchResult = true;
-    //     else
-    //       this.emptySearchResult = false;
-    //   }
-    // }
-    // searchInitiative(key:any,searchFrom:any[]){
-    //   this.goals = this.copyOfGoals;
-    //   let val = key.target.value;
-    //   if (val && val.trim() != '') {
-    //     this.goals = this.copyOfGoals.filter((item: any) => {
-    //       var exist:boolean = false;
-    //       item.initiatives = item.initiatives.filter((innerItem:any)=>{
-    //         exist = (innerItem.initiative.toLowerCase().indexOf(val.toLowerCase())>-1);
-    //       });
-    //       return exist;
-    //     })
-    //   }
-    // }
     InitiativeComponent.prototype.getCycleWithChildren = function () {
         var _this = this;
         this.orgService.getCycleWithChildren().subscribe(function (response) {
             if (response.status == 204) {
                 _this.cycles = [];
-                // this.objectives = [];
             }
             else {
                 _this.cycles = response;
@@ -164,8 +130,6 @@ var InitiativeComponent = (function (_super) {
                         _this.defaultCycle = element.cycleId;
                 });
                 _this.getInitiative();
-                // this.objectives = response[0].goals;
-                // console.log(this.objectives);
             }
         });
     };
@@ -184,12 +148,10 @@ var InitiativeComponent = (function (_super) {
             if (response.status == 204) {
                 _this.goals = [];
                 _this.goalsCopy = [];
-                // this.copyOfGoals = [];
             }
             else {
                 _this.goals = response;
                 _this.goalsCopy = response;
-                // this.copyOfGoals = response;
                 _this.initFilters(response);
             }
         });
@@ -270,20 +232,19 @@ var InitiativeComponent = (function (_super) {
         if (!this.isUpdating)
             this.orgService.addInitiative(this.initiativeForm.value).subscribe(function (res) {
                 _this.getInitiative();
+                $("#add-initiative").hide();
                 $('#initiativeModal').modal('show');
-                // this.initForm();
                 _this.initiativeForm.controls["initiative"].reset();
             }, function (err) {
                 console.log(err);
             });
-        if (this.isUpdating)
-            if (confirm("Are you sure you want to update this Initiative?"))
-                this.orgService.updateInitiative(this.selectedInitiative.initiativeId, this.initiativeForm.value).subscribe(function (res) {
-                    console.log(res);
-                    _this.getInitiative();
-                    $('#initiativeModal').modal('show');
-                    _this.isUpdating = false;
-                });
+        else if (confirm("Are you sure you want to update this Initiative?"))
+            this.orgService.updateInitiative(this.selectedInitiative.initiativeId, this.initiativeForm.value).subscribe(function (res) {
+                $("#add-initiative").hide();
+                _this.getInitiative();
+                $('#initiativeModal').modal('show');
+                _this.isUpdating = false;
+            });
     };
     InitiativeComponent.prototype.deleteInitiative = function (initiativeId, initiatives, index) {
         var _this = this;
@@ -302,14 +263,16 @@ var InitiativeComponent = (function (_super) {
         this.initiativeForm.patchValue({ cycleId: this.defaultCycle,
             goalId: goalId,
             initiative: initiative.initiative });
+        $("#add-initiative").show();
     };
     InitiativeComponent.prototype.enableFields = function () {
+        $("#add-initiative").hide();
         this.initiativeForm.controls["cycleId"].enable();
         this.initiativeForm.controls["goalId"].enable();
         this.initiativeForm = this.initForm();
     };
     InitiativeComponent.prototype.addNewInitiative = function () {
-        this.enableFields();
+        $("#add-initiative").show();
         this.isUpdating = false;
         $("#collapse1").collapse('show');
         this.initiativeForm = this.initForm();
