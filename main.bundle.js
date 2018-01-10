@@ -139,8 +139,6 @@ var AppComponent = (function () {
     function AppComponent(router) {
         var _this = this;
         this.router = router;
-        // Sets initial value to true to show loading spinner on first load
-        this.loading = true;
         router.events.subscribe(function (event) {
             _this.navigationInterceptor(event);
         });
@@ -169,7 +167,7 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'my-app',
-        template: "\n  <div class=\"loading-outer-overlay\" *ngIf=\"loading\">\n    <div class=\"loading-overlay\" >\n      <!-- show something fancy here, here with Angular 2 Material's loading bar or circle -->\n      <div class=\"loader\"></div>\n    </div>\n  </div>\n    \n  <router-outlet></router-outlet>\n  ",
+        template: "\n  \n    \n  <router-outlet>\n  <div class=\"loading-outer-overlay\" *ngIf=\"loading\">\n    <div class=\"loading-overlay\" >\n      <!-- show something fancy here, here with Angular 2 Material's loading bar or circle -->\n      <div class=\"loader\"></div>\n    </div>\n  </div></router-outlet>\n  ",
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["e" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["e" /* Router */]) === "function" && _a || Object])
@@ -212,7 +210,7 @@ var routes = [
     },
     {
         path: 'login',
-        loadChildren: 'app/login/login.module#LoginModule'
+        loadChildren: 'app/login/login.module#LoginModule',
     },
     {
         path: 'planner',

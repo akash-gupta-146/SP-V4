@@ -65,7 +65,7 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         if (localStorage.getItem('user_roleInfo')) {
-            // this.router.navigateByUrl("/"+this.commonService.getData('user_roleInfo')[0].role);
+            this.router.navigateByUrl("/" + this.commonService.getData('user_roleInfo')[0].role);
         }
     };
     LoginComponent.prototype.ngAfterViewChecked = function () {
