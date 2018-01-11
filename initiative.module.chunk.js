@@ -54,7 +54,7 @@ var InitiativeModule = (function () {
 }());
 InitiativeModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["f" /* RouterModule */].forChild([{
+        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forChild([{
                     path: '', component: __WEBPACK_IMPORTED_MODULE_1__initiative__["a" /* InitiativeComponent */]
                 }])],
         providers: [],
@@ -76,6 +76,9 @@ InitiativeModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__ = __webpack_require__("../../../../../src/app/shared/storage.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_filters__ = __webpack_require__("../../../../../src/app/shared/filters.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_alertifyjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__ = __webpack_require__("../../../../../src/app/shared/loader.service.ts");
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -100,13 +103,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var InitiativeComponent = (function (_super) {
     __extends(InitiativeComponent, _super);
-    function InitiativeComponent(orgService, formBuilder, commonService) {
+    function InitiativeComponent(orgService, formBuilder, commonService, loaderService) {
         var _this = _super.call(this) || this;
         _this.orgService = orgService;
         _this.formBuilder = formBuilder;
         _this.commonService = commonService;
+        _this.loaderService = loaderService;
         _this.cycles = [];
         // public goals:any[]=[];
         // public goalsCopy:any[]=[];
@@ -119,6 +125,7 @@ var InitiativeComponent = (function (_super) {
     }
     InitiativeComponent.prototype.getCycleWithChildren = function () {
         var _this = this;
+        this.loaderService.display(true);
         this.orgService.getCycleWithChildren().subscribe(function (response) {
             if (response.status == 204) {
                 _this.cycles = [];
@@ -154,78 +161,18 @@ var InitiativeComponent = (function (_super) {
                 _this.goalsCopy = response;
                 _this.initFilters(response);
             }
+            _this.loaderService.display(false);
+        }, function (error) {
+            _this.loaderService.display(false);
         });
     };
     InitiativeComponent.prototype.initForm = function () {
         return this.formBuilder.group({
             "cycleId": [this.defaultCycle, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
             "goalId": ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
-            "initiative": ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
+            "initiative": ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]]
         });
     };
-    // setActivity() {
-    //   return this.formBuilder.group({
-    //     "activity": ['', [Validators.required]],
-    //     "measures": this.formBuilder.array([this.setMeasure()])
-    //   });
-    // }
-    // setMeasure() {
-    //   return this.formBuilder.group({
-    //     "measure": ['', [Validators.required]],
-    //     "frequencyId": [1, [Validators.required]],
-    //     "measureUnit": ['', [Validators.required]],
-    //     "currentLevel": ['', [Validators.required]],
-    //     "direction": ['', [Validators.required]],
-    //     "annualTarget": this.formBuilder.array(this.setAnnualTarget())
-    //   });
-    // }
-    // setAnnualTarget() {
-    //   const annualTarget:any[] = [];
-    //   this.commonService.getData('org_info').cycle.forEach((element:any) => {
-    //     annualTarget.push(this.inItTargetIn(element));
-    //   });
-    //   return annualTarget;
-    // }
-    // inItTargetIn(year:any) {
-    //   return this.formBuilder.group({
-    //     "year": [year, [Validators.required]],
-    //     "levels": this.formBuilder.array([this.inItLevels(this.quarter[0])]),
-    //     "estimatedCost": ['', [Validators.required]]
-    //   });
-    // }
-    // inItLevels(q:any) {
-    //   return this.formBuilder.group({
-    //     "quarter": [q],
-    //     "startDate": ["2017-04-01"],
-    //     "endDate":["2018-04-15"],
-    //     "estimatedTargetLevel": ['', [Validators.required]]
-    //   });
-    // }
-    // addActivity(form:any) {
-    //   const control = <FormArray>form.controls['activities'];
-    //   control.push(this.setActivity());
-    // }
-    // removeActivity(form:any, i:any) {
-    //   const control = <FormArray>form.controls['activities'];
-    //   control.removeAt(i);
-    // }
-    // addMeasure(form:any) {
-    //   const control = <FormArray>form.controls['measures'];
-    //   control.push(this.setMeasure());
-    // }
-    // removeMeasure(form:any, j:any) {
-    //   const control = <FormArray>form.controls['measures'];
-    //   control.removeAt(j);
-    // }
-    // setTargetTable(form:any, e:any) {
-    //   for (var index = 0; index < this.commonService.getData('org_info').cycle.length; index++) {
-    //     form[index].controls['levels'] = this.formBuilder.array([]);
-    //     const levels = <FormArray>form[index].controls['levels'];
-    //     for (var i = 0; i < e; i++) {
-    //       levels.push(this.inItLevels(this.quarter[i]));
-    //     }
-    //   }
-    // }
     InitiativeComponent.prototype.submitInitiative = function () {
         var _this = this;
         delete this.initiativeForm.value["cycleId"];
@@ -233,36 +180,45 @@ var InitiativeComponent = (function (_super) {
             this.orgService.addInitiative(this.initiativeForm.value).subscribe(function (res) {
                 _this.getInitiative();
                 $("#add-initiative").hide();
-                $('#initiativeModal').modal('show');
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]("You have successfully added a new Initiative.");
+                // $('#initiativeModal').modal('show');
                 _this.initiativeForm.controls["initiative"].reset();
             }, function (err) {
                 console.log(err);
             });
-        else if (confirm("Are you sure you want to update this Initiative?"))
-            this.orgService.updateInitiative(this.selectedInitiative.initiativeId, this.initiativeForm.value).subscribe(function (res) {
-                $("#add-initiative").hide();
-                _this.getInitiative();
-                $('#initiativeModal').modal('show');
-                _this.isUpdating = false;
+        else
+            __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Are you sure you want to update this Initiative?", function () {
+                _this.orgService.updateInitiative(_this.selectedInitiative.initiativeId, _this.initiativeForm.value).subscribe(function (res) {
+                    $("#add-initiative").hide();
+                    _this.getInitiative();
+                    __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]("You have successfully updated Initiative.");
+                    // $('#initiativeModal').modal('show');
+                    _this.isUpdating = false;
+                });
             });
     };
     InitiativeComponent.prototype.deleteInitiative = function (initiativeId, initiatives, index) {
         var _this = this;
-        if (confirm("Are you sure you want to delete this Initiative?"))
-            this.orgService.deleteInitiative(initiativeId).subscribe(function (res) {
+        __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Are you sure you want to delete this Initiative?", function () {
+            _this.orgService.deleteInitiative(initiativeId).subscribe(function (res) {
                 console.log(res);
                 initiatives.splice(index, 1);
                 _this.getInitiative();
+            }, function (error) {
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["alert"]("Something went wrong..");
             });
+        });
     };
     InitiativeComponent.prototype.updateInitiative = function (goalId, initiative) {
         this.isUpdating = true;
         this.initiativeForm.controls["cycleId"].disable();
         this.initiativeForm.controls["goalId"].disable();
         this.selectedInitiative = initiative;
-        this.initiativeForm.patchValue({ cycleId: this.defaultCycle,
+        this.initiativeForm.patchValue({
+            cycleId: this.defaultCycle,
             goalId: goalId,
-            initiative: initiative.initiative });
+            initiative: initiative.initiative
+        });
         $("#add-initiative").show();
     };
     InitiativeComponent.prototype.enableFields = function () {
@@ -289,10 +245,10 @@ InitiativeComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/planner/initiative/initiative.html"),
         styles: [__webpack_require__("../../../../../src/app/planner/initiative/initiative.css"), __webpack_require__("../../../../../src/app/planner/planner.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */]) === "function" && _d || Object])
 ], InitiativeComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=initiative.js.map
 
 /***/ }),

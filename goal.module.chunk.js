@@ -52,7 +52,7 @@ var GoalModule = (function () {
 }());
 GoalModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["f" /* RouterModule */].forChild([{
+        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forChild([{
                     path: '', component: __WEBPACK_IMPORTED_MODULE_1__goal__["a" /* GoalComponent */]
                 }])],
         providers: [],
@@ -74,6 +74,9 @@ GoalModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__ = __webpack_require__("../../../../../src/app/shared/storage.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_filters__ = __webpack_require__("../../../../../src/app/shared/filters.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_alertifyjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__ = __webpack_require__("../../../../../src/app/shared/loader.service.ts");
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -98,13 +101,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var GoalComponent = (function (_super) {
     __extends(GoalComponent, _super);
-    function GoalComponent(orgService, formBuilder, commonService) {
+    function GoalComponent(orgService, formBuilder, commonService, loaderService) {
         var _this = _super.call(this) || this;
         _this.orgService = orgService;
         _this.formBuilder = formBuilder;
         _this.commonService = commonService;
+        _this.loaderService = loaderService;
         _this.isUpdating = false;
         // public goals:any[]=[];
         // public goalsCopy:any[]=[];
@@ -118,6 +124,7 @@ var GoalComponent = (function (_super) {
     };
     GoalComponent.prototype.getCycles = function () {
         var _this = this;
+        this.loaderService.display(true);
         this.orgService.getCycles().subscribe(function (response) {
             if (response.status == 204) {
                 _this.cycles = [];
@@ -143,6 +150,7 @@ var GoalComponent = (function (_super) {
                 _this.goals = response;
                 _this.goalsCopy = response;
             }
+            _this.loaderService.display(false);
         });
     };
     GoalComponent.prototype.initObjectiveForm = function () {
@@ -151,65 +159,42 @@ var GoalComponent = (function (_super) {
             "goal": ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
         });
     };
-    // inItSpi() {
-    //   return this.formBuilder.group({
-    //     "spi": ['', [Validators.required]],
-    //     "measureUnit": ['', [Validators.required]],
-    //     "currentLevel": ['', [Validators.required]],
-    //     "frequencyId":[1],
-    //     "targetDigital": this.formBuilder.array(this.inItTarget())
-    //   });
-    // }  
-    // inItTarget() {
-    //   const fa:any[] = [];
-    //   this.commonService.getData('org_info').cycle.forEach((element:any) => {
-    //     fa.push(this.inItTargetDigital(element));
-    //   });
-    //   return fa;
-    // }
-    // inItTargetDigital(year:any) {
-    //   return this.formBuilder.group({
-    //     "year": [year, [Validators.required]],
-    //     "expectedLevel": ['', [Validators.required]],
-    //   });
-    // }
-    // addSpi(form:any) {
-    //   const control = <FormArray>form.controls['spis'];
-    //   control.push(this.inItSpi());
-    // }
-    // removeSpi(form:any, index:any) {
-    //   const control = <FormArray>form.controls['spis'];
-    //   control.removeAt(index);
-    // }
     GoalComponent.prototype.onSubmit = function () {
         var _this = this;
         if (!this.isUpdating) {
             this.orgService.addObjective(this.goalForm.value).subscribe(function (response) {
-                $('#objectModal').modal('show');
+                // $('#objectModal').modal('show');
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
                 $("#add-plan").hide();
                 _this.goalForm.controls["goal"].reset();
                 _this.getGoals();
             }, function (error) {
-                console.log(error);
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["alert"]("Something went wrong..");
             });
         }
         if (this.isUpdating) {
-            if (confirm("Are you sure you want to Update this Goal?"))
-                this.orgService.updateObjective(this.selectedObjective.goalId, this.goalForm.value).subscribe(function (res) {
-                    console.log(res);
-                    $('#objectModal').modal('show');
+            __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Are you sure you want to Update this Goal?", function () {
+                _this.orgService.updateObjective(_this.selectedObjective.goalId, _this.goalForm.value).subscribe(function (res) {
+                    // $('#objectModal').modal('show');
+                    __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
                     _this.goalForm = _this.initObjectiveForm();
                     _this.getGoals();
                     _this.isUpdating = false;
+                }, function (error) {
+                    __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["alert"]("Something went wrong..");
                 });
+            });
         }
     };
     GoalComponent.prototype.deleteGoal = function (goalId, goals, index) {
-        if (confirm("Are you sure you want to delete this Goal?"))
-            this.orgService.deleteObjective(goalId).subscribe(function (res) {
-                console.log(res);
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Are you sure you want to delete this Goal?", function () {
+            _this.orgService.deleteObjective(goalId).subscribe(function (res) {
                 goals.splice(index, 1);
+            }, function (error) {
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["alert"]("Something went wrong..");
             });
+        });
     };
     GoalComponent.prototype.updateGoal = function (goal) {
         this.selectedObjective = goal;
@@ -235,10 +220,10 @@ GoalComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/planner/goal/goal.html"),
         styles: [__webpack_require__("../../../../../src/app/planner/goal/goal.css"), __webpack_require__("../../../../../src/app/planner/planner.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */]) === "function" && _d || Object])
 ], GoalComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=goal.js.map
 
 /***/ })

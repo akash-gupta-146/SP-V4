@@ -34,7 +34,7 @@ var PlanModule = (function () {
 }());
 PlanModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["f" /* RouterModule */].forChild([{
+        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forChild([{
                     path: '', component: __WEBPACK_IMPORTED_MODULE_1__plan__["a" /* PlanComponent */]
                 }])],
         providers: [],
@@ -57,6 +57,7 @@ PlanModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_UTI_service__ = __webpack_require__("../../../../../src/app/shared/UTI.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_alertifyjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_loader_service__ = __webpack_require__("../../../../../src/app/shared/loader.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -71,13 +72,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var PlanComponent = (function () {
-    function PlanComponent(ss, orgService) {
+    function PlanComponent(ss, orgService, loaderService) {
         this.ss = ss;
         this.orgService = orgService;
+        this.loaderService = loaderService;
         this.title = "Strategic Plan";
         this.cycles = [];
         this.status = [];
+        this.loaderService.display(true);
         this.cycleForm = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormGroup */]({
             "universityId": new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */](this.ss.getData('org_info').universityId),
             "description": new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */]('', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["f" /* Validators */].required]),
@@ -101,6 +105,8 @@ var PlanComponent = (function () {
             else {
                 _this.cycles = response;
             }
+        }, function (error) {
+            _this.loaderService.display(false);
         });
     };
     PlanComponent.prototype.editCycle = function (c) {
@@ -179,10 +185,10 @@ PlanComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/planner/plan/plan.html"),
         styles: [__webpack_require__("../../../../../src/app/planner/planner.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_storage_service__["a" /* StorageService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_UTI_service__["a" /* UniversityService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_storage_service__["a" /* StorageService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_UTI_service__["a" /* UniversityService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__shared_loader_service__["a" /* LoaderService */]) === "function" && _c || Object])
 ], PlanComponent);
 
-var _a, _b;
+var _a, _b, _c;
 //# sourceMappingURL=plan.js.map
 
 /***/ })

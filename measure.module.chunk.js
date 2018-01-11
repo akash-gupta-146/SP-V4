@@ -54,7 +54,7 @@ var MeasureModule = (function () {
 }());
 MeasureModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["f" /* RouterModule */].forChild([{
+        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forChild([{
                     path: '', component: __WEBPACK_IMPORTED_MODULE_1__measure__["a" /* MeasureComponent */],
                     pathMatch: 'full'
                 }])],
@@ -77,6 +77,9 @@ MeasureModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__ = __webpack_require__("../../../../../src/app/shared/storage.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_filters__ = __webpack_require__("../../../../../src/app/shared/filters.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_alertifyjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__ = __webpack_require__("../../../../../src/app/shared/loader.service.ts");
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -101,13 +104,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var MeasureComponent = (function (_super) {
     __extends(MeasureComponent, _super);
-    function MeasureComponent(orgService, formBuilder, commonService) {
+    function MeasureComponent(orgService, formBuilder, commonService, loaderService) {
         var _this = _super.call(this) || this;
         _this.orgService = orgService;
         _this.formBuilder = formBuilder;
         _this.commonService = commonService;
+        _this.loaderService = loaderService;
         _this.objectives = [];
         _this.initiatives = [];
         _this.activities = [];
@@ -123,35 +129,10 @@ var MeasureComponent = (function (_super) {
         _this.prev = true;
         _this.next = false;
         _this.quarter = ["Q1", "Q2", "Q3", "Q4"];
-        _this.quarters = [
-            {
-                "id": 1,
-                "endDate": "31/03/",
-                "startDate": "01/01/",
-                "quarter": "q1"
-            },
-            {
-                "id": 2,
-                "endDate": "31/06/",
-                "startDate": "01/04/",
-                "quarter": "q2"
-            },
-            {
-                "id": 3,
-                "endDate": "31/09/",
-                "startDate": "01/07/",
-                "quarter": "q3"
-            },
-            {
-                "id": 4,
-                "endDate": "31/12/",
-                "startDate": "01/10/",
-                "quarter": "q4"
-            }
-        ];
         _this.selectedQuarter = 0;
         _this.selectedDepartments = [];
         _this.measureForm = _this.setMeasure();
+        _this.loaderService.display(true);
         _this.orgService.getCycleWithChildren().subscribe(function (response) {
             _this.cycles = response;
             _this.cycles.forEach(function (element) {
@@ -229,6 +210,9 @@ var MeasureComponent = (function (_super) {
                 _this.filteredInitiatives = response;
                 _this.filteredOpis = response;
             }
+            _this.loaderService.display(false);
+        }, function (error) {
+            _this.loaderService.display(false);
         });
     };
     MeasureComponent.prototype.getQuarter = function () {
@@ -365,12 +349,16 @@ var MeasureComponent = (function (_super) {
         departmentsArray.forEach(function (element) {
             delete element["departmentName"];
         });
-        if (confirm("Do you really want to assign this OPI"))
-            this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe(function (response) {
+        __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Do you really want to assign this OPI", function () {
+            _this.orgService.assignOpi(_this.selectedMeasure.opiId, departmentsArray).subscribe(function (response) {
                 _this.selectedMeasure.assignedDepartments = _this.selectedMeasure.assignedDepartments.concat(response);
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]("Successfully assigned");
                 $('#detailModal').modal('show');
                 $('#myModal').modal('hide');
+            }, function (error) {
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["error"]("Something went wrong");
             });
+        });
     };
     MeasureComponent.prototype.getDepartmentFormArray = function () {
         var _this = this;
@@ -470,7 +458,8 @@ var MeasureComponent = (function (_super) {
         if (!this.isUpdating) {
             this.orgService.saveMeasure(this.measureForm.value).subscribe(function (response) {
                 _this.getMeasure();
-                $('#measureModal').modal('show');
+                // $('#measureModal').modal('show');
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]("You have successfully added a new OPI.");
                 _this.measureForm.reset({
                     opi: '',
                     measureUnit: '', frequencyId: 1, baseline: '', direction: '', remarks: '', helpText: '', approvalRequired: ''
@@ -487,13 +476,13 @@ var MeasureComponent = (function (_super) {
                     msg += "\n" + key + " = " + formChanges[key] + ",";
                 }
             });
-            if (confirm("Are you sure you want to update this OPI as " + msg)) {
-                delete this.measureForm.value["activityId"];
-                this.orgService.updateMeasure(this.selectedMeasure.opiId, formChanges).subscribe(function (response) {
+            __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Are you sure you want to update this OPI as " + msg, function () {
+                delete _this.measureForm.value["activityId"];
+                _this.orgService.updateMeasure(_this.selectedMeasure.opiId, formChanges).subscribe(function (response) {
                     _this.measureForm = _this.setMeasure();
                     _this.getMeasure();
                 });
-            }
+            });
             $('#add-opi').hide();
         }
     };
@@ -565,10 +554,10 @@ MeasureComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/planner/measure/measure.html"),
         styles: [__webpack_require__("../../../../../src/app/planner/measure/measure.css"), __webpack_require__("../../../../../src/app/planner/planner.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */]) === "function" && _d || Object])
 ], MeasureComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=measure.js.map
 
 /***/ }),

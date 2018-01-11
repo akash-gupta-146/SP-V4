@@ -52,7 +52,7 @@ var ActivityModule = (function () {
 }());
 ActivityModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["f" /* RouterModule */].forChild([{
+        imports: [__WEBPACK_IMPORTED_MODULE_3__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forChild([{
                     path: '', component: __WEBPACK_IMPORTED_MODULE_1__activity__["a" /* ActivityComponent */]
                 }])],
         providers: [],
@@ -74,6 +74,9 @@ ActivityModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__ = __webpack_require__("../../../../../src/app/shared/storage.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_filters__ = __webpack_require__("../../../../../src/app/shared/filters.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_alertifyjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__ = __webpack_require__("../../../../../src/app/shared/loader.service.ts");
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -98,18 +101,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var ActivityComponent = (function (_super) {
     __extends(ActivityComponent, _super);
-    function ActivityComponent(orgService, formBuilder, commonService) {
+    function ActivityComponent(orgService, formBuilder, commonService, loaderService) {
         var _this = _super.call(this) || this;
         _this.orgService = orgService;
         _this.formBuilder = formBuilder;
         _this.commonService = commonService;
-        // [x: string]: any;
+        _this.loaderService = loaderService;
         _this.cycles = [];
         _this.quarter = ["Q1", "Q2", "Q3", "Q4"];
         _this.objectiveIndex = [];
         _this.isUpdating = false;
+        _this.loaderService.display(true);
         _this.orgService.getCycleWithChildren().subscribe(function (response) {
             if (response.status == 204) {
                 _this.cycles = [];
@@ -157,23 +163,11 @@ var ActivityComponent = (function (_super) {
                 _this.goalsCopy = response;
                 _this.initFilters(response);
             }
+            _this.loaderService.display(false);
+        }, function (error) {
+            _this.loaderService.display(false);
         });
     };
-    // emptySearchResult:any;
-    // search(key:any){
-    //   this.goals = this.goalsCopy;
-    //   let val = key.target.value;
-    //   if (val && val.trim() != '') {
-    //     this.emptySearchResult = false;
-    //     this.goals = this.goalsCopy.filter((item: any) => {
-    //       return (item.goal.toLowerCase().indexOf(val.toLowerCase()) > -1);
-    //     })
-    //     if (this.goals.length === 0)
-    //       this.emptySearchResult = true;
-    //     else
-    //       this.emptySearchResult = false;
-    //   }
-    // }
     ActivityComponent.prototype.getInitiative = function (objId) {
         var _this = this;
         if (objId) {
@@ -196,38 +190,6 @@ var ActivityComponent = (function (_super) {
             "activity": ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
         });
     };
-    // setMeasure() {
-    //   return this.formBuilder.group({
-    //     "measure": ['', [Validators.required]],
-    //     "frequencyId": [1, [Validators.required]],
-    //     "measureUnit": ['', [Validators.required]],
-    //     "currentLevel": ['', [Validators.required]],
-    //     "direction": ['', [Validators.required]],
-    //     "annualTarget": this.formBuilder.array(this.setAnnualTarget())
-    //   });
-    // }
-    // setAnnualTarget() {
-    //   const annualTarget:any[] = [];
-    //   this.commonService.getData('org_info').cycle.forEach((element:any) => {
-    //     annualTarget.push(this.inItTargetIn(element));
-    //   });
-    //   return annualTarget;
-    // }
-    // inItTargetIn(year:any) {
-    //   return this.formBuilder.group({
-    //     "year": [year, [Validators.required]],
-    //     "levels": this.formBuilder.array([this.inItLevels(this.quarter[0])]),
-    //     "estimatedCost": ['', [Validators.required]]
-    //   });
-    // }
-    // inItLevels(q:any) {
-    //   return this.formBuilder.group({
-    //     "quarter": [q],
-    //     "startDate": ["2017-04-01"],
-    //     "endDate":["2018-04-15"],
-    //     "estimatedTargetLevel": ['', [Validators.required]]
-    //   });
-    // }
     ActivityComponent.prototype.submitActivity = function () {
         var _this = this;
         delete this.activityForm.value["cycleId"];
@@ -236,29 +198,34 @@ var ActivityComponent = (function (_super) {
             this.orgService.saveActivity(this.activityForm.value)
                 .subscribe(function (response) {
                 $("#add-activity").hide();
-                $('#activityModal').modal('show');
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]("Saved successfully .,.");
                 _this.getActivities();
                 _this.activityForm.controls["activity"].reset();
             });
         }
-        else if (confirm("Are you sure you want to Update this Activity?")) {
-            delete this.activityForm.value["initiativeId"];
-            this.orgService.updateActivity(this.seletedActivity.activityId, this.activityForm.value).subscribe(function (res) {
-                _this.getActivities();
-                $('#activityModal').modal('show');
-                _this.isUpdating = false;
-                _this.activityForm = _this.setActivity();
+        else {
+            __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Are you sure you want to Update this Activity?", function () {
+                delete _this.activityForm.value["initiativeId"];
+                _this.orgService.updateActivity(_this.seletedActivity.activityId, _this.activityForm.value).subscribe(function (res) {
+                    _this.getActivities();
+                    __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]("Updated successfully .,.");
+                    _this.isUpdating = false;
+                    _this.activityForm = _this.setActivity();
+                });
             });
         }
     };
     ActivityComponent.prototype.deleteActivity = function (activityId, activities, index) {
-        if (confirm("Are you sure you want to delete this Activity?"))
-            this.orgService.deleteActivity(activityId).subscribe(function (res) {
-                console.log(res);
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["confirm"]("Are you sure you want to delete this Activity?", function () {
+            _this.orgService.deleteActivity(activityId).subscribe(function (res) {
                 activities.splice(index, 1);
+                __WEBPACK_IMPORTED_MODULE_5_alertifyjs__["notify"]("Deleted successfully .,.");
             });
+        });
     };
     ActivityComponent.prototype.updateActivity = function (objective, initiative, activity) {
+        $("#add-activity").show();
         $("#collapse1").collapse('show');
         this.isUpdating = true;
         this.seletedActivity = activity;
@@ -271,7 +238,6 @@ var ActivityComponent = (function (_super) {
             initiativeId: initiative.initiativeId,
             activity: activity.activity
         });
-        $("#add-activity").show();
     };
     ActivityComponent.prototype.enableFields = function () {
         this.activityForm.controls["cycleId"].enable();
@@ -279,27 +245,6 @@ var ActivityComponent = (function (_super) {
         this.activityForm.controls["initiativeId"].enable();
         this.activityForm = this.setActivity();
         $("#add-activity").hide();
-    };
-    ActivityComponent.prototype.getRowSpan = function (array) {
-        var rowSpan = 1;
-        rowSpan += array.length;
-        array.forEach(function (element) {
-            rowSpan += element.activities.length;
-            // element.activities.forEach((innerElement:any) => {
-            //   rowSpan += innerElement.measures.length;
-            // });
-        });
-        if (rowSpan == 1)
-            return rowSpan + 1;
-        return rowSpan;
-    };
-    ActivityComponent.prototype.getRowSpanOfIni = function (array) {
-        var rowSpan = 1;
-        rowSpan += array.length * 2;
-        // array.forEach((innerElement:any) => {
-        //   rowSpan += innerElement.measures.length;
-        // });
-        return rowSpan;
     };
     ActivityComponent.prototype.addNewActivity = function () {
         this.enableFields();
@@ -320,10 +265,10 @@ ActivityComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/planner/activity/activity.html"),
         styles: [__webpack_require__("../../../../../src/app/planner/activity/activity.css"), __webpack_require__("../../../../../src/app/planner/planner.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_UTI_service__["a" /* UniversityService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_storage_service__["a" /* StorageService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */]) === "function" && _d || Object])
 ], ActivityComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=activity.js.map
 
 /***/ })

@@ -120,9 +120,8 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_alertifyjs__ = __webpack_require__("../../../../alertifyjs/build/alertify.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_alertifyjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_alertifyjs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__ = __webpack_require__("../../../../../src/app/shared/loader.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -136,44 +135,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AppComponent = (function () {
-    function AppComponent(router) {
-        var _this = this;
+    function AppComponent(router, loaderService) {
         this.router = router;
-        router.events.subscribe(function (event) {
-            _this.navigationInterceptor(event);
-        });
+        this.loaderService = loaderService;
+        // router.events.subscribe((event: RouterEvent) => {
+        //   this.navigationInterceptor(event)
+        // })
         if (!localStorage.getItem('access_token'))
             this.router.navigateByUrl('/login');
-        __WEBPACK_IMPORTED_MODULE_1_alertifyjs__["set"]('notifier', 'position', 'bottom-right');
     }
-    // Shows and hides the loading spinner during RouterEvent changes
-    AppComponent.prototype.navigationInterceptor = function (event) {
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* NavigationStart */]) {
-            this.loading = true;
-        }
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
-            this.loading = false;
-        }
-        // Set loading state to false in both of the below events to hide the spinner in case a request fails
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* NavigationCancel */]) {
-            this.loading = false;
-        }
-        if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* NavigationError */]) {
-            this.loading = false;
-        }
+    AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.loaderService.status.asObservable().subscribe(function (val) {
+            _this.showLoader = val;
+        });
     };
     return AppComponent;
 }());
 AppComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'my-app',
-        template: "\n  \n    \n  <router-outlet>\n  <div class=\"loading-outer-overlay\" *ngIf=\"loading\">\n    <div class=\"loading-overlay\" >\n      <!-- show something fancy here, here with Angular 2 Material's loading bar or circle -->\n      <div class=\"loader\"></div>\n    </div>\n  </div></router-outlet>\n  ",
+        template: "\n  <router-outlet>\n  <div class=\"loading-outer-overlay\" *ngIf=\"showLoader\">\n    <div class=\"loading-overlay\">\n      <div class=\"loader\"></div>\n    </div>\n  </div>\n  </router-outlet>\n  ",
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["e" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["e" /* Router */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */]) === "function" && _b || Object])
 ], AppComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -190,12 +178,14 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_storage_service__ = __webpack_require__("../../../../../src/app/shared/storage.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__ = __webpack_require__("../../../../../src/app/shared/auth.gaurd.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__ = __webpack_require__("../../../../../src/app/shared/loader.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -240,9 +230,9 @@ var AppModule = (function () {
 }());
 AppModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["f" /* RouterModule */].forRoot(routes, { useHash: true, })],
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forRoot(routes, { useHash: true, })],
         declarations: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]],
-        providers: [__WEBPACK_IMPORTED_MODULE_4__shared_storage_service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__["a" /* AuthGuard */]],
+        providers: [__WEBPACK_IMPORTED_MODULE_4__shared_storage_service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]],
         exports: []
     })
@@ -285,11 +275,43 @@ var AuthGuard = (function () {
 }());
 AuthGuard = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* Router */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object])
 ], AuthGuard);
 
 var _a;
 //# sourceMappingURL=auth.gaurd.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/loader.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoaderService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/_esm5/BehaviorSubject.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var LoaderService = (function () {
+    function LoaderService() {
+        this.status = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](false);
+    }
+    LoaderService.prototype.display = function (value) {
+        this.status.next(value);
+    };
+    return LoaderService;
+}());
+LoaderService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])()
+], LoaderService);
+
+//# sourceMappingURL=loader.service.js.map
 
 /***/ }),
 
