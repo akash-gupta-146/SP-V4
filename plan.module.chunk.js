@@ -3,7 +3,7 @@ webpackJsonp(["plan.module"],{
 /***/ "../../../../../src/app/planner/plan/plan.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\r\n  <button type=\"button\" class=\"btn btn-default pull-right margin\" (click)=\"addNewPlan()\" style=\"margin-top:24px;margin-bottom:10px;\">\r\n    <i class=\"glyphicon glyphicon-plus\"></i>\r\n  </button>\r\n  <!-- new code for form-->\r\n  <div class=\"card card-form\" id=\"add-plan\" style=\"display:none\">\r\n    <form [formGroup]=\"cycleForm\" (submit)=\"onSubmit()\">\r\n      <div class=\"card-header\">\r\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Reset Form\" (click)=\"reset()\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n        <h4>ADD STRATEGIC PLAN</h4>\r\n      </div>\r\n      <div class=\"card-body\" style=\"margin-left:15px;\">\r\n        <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable\r\n          English. </p>\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-4\">\r\n            <div class=\"form-group\">\r\n              <label for=\"year\">Plan Year:</label>\r\n              <select id=\"year\" name=\"year\" class=\"form-control\" formControlName=\"planYear\">\r\n                <option value=\"2017\">2017</option>\r\n                <option value=\"2018\">2018</option>\r\n                <option value=\"2019\">2019</option>\r\n                <option value=\"2020\">2020</option>\r\n                <option value=\"2021\">2021</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n          <div class=\"col-sm-4\">\r\n            <div class=\"form-group\">\r\n              <label for=\"year\">From Year:</label>\r\n              <select id=\"from-year\" name=\"from-year\" class=\"form-control\" formControlName=\"startYear\">\r\n                <option value=\"2017\">2017</option>\r\n                <option value=\"2018\">2018</option>\r\n                <option value=\"2019\">2019</option>\r\n                <option value=\"2020\">2020</option>\r\n                <option value=\"2021\">2021</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n          <div class=\"col-sm-4\">\r\n            <div class=\"form-group\">\r\n              <label for=\"year\">To Year:</label>\r\n              <select id=\"to-year\" name=\"to-year\" class=\"form-control\" formControlName=\"endYear\">\r\n                <option value=\"2017\">2017</option>\r\n                <option value=\"2018\">2018</option>\r\n                <option value=\"2019\">2019</option>\r\n                <option value=\"2020\">2020</option>\r\n                <option value=\"2021\">2021</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12\">\r\n            <div class=\"form-group\">\r\n              <label for=\"description\">Description:</label>\r\n              <textarea class=\"form-control\" id=\"description\" name=\"description\" formControlName=\"description\"></textarea>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <button type=\"submit\" class=\"btn btn-default btn-sub center-block\" [disabled]=\"cycleForm.invalid\">\r\n          SUBMIT\r\n        </button>\r\n      </div>\r\n    </form>\r\n  </div>\r\n\r\n  <div class=\"card table-card\">\r\n    <table class=\"table table-bordered  table-data\">\r\n      <colgroup>\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n        <col width=\"40%\">\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n      </colgroup>\r\n      <thead>\r\n        <tr>\r\n          <th>Plan Year</th>\r\n          <th>From Year</th>\r\n          <th>End Year</th>\r\n          <th>Description</th>\r\n          <th>Disabled</th>\r\n          <th>Default</th>\r\n          <th>Delete</th>\r\n          <th>Edit</th>\r\n        </tr>\r\n      </thead>\r\n      <tbody>\r\n        <tr *ngFor=\"let c of cycles;let y = index;\">\r\n          <td>{{c.planYear}}</td>\r\n          <td>{{c.startYear}}</td>\r\n          <td>{{c.endYear}}</td>\r\n          <td>{{c.description}}</td>\r\n          <td>\r\n            <input type=\"checkbox\" [checked]=\"c.disable\" (change)=\"changeStatus($event,c)\">\r\n            <span style=\"color:red\" *ngIf=\"c.disable\">*disabled</span>\r\n          </td>\r\n          <td>\r\n            <input type=\"checkbox\" [checked]=\"c.defaultCycle\" [disabled]=\"c.defaultCycle\" [disabled]=\"c.disable\" (change)=\"defaultCycle($event,c.cycleId)\">\r\n            <span style=\"color:green\" *ngIf=\"c.defaultCycle\">*default</span>\r\n          </td>\r\n          <td>\r\n            <button class=\"btn-link btn-del\" (click)=\"deleteCycle(c.cycleId)\" type=\"button\" [disabled]=\"c.disable\">\r\n              <i class=\"glyphicon glyphicon-trash\"></i>\r\n            </button>\r\n          </td>\r\n          <td>\r\n            <button class=\"btn-link btn-del\" type=\"button\" (click)=\"editCycle(c)\" [disabled]=\"c.disable\">\r\n              <i class=\"glyphicon glyphicon-edit\"></i>\r\n            </button>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>"
+module.exports = "<div class=\"container-fluid\">\r\n  <button type=\"button\" class=\"btn btn-default pull-right margin\" (click)=\"addNewPlan()\" style=\"margin-top:24px;margin-bottom:10px;\">\r\n    <i class=\"glyphicon glyphicon-plus\"></i>\r\n  </button>\r\n  <!-- new code for form-->\r\n  <div class=\"card card-form\" id=\"add-plan\" style=\"display:none\">\r\n    <form [formGroup]=\"cycleForm\" (submit)=\"onSubmit()\">\r\n      <div class=\"card-header\">\r\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" data-toggle=\"tooltip\" data-placement=\"auto\" title=\"Reset Form\" (click)=\"reset()\">\r\n          <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n        <h4>ADD STRATEGIC PLAN</h4>\r\n      </div>\r\n      <div class=\"card-body\" style=\"margin-left:15px;\">\r\n        <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable\r\n          English. </p>\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-4\">\r\n            <div class=\"form-group\">\r\n              <label for=\"year\">Plan Year:</label>\r\n              <select id=\"year\" name=\"year\" class=\"form-control\" formControlName=\"planYear\">\r\n                <option value=\"2017\">2017</option>\r\n                <option value=\"2018\">2018</option>\r\n                <option value=\"2019\">2019</option>\r\n                <option value=\"2020\">2020</option>\r\n                <option value=\"2021\">2021</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n          <div class=\"col-sm-4\">\r\n            <div class=\"form-group\">\r\n              <label for=\"year\">From Year:</label>\r\n              <select id=\"from-year\" name=\"from-year\" class=\"form-control\" formControlName=\"startYear\">\r\n                <option value=\"2017\">2017</option>\r\n                <option value=\"2018\">2018</option>\r\n                <option value=\"2019\">2019</option>\r\n                <option value=\"2020\">2020</option>\r\n                <option value=\"2021\">2021</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n          <div class=\"col-sm-4\">\r\n            <div class=\"form-group\">\r\n              <label for=\"year\">To Year:</label>\r\n              <select id=\"to-year\" name=\"to-year\" class=\"form-control\" formControlName=\"endYear\">\r\n                <option value=\"2017\">2017</option>\r\n                <option value=\"2018\">2018</option>\r\n                <option value=\"2019\">2019</option>\r\n                <option value=\"2020\">2020</option>\r\n                <option value=\"2021\">2021</option>\r\n              </select>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-12\">\r\n            <div class=\"form-group\">\r\n              <label for=\"description\">Description:</label>\r\n              <textarea class=\"form-control\" id=\"description\" name=\"description\" formControlName=\"description\"></textarea>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-6\"></div>\r\n          <div class=\"col-sm-6\">\r\n            <button type=\"submit\" class=\"btn btn-default btn-sub pull-right\" [disabled]=\"cycleForm.invalid\">\r\n              SUBMIT\r\n            </button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n\r\n  <div class=\"card table-card\">\r\n    <table class=\"table table-bordered  table-data\">\r\n      <colgroup>\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n        <col width=\"40%\">\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n        <col width=\"10%\">\r\n      </colgroup>\r\n      <thead class=\"center\">\r\n        <tr>\r\n          <th>Plan Year</th>\r\n          <th>From Year</th>\r\n          <th>End Year</th>\r\n          <th>Description</th>\r\n          <th>Enable</th>\r\n          <th>Default</th>\r\n          <th>Delete</th>\r\n          <th>Edit</th>\r\n        </tr>\r\n      </thead>\r\n      <tbody>\r\n        <tr *ngFor=\"let c of cycles;let y = index;\">\r\n          <td>{{c.planYear}}</td>\r\n          <td>{{c.startYear}}</td>\r\n          <td>{{c.endYear}}</td>\r\n          <td>{{c.description}}</td>\r\n          <td class=\"text-center\">\r\n            <label class=\"switch\">\r\n              <input type=\"checkbox\" [checked]=\"c.disable\" (change)=\"changeStatus($event,c)\">\r\n              <span class=\"slider round\"></span>\r\n            </label>\r\n          </td>\r\n          <td class=\"text-center\">\r\n            <label style=\"cursor:pointer;\">\r\n              <input type=\"checkbox\" [checked]=\"c.defaultCycle\" [disabled]=\"c.defaultCycle\" [disabled]=\"c.disable\" (change)=\"defaultCycle($event,c.cycleId)\"\r\n                style=\"display:none\">\r\n              <span class=\"icon-mark\" *ngIf=\"c.defaultCycle\">\r\n                <i class=\"glyphicon glyphicon-exclamation-sign\"></i>\r\n              </span>\r\n              <span class=\"icon-mark2\" *ngIf=\"!c.defaultCycle\">\r\n                <i class=\"glyphicon glyphicon-ok-sign\"></i>\r\n              </span>\r\n            </label>\r\n            <!-- <input type=\"checkbox\" [checked]=\"c.defaultCycle\" [disabled]=\"c.defaultCycle\" [disabled]=\"c.disable\" (change)=\"defaultCycle($event,c.cycleId)\">\r\n            <span style=\"color:green\" *ngIf=\"c.defaultCycle\">*default</span> -->\r\n          </td>\r\n          <td>\r\n            <button class=\"btn-link btn-del\" (click)=\"deleteCycle(c.cycleId)\" type=\"button\" [disabled]=\"c.disable\">\r\n              <i class=\"glyphicon glyphicon-trash\"></i>\r\n            </button>\r\n          </td>\r\n          <td>\r\n            <button class=\"btn-link btn-del\" type=\"button\" (click)=\"editCycle(c)\" [disabled]=\"c.disable\">\r\n              <i class=\"glyphicon glyphicon-edit\"></i>\r\n            </button>\r\n          </td>\r\n        </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>"
 
 /***/ }),
 
@@ -144,28 +144,25 @@ var PlanComponent = (function () {
         }
     };
     PlanComponent.prototype.changeStatus = function (event, c) {
-        if (event.srcElement.checked) {
-            var forDiabled = confirm("Are you sure you want to disable it");
-            if (forDiabled) {
-                this.orgService.disableCycle(c.cycleId).subscribe(function (response) {
-                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You disabled the plan.');
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["confirm"]("Are you sure you want to do this?", function () {
+            if (event.srcElement.checked)
+                _this.orgService.disableCycle(c.cycleId).subscribe(function (response) {
+                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You disabled the cycle.');
+                    _this.getCycles();
+                }, function (error) {
+                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["error"]("Something went wrong");
                 });
-            }
-            else {
-                event.srcElement.checked = !event.srcElement.checked;
-            }
-        }
-        else {
-            var forEnabled = confirm("Are you sure you want to enable it");
-            if (forEnabled) {
-                this.orgService.enableCycle(c.cycleId).subscribe(function (response) {
-                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You enabled the plan.');
+            else
+                _this.orgService.enableCycle(c.cycleId).subscribe(function (response) {
+                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["success"]('You enabled the cycle.');
+                    _this.getCycles();
+                }, function (error) {
+                    __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["error"]("Something went wrong");
                 });
-            }
-            else {
-                event.srcElement.checked = !event.srcElement.checked;
-            }
-        }
+        }, function () {
+            event.srcElement.checked = !event.srcElement.checked;
+        }).setHeader('Confirmation');
     };
     PlanComponent.prototype.deleteCycle = function (cycleId) {
         var _this = this;
@@ -175,7 +172,7 @@ var PlanComponent = (function () {
             }, function (error) {
                 __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["alert"]("You Can not Delete this Cycle??");
             });
-        });
+        }).setHeader('Confirmation');
     };
     PlanComponent.prototype.defaultCycle = function (event, cycleId) {
         var _this = this;
@@ -189,8 +186,10 @@ var PlanComponent = (function () {
             });
         }, function () {
             event.srcElement.checked = !event.srcElement.checked;
-            __WEBPACK_IMPORTED_MODULE_4_alertifyjs__["error"]("Action was not performed");
         });
+    };
+    PlanComponent.prototype.click = function (event) {
+        console.log(event);
     };
     PlanComponent.prototype.reset = function () {
         $("#add-plan").hide();
