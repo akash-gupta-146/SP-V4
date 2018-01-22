@@ -120,7 +120,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "\r\n.icon-size{\r\n  font-size: 87px;\r\n}\r\n\r\n.table{\r\n  margin-bottom: 0px;\r\n }\r\n .table .table {\r\n  background-color: inherit;\r\n }\r\n\r\n .panel-heading .accordion-toggle:after {\r\n  /* symbol for \"opening\" panels */\r\n  font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */\r\n  content: \"\\E114\";    /* adjust as needed, taken from bootstrap.css */\r\n  float: right;        /* adjust as needed */\r\n  color: white;         /* adjust as needed */\r\n}\r\n.panel-heading .accordion-toggle.collapsed:after {\r\n  /* symbol for \"collapsed\" panels */\r\n  content: \"\\E080\";    /* adjust as needed, taken from bootstrap.css */\r\n}", ""]);
+exports.push([module.i, "\r\n.icon-size{\r\n  font-size: 87px;\r\n}\r\n\r\n.table{\r\n  margin-bottom: 0px;\r\n }\r\n .table .table {\r\n  background-color: inherit;\r\n }\r\n\r\n .panel-heading .accordion-toggle:after {\r\n  /* symbol for \"opening\" panels */\r\n  font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */\r\n  content: \"\\E114\";    /* adjust as needed, taken from bootstrap.css */\r\n  float: right;        /* adjust as needed */\r\n  color: white;         /* adjust as needed */\r\n}\r\n.panel-heading .accordion-toggle.collapsed:after {\r\n  /* symbol for \"collapsed\" panels */\r\n  content: \"\\E080\";    /* adjust as needed, taken from bootstrap.css */\r\n}\r\n.dropdown-menu{\r\n  border: 2px solid var(--color-primary);\r\n}", ""]);
 
 // exports
 
