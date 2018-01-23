@@ -372,7 +372,7 @@ var MeasureComponent = (function (_super) {
         var departmentsArrayForEdit = [];
         this.selectedDepartments.forEach(function (element) {
             departmentsFormArray.push(_this.formBuilder.group({
-                baseline: [element.baseline],
+                baseline: [0],
                 departmentId: [element.departmentId],
                 departmentName: [element.department],
                 opiAnnualTargets: _this.formBuilder.array(_this.setAnnualTarget(element.opiAnnualTargets))
@@ -397,7 +397,7 @@ var MeasureComponent = (function (_super) {
         return this.formBuilder.group({
             "year": [year, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]],
             "levels": this.formBuilder.array(this.setLevels(this.selectedMeasure.frequencyId)),
-            "estimatedCost": ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]]
+            "estimatedCost": [0, [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required]]
         });
     };
     MeasureComponent.prototype.inItTargetWithLevels = function (annualTarget) {

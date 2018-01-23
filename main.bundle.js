@@ -104,7 +104,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "/* navigation loader*/\r\n\r\n.loading-outer-overlay{\r\n height: 100vh;\r\n width: 100vw;\r\n background: #08080887;\r\n display: list-item;\r\n position: fixed;\r\n z-index: 1;\r\n}\r\n.loading-overlay{\r\n position: absolute;\r\n top: 50% !important;\r\n left: 50% !important;\r\n -webkit-transform: translate(-50%,-50%);\r\n transform: translate(-50%,-50%);\r\n}\r\n.loader {\r\n border: 16px solid #8e8576;\r\n border-radius: 50%;\r\n border-top: 16px solid blue;\r\n border-right: 16px solid green;\r\n border-bottom: 16px solid red;\r\n width: 120px;\r\n height: 120px;\r\n -webkit-animation: spin 2s linear infinite;\r\n animation: spin 2s linear infinite;\r\n}\r\n\r\n@-webkit-keyframes spin {\r\n 0% { -webkit-transform: rotate(0deg); }\r\n 100% { -webkit-transform: rotate(360deg); }\r\n}\r\n\r\n@keyframes spin {\r\n 0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n 100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n\r\n.loading-overlay-sm{\r\n position: absolute;\r\n top: 80% !important;\r\n left: 50% !important;\r\n -webkit-transform: translate(-50%,-50%);\r\n transform: translate(-50%,-50%);\r\n}\r\n\r\ndiv[loader-box]{\r\n\t/* border:1px solid lightgray; */\r\n    padding:2px;\r\n    display: -webkit-inline-box;\r\n}\r\ndiv[loader-box] h1{ \r\n margin: 2px;\r\n color: white;\r\n}\r\n.loader-small {\r\n margin-top: 5px;\r\n border: 10px solid white;\r\n border-radius: 50%;\r\n border-top: 10px solid #3498db;\r\n width: 35px;\r\n height: 35px;\r\n -webkit-animation: spin 2s linear infinite; /* Safari */\r\n animation: spin 2s linear infinite;\r\n}\r\n\r\n/* Safari */\r\n@-webkit-keyframes spin {\r\n 0% { -webkit-transform: rotate(0deg); }\r\n 100% { -webkit-transform: rotate(360deg); }\r\n}\r\n\r\n@keyframes spin {\r\n 0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n 100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}", ""]);
 
 // exports
 
@@ -149,13 +149,19 @@ var AppComponent = (function () {
         this.loaderService.status.asObservable().subscribe(function (val) {
             _this.showLoader = val;
         });
+        this.loaderService.transactionLoader.asObservable().subscribe(function (val) {
+            _this.transactionLoader = val;
+        });
+        this.loaderService.loadingStatus.asObservable().subscribe(function (val) {
+            _this.loadingStatus = val;
+        });
     };
     return AppComponent;
 }());
 AppComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'my-app',
-        template: "\n  <router-outlet>\n  <div class=\"loading-outer-overlay\" *ngIf=\"showLoader\">\n    <div class=\"loading-overlay\">\n      <div class=\"loader\"></div>\n    </div>\n  </div>\n  </router-outlet>\n  ",
+        template: "\n  <router-outlet>\n  <div class=\"loading-outer-overlay\" *ngIf=\"transactionLoader\">\n    <div class=\"loading-overlay-sm\">\n      <div loader-box>\n        <div class=\"loader-small\"></div>\n        <h1>{{loadingStatus}}</h1>\n      </div>\n    </div>\n  </div>\n  <div class=\"loading-outer-overlay\" *ngIf=\"showLoader\">\n    <div class=\"loading-overlay\">\n      <div class=\"loader\"></div>\n    </div>\n  </div>\n  </router-outlet>\n  ",
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */]) === "function" && _b || Object])
@@ -301,9 +307,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var LoaderService = (function () {
     function LoaderService() {
         this.status = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](false);
+        this.transactionLoader = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](false);
+        this.loadingStatus = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */]("");
     }
     LoaderService.prototype.display = function (value) {
         this.status.next(value);
+    };
+    LoaderService.prototype.setLoadingStatus = function (text) {
+        this.loadingStatus.next(text);
+    };
+    LoaderService.prototype.setTransactionLoader = function (value) {
+        this.transactionLoader.next(value);
     };
     return LoaderService;
 }());
