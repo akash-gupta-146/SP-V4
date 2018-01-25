@@ -166,17 +166,24 @@ export class HomeComponent extends Filters implements AfterViewInit {
   }
 
   deleteEvidence(evidences: any[], evidence: any, index: any) {
-    if (confirm("Are you sure you want to delete this evidence"))
+    alertify.confirm("Are you sure you want to delete this evidence",()=>{
       this.utServ.deleteEvidence(evidence.id).subscribe((response: any) => {
         evidences.splice(index, 1);
+        alertify.success("Success");
+      },(error:any)=>{
+        alertify.error("Something went wrong");
       })
+    }).setHeader("Atert Message");      
   }
 
   deleteInternshipEvidence(evidences: any[], evidence: any, index: any) {
     if (confirm("Are you sure you want to delete this evidence"))
       this.utServ.deleteInternshipEvidence(evidence.id).subscribe((response: any) => {
         evidences.splice(index, 1);
-      })
+        alertify.success("Success");
+      },(error:any)=>{
+        alertify.error("Error");
+      });
   }
 
   getInternshipFile(lev:any,event){
@@ -251,8 +258,21 @@ export class HomeComponent extends Filters implements AfterViewInit {
   }
 
   collapseOff(element:any){
+    if($(element).hasClass('in')){
+      return;
+    }
     $(element).addClass('in');
     $(".collapse-off").removeClass('in');
+  }
+
+  allAnnualTargets:any[];
+
+  getAnnualTargetsByOpiDepartment(opiDepartmentId:any,department:any){
+    this.utServ.getAnnualTargets(opiDepartmentId).subscribe((response:any)=>{
+      console.log(response);
+      // this.allAnnualTargets = department.opiAnnualTargets;
+      // department.opiAnnualTargets = response;
+    })
   }
 
 }

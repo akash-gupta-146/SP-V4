@@ -24,9 +24,9 @@
               <div class="col-lg-8">
                 <p class="text-left">
                   <strong>{{userDetails.firstName}} {{userDetails.lastName}}</strong><br>
-                  <b>{{userDetails.roleInfo[0].role}}</b>
                 </p>
                 <p class="text-left small">{{userDetails.email}}</p>
+                <b>Department : </b><p class="text-left small">{{userDetails.roleInfo[0].department}}</p>
                 <!-- <p class="text-left">
                   <a href="#" class="btn btn-primary btn-block btn-sm">Profile</a>
                 </p> -->
@@ -122,9 +122,10 @@
             </h5>
           </div>
         </div>
-        <fieldset class="the-fieldset">
+        <fieldset class="the-fieldset" style="position: relative;">
             <legend class="the-legend">Edit-Section</legend>
-            <table id="accordion" class="table table-bordered table-edit">
+            <a href="" class="btn btn-default" style="position: absolute;top: 0;right: 10px;">View All Quarters</a>            
+            <table id="accordion" class="table table-bordered table-edit text-center">
                 <thead>
                   <tr>
                     <th>Year</th>
@@ -135,7 +136,8 @@
                     <th>Current Target Level</th>
                     <th>End Date</th>
                     <th>Status</th>
-                    <th></th>
+                    <th>Action</th>
+                    <th *ngIf="!selectedMeasure.evidanceFormId">Evidence</th>
                   </tr>
                 </thead>
                 <tbody *ngFor="let tdl of selectedMeasure.departmentInfo[0].opiAnnualTargets;let at=index;">
@@ -154,8 +156,20 @@
                       <td>
                         <button class="btn-link" data-toggle="modal" data-target="#feedbackModal" (click)="selectedLevel = lev;" [disabled]="lev.status!='locked'"> Approve/Reject</button>
                       </td>
+                      <td *ngIf="!selectedMeasure.evidanceFormId">
+                        <div class="dropdown" *ngIf="lev.evidance&&lev.evidance.length">
+                          <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">evidence files
+                            <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 0;left:unset;">
+                            <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                              <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">evidance {{e+1}}</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
                     </tr>
-                    <tr *ngIf="lev.evidance&&lev.evidance.length">
+                    <!-- <tr *ngIf="lev.evidance&&lev.evidance.length">
                       <td colspan="7">
                           <div class="heading-details">Evidences</div>
                         <br>
@@ -168,7 +182,7 @@
                           </div>
                         </div>
                       </td>
-                    </tr>
+                    </tr> -->
                     <tr *ngIf="lev.internshipGraph&&lev.internshipGraph.length">
                       <td></td>
                       <td colspan="6">
@@ -217,7 +231,6 @@
                                 <ul style="list-style:none;padding:0;">
                                   <li *ngIf="!detail.evidance.length">None</li>
                                   <li style="float:left;" *ngFor="let ev of detail.evidance;let e = index;">
-                                    <!-- {{e+1}}) -->
                                     <a [attr.href]="ev.url"> evidance {{e+1}}</a> ,
                                   </li>
                                 </ul>
@@ -238,7 +251,7 @@
 
 <!-- NEW EDIT SECTION CODESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS enddddddddddddddddddddddddddddd -->
 <div class="container-fluid">
-  <div class="panel" *ngIf="selectedOpi" id="edit-block" style="margin-top:50px;">
+  <!-- <div class="panel" *ngIf="selectedOpi" id="edit-block" style="margin-top:50px;">
     <div class="panel-heading">
       <h4 class="panel-title">
         <a data-toggle="collapse" href="#edit-section">Edit Section</a>
@@ -275,7 +288,7 @@
           </div>
         </div>
 
-        <table id="accordion" class="table table-bordered">
+        <table id="accordion" class="table table-bordered text-center">
           <thead>
             <tr>
               <th>Year</th>
@@ -365,7 +378,6 @@
                           <ul style="list-style:none;padding:0;">
                             <li *ngIf="!detail.evidance.length">None</li>
                             <li style="float:left;" *ngFor="let ev of detail.evidance;let e = index;">
-                              <!-- {{e+1}}) -->
                               <a [attr.href]="ev.url"> evidance {{e+1}}</a> ,
                             </li>
                           </ul>
@@ -380,19 +392,19 @@
         </table>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="card table-card" style="margin-top:50px;">
-    <table class="table table-bordered table1">
-      <colgroup>
-        <col style="width:20%">
-        <col style="width:20%">
-        <col style="width:20%">
-        <col style="width:20%">
-        <col style="width:10%">
-        <col style="width:6.5%">
-        <col style="width:3.5%">
-      </colgroup>
+    <table class="table table-bordered table1 text-center">
+        <colgroup>
+          <col style="width:20%">
+          <col style="width:20%">
+          <col style="width:20%">
+          <col style="width:16%">
+          <col style="width:8.8%">
+          <col style="width:9.9%">
+          <col style="width:5.19%">
+        </colgroup>
       <thead class="header-background" *ngIf="goals.length">
         <tr>
           <th>
@@ -434,7 +446,7 @@
           </th>
           <th>Frequency</th>
           <th>Status</th>
-          <th></th>
+          <th>View</th>
         </tr>
       </thead>
       <tbody>
@@ -452,23 +464,28 @@
                   <table class="table table-bordered" style="height: inherit;">
                     <colgroup>
                       <col style="width:33.33%">
-                      <col style="width:66.67">
+                      <col style="width:66.67%">
                     </colgroup>
                     <tr *ngFor="let activit of initiate.activities;let k=index;">
                       <td [style.border-top]="k?'1px solid #ddd':'none'">{{activit.activity}}</td>
                       <td colspan="4" style="padding:0px;" #element2 [style.height]="get(element2) + ' !important'">
                         <table class="table table-bordered" style="height: inherit;">
                           <colgroup>
-                            <col style="width:50.5%">
+                            <col style="width:40%">
+                            <col style="width:22%">
                             <col style="width:25%">
-                            <col>
-                            <col>
+                            <col style="width:13%">
                           </colgroup>
                           <tr *ngFor="let msr of activit.opis;let l=index">
                             <td [style.border-top]="l?'1px solid #ddd':'none'">{{msr.opi}}</td>
                             <td [style.border-top]="l?'1px solid #ddd':'none'">{{msr.frequency}}</td>
                             <td style="text-transform: capitalize;">
-                              <p *ngIf="msr.quarterStatus">{{msr.quarterStatus.status}}</p>
+                                <p *ngIf="msr.quarterStatus">
+                                  <a data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;" style="text-transform:uppercase">{{msr.quarterStatus.status}}
+                                    <br>
+                                    <span style="text-transform: uppercase">({{msr.quarterStatus.role}})</span>
+                                  </a>
+                                </p>
                             </td>
                             <td [style.border-top]="l?'1px solid #ddd':'none'">
                               <a scrollTo href="#top" (click)="selectedOpi=goal;selectedInitiative=initiate;selectedActivity=activit;selectedMeasure=msr;showOpi(goal,msr)">view</a>
@@ -526,3 +543,32 @@
 
   </div>
 </div>
+
+
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg bar">
+      <!-- Modal content-->
+      <div class="modal-content" *ngIf="selectedMeasure">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Current Status of KPI</h4>
+        </div>
+        <div class="modal-body">
+          <div customBox>
+            <div line [class]="selectedMeasure.quarterStatus[role]" *ngFor="let role of roles;">
+              <h4>{{role}}</h4>
+            </div>
+          </div>
+          <div id="statu-legend">
+            <ul>
+              <li class="white">None</li>
+              <li class="cyan">Locked</li>
+              <li class="green">Approved</li>
+              <li class="red">Rejected</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

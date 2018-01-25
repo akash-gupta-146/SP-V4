@@ -18,7 +18,7 @@ export class HodService{
  }
 
  getOpiByDeptId(deptId){
-  return this.http.get(this.baseUrl + "/department/"+deptId+"/result")
+  return this.http.get(this.baseUrl + "/department/"+deptId+"/result?currentYear=false&currentQuarter=false")
     .map(this.extractData)
     .catch(this.handleError);
  }

@@ -126,6 +126,12 @@ export class CoordinatorService{
     .map(this.extractData)
     .catch(this.handleError);
   }
+
+  getAnnualTargets(opiDepartmentId:any){
+    return this.http.get(this.baseUrl + "/opiDepartment/"+opiDepartmentId+"/annualTargets").map(this.extractData)
+    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     if (res.status === 204) { return res; }
     let body = res.json();

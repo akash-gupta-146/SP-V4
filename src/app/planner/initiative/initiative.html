@@ -66,7 +66,7 @@
   <!-- for table -->
   <div class="card table-card">
     <div class="panel-body">
-      <table class="table table-bordered table-data">
+      <table class="table table-bordered table-data text-center">
         <colgroup>
           <col style="width:30%">
           <col style="width:40%">
@@ -96,16 +96,16 @@
                 </div>
               </form>
             </th>
-            <th>Disable</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th style="text-align:center;vertical-align:middle;">Disable</th>
+            <th style="text-align:center;vertical-align:middle;">Edit</th>
+            <th style="text-align:center;vertical-align:middle;">Delete</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let goal of goals;let i = index;">
             <td>{{goal.goal}}</td>
             <td colspan="4" style="padding:0px;border:none;" #element [style.height]="get(element)">
-              <table class="table table-bordered" style="height: inherit;">
+              <table class="table table-bordered text-center" style="height: inherit;">
                 <colgroup>
                   <col style="width:40%">
                   <col style="width:10%">

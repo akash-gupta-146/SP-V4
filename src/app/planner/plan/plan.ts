@@ -38,6 +38,7 @@ export class PlanComponent {
   addNewPlan() {
     this.cycleForm = this.initForm();
     $("#add-plan").show();
+    $('#add-btn').hide();
     $("#collapse1").collapse('show');
   }
   getCycles() {
@@ -55,6 +56,7 @@ export class PlanComponent {
 
   editCycle(c: any) {
     $("#add-plan").show();
+    $('#add-btn').hide();    
     $("#collapse1").collapse('show');
     this.isUpdating = true;
     this.selectedCycle = c;
@@ -66,6 +68,7 @@ export class PlanComponent {
       this.orgService.saveCycle(this.cycleForm.value).subscribe((response: any) => {
         alertify.success('You added New Strategic plan.');
         $("#add-plan").hide();
+        $('#add-btn').show();        
         this.isUpdating = false;
         this.getCycles();
         this.cycleForm = this.initForm();
@@ -77,6 +80,7 @@ export class PlanComponent {
       this.orgService.updateCycle(this.selectedCycle.cycleId, data).subscribe((response: any) => {
         alertify.success('You updated Strategic plan.');
         $("#add-plan").hide();
+        $('#add-btn').show(); 
         this.isUpdating = false;
         this.getCycles();
         this.cycleForm = this.initForm();
@@ -117,17 +121,22 @@ export class PlanComponent {
   }
 
   defaultCycle(event: any, cycleId: any) {
-    alertify.confirm("Do you Really want to make it Default Cycle??", () => {
-      this.orgService.defaultCycle(cycleId).subscribe((response: any) => {
-        this.getCycles();
-        alertify.success("Cycle has been made default..")
-      }, (error: any) => {
+    if(!event.srcElement.checked){
+      alertify.alert("This cycle is alredy defualt").setHeader("Alert Message")
+    }else{
+      alertify.confirm("Do you Really want to make it Default Cycle??", () => {
+        this.orgService.defaultCycle(cycleId).subscribe((response: any) => {
+          this.getCycles();
+          alertify.success("Cycle has been made default..")
+        }, (error: any) => {
+          event.srcElement.checked = !event.srcElement.checked;
+          alertify.error("Something went wrong..")
+        })
+      }, () => {
         event.srcElement.checked = !event.srcElement.checked;
-        alertify.error("Something went wrong..")
       })
-    }, () => {
-      event.srcElement.checked = !event.srcElement.checked;
-    })
+    }
+    
   }
 
   click(event:any){
@@ -138,5 +147,6 @@ export class PlanComponent {
     $("#add-plan").hide();
     this.isUpdating = false;
     this.cycleForm.reset();
+    $('#add-btn').show();
   }
 }

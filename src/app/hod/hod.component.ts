@@ -9,7 +9,7 @@ declare let $: any;
 @Component({
   selector: 'hod',
   templateUrl: 'hod.component.html',
-  styleUrls: ['hod.component.css']
+  styleUrls: ['hod.component.css','./../coordinator/home/home.component.css']
 })
 export class HodComponent extends Filters {
 
@@ -23,6 +23,7 @@ export class HodComponent extends Filters {
   userDetails: any = {};
   selectedLevel:any;
   selectedOpi:any;
+  roles: any[] = ["coordinator", "hod", "dvc", "vc", "chanceller"];
 
   getOpi(): any {
     this.utServ.getOpiByDeptId(this.storage.getData('user_roleInfo')[0].departmentId).subscribe((response: any) => {
@@ -70,7 +71,7 @@ export class HodComponent extends Filters {
   public showOpi(goal: any, measure: any) {
     $('#edit-block').show();
     $('#edit-section').collapse('show');
-    console.log(goal);
+    console.log(measure);
   }
 
   hideEditBlock(){

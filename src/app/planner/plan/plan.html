@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <button type="button" class="btn btn-default pull-right margin" (click)="addNewPlan()" style="margin-top:24px;margin-bottom:10px;">
+  <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewPlan()" style="margin-top:24px;margin-bottom:10px;">
     <i class="glyphicon glyphicon-plus"></i>
   </button>
   <!-- new code for form-->
@@ -73,7 +73,7 @@
   </div>
 
   <div class="card table-card">
-    <table class="table table-bordered  table-data">
+    <table class="table table-bordered  table-data text-center">
       <colgroup>
         <col width="10%">
         <col width="10%">
@@ -109,13 +109,12 @@
           </td>
           <td class="text-center">
             <label style="cursor:pointer;">
-              <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)"
-                style="display:none">
-              <span class="icon-mark" *ngIf="c.defaultCycle">
-                <i class="glyphicon glyphicon-exclamation-sign"></i>
-              </span>
-              <span class="icon-mark2" *ngIf="!c.defaultCycle">
+              <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)" style="display:none">
+              <span class="icon-mark2" *ngIf="c.defaultCycle">
                 <i class="glyphicon glyphicon-ok-sign"></i>
+              </span>
+              <span class="icon-mark" *ngIf="!c.defaultCycle">
+                  <i class="glyphicon glyphicon-exclamation-sign"></i>
               </span>
             </label>
             <!-- <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)">
