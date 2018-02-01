@@ -164,7 +164,7 @@ AppComponent = __decorate([
         template: "\n  <router-outlet>\n  <div class=\"loading-outer-overlay\" *ngIf=\"transactionLoader\">\n    <div class=\"loading-overlay-sm\">\n      <div loader-box>\n        <div class=\"loader-small\"></div>\n        <h1>{{loadingStatus}}</h1>\n      </div>\n    </div>\n  </div>\n  <div class=\"loading-outer-overlay\" *ngIf=\"showLoader\">\n    <div class=\"loading-overlay\">\n      <div class=\"loader\"></div>\n    </div>\n  </div>\n  </router-outlet>\n  ",
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_loader_service__["a" /* LoaderService */]) === "function" && _b || Object])
 ], AppComponent);
 
 var _a, _b;
@@ -227,7 +227,20 @@ var routes = [
         path: 'hod',
         loadChildren: 'app/hod/hod.module#HodModule',
         canActivate: [__WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__["a" /* AuthGuard */]]
-    }
+    }, {
+        path: 'deputyViceChancellor',
+        loadChildren: 'app/hod/hod.module#HodModule',
+        canActivate: [__WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__["a" /* AuthGuard */]]
+    }, {
+        path: 'viceChancellor',
+        loadChildren: 'app/hod/hod.module#HodModule',
+        canActivate: [__WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__["a" /* AuthGuard */]]
+    },
+    {
+        path: 'chancellor',
+        loadChildren: 'app/hod/hod.module#HodModule',
+        canActivate: [__WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__["a" /* AuthGuard */]]
+    },
 ];
 var AppModule = (function () {
     function AppModule() {
@@ -236,7 +249,7 @@ var AppModule = (function () {
 }());
 AppModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forRoot(routes, { useHash: true, })],
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forRoot(routes, { useHash: true, })],
         declarations: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]],
         providers: [__WEBPACK_IMPORTED_MODULE_4__shared_storage_service__["a" /* StorageService */], __WEBPACK_IMPORTED_MODULE_5__shared_auth_gaurd__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_6__shared_loader_service__["a" /* LoaderService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]],
@@ -281,7 +294,7 @@ var AuthGuard = (function () {
 }());
 AuthGuard = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object])
 ], AuthGuard);
 
 var _a;

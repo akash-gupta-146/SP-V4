@@ -124,7 +124,7 @@ var DepartmentModule = (function () {
 }());
 DepartmentModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forChild([
+        imports: [__WEBPACK_IMPORTED_MODULE_2__shared_shared_module__["a" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* RouterModule */].forChild([
                 {
                     path: '',
                     component: __WEBPACK_IMPORTED_MODULE_3__department_component__["a" /* DeparmtmentComponent */]
