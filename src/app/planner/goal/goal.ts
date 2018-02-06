@@ -26,12 +26,12 @@ export class GoalComponent extends Filters implements AfterViewInit {
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder,
     public commonService: StorageService,
-    private loaderService:LoaderService) {
+    private loaderService: LoaderService) {
     super();
     this.getCycles();
     this.goalForm = this.initObjectiveForm();
   }
-  
+
 
   ngAfterViewInit() {
 
@@ -63,9 +63,9 @@ export class GoalComponent extends Filters implements AfterViewInit {
         this.goals = response;
         this.goalsCopy = response;
       }
-      this.loaderService.display(false);      
-    },(error:any)=>{
-      this.loaderService.display(false);            
+      this.loaderService.display(false);
+    }, (error: any) => {
+      this.loaderService.display(false);
     })
   }
 
@@ -82,7 +82,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
     if (!this.isUpdating) {
       this.orgService.addObjective(this.goalForm.value).subscribe((response: any) => {
         // $('#objectModal').modal('show');
-        alertify.notify('You have successfully added a new Goal.', 'success', 5, function(){  console.log('dismissed'); });
+        alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
         $("#add-plan").hide();
         this.goalForm.controls["goal"].reset();
         this.getGoals();
@@ -92,32 +92,33 @@ export class GoalComponent extends Filters implements AfterViewInit {
     }
 
     if (this.isUpdating) {
-      alertify.confirm("Are you sure you want to Update this Goal?",()=>{
+      alertify.confirm("Are you sure you want to Update this Goal?", () => {
         this.orgService.updateObjective(this.selectedObjective.goalId, this.goalForm.value).subscribe((res: any) => {
           // $('#objectModal').modal('show');
-          alertify.notify('You have successfully added a new Goal.', 'success', 5, function(){  console.log('dismissed'); });
-          this.goalForm =  this.initObjectiveForm()
+          alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
+          this.goalForm = this.initObjectiveForm()
           this.getGoals();
           this.isUpdating = false;
-        },(error:any)=>{      
+        }, (error: any) => {
           alertify.alert("Something went wrong..");
         });
-      });        
+      });
     }
 
   }
   deleteGoal(goalId: any, goals: any[], index: any) {
-    alertify.confirm("Are you sure you want to delete this Goal?",()=>{
+    alertify.confirm("Are you sure you want to delete this Goal?", () => {
       this.orgService.deleteObjective(goalId).subscribe((res: any) => {
         goals.splice(index, 1);
-      },(error:any)=>{      
+      }, (error: any) => {
         alertify.alert("Something went wrong..");
       });
     })
-      
+
   }
   selectedObjective: any;
-  updateGoal(goal: any,highlight:any) {
+  updateGoal(goal: any, highlight: any) {
+    $('#add-btn').hide();
     $(".to-be-highlighted").removeClass("highlight");
     $(highlight).addClass("highlight");
     this.selectedObjective = goal;
@@ -128,44 +129,46 @@ export class GoalComponent extends Filters implements AfterViewInit {
   }
 
   addNewGoal() {
-    $("#add-plan").show();    
+    $("#add-plan").show();
+    $('#add-btn').hide();
     this.isUpdating = false;
     $("#collapse1").collapse('show');
-    this.goalForm =  this.initObjectiveForm()
+    this.goalForm = this.initObjectiveForm()
 
   }
 
-  disable(event:any,goalId:any){
-    if(event.srcElement.checked)
-      alertify.confirm("Do you Really want to disable this Goal??",()=>{
-        this.orgService.disableGoal(goalId).subscribe((response:any)=>{
+  disable(event: any, goalId: any) {
+    if (event.srcElement.checked)
+      alertify.confirm("Do you Really want to disable this Goal??", () => {
+        this.orgService.disableGoal(goalId).subscribe((response: any) => {
           alertify.success("You disabled the Goal..");
           this.getGoals();
-        },()=>{
+        }, () => {
           event.srcElement.checked = !event.srcElement.checked;
           alertify.error("Something went wrong..")
         })
-      },()=>{
+      }, () => {
         event.srcElement.checked = !event.srcElement.checked;
         alertify.error("Action was not performed")
       });
     else
-      alertify.confirm("Do you Really want to enable this Goal??",()=>{
-        this.orgService.enableGoal(goalId).subscribe((response:any)=>{
+      alertify.confirm("Do you Really want to enable this Goal??", () => {
+        this.orgService.enableGoal(goalId).subscribe((response: any) => {
           alertify.success("You enabled the Goal..");
           this.getGoals();
-        },()=>{
+        }, () => {
           event.srcElement.checked = !event.srcElement.checked;
           alertify.error("Something went wrong..")
         })
-      },()=>{
+      }, () => {
         event.srcElement.checked = !event.srcElement.checked;
         alertify.error("Action was not performed")
-      });      
+      });
   }
 
-  closeForm(){
+  closeForm() {
     $(".to-be-highlighted").removeClass("highlight");
     $("#add-plan").hide();
+    $('#add-btn').show();
   }
 }

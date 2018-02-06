@@ -1,16 +1,16 @@
-export class Filters{
-  public goalsCopy:any[]=[];
+export class Filters {
+  public goalsCopy: any[] = [];
   public filteredGoals: any[];
   public filteredInitiatives: any[];
   public filteredActivities: any[];
   public filteredOpis: any[];
-  public goals:any[]=[];
+  public goals: any[] = [];
 
-  constructor(){
-    
+  constructor() {
+
   }
 
-  public initFilters(goalsCopy:any[]){
+  public initFilters(goalsCopy: any[]) {
     this.filteredGoals = this.filteredActivities = this.filteredInitiatives = this.filteredOpis = goalsCopy;
   }
 

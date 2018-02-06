@@ -4,12 +4,11 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
-	imports: [SharedModule,RouterModule.forChild([{
-	 path: '', component: SPIComponent 
-	 }])],
-	providers:[],
-	declarations : [SPIComponent],
-	// exports: [RouterModule]
+	imports: [SharedModule, RouterModule.forChild([{
+		path: '', component: SPIComponent
+	}])],
+	providers: [],
+	declarations: [SPIComponent]
 })
-export class SPIModule{
+export class SPIModule {
 }

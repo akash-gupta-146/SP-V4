@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <div class="bg-nav" id="top">
     <div class="form-inline" style="margin-bottom:unset;">
-      <button type="button" class="btn btn-default pull-right margin" (click)="addNewMeasure()">
+      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewMeasure()">
         <i class="glyphicon glyphicon-plus"></i>
       </button>
       <div class="form-group dropdown-st">
         <label class="control-label">Strategic Plan</label>
         <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getMeasure()" style="width:auto;height: auto;padding: 0px;">
-          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId" [attr.selected]="c.defaultCycle">{{c.planYear}} : [{{c.startYear}} To {{c.endYear}}]</option>
+          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}} : [{{c.startYear}} To {{c.endYear}}]</option>
         </select>
       </div>
     </div>
@@ -20,14 +20,17 @@
         <button type="button" class="close" aria-label="Close" (click)="closeForm()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4>ADD KPI</h4>
+        <h4 *ngIf="!isUpdating;else editKpi">ADD KPI</h4>
+        <ng-template #editKpi>
+          <h4>EDIT KPI</h4>
+        </ng-template>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label" for="year">Plan Year:</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)">
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
                 <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
               </select>
             </div>
@@ -109,7 +112,8 @@
             <div class="form-group">
               <label>Evidence Forms</label>
               <select class="form-control" formControlName="evidanceFormId">
-                <option value="1" *ngFor="let form of evidenceForms;let f = index;" [value]="form.formId">{{form.form}}</option>
+                <option value="null">None</option>
+                <option *ngFor="let form of evidenceForms;let f = index;" [value]="form.formId">{{form.form}}</option>
               </select>
             </div>
           </div>

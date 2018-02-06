@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <div class="bg-nav">
     <div class="form-inline" style="margin-bottom:unset;">
-      <button type="button" class="btn btn-default pull-right margin" (click)="addNewActivity()">
+      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewActivity()">
         <i class="glyphicon glyphicon-plus"></i>
       </button>
       <div class="form-group dropdown-st">
         <label class="control-label">Strategic Plan</label>
         <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getActivities()" style="width:auto;height: auto;padding: 0px;">
-          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId" [attr.selected]="c.defaultCycle">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
         </select>
       </div>
     </div>
@@ -15,18 +15,20 @@
   <div class="card card-form" id="add-activity" style="display:none">
     <form [formGroup]="activityForm" (submit)="submitActivity()">
       <div class="card-header">
-        <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="enableFields(); isUpdating = false"
-          data-toggle="tooltip" data-placement="auto" title="Reset Form">
+        <button type="button" class="close" (click)="closeForm();">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4>ADD ACTIVITY</h4>
+        <h4 *ngIf="!isUpdating;else editKpi">ADD ACTIVITY</h4>
+        <ng-template #editKpi>
+          <h4>EDIT ACTIVITY</h4>
+        </ng-template>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-sm-12">
             <div class="form-group">
               <label for="year">Plan Year:</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)">
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
                 <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
               </select>
             </div>
@@ -64,7 +66,7 @@
           <div class="col-sm-6">
           </div>
           <div class="col-sm-6">
-            <button type="submit" class="btn btn-default pull-right btn-sub">
+            <button type="submit" class="btn btn-default pull-right btn-sub" [disabled]="activityForm.invalid">
               SUBMIT
             </button>
           </div>
@@ -85,10 +87,8 @@
           <colgroup>
             <col style="width:30%">
             <col style="width:30%">
-            <col style="width:26%">
-            <col style="width:6%">
-            <col style="width:4%">
-            <col style="width:4%">
+            <col style="width:30%">
+            <col style="width:10%">
           </colgroup>
           <thead class="header-background" *ngIf="goalsCopy.length">
             <tr>
@@ -122,9 +122,7 @@
                   </div>
                 </form>
               </th>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th style="vertical-align: middle;text-align:center">ACTION</th>
             </tr>
           </thead>
           <tbody>
@@ -141,33 +139,40 @@
                     <td colspan="4" style="padding:0px;" #element1 [style.height]="get(element1)">
                       <table class="table table-bordered" style="height: inherit;">
                         <colgroup>
-                          <col style="width:40%">
-                          <col style="width:5%">
-                          <col style="width:3%">
-                          <col style="width:3%">
+                          <col style="width:75%">
+                          <col style="width:25%">
                         </colgroup>
                         <tr class="to-be-highlighted" *ngFor="let activit of initiate.activities;let k=index;" #highlight>
                           <td [style.border-top]="k?'1px solid #ddd':'none'">{{activit.activity}}</td>
-                          <td class="text-center">
-                            <label class="switch">
-                              <input type="checkbox" [checked]="activit.disable" (change)="disable($event,activit.activityId)">
-                              <span class="slider round"></span>
-                            </label>
+
+                          <td [style.border-top]="l?'1px solid #ddd':'none'">
+                            <ul style="list-style:none;padding:0;">
+                              <li>
+                                <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateActivity(goal,initiate,activit,highlight)"
+                                  [disabled]="activit.disable">
+                                  <a scrollTo href="#add-activity">
+                                    <i class="glyphicon glyphicon-edit btn-edit"></i>
+                                  </a>
+                                </button>
+                              </li>
+                              <li>
+                                <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteActivity(activit.activityId,initiate.activities,k)"
+                                  [disabled]="activit.disable">
+                                  <i class="glyphicon glyphicon-trash btn-del"></i>
+                                </button>
+                              </li>
+                              <li>
+                                <label class="switch">
+                                  <input type="checkbox" [checked]="activit.disable" (change)="disable($event,activit.activityId)">
+                                  <span class="slider round"></span>
+                                </label>
+                              </li>
+                            </ul>
                           </td>
-                          <td [style.border-top]="k?'1px solid #ddd':'none'">
-                            <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateActivity(goal,initiate,activit,highlight)"
-                              [disabled]="activit.disable">
-                              <a scrollTo href="#add-activity">
-                                <i class="glyphicon glyphicon-edit btn-edit"></i>
-                              </a>
-                            </button>
-                          </td>
-                          <td [style.border-top]="k?'1px solid #ddd':'none'">
-                            <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteActivity(activit.activityId,initiate.activities,k)"
-                              [disabled]="activit.disable">
-                              <i class="glyphicon glyphicon-trash btn-del"></i>
-                            </button>
-                          </td>
+
+
+
+
                         </tr>
                       </table>
                     </td>

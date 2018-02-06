@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output, AfterViewInit } from '@angular/core';
 
-@Component ({
+@Component({
   selector: 'tree-view',
   template: `
   <ul style="list-style:none;">
@@ -13,21 +13,21 @@ import { Component, Input, EventEmitter, Output, AfterViewInit } from '@angular/
   </ul>
   `
 })
-export class TreeView implements AfterViewInit{
+export class TreeView implements AfterViewInit {
 
   @Input() treeData: any[];
-  @Input() assignedDepartment:any[];
-  @Output() onSelected : EventEmitter<any> = new EventEmitter<boolean>();
-  constructor(){
-    
+  @Input() assignedDepartment: any[];
+  @Output() onSelected: EventEmitter<any> = new EventEmitter<boolean>();
+  constructor() {
+
   }
 
-  ngAfterViewInit(){
-    
+  ngAfterViewInit() {
+
   }
 
   department(event: any) {
     this.onSelected.emit(event);
   }
-  
+
 }

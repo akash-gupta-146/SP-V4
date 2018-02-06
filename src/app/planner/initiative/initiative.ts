@@ -27,7 +27,7 @@ export class InitiativeComponent extends Filters {
     public commonService: StorageService,
     private loaderService: LoaderService) {
     super();
-    
+
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.initiativeForm = this.initForm();
@@ -122,10 +122,11 @@ export class InitiativeComponent extends Filters {
 
   selectedInitiative: any;
   updateInitiative(goalId: any, initiative: any, highlight: any) {
+    $('#add-btn').hide();
     $(".to-be-highlighted").removeClass("highlight");
     $(highlight).addClass("highlight");
     this.isUpdating = true;
-    this.initiativeForm.controls["cycleId"].disable();
+    // this.initiativeForm.controls["cycleId"].disable();
     this.initiativeForm.controls["goalId"].disable();
     this.selectedInitiative = initiative;
     this.initiativeForm.patchValue({
@@ -139,13 +140,14 @@ export class InitiativeComponent extends Filters {
 
   enableFields() {
     $(".to-be-highlighted").removeClass("highlight");
-    this.initiativeForm.controls["cycleId"].enable();
+    // this.initiativeForm.controls["cycleId"].enable();
     this.initiativeForm.controls["goalId"].enable();
     this.initiativeForm = this.initForm();
   }
 
   closeForm() {
     $("#add-initiative").hide();
+    $('#add-btn').show();
     this.enableFields();
     this.isUpdating = false;
     this.getCycleWithChildren(false);
@@ -153,6 +155,7 @@ export class InitiativeComponent extends Filters {
 
   addNewInitiative() {
     $("#add-initiative").show();
+    $('#add-btn').hide();
     this.isUpdating = false;
     $("#collapse1").collapse('show');
     this.getCycleWithChildren(true);

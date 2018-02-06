@@ -5,12 +5,11 @@ import { SharedModule } from "../../shared/shared.module";
 import { MyFilterPipe } from "./my-filter.pipe";
 
 @NgModule({
-	imports: [SharedModule,RouterModule.forChild([{
-	 path: '', component: InitiativeComponent 
-	 }])],
-	providers:[],
-	declarations : [InitiativeComponent,MyFilterPipe],
-	// exports: [RouterModule]
+	imports: [SharedModule, RouterModule.forChild([{
+		path: '', component: InitiativeComponent
+	}])],
+	providers: [],
+	declarations: [InitiativeComponent, MyFilterPipe]
 })
-export class InitiativeModule{
+export class InitiativeModule {
 }

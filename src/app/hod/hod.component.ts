@@ -12,6 +12,11 @@ declare let $: any;
   styleUrls: ['hod.component.css','./../coordinator/home/home.component.css']
 })
 export class HodComponent extends Filters {
+  userDetails: any = {};
+
+  selectedLevel:any;
+  selectedOpi:any;
+  roles: any[] = ["coordinator", "hod", "dvc", "vc", "chanceller"];
 
   constructor(private utServ: HodService,
     private storage: StorageService) {
@@ -19,11 +24,6 @@ export class HodComponent extends Filters {
     this.userDetails = storage.getData('userDetails');
     this.getOpi();
   }
-
-  userDetails: any = {};
-  selectedLevel:any;
-  selectedOpi:any;
-  roles: any[] = ["coordinator", "hod", "dvc", "vc", "chanceller"];
 
   getOpi(): any {
     this.utServ.getOpiByDeptId(this.storage.getData('user_roleInfo')[0].departmentId).subscribe((response: any) => {
@@ -66,7 +66,23 @@ export class HodComponent extends Filters {
       
   }
 
+  currentAnnualTargets:any[]=[];
 
+  allAnnualTargets:any[]=[];
+
+  getAnnualTargetsByOpiDepartment(department:any){
+    this.utServ.getAnnualTargets(department.id).subscribe((response:any)=>{
+      console.log(response);
+      this.currentAnnualTargets = department.opiAnnualTargets;
+      department.opiAnnualTargets = response;
+    })
+  }
+
+  getCurrentAnnualTargets(department:any){
+    this.allAnnualTargets = department.opiAnnualTargets;
+    department.opiAnnualTargets = this.currentAnnualTargets;
+    this.currentAnnualTargets = [];
+  }
 
   public showOpi(goal: any, measure: any) {
     $('#edit-block').show();

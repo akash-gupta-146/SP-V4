@@ -4,60 +4,74 @@
   </div>
 
   <div class="card nav-card">
-      <div id='cssmenu'>
+    <div id='cssmenu'>
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a data-toggle="tab" href="#mission">MISSION</a>
+        </li>
+        <button type="button" class="btn btn-default pull-right margin" data-toggle="modal" data-target="#missionVisionForm" (click)="editMisionVision('mission', organizationInfo.mission);">
+          <i class="glyphicon glyphicon-edit"></i>
+        </button>
+      </ul>
+    </div>
+
+    <div class="tab-content" style="margin-top:15px;margin-left: 10px;" *ngIf="organizationInfo">
+      <div id="mission" class="tab-pane fade in active">
+        <p>{{organizationInfo.mission}}</p>
+      </div>
+      <div id="cssmenu" style="margin-top:40px;">
         <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#mission">MISSION</a></li>
-          <button type="button" class="btn btn-default pull-right margin" data-toggle="modal" data-target="#missionVisionForm" (click)="editMisionVision('mission', organizationInfo.mission);"><i class="glyphicon glyphicon-edit"></i></button>
-          <!-- <span class="pull-right edit-icon" (click)="editMisionVision('mission', organizationInfo.mission);"><i class="glyphicon glyphicon-edit" data-toggle="modal" data-target="#missionVisionForm"></i></span> -->
+          <li class="active">
+            <a data-toggle="tab" href="#vision">VISION</a>
+          </li>
+          <button type="button" class="btn btn-default pull-right margin" data-toggle="modal" data-target="#missionVisionForm" (click)="editMisionVision('vision', organizationInfo.vision);">
+            <i class="glyphicon glyphicon-edit"></i>
+          </button>
         </ul>
       </div>
-  
-      <div class="tab-content" style="margin-top:15px;margin-left: 10px;" *ngIf="organizationInfo">
-        <div id="mission" class="tab-pane fade in active">
-          <p>{{organizationInfo.mission}}</p>
-        </div>
-        <div id="cssmenu" style="margin-top:40px;">
-          <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#vision">VISSION</a></li>
-            <button type="button" class="btn btn-default pull-right margin" data-toggle="modal" data-target="#missionVisionForm" (click)="editMisionVision('vision', organizationInfo.vision);"><i class="glyphicon glyphicon-edit"></i></button>
-            <!-- <span class="pull-right edit-icon" (click)="editMisionVision('vision', organizationInfo.vision);"><i class="glyphicon glyphicon-edit" data-toggle="modal" data-target="#missionVisionForm"></i></span> -->
-          </ul>
-        </div>
-        <div id="vision" class="tab-pane fade in active" style="margin-top:15px;margin-left: 10px;">
-          <p>{{organizationInfo.vision}}</p>
-        </div>
-        <div id="cssmenu" style="margin-top:40px;">
-          <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#values">VALUES</a></li>
-            <button type="button" class="btn btn-default pull-right margin" (click)="onValueSelected('',null)" data-toggle="modal" data-target="#valueForm"><i class="glyphicon glyphicon-plus"></i></button>
-           
-          
-          </ul>
-        </div>
-        <div id="values" class="tab-pane fade in active">
-          <div class="col-sm-12" style="margin-top: 40px;">
-            <div class="card value-card" *ngFor="let val of organizationInfo.values;let i = index;">
-              <div class="card-header">
-                <h5>{{i+1}}.{{val.title}}</h5>
-              </div>
-              <div class="card-body">
-                <p>{{val.description}} </p><br>
-                <button type="button" class="btn btn-default pull-right icon-add" data-toggle="modal" data-target="#valueForm" (click)="onValueSelected(val,i)"><i class="glyphicon glyphicon-edit"></i></button>
-                  <button type="button" class="btn btn-default pull-right icon-btn " (click)="deleteValue(val,i)"><i class="glyphicon glyphicon-trash"></i></button>
-                </div>
+      <div id="vision" class="tab-pane fade in active" style="margin-top:15px;margin-left: 10px;">
+        <p>{{organizationInfo.vision}}</p>
+      </div>
+      <div id="cssmenu" style="margin-top:40px;">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a data-toggle="tab" href="#values">VALUES</a>
+          </li>
+          <button type="button" class="btn btn-default pull-right margin" (click)="onValueSelected('',null)" data-toggle="modal" data-target="#valueForm">
+            <i class="glyphicon glyphicon-plus"></i>
+          </button>
+        </ul>
+      </div>
+      <div id="values" class="tab-pane fade in active">
+        <div class="col-sm-12" style="margin-top: 40px;">
+          <div class="card value-card" *ngFor="let val of organizationInfo.values;let i = index;">
+            <div class="card-header">
+              <h5>{{i+1}}.{{val.title}}</h5>
+            </div>
+            <div class="card-body">
+              <p>{{val.description}} </p>
+              <br>
+              <button type="button" class="btn btn-default pull-right icon-add" data-toggle="modal" data-target="#valueForm" (click)="onValueSelected(val,i)">
+                <i class="glyphicon glyphicon-edit"></i>
+              </button>
+              <button type="button" class="btn btn-default pull-right icon-btn " (click)="deleteValue(val,i)">
+                <i class="glyphicon glyphicon-trash"></i>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  
- <div class="modal fade" id="valueForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  </div>
+
+  <div class="modal fade" id="valueForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header color4">
           <button type="button" class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
           </button>
           <h4 class="modal-title" id="myModalLabel">
             Value
@@ -77,8 +91,12 @@
           </div>
           <!-- Modal Footer -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-default btn-submit"><i class="glyphicon glyphicon-ok"></i></button>
-            <button type="button" class="btn btn-default btn-close" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i></button>
+            <button type="submit" class="btn btn-default btn-submit" [disabled]="valueForm.invalid">
+              <i class="glyphicon glyphicon-ok"></i>
+            </button>
+            <button type="button" class="btn btn-default btn-close" data-dismiss="modal">
+              <i class="glyphicon glyphicon-remove"></i>
+            </button>
           </div>
         </form>
       </div>
@@ -86,35 +104,37 @@
   </div>
 
 
-  <div class="modal fade" id="missionVisionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header color4">
-          <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-          </button>
-          <h4 class="modal-title" id="myModalLabel" style="text-transform:capitalize;">
-            {{missionVision}}
-          </h4>
+<div class="modal fade" id="missionVisionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header color4">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel" style="text-transform:capitalize;">
+          {{missionVision}}
+        </h4>
+      </div>
+      <!-- Modal Body -->
+      <form [formGroup]="missionVisionForm" (submit)="onMissionVisionSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <!--<label for="description">Description</label>-->
+            <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
+          </div>
         </div>
-        <!-- Modal Body -->
-        <form [formGroup]="missionVisionForm" (submit)="onMissionVisionSubmit()">
-          <div class="modal-body">
-            <div class="form-group">
-              <!--<label for="description">Description</label>-->
-              <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
-            </div>
-          </div>
-          <!-- Modal Footer -->
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-default btn-submit"><i class="glyphicon glyphicon-ok"></i></button>
-            <button type="button" class="btn btn-default btn-close" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i></button>
-          </div>
-        </form>
-      </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-default btn-submit">
+            <i class="glyphicon glyphicon-ok"></i>
+          </button>
+          <button type="button" class="btn btn-default btn-close" data-dismiss="modal">
+            <i class="glyphicon glyphicon-remove"></i>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-  <!-- ===============================================================================
-  ======================== /End of Initial setup Interface ==============================================
-  ===================================================================================== -->
+</div>

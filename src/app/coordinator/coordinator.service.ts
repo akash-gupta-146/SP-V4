@@ -12,13 +12,19 @@ export class CoordinatorService{
 
   private baseUrl: string = "";
 
+  private parent = new RequestOptions({
+    headers: new Headers({
+      'parent': true
+    })
+  });
+
   constructor(public http: CustomHttpService,private htttp:Http,
     public con: StorageService) {
     this.baseUrl = con.baseUrl + con.getData('user_roleInfo')[0].role;
   }
 
   public getOpiByDeptId(deptId:any){
-    return this.http.get(this.baseUrl + "/department/"+deptId+"/result")
+    return this.http.get(this.baseUrl +"/result")
     .map(this.extractData)
     .catch(this.handleError);
   }
@@ -128,7 +134,13 @@ export class CoordinatorService{
   }
 
   getAnnualTargets(opiDepartmentId:any){
-    return this.http.get(this.baseUrl + "/opiDepartment/"+opiDepartmentId+"/annualTargets").map(this.extractData)
+    return this.http.get(this.baseUrl + "/opiDepartment/"+opiDepartmentId+"/annualTargets?currentYear=false&currentQuarter=false").map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getDepartmentByOpiId(opiId:any){
+    return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments",this.parent)
+    .map(this.extractData)
     .catch(this.handleError);
   }
 

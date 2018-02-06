@@ -6,22 +6,22 @@ import { LoaderService } from '../../../shared/loader.service';
 @Component({
   selector: 'initial-setup',
   templateUrl: './setup.component.html',
-  styleUrls:['./setup.component.css']
+  styleUrls: ['./setup.component.css']
 })
-export class InitialSetup implements OnInit{
+export class InitialSetup implements OnInit {
   public setupForm: FormGroup;
   constructor(public fb: FormBuilder,
-              public st: StorageService,
-              public utiService:UniversityService) {
-                this.setupForm = this.initForm();
-                this.fetchOrganizationInfo();
+    public st: StorageService,
+    public utiService: UniversityService) {
+    this.setupForm = this.initForm();
+    this.fetchOrganizationInfo();
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
   }
 
-  initForm(){
+  initForm() {
     return this.fb.group({
       "mission": ['', [Validators.required]],
       "vision": ['', [Validators.required]],
@@ -34,16 +34,16 @@ export class InitialSetup implements OnInit{
   }
 
   public fetchOrganizationInfo() {
-		this.utiService.fetchOrganizationInfo().subscribe((res: any) => {
+    this.utiService.fetchOrganizationInfo().subscribe((res: any) => {
       this.st.storeData("org_info", res);
-      this.setupForm.controls["universityId"] = this.st.getData('org_info').universityId; 
-		}, (err: any) => {
+      this.setupForm.controls["universityId"] = this.st.getData('org_info').universityId;
+    }, (err: any) => {
 
-		});
-	}
+    });
+  }
 
-  onSubmit(){
-    this.utiService.saveInitialSetup(this.setupForm.value).subscribe((response:any)=>{
+  onSubmit() {
+    this.utiService.saveInitialSetup(this.setupForm.value).subscribe((response: any) => {
       console.log("success", response);
     })
   }
@@ -53,7 +53,7 @@ export class InitialSetup implements OnInit{
       "description": ['', [Validators.required]]
     });
   }
-  removeValue(index:any) {
+  removeValue(index: any) {
     const control = <FormArray>this.setupForm.controls['values'];
     control.removeAt(index);
   }

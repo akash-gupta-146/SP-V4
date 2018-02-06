@@ -11,13 +11,12 @@ import { InitialSetup } from "./initial-setup/setup.component";
 			component: HomeComponent
 		},
 		{
-			path:'initial-setup',
+			path: 'initial-setup',
 			component: InitialSetup
 		}
 	])],
 	providers: [],
-	declarations: [HomeComponent, InitialSetup],
-	// exports: [RouterModule]
+	declarations: [HomeComponent, InitialSetup]
 })
 export class HomeModule {
 }

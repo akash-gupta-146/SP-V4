@@ -8,8 +8,8 @@ import { StorageService } from '../shared/storage.service';
 export class CoordinatorComponent{
   userDetails: any = {};
 
-  constructor(public stogareService: StorageService){
-    this.userDetails = this.stogareService.getData('userDetails');
+  constructor(public storageService: StorageService){
+    this.userDetails = this.storageService.getData('userDetails');
   }
 
   logout(){

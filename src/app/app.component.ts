@@ -30,20 +30,20 @@ import { LoaderService } from './shared/loader.service';
   </div>
   </router-outlet>
   `,
-  styleUrls:['./app.component.css']
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   // Sets initial value to true to show loading spinner on first load
   // loading;
-  showLoader:boolean;
-  transactionLoader:boolean;
-  loadingStatus:string;
+  showLoader: boolean;
+  transactionLoader: boolean;
+  loadingStatus: string;
 
-  constructor(private router: Router,private loaderService:LoaderService) {
+  constructor(private router: Router, private loaderService: LoaderService) {
     // router.events.subscribe((event: RouterEvent) => {
     //   this.navigationInterceptor(event)
     // })
-    if(!localStorage.getItem('access_token'))
+    if (!localStorage.getItem('access_token'))
       this.router.navigateByUrl('/login');
   }
 
@@ -72,11 +72,11 @@ export class AppComponent {
   //   // Set loading state to false in both of the below events to hide the spinner in case a request fails
   //   if (event instanceof NavigationCancel) {
   //     this.loading = false;
-      
+
   //   }
   //   if (event instanceof NavigationError) {
   //     this.loading = false;
-      
+
   //   }
   // }
 }

@@ -56,7 +56,7 @@ export class PlanComponent {
 
   editCycle(c: any) {
     $("#add-plan").show();
-    $('#add-btn').hide();    
+    $('#add-btn').hide();
     $("#collapse1").collapse('show');
     this.isUpdating = true;
     this.selectedCycle = c;
@@ -68,7 +68,7 @@ export class PlanComponent {
       this.orgService.saveCycle(this.cycleForm.value).subscribe((response: any) => {
         alertify.success('You added New Strategic plan.');
         $("#add-plan").hide();
-        $('#add-btn').show();        
+        $('#add-btn').show();
         this.isUpdating = false;
         this.getCycles();
         this.cycleForm = this.initForm();
@@ -80,7 +80,7 @@ export class PlanComponent {
       this.orgService.updateCycle(this.selectedCycle.cycleId, data).subscribe((response: any) => {
         alertify.success('You updated Strategic plan.');
         $("#add-plan").hide();
-        $('#add-btn').show(); 
+        $('#add-btn').show();
         this.isUpdating = false;
         this.getCycles();
         this.cycleForm = this.initForm();
@@ -121,9 +121,9 @@ export class PlanComponent {
   }
 
   defaultCycle(event: any, cycleId: any) {
-    if(!event.srcElement.checked){
+    if (!event.srcElement.checked) {
       alertify.alert("This cycle is alredy defualt").setHeader("Alert Message")
-    }else{
+    } else {
       alertify.confirm("Do you Really want to make it Default Cycle??", () => {
         this.orgService.defaultCycle(cycleId).subscribe((response: any) => {
           this.getCycles();
@@ -136,10 +136,10 @@ export class PlanComponent {
         event.srcElement.checked = !event.srcElement.checked;
       })
     }
-    
+
   }
 
-  click(event:any){
+  click(event: any) {
     console.log(event);
   }
 

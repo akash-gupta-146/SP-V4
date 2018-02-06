@@ -39,60 +39,6 @@
     position: absolute;
     margin-top: 10px;
   }
-
-
-  /* serach-css  start*/
-  .search-form .form-group {
-    float: right !important;
-    transition: all 0.35s, border-radius 0s;
-    width: 32px;
-    height: 32px;
-    background-color: var(--color-text);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-  }
-  .search-form .form-group input.form-control {
-    padding-right: 20px;
-    border: 0 none;
-    background: transparent;
-    box-shadow: none;
-    display:block;
-  }
-  .search-form .form-group input.form-control::-webkit-input-placeholder {
-    display: none;
-    color:var(--color-primary);
-  }
-  .search-form .form-group input.form-control:-moz-placeholder {
-    /* Firefox 18- */
-    display: none;
-  }
-  .search-form .form-group input.form-control::-moz-placeholder {
-    /* Firefox 19+ */
-    display: none;
-  }
-  .search-form .form-group input.form-control:-ms-input-placeholder {
-    display: none;
-  }
-  .search-form .form-group:hover,
-  .search-form .form-group.hover {
-    width: 100%;
-    border-radius: 4px 25px 25px 4px;
-  }
-  .search-form .form-group span.form-control-feedback {
-    position: absolute;
-    top: -1px;
-    right: -2px;
-    z-index: 2;
-    display: block;
-    width: 34px;
-    height: 34px;
-    line-height: 34px;
-    text-align: center;
-    color: var(--color-primary);
-    left: initial;
-    font-size: 14px;
-  }
   
   
 
@@ -118,6 +64,8 @@
   border-style: none;
   border-width: 0;
   font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
   line-height: 20px;
   margin-bottom: 0;
   width: auto;
@@ -128,6 +76,7 @@
 .the-fieldset {
   border: 1px solid var(--color-primary);
   padding: 10px;
+  margin-bottom: 10px;
 }
 /* legand */
 
@@ -243,4 +192,27 @@
 
 .panel-body label{
     text-transform: uppercase;
+}
+
+.data-list ul{
+  border: 1px solid skyblue;
+	display:none;
+    list-style:none;
+    padding:0px;
+    margin:0px;
+}
+
+.data-list ul li{
+  padding: 2px;
+}
+.data-list ul:hover{
+display:block;
+}
+
+.data-list ul li:hover{
+	background:#4d85b4;
+  color:white;
+}
+.data-list input:focus + ul{
+	display:block;
 }

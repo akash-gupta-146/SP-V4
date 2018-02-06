@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <div class="bg-nav">
     <div class="form-inline " style="margin-bottom: unset">
-      <button type="button" class="btn btn-default pull-right margin" (click)="addNewInitiative()">
+      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewInitiative()">
         <i class="glyphicon glyphicon-plus"></i>
       </button>
       <div class="form-group dropdown-st">
         <label class="control-label">Strategic Plan</label>
         <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getInitiative()" style="width:auto;height: auto;padding: 0px;">
-          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId" [attr.selected]="c.defaultCycle">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId" >{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
         </select>
       </div>
     </div>
@@ -20,14 +20,17 @@
           title="Reset Form">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4>ADD INITIATIVE</h4>
+        <h4 *ngIf="!isUpdating;else editKpi">ADD INITIATIVE</h4>
+        <ng-template #editKpi>
+          <h4>EDIT INITIATIVE</h4>
+        </ng-template>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label" for="year">Strategic Plan :</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)">
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
                 <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
               </select>
             </div>

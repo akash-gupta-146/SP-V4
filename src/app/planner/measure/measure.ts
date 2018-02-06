@@ -130,10 +130,10 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       this.quarters = res;
     })
   }
-  frequencies:any[];
-  getFrequencies(){
-    this.orgService.getFrequencies().subscribe((response:any)=>{
-      console.log("frequencies :",response);
+  frequencies: any[];
+  getFrequencies() {
+    this.orgService.getFrequencies().subscribe((response: any) => {
+      console.log("frequencies :", response);
       this.frequencies = response;
     })
   }
@@ -201,6 +201,58 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.travers(event, event.my);
   }
 
+  // travers(department: any, checked: boolean) {
+  //   if (!department) {
+  //     return;
+  //   } else {
+  //     if (checked) {
+  //       if (!department.disabled) {
+  //         department.my = true;
+  //         if (this.selectedDepartments.indexOf(department) === -1)
+  //           this.selectedDepartments.push(department);
+  //       }
+  //     } else {
+  //       if (!department.disabled) {
+  //         department.my = false;
+  //         this.selectedDepartments.splice(this.selectedDepartments.indexOf(department), 1);
+  //       }
+  //     }
+  //     if (department.reporteeDepartments)
+  //       department.reporteeDepartments.forEach((element: any) => {
+  //         this.travers(element, checked);
+  //       });
+  //   }
+  // }
+
+  travers(department: any, checked: boolean) {
+    if (!department) {
+      return;
+    } else {
+      if (department.reporteeDepartments&&department.reporteeDepartments.length){
+        if(checked)
+          department.my = true;
+        else
+          department.my = false;
+        department.reporteeDepartments.forEach((element: any) => {
+          this.travers(element, checked);
+        });
+      }else{
+        if (checked) {
+          if (!department.disabled) {
+            department.my = true;
+            if (this.selectedDepartments.indexOf(department) === -1)
+              this.selectedDepartments.push(department);
+          }
+        } else {
+          if (!department.disabled) {
+            department.my = false;
+            this.selectedDepartments.splice(this.selectedDepartments.indexOf(department), 1);
+          }
+        }
+      }
+    }
+  }
+
   checkAssignDept(assignedDepartments: any[]) {
     this.selectedDepartments = [];
     this.departments = JSON.parse(JSON.stringify(this.departmentsCopy));
@@ -228,30 +280,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
             this.searchDepartment(element, assigneddepartment);
           });
       }
-    }
-  }
-
-  travers(department: any, checked: boolean) {
-    if (!department) {
-      return;
-    } else {
-      if (checked) {
-        if (!department.disabled) {
-          department.my = true;
-          if (this.selectedDepartments.indexOf(department) === -1)
-            this.selectedDepartments.push(department);
-        }
-      } else {
-        if (!department.disabled) {
-          department.my = false;
-          this.selectedDepartments.splice(this.selectedDepartments.indexOf(department), 1);
-        }
-      }
-      if (department.reporteeDepartments)
-        department.reporteeDepartments.forEach((element: any) => {
-          this.travers(element, checked);
-        });
-
     }
   }
 
@@ -339,11 +367,11 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   setLevels(count: any) {
-    this.quarters = this.frequencies[count-1].quarters;
+    this.quarters = this.frequencies[count - 1].quarters;
     const levels: any[] = [];
     //if (count == 3) count++;
     for (var i = 0; i < this.quarters.length; i++) {
-        levels.push(this.getLevel(i));
+      levels.push(this.getLevel(i));
     }
     return levels;
   }
@@ -358,18 +386,18 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   setMeasure() {
     return this.formBuilder.group({
-      "cycleId": [{ value: this.defaultCycle, disabled: false }, [Validators.required]],
+      "cycleId": [{ value: this.defaultCycle, disabled: true }, [Validators.required]],
       "objectiveId": [{ value: '', disabled: false }, [Validators.required]],
       "initiativeId": [{ value: '', disabled: false }, [Validators.required]],
       "activityId": [{ value: '', disabled: false }, [Validators.required]],
       "opi": ['', [Validators.required]],
       "frequencyId": [1, [Validators.required]],
-      "measureUnit": ['', [Validators.required]],
-      "evidanceFormId": ['', []],
+      "measureUnit": ['percentage', [Validators.required]],
+      "evidanceFormId": [null, []],
       "direction": [false, [Validators.required]],
       "approvalRequired": [false, [Validators.required]],
-      "remarks": ['', [Validators.required]],
-      "helpText": ['', [Validators.required]]
+      "remarks": [''],
+      "helpText": ['']
     });
   }
 
@@ -411,13 +439,11 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   selectedMeasure: any;
-
-
-
   updateMeasure(objective: any, initiative: any, activity: any, measure: any, highlight: any) {
+    $('#add-btn').hide();
     $(".to-be-highlighted").removeClass("highlight");
     $(highlight).addClass("highlight");
-    this.measureForm.controls["cycleId"].disable();
+    // this.measureForm.controls["cycleId"].disable();
     this.measureForm.controls["objectiveId"].disable();
     this.measureForm.controls["initiativeId"].disable();
     this.measureForm.controls["activityId"].disable();
@@ -446,7 +472,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   enableFields() {
     $('#add-opi').hide();
     $(".to-be-highlighted").removeClass("highlight");
-    this.measureForm.controls["cycleId"].enable();
+    // this.measureForm.controls["cycleId"].enable();
     this.measureForm.controls["objectiveId"].enable();
     this.measureForm.controls["initiativeId"].enable();
     this.measureForm.controls["activityId"].enable();
@@ -469,6 +495,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   closeForm() {
+    $('#add-btn').show();
     this.enableFields();
     this.isUpdating = false;
     this.getCycleWithChildren(false);
@@ -478,8 +505,9 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.enableFields();
     this.isUpdating = false;
     $('#add-opi').show();
+    $('#add-btn').hide();
     $("#collapse1").collapse('show');
-    
+
     this.initiatives = [];
     this.activities = [];
     this.getCycleWithChildren(true);

@@ -12,13 +12,20 @@ import 'rxjs/add/observable/throw';
 @Injectable()
 export class HodService{
  baseUrl: string;
+
+ private parent = new RequestOptions({
+  headers: new Headers({
+    'parent': true
+  })
+});
+
  constructor(public http: CustomHttpService,private htttp:Http,
   public con: StorageService){
    this.baseUrl = con.baseUrl + con.getData('user_roleInfo')[0].role;
  }
 
  getOpiByDeptId(deptId){
-  return this.http.get(this.baseUrl + "/department/"+deptId+"/result?currentYear=false&currentQuarter=false")
+  return this.http.get(this.baseUrl + "/result")
     .map(this.extractData)
     .catch(this.handleError);
  }
@@ -35,6 +42,22 @@ export class HodService{
   .catch(this.handleError);
  }
 
+ getAnnualTargets(opiDepartmentId:any){
+  return this.http.get(this.baseUrl + "/opiDepartment/"+opiDepartmentId+"/annualTargets?currentYear=false&currentQuarter=false").map(this.extractData)
+  .catch(this.handleError);
+}
+
+getDepartmentByOpiId(opiId:any){
+  return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments",this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public getDepartments() {
+  return this.http.get(this.baseUrl + "/department")
+    .map(this.extractData)
+    .catch(this.handleError);
+}
 
  private extractData(res: Response) {
   if (res.status === 204) { return res; }

@@ -25,3 +25,30 @@
   border: 2px solid var(--color-primary);
 }
 
+.department-hierarchy{
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+
+/*My styles*/
+.quarter-block{
+ position: relative;
+ font-size: 12px; 
+ padding-left: 25px;
+ padding-top: 20px;
+}
+.quarter{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2px;
+  background: rebeccapurple;
+  color: white;
+  border-radius: 2px;
+  text-transform: capitalize;
+}
+
+.quarter-block .row{
+  margin-bottom: 10px;
+}

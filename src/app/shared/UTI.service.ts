@@ -26,250 +26,250 @@ export class UniversityService {
   constructor(public http: CustomHttpService,
     public htttp: Http,
     public con: StorageService) {
-      this.baseUrl = con.baseUrl + con.getData('user_roleInfo')[0].role;
-    }
+    this.baseUrl = con.baseUrl + con.getData('user_roleInfo')[0].role;
+  }
 
-  public saveInitialSetup(data:any){
+  public saveInitialSetup(data: any) {
     return this.http.post(this.baseUrl + "/initialSetup", data)
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public saveCycle(cycle:any){
-    return this.http.post(this.baseUrl + "/cycle",cycle)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public saveCycle(cycle: any) {
+    return this.http.post(this.baseUrl + "/cycle", cycle)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public updateCycle(cycleId:any,data:any){
-    return this.http.put(this.baseUrl + "/cycle/"+cycleId,data)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public updateCycle(cycleId: any, data: any) {
+    return this.http.put(this.baseUrl + "/cycle/" + cycleId, data)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public disableCycle(cycleId:any){
-    return this.http.put(this.baseUrl + "/cycle/"+cycleId+"/disable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public disableCycle(cycleId: any) {
+    return this.http.put(this.baseUrl + "/cycle/" + cycleId + "/disable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public enableCycle(cycleId:any){
-    return this.http.put(this.baseUrl + "/cycle/"+cycleId+"/enable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public enableCycle(cycleId: any) {
+    return this.http.put(this.baseUrl + "/cycle/" + cycleId + "/enable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public defaultCycle(cycleId:any){
-    return this.http.put(this.baseUrl + "/cycle/"+cycleId+"/default",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public defaultCycle(cycleId: any) {
+    return this.http.put(this.baseUrl + "/cycle/" + cycleId + "/default", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public addValue(val: any[]) {
-    
+
     return this.http.post(this.baseUrl + "/values", val)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   public updateValue(val: any, id: any) {
-    
+
     return this.http.put(this.baseUrl + "/values/" + id, val)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   public deleteValue(id: any) {
-    
+
     return this.http.delete(this.baseUrl + "/values/" + id)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   public getUniversities() {
-    
+
     return this.http.get(this.baseUrl + "/university")
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   public fetchOrganizationInfo() {
-    
+
     return this.http.get(this.baseUrl + "/university")
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public getAllCycle(){
+  public getAllCycle() {
     return this.http.get(this.baseUrl + "/cycles?hideDisable=false")
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public getCycles(){
+  public getCycles() {
     return this.http.get(this.baseUrl + "/cycles")
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public getCycleWithChildren(disable:any){
-    return this.http.get(this.baseUrl + "/cycles?hideDisable="+disable, this.child)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getCycleWithChildren(disable: any) {
+    return this.http.get(this.baseUrl + "/cycles?hideDisable=" + disable, this.child)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public deleteCycle(cycleId:any){
-    return this.http.delete(this.baseUrl + "/cycle/"+cycleId)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public deleteCycle(cycleId: any) {
+    return this.http.delete(this.baseUrl + "/cycle/" + cycleId)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public fetchObjectives(cycleId: any) {
-    
+
     return this.http.get(this.baseUrl + "/cycle/" + cycleId + "/objective")
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public getObjectives(){
+  public getObjectives() {
     return this.http.get(this.baseUrl + "/goals", this.child)
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getObjectivesByCycleId(cycleId:any){
-    return this.http.get(this.baseUrl + "/goals?cycleId="+cycleId+"&hideDisable=false", this.child)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getObjectivesByCycleId(cycleId: any) {
+    return this.http.get(this.baseUrl + "/goals?cycleId=" + cycleId + "&hideDisable=false", this.child)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getObjectivesWithHierarchy(){
+  public getObjectivesWithHierarchy() {
     return this.http.get(this.baseUrl + "/objectives/all")
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getInitiatives(){
-    return this.http.get(this.baseUrl + "/initiatives",this.parent)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getInitiatives() {
+    return this.http.get(this.baseUrl + "/initiatives", this.parent)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getInitiativesByCycleId(cycleId:any){
-    return this.http.get(this.baseUrl + "/initiatives?cycleId="+cycleId+"&hideDisable=false",this.parent)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getInitiativesByCycleId(cycleId: any) {
+    return this.http.get(this.baseUrl + "/initiatives?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getActivities(){
-    return this.http.get(this.baseUrl + "/activities",this.parent)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getActivities() {
+    return this.http.get(this.baseUrl + "/activities", this.parent)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getActivitiesByCycleId(cycleId:any){
-    return this.http.get(this.baseUrl + "/activities?cycleId="+cycleId+"&hideDisable=false",this.parent)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getActivitiesByCycleId(cycleId: any) {
+    return this.http.get(this.baseUrl + "/activities?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getMeasures(){
+  public getMeasures() {
     return this.http.get(this.baseUrl + "/opis", this.parent)
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getMeasuresByCycleId(cycleId:any){
-    return this.http.get(this.baseUrl + "/opis?cycleId="+cycleId+"&hideDisable=false", this.parent)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getMeasuresByCycleId(cycleId: any) {
+    return this.http.get(this.baseUrl + "/opis?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public addObjective(objective: any) {
-    
+
     return this.http.post(this.baseUrl + "/goal", objective)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public deleteObjective(id:any){
-    return this.http.delete(this.baseUrl + "/goal/"+id)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public deleteObjective(id: any) {
+    return this.http.delete(this.baseUrl + "/goal/" + id)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public updateObjective(id:any,object:any){
-    return this.http.put(this.baseUrl + "/goal/"+id,object)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public updateObjective(id: any, object: any) {
+    return this.http.put(this.baseUrl + "/goal/" + id, object)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public disableGoal(goalId:any){
-    return this.http.put(this.baseUrl + "/goal/"+goalId+"/disable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public disableGoal(goalId: any) {
+    return this.http.put(this.baseUrl + "/goal/" + goalId + "/disable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public enableGoal(goalId:any){
-    return this.http.put(this.baseUrl + "/goal/"+goalId+"/enable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public enableGoal(goalId: any) {
+    return this.http.put(this.baseUrl + "/goal/" + goalId + "/enable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public addInitiative(initiative: any) {
-    
+
     return this.http.post(this.baseUrl + "/initiative", initiative)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public deleteInitiative(id:any){
-    return this.http.delete(this.baseUrl + "/initiative/"+id)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public deleteInitiative(id: any) {
+    return this.http.delete(this.baseUrl + "/initiative/" + id)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public updateInitiative(id:any,object:any){
-    return this.http.put(this.baseUrl + "/initiative/"+id,object)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public updateInitiative(id: any, object: any) {
+    return this.http.put(this.baseUrl + "/initiative/" + id, object)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public fetchInitiative(goalId: any) {    
+  public fetchInitiative(goalId: any) {
     return this.http.get(this.baseUrl + "/objective/" + goalId + "/initiative")
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public disableInitiative(initiativeId:any){
-    return this.http.put(this.baseUrl + "/initiative/"+initiativeId+"/disable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public disableInitiative(initiativeId: any) {
+    return this.http.put(this.baseUrl + "/initiative/" + initiativeId + "/disable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public enableInitiative(initiativeId:any){
-    return this.http.put(this.baseUrl + "/initiative/"+initiativeId+"/enable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public enableInitiative(initiativeId: any) {
+    return this.http.put(this.baseUrl + "/initiative/" + initiativeId + "/enable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
 
-  public fetchActivities(initId:any){
-    return this.http.get(this.baseUrl + "/initiative/"+initId+"/activity")
-    .map(this.extractData)
-    .catch(this.handleError); 
+  public fetchActivities(initId: any) {
+    return this.http.get(this.baseUrl + "/initiative/" + initId + "/activity")
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public deleteActivity(id:any){
-    return this.http.delete(this.baseUrl + "/activity/"+id)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public deleteActivity(id: any) {
+    return this.http.delete(this.baseUrl + "/activity/" + id)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public updateActivity(id:any,object:any){
-    return this.http.put(this.baseUrl + "/activity/"+id,object)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public updateActivity(id: any, object: any) {
+    return this.http.put(this.baseUrl + "/activity/" + id, object)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public fetchAssignedActivity(departmentIds: any[]) {
@@ -278,16 +278,16 @@ export class UniversityService {
       .catch(this.handleError);
   }
 
-  public disableActivity(activityId:any){
-    return this.http.put(this.baseUrl + "/activity/"+activityId+"/disable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public disableActivity(activityId: any) {
+    return this.http.put(this.baseUrl + "/activity/" + activityId + "/disable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public enableActivity(activityId:any){
-    return this.http.put(this.baseUrl + "/activity/"+activityId+"/enable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public enableActivity(activityId: any) {
+    return this.http.put(this.baseUrl + "/activity/" + activityId + "/enable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public saveQuarteResult(data: any, quarterId: any) {
@@ -302,22 +302,22 @@ export class UniversityService {
       .catch(this.handleError);
   }
 
-  public disableKPI(opiId:any){
-    return this.http.put(this.baseUrl + "/opi/"+opiId+"/disable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public disableKPI(opiId: any) {
+    return this.http.put(this.baseUrl + "/opi/" + opiId + "/disable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public enableKPI(opiId:any){
-    return this.http.put(this.baseUrl + "/opi/"+opiId+"/enable",{})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public enableKPI(opiId: any) {
+    return this.http.put(this.baseUrl + "/opi/" + opiId + "/enable", {})
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public lockResult(resultId: any){
-    return this.http.put(this.baseUrl + "/result/" + resultId,{status:"locked"})
-    .map(this.extractData)
-    .catch(this.handleError);
+  public lockResult(resultId: any) {
+    return this.http.put(this.baseUrl + "/result/" + resultId, { status: "locked" })
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public saveEvidence(data: any, resultId: any) {
@@ -331,117 +331,117 @@ export class UniversityService {
       .catch(this.handleError);
   }
 
-  public saveComment(resultId: any, comment: any) {    
+  public saveComment(resultId: any, comment: any) {
     return this.http.post(this.baseUrl + "/result/" + resultId + "/discussion", comment)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
 
-  public fetchDepartments() {    
+  public fetchDepartments() {
     return this.http.get(this.baseUrl + "/university/1/department")
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public assignActivity(actId: any, departments: any) {   
+  public assignActivity(actId: any, departments: any) {
     return this.http.post(this.baseUrl + "/assign/activity/" + actId + "/departments", { 'departments': departments })
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public saveActivity(activity: any) {    
+  public saveActivity(activity: any) {
     return this.http.post(this.baseUrl + "/activity", activity)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public getSpis(){
-    return this.http.get(this.baseUrl + "/spis",this.parent)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public getSpis() {
+    return this.http.get(this.baseUrl + "/spis", this.parent)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public saveSpi(spi: any) {    
+  public saveSpi(spi: any) {
     return this.http.post(this.baseUrl + "/spi", spi)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public deleteSpi(spiId:any){
-    return this.http.delete(this.baseUrl + "/spi/"+spiId)
+  public deleteSpi(spiId: any) {
+    return this.http.delete(this.baseUrl + "/spi/" + spiId)
   }
 
-  public saveMeasure(measure: any) {    
+  public saveMeasure(measure: any) {
     return this.http.post(this.baseUrl + "/opi", measure)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public deleteMeasure(measureId:any){
-    return this.http.delete(this.baseUrl + "/opi/"+measureId)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public deleteMeasure(measureId: any) {
+    return this.http.delete(this.baseUrl + "/opi/" + measureId)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public updateMeasure(measureId:any,object:any){
-    return this.http.put(this.baseUrl + "/opi/"+measureId,object)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public updateMeasure(measureId: any, object: any) {
+    return this.http.put(this.baseUrl + "/opi/" + measureId, object)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public updateMisionVision(object:any){    
+  public updateMisionVision(object: any) {
     return this.http.put(this.baseUrl + "/university/" + this.con.getData('org_info').universityId, object)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public getQuarter(){
+  public getQuarter() {
     return this.http.get(this.baseUrl + "/quarters")
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getFrequencies(){
+  public getFrequencies() {
     return this.http.get("https://spdemo.ind-cloud.everdata.com/spv4/frequencies")
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getDepartments(){
+  public getDepartments() {
     return this.http.get(this.baseUrl + "/department")
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public assignMeasure(measureId:any,departments:any[]){
+  public assignMeasure(measureId: any, departments: any[]) {
     return this.http.post(this.baseUrl + "/assign/opi/" + measureId + "/departments", { 'departments': departments })
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public assignOpi(opiId:any,departments:any){
-    return this.http.post(this.baseUrl + "/assign/opi/"+opiId+"/departments",departments)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public assignOpi(opiId: any, departments: any) {
+    return this.http.post(this.baseUrl + "/assign/opi/" + opiId + "/departments", departments)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public getEvidenceForms(){
+  public getEvidenceForms() {
     return this.http.get(this.baseUrl + "/evidenceForms")
-    .map(this.extractData)
-    .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public deleteAssignedDepartment(assignedId:any){
-    return this.http.delete(this.baseUrl + "/assign/opiDepartment/"+assignedId)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public deleteAssignedDepartment(assignedId: any) {
+    return this.http.delete(this.baseUrl + "/assign/opiDepartment/" + assignedId)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-  public updateTarget(opiId:any,department:any){
-    return this.http.put(this.baseUrl + "/assign/opi/"+opiId+"/departments", department)
-    .map(this.extractData)
-    .catch(this.handleError);
+  public updateTarget(opiId: any, department: any) {
+    return this.http.put(this.baseUrl + "/assign/opi/" + opiId + "/departments", department)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   private extractData(res: Response) {

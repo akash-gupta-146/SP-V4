@@ -26,7 +26,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder,
     public commonService: StorageService,
-    private loaderService:LoaderService) {
+    private loaderService: LoaderService) {
     super();
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
@@ -34,7 +34,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   ngOnInit() {
-    
+
   }
 
   ngAfterViewInit() {
@@ -42,8 +42,8 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       $('[data-toggle="tooltip"]').tooltip();
     });
   }
-  
-  getCycleWithChildren(flag:any){
+
+  getCycleWithChildren(flag: any) {
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
       if (response.status == 204) {
         this.cycles = [];
@@ -55,8 +55,8 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
             this.defaultCycle = element.cycleId;
           }
         });
-        if(!flag)
-        this.getActivities();
+        if (!flag)
+          this.getActivities();
       }
     });
   }
@@ -81,7 +81,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
         this.initFilters(response);
       }
       this.loaderService.display(false);
-    },(error:any)=>{
+    }, (error: any) => {
       this.loaderService.display(false);
     });
   }
@@ -121,28 +121,29 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           this.activityForm.controls["activity"].reset();
         })
     } else {
-      alertify.confirm("Are you sure you want to Update this Activity?",()=> {
-      delete this.activityForm.value["initiativeId"];
-      this.orgService.updateActivity(this.seletedActivity.activityId, this.activityForm.value).subscribe((res: any) => {
+      alertify.confirm("Are you sure you want to Update this Activity?", () => {
+        delete this.activityForm.value["initiativeId"];
+        this.orgService.updateActivity(this.seletedActivity.activityId, this.activityForm.value).subscribe((res: any) => {
           this.getActivities();
-          alertify.notify("Updated successfully .,.");        
+          alertify.notify("Updated successfully .,.");
           this.isUpdating = false;
           this.activityForm = this.setActivity();
         });
       });
-  }
+    }
   }
 
   deleteActivity(activityId: any, activities: any[], index: any) {
-    alertify.confirm("Are you sure you want to delete this Activity?",()=>{
+    alertify.confirm("Are you sure you want to delete this Activity?", () => {
       this.orgService.deleteActivity(activityId).subscribe((res: any) => {
         activities.splice(index, 1);
-        alertify.notify("Deleted successfully .,.");        
+        alertify.notify("Deleted successfully .,.");
       });
     })
   }
   seletedActivity: any;
-  updateActivity(objective: any, initiative: any, activity: any,highlight:any) {
+  updateActivity(objective: any, initiative: any, activity: any, highlight: any) {
+    $('#add-btn').hide();
     $(".to-be-highlighted").removeClass("highlight");
     $(highlight).addClass("highlight");
     $("#add-activity").show();
@@ -160,61 +161,64 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     });
   }
 
-  closeForm(){
+  closeForm() {
+    $('#add-btn').show();
     this.enableFields();
     this.isUpdating = false;
     this.getCycleWithChildren(false);
   }
 
   enableFields() {
-    this.activityForm.controls["cycleId"].enable();
+    // this.activityForm.controls["cycleId"].enable();
     this.activityForm.controls["objectiveId"].enable();
     this.activityForm.controls["initiativeId"].enable();
     this.activityForm = this.setActivity();
-    $("#add-activity").hide(); 
-    $(".to-be-highlighted").removeClass("highlight");   
+    $("#add-activity").hide();
+    $(".to-be-highlighted").removeClass("highlight");
   }
 
-  addNewActivity(){
-    this.enableFields(); 
+  addNewActivity() {
+    this.enableFields();
     this.isUpdating = false;
     $("#add-activity").show();
+    $('#add-btn').hide();
     $("#collapse1").collapse('show');
-    this.getCycleWithChildren(true);
     this.activityForm = this.setActivity();
+    this.getCycleWithChildren(true);
+    
   }
 
-  disable(event:any,activityId:any){
-    if(event.srcElement.checked)
-      alertify.confirm("Do you Really want to disable this Activity??",()=>{
-        this.orgService.disableActivity(activityId).subscribe((response:any)=>{
+  disable(event: any, activityId: any) {
+    if (event.srcElement.checked)
+      alertify.confirm("Do you Really want to disable this Activity??", () => {
+        this.orgService.disableActivity(activityId).subscribe((response: any) => {
           alertify.success("You disabled the Activity..");
           this.getActivities();
-        },()=>{
+        }, () => {
           event.srcElement.checked = !event.srcElement.checked;
           alertify.error("Something went wrong..")
         })
-      },()=>{
+      }, () => {
         event.srcElement.checked = !event.srcElement.checked;
         alertify.error("Action was not performed")
       });
     else
-      alertify.confirm("Do you Really want to enable this Activity??",()=>{
-        this.orgService.enableActivity(activityId).subscribe((response:any)=>{
+      alertify.confirm("Do you Really want to enable this Activity??", () => {
+        this.orgService.enableActivity(activityId).subscribe((response: any) => {
           alertify.success("You enabled the Activity..");
           this.getActivities();
-        },()=>{
+        }, () => {
           event.srcElement.checked = !event.srcElement.checked;
           alertify.error("Something went wrong..")
         })
-      },()=>{
+      }, () => {
         event.srcElement.checked = !event.srcElement.checked;
         alertify.error("Action was not performed")
-      });      
+      });
   }
 
-  get(e){
-    var promise = new Promise((resolve:any,reject:any)=>{     $(e)["0"].height = $(e)["0"].clientHeight;     resolve();    }) ;   
+  get(e) {
+    var promise = new Promise((resolve: any, reject: any) => { $(e)["0"].height = $(e)["0"].clientHeight; resolve(); });
     return promise;
   }
 

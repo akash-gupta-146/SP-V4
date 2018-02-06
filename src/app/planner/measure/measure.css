@@ -1,5 +1,6 @@
 .department-hierarchy{
   overflow: scroll;
+  height: 60vh;
 }
 .modal-xl{
   width: 80%;

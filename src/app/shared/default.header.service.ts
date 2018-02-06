@@ -6,7 +6,7 @@ import 'rxjs/add/operator/catch';
 
 function getToken(): any {
   let token = localStorage.getItem('access_token');
-  let header:any;
+  let header: any;
   if (token == null) {
     header;
   } else {
@@ -17,7 +17,7 @@ function getToken(): any {
 
 @Injectable()
 export class CustomHttpService extends Http {
-  constructor (backend: XHRBackend, options: RequestOptions) {
+  constructor(backend: XHRBackend, options: RequestOptions) {
     options.headers = new Headers({
       'Content-Type': 'application/json',
       'Authorization': `${getToken()}`,
@@ -26,16 +26,16 @@ export class CustomHttpService extends Http {
   }
 
   // its like interceptor, calls by each methods internally like get, post, put, delete etc
-  request(url: string|Request, options?: RequestOptionsArgs): Observable<Response> {
+  request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
     if (typeof url === 'string') {
       if (!options) {
         options = { headers: new Headers() };
         options.headers.set('Content-Type', 'application/json');
         options.headers.set('Authorization', `${getToken()}`);
       } else {
-        
+
       }
-      
+
     } else {
       url.headers.set('Content-Type', 'application/json');
       url.headers.set('Authorization', `${getToken()}`);

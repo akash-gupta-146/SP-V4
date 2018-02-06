@@ -3,92 +3,99 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
 import { UniversityService } from "../../shared/UTI.service";
 import { LoaderService } from '../../shared/loader.service';
+import * as alertify from 'alertifyjs';
 
-declare let $:any;
+declare let $: any;
 
 @Component({
-  selector:'planner-home',
-  templateUrl:'./home.component.html',
-  styleUrls:['./home.component.css']
+  selector: 'planner-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class HomeComponent{
-  public valueForm:FormGroup;
-  public missionVisionForm:FormGroup;
-  public missionVision:string;
-  public organizationInfo:any;
-  public selectedValue:any;
+export class HomeComponent {
+  public valueForm: FormGroup;
+  public missionVisionForm: FormGroup;
+  public missionVision: string;
+  public organizationInfo: any;
+  public selectedValue: any;
 
-  constructor(public commonService: StorageService,public orgSer:UniversityService) {
+  constructor(public commonService: StorageService, public orgSer: UniversityService) {
     this.valueForm = new FormGroup({
-      title:new FormControl('',[Validators.required]),
-      description:new FormControl('',Validators.required),
+      title: new FormControl('', [Validators.required]),
+      description: new FormControl('', Validators.required),
     });
     this.missionVisionForm = new FormGroup({
-      description:new FormControl('',Validators.required)
+      description: new FormControl('', Validators.required)
     });
-    this.fetchOrganizationInfo(); 
-   }
+    this.fetchOrganizationInfo();
+  }
 
-  ngOnInit() { 
-     
+  ngOnInit() {
+
   }
 
   public fetchOrganizationInfo() {
-		this.orgSer.fetchOrganizationInfo().subscribe((res: any) => {
+    this.orgSer.fetchOrganizationInfo().subscribe((res: any) => {
       this.commonService.storeData("org_info", res);
       this.organizationInfo = res;
-		}, (err: any) => {
+    }, (err: any) => {
 
-		});
-	}
+    });
+  }
 
-  onValueSubmit(){
-    if(this.selectedValue){
-      this.orgSer.updateValue(this.valueForm.value,this.selectedValue.valueId)
-      .subscribe((res:any)=>{
-        this.valueForm.value["id"] = this.selectedValue.valueId;
-        this.organizationInfo.values[this.selectedValueIndex] = this.valueForm.value;
-        this.commonService.storeData('org_info',this.organizationInfo);
-        $('#valueForm').modal('hide');
-        this.valueForm.reset();
-      })
-    }else{
+  onValueSubmit() {
+    if (this.selectedValue) {
+      this.orgSer.updateValue(this.valueForm.value, this.selectedValue.valueId)
+        .subscribe((res: any) => {
+          alertify.success("Successfully Updated..");
+          this.valueForm.value["id"] = this.selectedValue.valueId;
+          this.organizationInfo.values[this.selectedValueIndex] = this.valueForm.value;
+          this.commonService.storeData('org_info', this.organizationInfo);
+          $('#valueForm').modal('hide');
+          this.valueForm.reset();
+        }, (error: any) => {
+          alertify.error("Something went wrong..");
+        })
+    } else {
       this.valueForm.value["universityId"] = this.organizationInfo.universityId;
-      this.orgSer.addValue([this.valueForm.value]).subscribe((res:any)=>{
+      this.orgSer.addValue([this.valueForm.value]).subscribe((res: any) => {
+        alertify.success("Successfully Saved..");
         this.organizationInfo.values.push(this.valueForm.value);
         $('#valueForm').modal('hide');
         this.valueForm.reset();
+      }, (error: any) => {
+        alertify.error("Something went wrong..");
       })
-    }    
+    }
   }
 
-  deleteValue(val:any,index:any){
-    this.orgSer.deleteValue(val.valueId).subscribe((res:any)=>{
-      this.organizationInfo.values.splice(index,1);
+  deleteValue(val: any, index: any) {
+    this.orgSer.deleteValue(val.valueId).subscribe((res: any) => {
+      this.organizationInfo.values.splice(index, 1);
     })
   }
-  selectedValueIndex:any;
-  onValueSelected(val:any,index:any){
+  selectedValueIndex: any;
+  onValueSelected(val: any, index: any) {
     this.valueForm.controls["title"].patchValue(val.title);
     this.valueForm.controls["description"].patchValue(val.description);
     this.selectedValue = val;
     this.selectedValueIndex = index;
   }
 
-  editMisionVision(title:any, mvDesc:any){
+  editMisionVision(title: any, mvDesc: any) {
     this.missionVision = title;
     this.missionVisionForm.controls["description"].patchValue(mvDesc);
   }
 
-  onMissionVisionSubmit(){
-    var org_info:any = this.commonService.getData('org_info');
-    var object:any ={};
+  onMissionVisionSubmit() {
+    var org_info: any = this.commonService.getData('org_info');
+    var object: any = {};
     object[this.missionVision] = this.missionVisionForm.value['description'];
     console.log(object);
-    this.orgSer.updateMisionVision(object).subscribe(res=>{      
+    this.orgSer.updateMisionVision(object).subscribe(res => {
       this.organizationInfo[this.missionVision] = this.missionVisionForm.value['description'];
       org_info[this.missionVision] = this.missionVisionForm.value['description'];
-      this.commonService.storeData('org_info',org_info);
+      this.commonService.storeData('org_info', org_info);
       $('#missionVisionForm').modal('hide');
     })
   }
