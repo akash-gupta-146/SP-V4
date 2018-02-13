@@ -1,0 +1,668 @@
+<hod></hod>
+<div class="container-fluid">
+  <!-- new code -->
+  <div class="panel" *ngIf="data" style="margin-top:50px;" id="first-section">
+    <div class="panel-heading">
+      <h4 class="panel-title ">
+        <!-- <button type="button" class="close" (click)="closeForm();">
+     <span aria-hidden="true">&times;</span>
+    </button> -->
+        <a data-toggle="collapse" href="#edit-section">KPI DETAILS</a>
+      </h4>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-2">
+          <h5>
+            <strong>STRATEGIC GOAL</strong>
+          </h5>
+        </div>
+        <div class="col-sm-10">
+          <h5>{{data.goal}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2">
+          <h5>
+            <strong>INITIATIVE</strong>
+          </h5>
+        </div>
+        <div class="col-sm-10">
+          <h5>{{data.initiative}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2">
+          <h5>
+            <strong>ACTIVITY</strong>
+          </h5>
+        </div>
+        <div class="col-sm-10">
+          <h5>{{data.activity}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2">
+          <h5>
+            <strong>OPI</strong>
+          </h5>
+        </div>
+        <div class="col-sm-10">
+          <h5> {{data.opi}}</h5>
+        </div>
+      </div>
+      <div class="row mini">
+        <div class="col-sm-4">
+          <h5>
+            <strong>FREQUENCY</strong>
+          </h5>
+          <h5>{{data.frequency}}</h5>
+        </div>
+        <div class="col-sm-4">
+          <h5>
+            <strong>MEASURE UNIT</strong>
+          </h5>
+          <h5>{{data.measureUnit}}</h5>
+        </div>
+        <div class="col-sm-4">
+          <h5>
+            <strong>EVIDENCE FORM TYPE</strong>
+          </h5>
+          <h5> {{data.evidanceForm}}
+            <p *ngIf="!data.evidanceForm">None</p>
+          </h5>
+        </div>
+      </div>
+
+      <br>
+      <div class="form-group">
+        <label class="col-sm-6 col-md-6 col-lg-3">Corresponding Departments : </label>
+        <div class="col-sm-6 col-md-6 col-lg-9">
+          <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="department">
+            <option value="0">All Departments</option>
+            <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
+          </select>
+        </div>
+      </div>
+      <br>
+      <div id="accordion">
+        <fieldset class="the-fieldset panel" *ngFor="let dept of departmentInfo;let d=index;">
+          <legend class="the-legend" data-parent="#accordion" [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
+
+          <div [attr.id]="'demo' + dept.departmentId" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
+            <div style="position: absolute;top: -45px;right: 10px;">
+              <a class="btn btn-save" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">Quarters</a>
+              <ng-template #quarterView>
+                <a class="btn btn-save" (click)="getActionSteps(dept)" *ngIf="!dept.actionStepView">Action Steps</a>
+                <a class="btn btn-save" (click)="getAnnualTargetsByOpiDepartment(dept)" *ngIf="!dept.show; else currentBtn">All Quarters</a>
+              </ng-template>
+              <ng-template #currentBtn>
+                <a class="btn btn-save" (click)="getCurrentAnnualTargets(dept)">Current Quarter</a>
+              </ng-template>
+            </div>
+            <div *ngIf="!dept.actionStepView">
+              <!-- without evidenceformId -->
+              <div *ngIf="!data.evidanceFormId">
+                <div class="panel panel-default" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+                  <div class="panel-heading">
+                    Year : {{tdl.year}}
+                  </div>
+                  <div class="panel-body row">
+                    <div class="form-group">
+                      <label class="control-label col-sm-3 col-md-3 col-lg-1">BASE LINE :</label>{{dept.baseline}}
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let lev of tdl.levels;let in=index;">
+                      <div class="panel" style="border: 1px solid #0000001c;">
+                        <div class="panel-body quarter-block">
+                          <b class="quarter">{{lev.quarter}}</b>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
+                            </div>
+                            <div class="col-sm-6">
+                              <strong>Estimated Level </strong>: {{lev.estimatedTargetLevel}}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <strong>End Date </strong>: {{lev.endDate + tdl.year}}
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="dropdown" *ngIf="lev.evidance&&lev.evidance.length">
+                                <strong>Evidence </strong>:
+                                <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
+                                  <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 0;left:unset;font-size:12px;">
+                                  <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                                    <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
+                                    <button type="button" class="close" (click)="deleteEvidence(evidences,ev,e)" [hidden]="lev.status=='locked'">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </li>
+                                  <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
+                                  <li role="presentation" class="divider" style="clear: both;"></li>
+                                  <li class="text-center" role="presentation">
+                                    <button *ngIf="lev.status=='inprogress'" data-toggle="modal" data-target="#evidenceForm" (click)="selectedQuarter=lev;evForm=0"
+                                      [disabled]="lev.disable">Upload</button>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <strong>Current Cost </strong>:
+                              <input type="number" [(ngModel)]="lev.currentCost" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+                              <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentCost}}</span>
+                            </div>
+                            <div class="col-sm-6">
+                              <strong>Current Level </strong>:
+                              <input type="number" [(ngModel)]="lev.currentTargetLevel" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+                              <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentTargetLevel}}</span>
+                            </div>
+                          </div>
+                          <span class="status">{{lev.status}}</span>
+                        </div>
+                        <div class="panel-footer text-center" *ngIf="!lev.disable">
+                          <button *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)" (click)="saveQuarterResult(lev)"
+                            [disabled]="lev.disable"> Save</button>
+                          <!-- <button *ngIf="lev.status=='inprogress'" data-toggle="modal" data-target="#evidenceForm" (click)="selectedQuarter=lev;evForm=0"
+                      [disabled]="lev.disable">Upload Evidence</button> -->
+                          <button *ngIf="lev.status=='inprogress'" (click)="lev.status='unsubmitted';lev.isUpdating=true;" [disabled]="lev.disable">Edit</button>
+                          <button *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
+                          <button *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--with student internship form-->
+              <div class="row" *ngIf="data.evidanceFormId==1" style="padding:15px;">
+                <table id="accordion" class="table  table-bordered table-edit">
+                  <colgroup>
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="50%">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th>Estimated Cost</th>
+                      <th>Quarter</th>
+                      <th>EstimatedTargetLevel</th>
+                      <th>End Date</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+                    <tr>
+                      <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.year}}</td>
+                      <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.estimatedCost}}</td>
+                    </tr>
+                    <ng-template let-lev ngFor [ngForOf]="tdl.levels" let-in="index">
+                      <tr [style.background]="lev.disable?'lightgray':null" data-toggle="collapse" [attr.href]="'#row-collapse'+at+'q'+in" (click)="selectedQuarter=lev;evForm=1;collapseOff('#row-collapse'+at+'q'+in)"
+                        style="cursor:pointer;">
+                        <td>{{lev.quarter}}</td>
+                        <td>{{lev.estimatedTargetLevel}}</td>
+                        <td>{{lev.endDate + tdl.year}}</td>
+                      </tr>
+                      <ng-container>
+                        <tr [attr.id]="'row-collapse'+at+'q'+in" class="collapse collapse-off">
+                          <td colspan="6">
+                            <table class="table table-bordered">
+                              <caption align="top" *ngIf="lev.internshipDetails.length">
+                                <div class="input-group">
+                                  <div class="input-group-addon bg-color">Current Cost</div>
+                                  <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
+                                  <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                                    <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                                      <i class="glyphicon glyphicon-pencil"></i>
+                                    </button>
+                                  </div>
+
+                                  <ng-template #savebtn>
+                                    <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
+                                      <i class="glyphicon glyphicon-floppy-saved"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                                      <i class="glyphicon glyphicon-remove"></i>
+                                    </button>
+                                  </ng-template>
+
+                                  <div class="pull-right">
+                                    <button type="button" class="btn btn-primary btn-save" (click)="lockQuarterResult(lev)" *ngIf="lev.internshipDetails.length"
+                                      [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                                  </div>
+                                </div>
+                              </caption>
+                              <thead>
+                                <tr>
+                                  <th>Internship Detail</th>
+                                  <th *ngIf="lev.internshipDetails.length">Evidence
+                                    <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.internshipDetails[0];evForm = data.evidanceFormId;selectedQuarter=lev;"
+                                      *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody *ngFor="let file of lev.internshipDetails;let f=index;">
+                                <tr>
+                                  <td>
+                                    <a [attr.href]="file.internshipFileUrl">File 1</a>
+                                    <button type="button" class="close" (click)="deleteInternshipFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'"
+                                      [disabled]="lev.disable">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </td>
+                                  <td>
+                                    <ul style="list-style: none;padding: 0;">
+                                      <li *ngFor="let ev of file.evidance;let e=index;">
+                                        <a [attr.href]="ev.url">evidence {{e+1}}</a>
+                                        <button type="button" class="close" (click)="deleteInternshipEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </li>
+                                      <li *ngIf="!file.evidance.length;" style="color:red">No evidence added yet.</li>
+                                    </ul>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot *ngIf="!lev.internshipDetails.length">
+                                <tr>
+                                  <td colspan="2">
+                                    <div class="row">
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label>Current Cost :</label>
+                                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable" style="width:25%">
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label for="exampleInputFile">Student Internship File :</label>
+                                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                            aria-describedby="fileHelp" (change)="getInternshipFile(lev,$event)" [disabled]="lev.disable">
+                                          <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <button type="button" (click)="saveInternshipForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.internshipFile)">Save</button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-template>
+                  </tbody>
+                </table>
+              </div>
+              <!--with mous forms-->
+              <div class="row" *ngIf="data.evidanceFormId==2" style="padding:15px;">
+                <table id="accordion" class="table table-hover table-bordered table-edit">
+                  <colgroup>
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="50%">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th>Estimated Cost</th>
+                      <th>Quarter</th>
+                      <th>EstimatedTargetLevel</th>
+                      <th>End Date</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+                    <tr>
+                      <td [attr.rowspan]="tdl.levels.length+4" style="vertical-align: middle;">{{tdl.year}}</td>
+                      <td [attr.rowspan]="tdl.levels.length+4" style="vertical-align: middle;">{{tdl.estimatedCost}}</td>
+                    </tr>
+                    <ng-template let-lev ngFor [ngForOf]="tdl.levels" let-in="index">
+                      <tr data-toggle="collapse" [attr.href]="'#row-collapse'+at+'lev'+in" (click)="selectedQuarter=lev;collapseOff('#row-collapse'+at+'lev'+in)"
+                        [style.background]="lev.disable?'lightgray':null" style="cursor:pointer;">
+                        <td>{{lev.quarter}}</td>
+                        <td>{{lev.estimatedTargetLevel}}</td>
+                        <td>{{lev.endDate + tdl.year}}</td>
+                      </tr>
+                      <ng-container>
+                        <tr [attr.id]="'row-collapse'+at+'lev'+in" class="collapse collapse-off">
+                          <td colspan="5">
+                            <table class="table table-bordered" *ngIf="lev.mouDetails.length">
+                              <caption align="top">
+                                <div class="input-group">
+                                  <div class="input-group-addon">Current Cost</div>
+                                  <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
+                                  <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                                    <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                                      <i class="glyphicon glyphicon-pencil"></i>
+                                    </button>
+                                  </div>
+
+                                  <ng-template #savebtn>
+                                    <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
+                                      <i class="glyphicon glyphicon-floppy-saved"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                                      <i class="glyphicon glyphicon-remove"></i>
+                                    </button>
+                                  </ng-template>
+
+                                  <div class="pull-right">
+                                    <button class="btn" (click)="lockQuarterResult(lev)" *ngIf="lev.mouDetails.length" [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock </button>
+                                  </div>
+                                </div>
+                              </caption>
+                              <colgroup>
+                                <col style="width:5%">
+                                <col style="width:25%">
+                                <col style="width:25%">
+                                <col style="width:25%">
+                                <col style="width:20%" [hidden]="lev.disable">
+                              </colgroup>
+                              <thead>
+                                <tr>
+                                  <th>*</th>
+                                  <th>Mou Type</th>
+                                  <th>Organisation</th>
+                                  <th>Evidence</th>
+                                  <th [hidden]="lev.disable">
+                                    <button class="btn" type="button" *ngIf="lev.mouDetails.length" (click)="lev.addMore=true;">Add More</button>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody *ngFor="let detail of lev.mouDetails;let d = index;">
+                                <tr>
+                                  <td rowspan="2">{{d+1}}</td>
+                                  <ng-container *ngIf="!detail.edit; else editable">
+                                    <td>
+                                      {{detail.mouType}}
+                                    </td>
+                                    <td>
+                                      {{detail.organization}}
+                                    </td>
+                                  </ng-container>
+                                  <ng-template #editable>
+                                    <td>
+                                      <input class="form-control" [(ngModel)]="detail.mouType">
+                                    </td>
+                                    <td>
+                                      <input class="form-control" [(ngModel)]="detail.organization">
+                                    </td>
+                                  </ng-template>
+                                  <td>
+                                    <div class="dropdown">
+                                      <strong>Evidence </strong>:
+                                      <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
+                                        <span class="caret"></span>
+                                      </a>
+                                      <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 0;left:unset;font-size:12px;">
+                                        <li role="presentation" *ngFor="let ev of detail.evidance;let e = index;" style="padding: 0px 2px 0px 2px;">
+                                          <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left;padding-left:10px;">evidance {{e+1}}</a>
+                                          <button type="button" class="close" (click)="deleteEvidence(detail.evidance,ev,e)" [hidden]="detail.status=='locked'">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </li>
+                                        <li class="text-center" role="presentation" *ngIf="!detail.evidance.length">None</li>
+                                        <li role="presentation" class="divider" style="clear: both;"></li>
+                                        <li class="text-center" role="presentation">
+                                          <button (click)="evForm=2;selectedMou=detail;" data-toggle="modal" data-target="#evidenceForm">Upload</button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </td>
+                                  <td [hidden]="lev.disable">
+                                    <ng-container *ngIf="!detail.edit; else editableBtn">
+                                      <button type="button" (click)="detail.edit=true;detail.mouTypeCopy=detail.mouType;detail.organizationCopy=detail.organization;">
+                                        Edit</button>
+                                    </ng-container>
+                                    <ng-template #editableBtn>
+                                      <button type="button" (click)="updateMou(detail)">save </button>
+                                      <button type="button" (click)="detail.edit=false;detail.mouType=detail.mouTypeCopy;detail.organization=detail.organizationCopy;">Cancel </button>
+                                    </ng-template>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tfoot *ngIf="lev.addMore">
+                                <tr>
+                                  <td></td>
+                                  <td>
+                                    <input class="form-control" [(ngModel)]="lev.mouType">
+                                  </td>
+                                  <td>
+                                    <input class="form-control" [(ngModel)]="lev.organization">
+                                  </td>
+                                  <td>
+                                    <button type="button" (click)="saveQuarterResultWithMou(lev)">save </button>
+                                    <button type="button" *ngIf="lev.addMore" (click)="lev.addMore=false;">Cancel </button>
+                                  </td>
+                                </tr>
+                              </tfoot>
+                            </table>
+                            <div class="row" *ngIf="!lev.mouDetails.length">
+                              <div class="col-sm-3">
+                                <div class="input-group">
+                                  <div class="input-group-addon bg-color">Current Cost</div>
+                                  <input type="text" class="form-control" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
+                                </div>
+                              </div>
+                              <div class="col-sm-3">
+                                <div class="input-group">
+                                  <div class="input-group-addon bg-color">Mou type</div>
+                                  <input type="text" class="form-control" [(ngModel)]="lev.mouType" [disabled]="lev.disable">
+                                </div>
+                              </div>
+                              <div class="col-sm-3">
+                                <div class="input-group">
+                                  <div class="input-group-addon bg-color">Organization</div>
+                                  <input type="text" class="form-control" [(ngModel)]="lev.organization" [disabled]="lev.disable">
+                                </div>
+                              </div>
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <button class="btn pull-right btn-save" type="button" (click)="saveQuarterResultWithMou(lev)" [disabled]="lev.disable"> Save</button>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-template>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row" *ngIf="dept.actionStepView" style="padding:15px;">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="panel-title">
+                    <span *ngIf="dept.isEdit&&dept.isNew">Edit</span>
+                    <span *ngIf="!dept.isEdit&&dept.isNew">Add</span>
+                    Action Step
+                    <button class="pull-right" (click)="addNewActionStep(dept)" *ngIf="!dept.isNew">
+                      <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button class="pull-right" (click)="dept.isNew=!dept.isNew" *ngIf="dept.isNew">
+                      <span class="glyphicon glyphicon-arrow-left"></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="panel-body" style="position:relative;">
+                  <table class="table table-bordered text-center" *ngIf="!dept.isNew">
+                    <thead>
+                      <tr>
+                        <th>*</th>
+                        <th class="text-center">Action</th>
+                        <th class="text-center">Deadline</th>
+                        <th class="text-center">Root Cause</th>
+                        <th class="text-center">Resources</th>
+                        <th class="text-center">Assigned Employees</th>
+                        <th class="text-center">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let step of actionSteps;let s = index;">
+                        <th>{{s+1}}</th>
+                        <td>{{step.description}}</td>
+                        <td>{{step.deadline}}</td>
+                        <td>{{step.reason}}</td>
+                        <td>{{step.resources}}</td>
+                        <td>
+                          <ul style="list-style:none;padding:0px;margin:0px;">
+                            <li *ngFor="let emp of step.employeeAssigned;let i = index;">
+                              {{emp.firstName + emp.lastName}}
+                              <i *ngIf="i!=step.employeeAssigned.length-1">,</i>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                              <button class="myButton btn-link" (click)="showList(step)">Assign</button>
+                            </li>
+                          </ul>
+                        </td>
+                        <td>
+                          <button class="btn-link" (click)="editActionStep(dept,step)">edit</button>
+                          <button class="btn-link" data-toggle="modal" data-target="#feedbackActionModal" (click)="selectedStep = step;" >feedback</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot *ngIf="!actionSteps.length">
+                      <tr>
+                        <th class="text-center" colspan="6">No Action Steps added yet</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                  <form class="form-horizontal" [formGroup]="actionForm" *ngIf="dept.isNew">
+                    <div class="form-group">
+                      <label class="control-label col-sm-2">Description</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" formControlName="description"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2">Reason</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" formControlName="reason"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2">Resources</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" formControlName="resources"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2">Deadline</label>
+                      <div class="col-sm-10">
+                        <input class="form-control" type="date" formControlName="deadline">
+                      </div>
+                    </div>
+                  </form>
+                  <div class="emp-list">
+                    <div style="position: absolute;right: -30px;">
+                      <button type="button" (click)="hideList()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </button>
+                      <br>
+                      <button type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
+                        <span class="glyphicon glyphicon-ok"></span>
+                      </button>
+                    </div>
+                    <select multiple id="toggle-list" [(ngModel)]="employeeIds">
+                      <option *ngFor="let emp of employees;let i = index;" [ngValue]="emp" [selected]="emp.assigned" [disabled]="emp.assigned">{{emp.firstName + emp.lastName}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="panel-footer" *ngIf="dept.isNew">
+                  <div class="form-group">
+                    <div class="col-sm-offset-2">
+                      <button type="button" class="btn btn-success" (click)="onSubmit(dept,actionSteps)" [disabled]="actionForm.invalid">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Evidence Form-->
+<div class="modal fade" id="evidenceForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content" *ngIf="data">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Attach Evidence</h4>
+      </div>
+      <!-- Modal Body -->
+      <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(evForm)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" formControlName="title" />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputFile">Attachment</label>
+            <input type="file" class="form-control-file" id="exampleInputFile" formControlName="files" (change)="getFile($event)" aria-describedby="fileHelp">
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback Modal-->
+<div class="modal fade" id="feedbackActionModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" *ngIf="selectedStep">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Action : {{selectedStep.description}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="optradio">Feedback :</label>
+          <label class="radio-inline">
+            <input type="radio" name="optradio" [(ngModel)]="selectedStep.feedback" value="true">Approve
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="optradio" [(ngModel)]="selectedStep.feedback" value="false">Reject
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="comment">Comment :</label>
+          <textarea class="form-control" id="comment" name="comment" [(ngModel)]="selectedStep.comment"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-btn-success" (click)="setActionFeedback(selectedStep)">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

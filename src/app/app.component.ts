@@ -43,6 +43,8 @@ export class AppComponent {
     // router.events.subscribe((event: RouterEvent) => {
     //   this.navigationInterceptor(event)
     // })
+    // ROLE = JSON.parse(localStorage.getItem('role'));
+    // console.log(ROLE);
     if (!localStorage.getItem('access_token'))
       this.router.navigateByUrl('/login');
   }

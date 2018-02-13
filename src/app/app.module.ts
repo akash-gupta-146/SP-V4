@@ -6,6 +6,7 @@ import { StorageService } from "./shared/storage.service";
 import { AuthGuard } from "./shared/auth.gaurd";
 import { LoaderService } from './shared/loader.service';
 
+ROLE = JSON.parse(localStorage.getItem('role'));
 
 export const routes: Routes = [
 	{
@@ -24,7 +25,8 @@ export const routes: Routes = [
 	},
 	{
 		path: 'coordinator',
-		loadChildren: 'app/coordinator/coordinator.module#CoordinatorModule',
+		// loadChildren: 'app/coordinator/coordinator.module#CoordinatorModule',
+		loadChildren: 'app/hod/hod.module#HodModule',		
 		canActivate: [AuthGuard]
 	},
 	{

@@ -1,20 +1,27 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy, AfterViewInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CoordinatorService } from '../coordinator.service';
 import * as alertify from 'alertifyjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StorageService } from '../../shared/storage.service';
 import { LoaderService } from '../../shared/loader.service';
-
+import { FormBuilder } from '@angular/forms';
+import { HodService } from '../hod.service';
+import * as _ from 'underscore';
 declare let $:any;
 
 @Component({
  selector:'',
  templateUrl:'./departments.component.html',
- styleUrls:['./../home/home.component.css','./../coordinator.component.css'],
- providers: [CoordinatorService]
+ styleUrls: ['./../hod.component.css'],
+//  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DepartmentsComponent{
+export class CoordinatorDepartmentsComponent implements AfterViewInit{
+  isEdit: boolean;
+  selectedDepatrtmentId: any;
+  employeesCopy: any;
+  employees: any[] = [];
+  actionSteps: any[]=[];
+  actionForm: FormGroup;
  data:any;
  department:any=0;
  departments:any[]=[];
@@ -22,8 +29,9 @@ export class DepartmentsComponent{
  departmentsCopy:any[]=[];
  evidencForm: FormGroup;
  evidences: any[] = [];
- constructor(public route:ActivatedRoute,public utServ: CoordinatorService,
-  public storage: StorageService, public loaderService: LoaderService){
+ constructor(public route:ActivatedRoute,public utServ: HodService,
+  public storage: StorageService, public loaderService: LoaderService,
+  public fb:FormBuilder){
   this.route.params.subscribe((params:any)=>{
    this.loaderService.display(true);
    this.utServ.getDepartmentByOpiId(params['id']).subscribe((response:any)=>{
@@ -39,10 +47,25 @@ export class DepartmentsComponent{
    description: new FormControl('', Validators.required),
    files: new FormControl('', [Validators.required])
  });
+ this.getEmployees();
+ this.actionForm = this.fb.group({
+  "reason":["",Validators.required],
+  "description":["",Validators.required],
+  "resources":["",Validators.required],
+  "deadline":["",Validators.required],
+  "opiId":[]
+});
  }
+
+ ngAfterViewInit(){
+
+}
+
+
 
  getAnnualTargetsByOpiDepartment(department:any){
   department.show = true;
+  department.actionStepView = false;
   if(department.allAnnualTargets){
    department.opiAnnualTargets = department.allAnnualTargets;
    return;
@@ -57,7 +80,7 @@ export class DepartmentsComponent{
 
  getCurrentAnnualTargets(department:any){
   department.show = false;
-  
+  department.actionStepView = false;  
   department.allAnnualTargets = department.opiAnnualTargets;
    department.opiAnnualTargets = department.currentAnnualTargets;
  }
@@ -84,7 +107,11 @@ export class DepartmentsComponent{
       this.loaderService.setTransactionLoader(true);
       this.utServ.saveQuarterResult(object).subscribe((response: any) => {
       this.loaderService.setTransactionLoader(false);
+      quarter.isUpdating=false;
       quarter.status = 'inprogress';
+      },(error:any)=>{
+        this.loaderService.setTransactionLoader(false);
+        alertify.error("Something went wrong..");
       })
     } else {
       let object = {
@@ -94,10 +121,14 @@ export class DepartmentsComponent{
       this.loaderService.setLoadingStatus("Updating");
       this.loaderService.setTransactionLoader(true);
       this.utServ.updateQuarterResult(quarter.id, object).subscribe((response: any) => {
+      quarter.status = 'inprogress';
       this.loaderService.setTransactionLoader(false);
       alertify.success("Updated");
       console.log(response);
-      });
+      },(error:any)=>{
+        this.loaderService.setTransactionLoader(false);
+        alertify.error("Something went wrong..");
+      })
     }
   }
 
@@ -166,7 +197,7 @@ export class DepartmentsComponent{
     alertify.confirm("Are you sure you want to Lock you results",()=>{
       this.loaderService.setLoadingStatus("Locking");
       this.loaderService.setTransactionLoader(true);
-      this.utServ.updateQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {
+      this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {
         this.loaderService.setTransactionLoader(false);      
         console.log(response);
         quarter.disable = true;
@@ -190,13 +221,15 @@ export class DepartmentsComponent{
   }
 
   deleteInternshipEvidence(evidences: any[], evidence: any, index: any) {
-    if (confirm("Are you sure you want to delete this evidence"))
+    alertify.confirm("Are you sure you want to delete this evidence",(response:any)=>{
       this.utServ.deleteInternshipEvidence(evidence.id).subscribe((response: any) => {
         evidences.splice(index, 1);
         alertify.success("Success");
       },(error:any)=>{
         alertify.error("Error");
       });
+    }).setHeader("Confirmation");
+      
   }
 
   getInternshipFile(lev:any,event){
@@ -223,18 +256,30 @@ export class DepartmentsComponent{
           if (!this.selectedQuarter.evidance)
             this.selectedQuarter.evidance = [];
           this.selectedQuarter.evidance.push(res);
+          alertify.success("Evidence Uploaded ..");
+          $('#evidenceForm').modal('hide');
+        },(error:any)=>{
+          alertify.error("Something went wrong");
           $('#evidenceForm').modal('hide');
         });
         break;
       case 1:
         this.utServ.saveEvidenceForInternshipFile(formData, this.selectedInternshipFile.id).subscribe((response: any) => {
           this.selectedInternshipFile['evidance'].push(response);
+          alertify.success("Evidence Uploaded ..");
+          $('#evidenceForm').modal('hide');
+        },(error:any)=>{
+          alertify.error("Something went wrong");
           $('#evidenceForm').modal('hide');
         })
         break;
       case 2:
         this.utServ.saveEvidenceForMou(formData, this.selectedMou.id).subscribe((response: any) => {
           this.selectedMou.evidance.push(response);
+          alertify.success("Evidence Uploaded ..");
+          $('#evidenceForm').modal('hide');
+        },(error:any)=>{
+          alertify.error("Something went wrong");
           $('#evidenceForm').modal('hide');
         })
         break;
@@ -254,15 +299,153 @@ export class DepartmentsComponent{
   }
 
   deleteInternshipFile(files: any[], file: any, index: any) {
-    if (confirm("Are you sure you want to delete this file"))
+    alertify.confirm("Are you sure you want to delete this file",(response:any)=>{
       this.utServ.deleteInternshipFile(file.id).subscribe((response: any) => {
         files.splice(index, 1);
+      },(error:any)=>{
+        alertify.error("Something went wrong ..");
+      });
+    }).setHeader("Confirmation");
+      
+  }
+
+  getActionSteps(dept:any){
+    dept.actionStepView = true;
+    this.selectedDepatrtmentId=dept.id;
+    this.utServ.getActionSteps(dept.id).subscribe((response)=>{
+      if(response.status === 204)
+        this.actionSteps = [];
+      else
+        this.actionSteps = response;
+    });
+  }
+  isNew:boolean = false;
+  addNewActionStep(dept){
+    dept.isNew = true;
+    dept.isEdit = false;
+    this.actionForm.reset();
+    this.actionForm.controls['opiId'] = this.data.opiId
+  }
+
+  onSubmit(dept,array:any[]){
+    var actionSteps = [];
+    actionSteps.push(this.actionForm.value);
+    if(!dept.isEdit){
+      this.utServ.postActionSteps(dept.id,actionSteps).subscribe((response:any)=>{
+        response[0]['linked'] = true;
+        array.push(response[0]);
+        dept.isNew = false;
+        alertify.success("Action Step added and linked");
+      });
+    }else{
+      alertify.confirm("Do you want to update this action step?",(response:any)=>{
+        this.utServ.updateActionStep(this.selectedStep.stepId,this.actionForm.value).subscribe((response:any)=>{
+          _.extendOwn(this.selectedStep,this.actionForm.value);
+          dept.isNew = false;
+          dept.isEdit = false;
+          alertify.success("Updated");
+        });
+      });
+      
+    }
+  }
+
+  selectedAction:any = {};
+  setActionFeedback(data:any){
+    if(data.feedback == 'true')
+      alertify.confirm("Do you realy want to Approve this??",()=>{
+        this.utServ.approveActionStep(data.linkingId,{comment:data.comment}).subscribe((reponse)=>{
+          console.log(reponse);
+          alertify.notify("Approved");
+          $("#feedbackModal").modal('hide');
+        },(error:any)=>{
+          console.log(error); 
+          alertify.notify("Something went wrong");          
+          $("#feedbackModal").modal('hide');                 
+        });
+      });
+    else
+      alertify.confirm("Do you realy want to Reject this??", ()=>{
+        this.utServ.rejectActionStep(data.linkingId,{comment:data.comment}).subscribe((reponse)=>{
+          console.log(reponse);
+          alertify.notify("Rejected");
+        },(error:any)=>{
+          console.log(error);        
+          alertify.notify("Something went wrong");
+        });
       })
   }
 
-  closeForm(){
-    $("#first-section").hide();
-    $("#second-section").show();
+  linkActionStep(event:any,assignedDepartmentId:any,step:any){
+    var object = {
+      stepIds:[]
+    };
+    object.stepIds.push(step.stepId);
+    alertify.confirm("Do You Really Want To Link It?",()=>{
+      this.utServ.LinkActionStepToKPI(assignedDepartmentId,object).subscribe((response:any)=>{
+        step.linked = true;
+        alertify.success("Linked");
+      },()=>{
+        alertify.error("Something went wrong..");
+        event.srcElement.checked = !event.srcElement.checked;
+      });
+    },()=>{
+      event.srcElement.checked = !event.srcElement.checked;
+    }).setHeader("Confirmation");
+  }
+
+  getEmployees(){
+    this.utServ.getEmployees().subscribe((response:any)=>{
+      this.employees = response;
+      this.employeesCopy = response;
+    })
+  }
+
+  assignEmployee(){
+    alertify.confirm("Are  you sure to assign this action step?",(response:any)=>{
+      var ids=[];
+      this.employeeIds.forEach(element => {
+        ids.push(element.id)
+      });
+      var object = {
+        employeeIds:ids
+      }
+      this.utServ.assignActionStep(this.selectedStep.linkingId,object).subscribe((response:any)=>{
+        this.employeeIds.forEach(element => {
+        this.selectedStep.employeeAssigned.push(element);
+        });
+        alertify.success("Assigned");
+        $('.emp-list').hide({ direction: "left" });
+      },(error:any)=>{
+        alertify.error("Something went wrong");
+        $('.emp-list').hide({ direction: "left" });
+      });
+    });
+    
+  }
+  selectedStep:any;
+  employeeIds:any[]=[];
+  showList(selectedStep:any){
+    this.selectedStep = selectedStep;
+    this.employees = this.employeesCopy;
+    selectedStep.employeeAssigned.forEach(element => {
+      this.employees.forEach((ele:any,index:any) => {
+        if(ele.id == element.employeeId){
+          ele['assigned'] = true;
+        }
+      });
+    });
+    $('.emp-list').show({ direction: "left" });
+  }
+
+  editActionStep(dept:any,step:any){
+    this.selectedStep = step;
+    dept.isEdit = dept.isNew= true;
+    this.actionForm.patchValue(step);
+  }
+
+  hideList(){
+    $('.emp-list').hide({ direction: "left" });
   }
 
   collapseOff(element:any){

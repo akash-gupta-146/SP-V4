@@ -1,130 +1,194 @@
 <hod></hod>
 <div class="container-fluid">
- <div class="card table-card" style="margin-top:50px;">
-  <table class="table table-bordered table1 text-center">
-   <colgroup>
-    <col style="width:20%">
-    <col style="width:20%">
-    <col style="width:20%">
-    <col style="width:15%">
-    <col style="width:11%">
-    <col style="width:11%">
-    <col style="width:3%">
-   </colgroup>
-   <thead class="header-background" *ngIf="goalsCopy.length">
-    <tr>
-     <th>
-      <span class="hide-text">GOAL</span>
-      <form action="" class="search-form">
-       <div class="form-group has-feedback" style="margin-bottom:10px;">
-        <label for="search" class="sr-only">Search</label>
-        <input type="text" class="form-control" name="search" id="search" (keyup)="searchGoal($event)" placeholder="GOAL">
-        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-       </div>
-      </form>
-     </th>
-     <th>
-      <span class="hide-text">INITIATIVE</span>
-      <form action="" class="search-form">
-       <div class="form-group has-feedback" style="margin-bottom:10px;">
-        <label for="search" class="sr-only">Search</label>
-        <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)" placeholder="INITIATIVE">
-        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-       </div>
-      </form>
-     </th>
-     <th>
-      <span class="hide-text">ACTIVITY</span>
-      <form action="" class="search-form">
-       <div class="form-group has-feedback" style="margin-bottom:10px;">
-        <label for="search" class="sr-only">Search</label>
-        <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)" placeholder="ACTIVITY">
-        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-       </div>
-      </form>
-     </th>
-     <th>
-      <span class="hide-text">KPI</span>
-      <form action="" class="search-form">
-       <div class="form-group has-feedback" style="margin-bottom:10px;">
-        <label for="search" class="sr-only">Search</label>
-        <input type="text" class="form-control" name="search" id="search" (keyup)="searchOpi($event)" placeholder="KPI">
-        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-       </div>
-      </form>
-     </th>
-     <!-- <th>Frequency</th> -->
-     <th>Departments</th>
-     <th>Status</th>
-     <th>View</th>
-    </tr>
-   </thead>
-   <tbody>
-    <tr *ngFor="let goal of goals;let i = index;">
-     <td>{{goal.goal}}</td>
-     <td colspan="6" style="padding:0px;border:none;" #element [style.height]="get(element)">
-      <table class="table table-bordered" style="height: inherit;border:0px;">
-       <colgroup>
-        <col style="width:25%">
-        <col style="width:75%">
-       </colgroup>
-       <tr *ngFor="let initiate of goal.initiatives;let j=index;">
-        <td>{{initiate.initiative}}</td>
-        <td colspan="4" style="padding:0px;" #element1 [style.height]="get(element1)">
-         <table class="table table-bordered" style="height: inherit;border:0px;">
-          <colgroup>
-           <col style="width:33%">
-           <col style="width:67%">
-          </colgroup>
-          <tr *ngFor="let activit of initiate.activities;let k=index;">
-           <td [style.border-top]="k?'1px solid #ddd':'none'">{{activit.activity}}</td>
-           <td colspan="4" style="padding:0px;" #element2 [style.height]="get(element2) + ' !important'">
+  <div class="container" id="fiter-box">
+    <button type="button" class="close" style="position: absolute;
+    right: 10px;
+    top: 10px;" (click)="hideFilter()">&times;</button>
+    <div class="form-group col-sm-3">
+      <label for="goal">Goal</label>
+      <select class="form-control" id="goal" (ngModelChange)="initiatives = $event.initiatives" ngModel>
+        <option *ngFor="let goal of goals;let i = index;" [ngValue]="goal">{{goal.goal}}</option>
+      </select>
+    </div>
+    <div class="form-group col-sm-3">
+      <label for="initiative">Initiative</label>
+      <select class="form-control" id="initiative" (ngModelChange)="activities = $event.activities" ngModel>
+        <option *ngFor="let initiative of initiatives;let i = index;" [ngValue]="initiative">{{initiative.initiative}}</option>
+      </select>
+    </div>
+    <div class="form-group col-sm-3">
+      <label for="activity">Activity</label>
+      <select class="form-control" id="activity" (ngModelChange)="opis = $event.opis" ngModel>
+        <option *ngFor="let activity of activities;let i = index;" [ngValue]="activity">{{activity.activity}}</option>
+      </select>
+    </div>
+    <div class="form-group col-sm-3">
+      <label for="opi">KPI</label>
+      <!-- <select class="form-control" id="opi"> -->
+        <ul class="form-control">
+        <li *ngFor="let opi of opis;let i = index;"
+        ><a [routerLink]="role!='coordinator'?opi.opiId:'kpis/'+opi.opiId">{{opi.opi}}</a></li>
+        </ul>
+      <!-- </select> -->
+    </div>
+  </div>
+
+  <div class="container" id="fiter-frequency">
+      <button type="button" class="close" style="position: absolute;
+      right: 10px;
+      top: 10px;" (click)="hideQuarterFilter()">&times;</button>
+    <div class="form-group col-sm-4">
+      <label for="frequency">Frequency</label>
+      <select class="form-control" id="frequency" (ngModelChange)="quarters = $event.quarters" ngModel>
+        <option *ngFor="let frequency of frequencies;let i = index;" [ngValue]="frequency">{{frequency.frequency}}</option>
+      </select>
+    </div>
+    <div class="form-group col-sm-4">
+      <label for="quarter">Quarter</label>
+      <select class="form-control" id="quarter" (ngModelChange)="getKpi($event)" ngModel>
+        <option *ngFor="let quarter of quarters;let i = index;" [ngValue]="quarter.id">{{quarter.quarter}}</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="card table-card" style="margin-top:50px;">
+    <table class="table table-bordered table1 text-center">
+      <caption>
+        <div class="dropdown pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Filters
+          <span class="glyphicon glyphicon-filter"></span></button>
+          <ul class="dropdown-menu" style="right: 0;left: unset;">
+            <li><a (click)="viewFilter()">By KPI</a></li>
+            <li><a (click)="viewQuarterFilter()">By Quarter</a></li>
+          </ul>
+        </div>
+      </caption>
+      <colgroup>
+        <col style="width:20%">
+        <col style="width:20%">
+        <col style="width:20%">
+        <col style="width:15%">
+        <col style="width:11%">
+        <col style="width:11%">
+        <col style="width:3%">
+      </colgroup>
+      <thead class="header-background" *ngIf="goalsCopy.length">
+        <tr>
+          <th>
+            <span class="hide-text">GOAL</span>
+            <form action="" class="search-form">
+              <div class="form-group has-feedback" style="margin-bottom:10px;">
+                <label for="search" class="sr-only">Search</label>
+                <input type="text" class="form-control" name="search" id="search" (keyup)="searchGoal($event)" placeholder="GOAL">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              </div>
+            </form>
+          </th>
+          <th>
+            <span class="hide-text">INITIATIVE</span>
+            <form action="" class="search-form">
+              <div class="form-group has-feedback" style="margin-bottom:10px;">
+                <label for="search" class="sr-only">Search</label>
+                <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)" placeholder="INITIATIVE">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              </div>
+            </form>
+          </th>
+          <th>
+            <span class="hide-text">ACTIVITY</span>
+            <form action="" class="search-form">
+              <div class="form-group has-feedback" style="margin-bottom:10px;">
+                <label for="search" class="sr-only">Search</label>
+                <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)" placeholder="ACTIVITY">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              </div>
+            </form>
+          </th>
+          <th>
+            <span class="hide-text">KPI</span>
+            <form action="" class="search-form">
+              <div class="form-group has-feedback" style="margin-bottom:10px;">
+                <label for="search" class="sr-only">Search</label>
+                <input type="text" class="form-control" name="search" id="search" (keyup)="searchOpi($event)" placeholder="KPI">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              </div>
+            </form>
+          </th>
+          <!-- <th>Frequency</th> -->
+          <th>Departments</th>
+          <th>Status</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let goal of goals;let i = index;">
+          <td>{{goal.goal}}</td>
+          <td colspan="6" style="padding:0px;border:none;" #element [style.height]="get(element)">
             <table class="table table-bordered" style="height: inherit;border:0px;">
-             <colgroup>
-              <col style="width:37.5%">
-              <col style="width:55%">
-              <col style="width:7.5%">
-             </colgroup>
-             <tr *ngFor="let msr of activit.opis;let l=index">
-              <td [style.border-top]="l?'1px solid #ddd':'none'">{{msr.opi}}</td>
-              <td colspan="2" style="padding:0px;" #element3 [style.height]="get(element3) + ' !important'">
-               <table class="table table-bordered" style="height: inherit;border:0px;">
-                <colgroup>
-                 <col style="width:50%">
-                 <col style="width:50%">
-                </colgroup>
-                <tr *ngFor="let dept of msr.departmentInfo;let d = index">
-                  <td style="padding:0px;">{{dept.department}}</td>
-                  <td style="padding:0px;">
-                   <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">{{dept.quarterStatus.status}}
-                    <br>
-                    <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
-                   </a>
-                  </td>
-                </tr>
-               </table>
-              </td>
-              <td>
-               <a [routerLink]="msr.opiId">view</a>
-              </td>
-             </tr>
+              <colgroup>
+                <col style="width:25%">
+                <col style="width:75%">
+              </colgroup>
+              <tr *ngFor="let initiate of goal.initiatives;let j=index;">
+                <td>{{initiate.initiative}}</td>
+                <td colspan="4" style="padding:0px;" #element1 [style.height]="get(element1)">
+                  <table class="table table-bordered" style="height: inherit;border:0px;">
+                    <colgroup>
+                      <col style="width:33%">
+                      <col style="width:67%">
+                    </colgroup>
+                    <tr *ngFor="let activit of initiate.activities;let k=index;">
+                      <td [style.border-top]="k?'1px solid #ddd':'none'">{{activit.activity}}</td>
+                      <td colspan="4" style="padding:0px;" #element2 [style.height]="get(element2) + ' !important'">
+                        <table class="table table-bordered" style="height: inherit;border:0px;">
+                          <colgroup>
+                            <col style="width:37.5%">
+                            <col style="width:55%">
+                            <col style="width:7.5%">
+                          </colgroup>
+                          <tr *ngFor="let msr of activit.opis;let l=index">
+                            <td [style.border-top]="l?'1px solid #ddd':'none'">{{msr.opi}}</td>
+                            <td colspan="2" style="padding:0px;" #element3 [style.height]="get(element3) + ' !important'">
+                              <table class="table table-bordered" style="height: inherit;border:0px;">
+                                <colgroup>
+                                  <col style="width:50%">
+                                  <col style="width:50%">
+                                </colgroup>
+                                <tr *ngFor="let dept of msr.departmentInfo;let d = index">
+                                  <td style="padding:0px;">{{dept.department}}</td>
+                                  <td style="padding:0px;">
+                                    <i [style.color]="dept.quarterStatus.successInfo.color" style="font-size: 30px;line-height: 1;">&#x25CF;</i>
+                                    <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">
+                                      {{dept.quarterStatus.status}}
+                                      <br>
+                                      <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
+                                    </a>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td>
+                              <a [routerLink]="msr.opiId" *ngIf="role!='coordinator'">view</a>
+                              <a [routerLink]="'kpis/'+msr.opiId" *ngIf="role=='coordinator'">view</a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
             </table>
-           </td>
-          </tr>
-         </table>
-        </td>
-       </tr>
-      </table>
-     </td>
-    </tr>
-   </tbody>
-   <tfoot *ngIf="!goals.length">
-    <tr>
-     <td colspan="4" class="text-center">No Data to Display .,.</td>
-    </tr>
-   </tfoot>
-  </table>
- </div>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="!goals.length">
+        <tr>
+          <td colspan="4" class="text-center">No Data to Display .,.</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">
