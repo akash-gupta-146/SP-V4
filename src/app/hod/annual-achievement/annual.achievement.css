@@ -1,0 +1,21 @@
+.panel{
+ -webkit-box-shadow: unset;
+ box-shadow:unset;
+}
+
+.panel .panel .panel-heading{
+ background:unset;
+ color: unset;
+}
+
+/* .panel .panel-body{
+ padding:0px 0px 0px 15px;
+} */
+
+.padding-left{
+ padding:0px 0px 0px 15px;
+}
+
+.padding-none{
+ padding: 0px;
+}

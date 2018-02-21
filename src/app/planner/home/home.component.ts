@@ -48,11 +48,12 @@ export class HomeComponent {
       this.orgSer.updateValue(this.valueForm.value, this.selectedValue.valueId)
         .subscribe((res: any) => {
           alertify.success("Successfully Updated..");
-          this.valueForm.value["id"] = this.selectedValue.valueId;
+          this.valueForm.value["valueId"] = this.selectedValue.valueId;
           this.organizationInfo.values[this.selectedValueIndex] = this.valueForm.value;
           this.commonService.storeData('org_info', this.organizationInfo);
           $('#valueForm').modal('hide');
           this.valueForm.reset();
+
         }, (error: any) => {
           alertify.error("Something went wrong..");
         })

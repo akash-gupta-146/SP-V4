@@ -15,6 +15,8 @@ declare let $: any;
   styleUrls: ['./measure.css', './../planner.component.css']
 })
 export class MeasureComponent extends Filters implements AfterViewInit {
+  reloadBtn: boolean = false;
+  selectedDepartmentIds: any[]=[];
   defaultCycle: any;
   objectives: any[] = [];
   initiatives: any[] = [];
@@ -196,33 +198,46 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       });
   }
 
+  viewDepartmentFilter(){
+    this.selectedDepartmentIds = [];
+  }
+
+  filterDepartment(event){
+    this.travers(event, event.my);
+  }
+
+  applyFilter(){
+    console.log(this.selectedDepartmentIds);
+    this.goals = this.goalsCopy.filter((element:any)=>{
+      element.initiatives = element.initiatives.filter((initiative:any)=>{
+        initiative.activities = initiative.activities.filter((activity:any)=>{
+          activity.opis = activity.opis.filter((opi:any)=>{
+            opi.assignedDepartments = opi.assignedDepartments.filter(dept => {
+              if(this.selectedDepartmentIds.indexOf(dept.departmentId) != -1){
+                this.reloadBtn = true;
+                return true;
+              }
+            });
+            return opi.assignedDepartments.length;
+          });
+          return activity.opis.length;
+        });
+        return initiative.activities.length;
+      });
+      return element.initiatives.length;
+    });
+    return true;
+  }
+
+  getOpi(){
+    this.getMeasure();
+    this.reloadBtn = false;
+  }
+
   public selectedDepartments: any[] = [];
   public department(event: any) {
     this.travers(event, event.my);
   }
-
-  // travers(department: any, checked: boolean) {
-  //   if (!department) {
-  //     return;
-  //   } else {
-  //     if (checked) {
-  //       if (!department.disabled) {
-  //         department.my = true;
-  //         if (this.selectedDepartments.indexOf(department) === -1)
-  //           this.selectedDepartments.push(department);
-  //       }
-  //     } else {
-  //       if (!department.disabled) {
-  //         department.my = false;
-  //         this.selectedDepartments.splice(this.selectedDepartments.indexOf(department), 1);
-  //       }
-  //     }
-  //     if (department.reporteeDepartments)
-  //       department.reporteeDepartments.forEach((element: any) => {
-  //         this.travers(element, checked);
-  //       });
-  //   }
-  // }
 
   travers(department: any, checked: boolean) {
     if (!department) {
@@ -240,13 +255,16 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         if (checked) {
           if (!department.disabled) {
             department.my = true;
-            if (this.selectedDepartments.indexOf(department) === -1)
+            if (this.selectedDepartments.indexOf(department) === -1){
+              this.selectedDepartmentIds.push(department.departmentId)
               this.selectedDepartments.push(department);
+            }  
           }
         } else {
           if (!department.disabled) {
             department.my = false;
             this.selectedDepartments.splice(this.selectedDepartments.indexOf(department), 1);
+            this.selectedDepartmentIds.splice(this.selectedDepartments.indexOf(department), 1);
           }
         }
       }
@@ -254,6 +272,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   checkAssignDept(assignedDepartments: any[]) {
+    this.selectedDepartmentIds = [];
     this.selectedDepartments = [];
     this.departments = JSON.parse(JSON.stringify(this.departmentsCopy));
     assignedDepartments.forEach(outerElement => {
@@ -297,9 +316,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   assign() {
     const departmentsArray: any[] = this.departmentForm.controls["departmentsArray"].value;
-    // departmentsArray.forEach(element => {
-    //   delete element["departmentName"];
-    // });
     alertify.confirm("Do you really want to assign this OPI", () => {
       this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe((response: any) => {
         this.selectedMeasure.assignedDepartments = this.selectedMeasure.assignedDepartments.concat(response);
@@ -309,7 +325,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       }, (error: any) => {
         alertify.error("Something went wrong");
       })
-    })
+    }).setHeader("Confirmation");
   }
 
   getDepartmentFormArray() {
@@ -417,24 +433,26 @@ export class MeasureComponent extends Filters implements AfterViewInit {
           measureUnit: '', frequencyId: 1, baseline: '', direction: '', remarks: '', helpText: '', approvalRequired: ''
         });
         $('#add-opi').hide();
+        $('#add-btn').show();
       }, error => {
         console.log(error);
       });
     } else {
-      Object.keys(this.measureForm.value).forEach((key: any) => {
-        if (this.selectedMeasure[key] != this.measureForm.value[key]) {
-          formChanges[key] = this.measureForm.value[key];
-          msg += "\n" + key + " = " + formChanges[key] + ",";
-        }
-      });
-      alertify.confirm("Are you sure you want to update this OPI as " + msg, () => {
+      // Object.keys(this.measureForm.value).forEach((key: any) => {
+      //   if (this.selectedMeasure[key] != this.measureForm.value[key]) {
+      //     formChanges[key] = this.measureForm.value[key];
+      //     msg += "\n" + key + " = " + formChanges[key] + ",";
+      //   }
+      // });
+      alertify.confirm("Are you sure you want to update this OPI", () => {
         delete this.measureForm.value["activityId"];
         this.orgService.updateMeasure(this.selectedMeasure.opiId, formChanges).subscribe((response: any) => {
           this.measureForm = this.setMeasure();
           this.getMeasure();
         });
-      })
+      }).setHeader("Confirmation");
       $('#add-opi').hide();
+      $('#add-btn').show();
     }
   }
 
@@ -515,32 +533,32 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   disable(event: any, opiId: any) {
-    if (event.srcElement.checked)
+    if (event.target.checked)
       alertify.confirm("Do you Really want to disable this KPI??", () => {
         this.orgService.disableKPI(opiId).subscribe((response: any) => {
           alertify.success("You disabled the KPI..");
           this.getMeasure();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
     else
       alertify.confirm("Do you Really want to enable this KPI??", () => {
         this.orgService.enableKPI(opiId).subscribe((response: any) => {
           alertify.success("You enabled the KPI..");
           this.getMeasure();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
   }
 
   get(e) {

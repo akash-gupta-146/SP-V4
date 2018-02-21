@@ -84,6 +84,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
         // $('#objectModal').modal('show');
         alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
         $("#add-plan").hide();
+        $('#add-btn').show();
         this.goalForm.controls["goal"].reset();
         this.getGoals();
       }, (error: any) => {
@@ -99,10 +100,12 @@ export class GoalComponent extends Filters implements AfterViewInit {
           this.goalForm = this.initObjectiveForm()
           this.getGoals();
           this.isUpdating = false;
+          $("#add-plan").hide();
+          $('#add-btn').show();
         }, (error: any) => {
           alertify.alert("Something went wrong..");
         });
-      });
+      }).setHeader("Confirmation");
     }
 
   }
@@ -113,7 +116,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
       }, (error: any) => {
         alertify.alert("Something went wrong..");
       });
-    })
+    }).setHeader("Confirmation");
 
   }
   selectedObjective: any;
@@ -138,32 +141,32 @@ export class GoalComponent extends Filters implements AfterViewInit {
   }
 
   disable(event: any, goalId: any) {
-    if (event.srcElement.checked)
+    if (event.target.checked)
       alertify.confirm("Do you Really want to disable this Goal??", () => {
         this.orgService.disableGoal(goalId).subscribe((response: any) => {
           alertify.success("You disabled the Goal..");
           this.getGoals();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
     else
       alertify.confirm("Do you Really want to enable this Goal??", () => {
         this.orgService.enableGoal(goalId).subscribe((response: any) => {
           alertify.success("You enabled the Goal..");
           this.getGoals();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
   }
 
   closeForm() {

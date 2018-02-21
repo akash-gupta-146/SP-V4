@@ -69,7 +69,7 @@
   <!-- for table -->
   <div class="card table-card">
     <div class="panel-body">
-      <table class="table table-bordered table-data text-center">
+      <table class="table table-bordered table-data">
         <colgroup>
           <col style="width:30%">
           <col style="width:40%">
@@ -124,16 +124,14 @@
                     </label>
                   </td>
                   <td>
-                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateInitiative(goal.goalId,initiate,highlight)"
-                      [disabled]="initiate.disable">
-                      <a scrollTo href="#add-initiative">
+                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateInitiative(goal.goalId,initiate,highlight)"[disabled]="initiate.disable" [ngClass]="initiate.disable?'icon-mark':'icon-mark2'">
+                      <a scrollTo href="#add-initiative" >
                         <i class="glyphicon glyphicon-edit btn-edit"></i>
                       </a>
                     </button>
                   </td>
                   <td>
-                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)"
-                      [disabled]="initiate.disable">
+                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)" [disabled]="initiate.disable" [ngClass]="initiate.disable?'icon-mark':'icon-mark2'">
                       <i class="glyphicon glyphicon-trash btn-del"></i>
                     </button>
                   </td>

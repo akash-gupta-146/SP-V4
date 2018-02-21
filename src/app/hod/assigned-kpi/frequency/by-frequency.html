@@ -1,0 +1,36 @@
+<div class="container filter">
+  <div class="panel panel-default content">
+   <div class="panel-heading">
+    <div class="panel-title">Selection Section
+      <a class="close" routerLink="../">&times;</a>
+    </div>
+   </div>
+   <div class="panel-body">
+     <div class="form-group col-lg-12">
+       <label for="frequency">Frequency</label>
+       <select class="form-control" id="frequency" (ngModelChange)="quarters = $event.quarters" [(ngModel)]="selectedFrequency">
+         <option *ngFor="let frequency of frequencies;let i = index;" [ngValue]="frequency">{{frequency.frequency}}</option>
+       </select>
+     </div>
+     <div class="form-group col-lg-12">
+       <label for="year">Year:</label>
+       <select id="year" name="year" class="form-control" [(ngModel)]="year">
+         <option value="2017">2017</option>
+         <option value="2018">2018</option>
+         <option value="2019">2019</option>
+         <option value="2020">2020</option>
+         <option value="2021">2021</option>
+       </select>
+     </div>
+     <div class="form-group col-lg-12">
+       <label for="quarter">Quarter</label>
+       <select class="form-control" id="quarter" [(ngModel)]="selectedQuarter">
+         <option *ngFor="let quarter of quarters;let i = index;" [ngValue]="quarter.id">{{quarter.quarter}}</option>
+       </select>
+     </div> 
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-save" (click)="goBack()">Apply</button>
+   </div>
+  </div>
+ </div>

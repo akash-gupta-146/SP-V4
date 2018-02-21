@@ -28,6 +28,9 @@ export class KPIComponent extends Filters {
    this.role = this.storage.getData('user_roleInfo')[0].role;
    this.getOpi();
    this.getFrequencies();
+   this.utServ.goals.asObservable().subscribe((val:any[])=>{
+    this.goals = val;
+    });
  }
 
  frequencies: any[];
@@ -39,14 +42,14 @@ export class KPIComponent extends Filters {
  }
 
  getOpi(): any {
-   this.utServ.getOpiByDeptId(this.storage.getData('user_roleInfo')[0].departmentId).subscribe((response: any) => {
+   this.utServ.getOpiResult().subscribe((response: any) => {
      if (response.status == 204) {
        this.goals = [];
        this.goalsCopy = []
      } else {
        this.goals = response;
        this.goalsCopy = response;
-
+       this.utServ.goals.next(response);
        this.initFilters(response);
      }
    })
@@ -65,7 +68,7 @@ export class KPIComponent extends Filters {
          alertify.notify("Something went wrong");          
          $("#feedbackModal").modal('hide');                 
        });
-     });
+     }).setHeader("Confirmation");
    else
      alertify.confirm("Do you realy want to Reject this??", ()=>{
        this.utServ.reject(data.id,{comment:data.comment}).subscribe((reponse)=>{
@@ -75,18 +78,18 @@ export class KPIComponent extends Filters {
          console.log(error);        
          alertify.notify("Something went wrong");
        });
-     });     
+     }).setHeader("Confirmation");     
  }
 
- getKpi(event:any){
-  this.utServ.getKpiByQuarter(event).subscribe((response:any)=>{
-    console.log(this.goals);
-    // this.goals = response;
-    let temp = _.clone(this.goals);
-    temp = response;
-    console.log(this.goals);
-  })
- }
+//  getKpi(event:any){
+//   this.utServ.getKpiByQuarter(event).subscribe((response:any)=>{
+//     console.log(this.goals);
+//     this.goals = response;
+//     // let temp = _.clone(this.goals);
+//     // temp = response;
+//     // console.log(this.goals);
+//   })
+//  }
 
  public showOpi(goal: any, measure: any) {
    $('#edit-block').show();

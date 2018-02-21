@@ -1,6 +1,6 @@
 <div class="container-fluid" *ngIf="organizationInfo">
   <div class="container text-center" style="padding: 20px;">
-    <img src="assets/uaeu_signature.png" style="height: 100px;">
+    <img src="assets/nxtlife.png" style="height: 100px;">
   </div>
 
   <div class="card nav-card">
@@ -17,7 +17,7 @@
 
     <div class="tab-content" style="margin-top:15px;margin-left: 10px;" *ngIf="organizationInfo">
       <div id="mission" class="tab-pane fade in active">
-        <p>{{organizationInfo.mission}}</p>
+        <p style="white-space:pre-wrap">{{organizationInfo.mission}}</p>
       </div>
       <div id="cssmenu" style="margin-top:40px;">
         <ul class="nav nav-tabs">
@@ -30,7 +30,7 @@
         </ul>
       </div>
       <div id="vision" class="tab-pane fade in active" style="margin-top:15px;margin-left: 10px;">
-        <p>{{organizationInfo.vision}}</p>
+        <p style="white-space:pre-wrap">{{organizationInfo.vision}}</p>
       </div>
       <div id="cssmenu" style="margin-top:40px;">
         <ul class="nav nav-tabs">
@@ -49,7 +49,7 @@
               <h5>{{i+1}}.{{val.title}}</h5>
             </div>
             <div class="card-body">
-              <p>{{val.description}} </p>
+              <p style="white-space:pre-wrap">{{val.description}} </p>
               <br>
               <button type="button" class="btn btn-default pull-right icon-add" data-toggle="modal" data-target="#valueForm" (click)="onValueSelected(val,i)">
                 <i class="glyphicon glyphicon-edit"></i>
@@ -86,7 +86,7 @@
             </div>
             <div class="form-group">
               <label for="description">Description</label>
-              <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
+              <textarea type="text" class="form-control" id="description" style="    height: 25vh;resize: none;"formControlName="description"></textarea>
             </div>
           </div>
           <!-- Modal Footer -->
@@ -122,7 +122,7 @@
         <div class="modal-body">
           <div class="form-group">
             <!--<label for="description">Description</label>-->
-            <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
+            <textarea type="text" class="form-control" id="description" style="    height: 50vh;resize: none;" formControlName="description"></textarea>
           </div>
         </div>
         <!-- Modal Footer -->

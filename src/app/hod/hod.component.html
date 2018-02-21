@@ -1,11 +1,34 @@
 <nav class="navbar navbar-fixed-top" id="top">
   <div class="navbar-header">
-    <a class="navbar-brand" href="#">UAEU</a>
+    <a class="navbar-brand" [attr.href]="'#/'+userDetails.roleInfo[0].role+'/home'">NxtLife</a>
   </div>
-  <ul class="nav navbar-nav navbar-left">
+  <!-- <ul class="nav navbar-nav navbar-left">
     <li routerLinkActive="active">
-      <a routerLink="/">Assigned Operational Performance Indicators</a>
+      <a routerLink="/">Operational Performance Indicators</a>
     </li>
+  </ul> -->
+  <ul class="nav navbar-nav">
+    <li routerLinkActive="active"><a routerLink="home">Operational Performance Indicators</a></li>
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Achievement
+      <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a routerLink="by-goal">By Goal</a></li>
+        <li><a routerLink="home/by-kpi">By KPI</a></li>
+        <li><a routerLink="home/by-department">By Department</a></li>
+        <li><a routerLink="home/by-frequency">By Quarter</a></li> 
+      </ul>
+    </li>
+    <li class="dropdown" >
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Action Plan
+      <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a routerLink="action-step">Over All </a></li>
+        <li><a routerLink="action-step/by-department"> By Department</a></li>
+        <li><a routerLink="action-step/my-action-step">My Action Steps</a></li>
+      </ul>
+    </li>
+    <li routerLinkActive="active"><a routerLink="annual-achievement">Annual Achievement</a></li>
   </ul>
   <ul class="nav navbar-nav navbar-right" style="margin-right:0px;">
     <li class="dropdown">
@@ -55,3 +78,4 @@
     </li>
   </ul>
 </nav>
+<router-outlet></router-outlet>

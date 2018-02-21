@@ -1,0 +1,127 @@
+<div class="container-fluid">
+  <h2>Achievement By Goal</h2>
+
+  <!-- <table class="table table-bordered">
+   <caption>
+    <div class="form-group">
+      <h4 class="col-lg-2">Select Goal :</h4>
+      <div class="col-lg-10">
+        <select class="form-control" id="goal" (ngModelChange)="getKpiByGoal($event)" ngModel>
+          <option value="0" >All Goals</option>
+          <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal.goalId">{{goal.goal}}</option>
+         </select>
+       </div>
+     </div>
+   </caption>
+   <colgroup>
+    <col width="20%">
+    <col width="20%">
+    <col width="20%">
+    <col width="10%">
+    <col width="10%">
+    <col width="10%">
+    <col width="10%">
+   </colgroup>
+   <thead class="header-background">
+    <tr>
+     <th>Goal</th>
+     <th>Kpi</th>
+     <th>Department</th>
+     <th>Quarter</th>
+     <th>Target</th>
+     <th>Achieved</th>
+     <th>Status</th>
+    </tr>
+   </thead>
+   <tbody *ngFor="let goal of goals;let g = index;">
+    <tr>
+      <td [attr.rowspan]="goal.opis.length + 1">{{goal.goal}}</td>
+    </tr>
+    <ng-container *ngFor="let opi of goal.opis;">
+     <tr>
+      <td>{{opi.opi}}</td>
+      <td colspan="5" style="padding:0px;">
+       <table class="table table-bordered">
+        <colgroup>
+        <col width="33.33%">
+        <col width="16.66%">
+        <col width="16.66%">
+        <col width="16.66%">
+        <col width="16.66%">
+        </colgroup>
+        <ng-container *ngFor="let dept of opi.departmentInfo">
+         <tr>
+          <td [attr.rowspan]="dept.opiAnnualTargets[0].levels.length + 1">{{dept.department}}</td>
+         </tr>
+         <ng-container *ngFor="let level of dept.opiAnnualTargets[0].levels">
+          <tr>
+           <td>{{level.quarter}}</td>
+           <td>{{level.estimatedTargetLevel}}</td>
+           <td>{{level.currentTargetLevel}}</td>
+           <td>
+             <div [style.background-color]="dept.quarterStatus.successInfo.color" style="    padding: 5px;
+             border-radius: 50%;
+             height: 25px;
+             width: 25px;
+             line-height: 1;
+             text-align:center;float:left;"
+             [style.color]="!dept.quarterStatus.successInfo.color"> 
+               <b>{{dept.quarterStatus.successInfo.difference}}</b>
+             </div>
+            <div style="padding-left: 30px;">{{level.quarterStatus.successInfo.target}}</div>
+           </td>
+          </tr>
+         </ng-container>
+        </ng-container>
+       </table>
+      </td>
+     </tr>
+    </ng-container>
+   </tbody>
+  </table> -->
+  <div class="form-group">
+    <h4 class="col-lg-2">Select Goal :</h4>
+    <div class="col-lg-10">
+    <select class="form-control" id="goal" (ngModelChange)="getKpiByGoal($event)" ngModel>
+      <option value="0" >All Goals</option>
+      <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal.goalId">{{goal.goal}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="grid-head" style="grid-template-columns:20% 20% 20% 10% 10% 10% 10%">
+      <div class="item">Goal</div>
+      <div class="item">KPI</div>
+      <div class="item">Department</div>
+      <div class="item">Qurter</div>
+      <div class="item">Target</div>
+      <div class="item">Achieved</div>
+      <div class="item">Status</div>
+    </div>
+    <div class="grid-outer-body" style="grid-template-columns: 20% 80%" *ngFor="let goal of goals;let g = index;">
+      <div class="item" [style.grid-row-end]="goal.opis.length + 1">{{goal.goal}}</div>
+      <div class="grid-inner-body" style="grid-template-columns: 25% 75%" *ngFor="let opi of goal.opis;">
+        <div class="item" [style.grid-row-end]="opi.departmentInfo.length + 1">{{opi.opi}}</div>
+        <div class="grid-inner-body" style="grid-template-columns: 33.33% 66.66%" *ngFor="let dept of opi.departmentInfo">
+          <div class="item" [style.grid-row-end]="dept.opiAnnualTargets[0].levels + 1">{{dept.department}}</div>
+          <div class="grid-inner-body" style="grid-template-columns: 25% 25% 25% 25%;" *ngFor="let level of dept.opiAnnualTargets[0].levels">
+            <div class="item">{{level.quarter}}</div>
+            <div class="item">{{level.estimatedTargetLevel}}</div>
+            <div class="item">{{level.estimatedTargetLevel}}</div>
+            <div class="item">
+              <div [style.background-color]="dept.quarterStatus.successInfo.color" style="    padding: 5px;
+              border-radius: 50%;
+              height: 25px;
+              min-width: 25px;width:auto;
+              line-height: 1;
+              text-align:center;float:left;"
+              [style.color]="!dept.quarterStatus.successInfo.color"> 
+                <b>{{dept.quarterStatus.successInfo.difference}}</b>
+              </div>
+              <div style="padding-left: 30px;">{{level.quarterStatus.successInfo.target}}</div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

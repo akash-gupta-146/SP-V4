@@ -1,70 +1,65 @@
-<hod></hod>
 <div class="container-fluid">
-  <!-- new code -->
   <div class="panel" *ngIf="data" style="margin-top:50px;" id="first-section">
     <div class="panel-heading">
       <h4 class="panel-title ">
-        <!-- <button type="button" class="close" (click)="closeForm();">
-     <span aria-hidden="true">&times;</span>
-    </button> -->
         <a data-toggle="collapse" href="#edit-section">KPI DETAILS</a>
       </h4>
     </div>
     <div class="panel-body">
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-lg-2">
           <h5>
             <strong>STRATEGIC GOAL</strong>
           </h5>
         </div>
-        <div class="col-sm-10">
+        <div class="col-lg-10">
           <h5>{{data.goal}}</h5>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-lg-2">
           <h5>
             <strong>INITIATIVE</strong>
           </h5>
         </div>
-        <div class="col-sm-10">
+        <div class="col-lg-10">
           <h5>{{data.initiative}}</h5>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-lg-2">
           <h5>
             <strong>ACTIVITY</strong>
           </h5>
         </div>
-        <div class="col-sm-10">
+        <div class="col-lg-10">
           <h5>{{data.activity}}</h5>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-lg-2">
           <h5>
             <strong>OPI</strong>
           </h5>
         </div>
-        <div class="col-sm-10">
+        <div class="col-lg-10">
           <h5> {{data.opi}}</h5>
         </div>
       </div>
       <div class="row mini">
-        <div class="col-sm-4">
+        <div class="col-lg-4">
           <h5>
             <strong>FREQUENCY</strong>
           </h5>
           <h5>{{data.frequency}}</h5>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-4">
           <h5>
             <strong>MEASURE UNIT</strong>
           </h5>
           <h5>{{data.measureUnit}}</h5>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-4">
           <h5>
             <strong>EVIDENCE FORM TYPE</strong>
           </h5>
@@ -120,7 +115,7 @@
                               <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
                             </div>
                             <div class="col-sm-6">
-                              <strong>Estimated Level </strong>: {{lev.estimatedTargetLevel}}
+                              <strong>Target </strong>: {{lev.estimatedTargetLevel}}
                             </div>
                           </div>
                           <div class="row">
@@ -128,12 +123,12 @@
                               <strong>End Date </strong>: {{lev.endDate + tdl.year}}
                             </div>
                             <div class="col-sm-6">
-                              <div class="dropdown" *ngIf="lev.evidance&&lev.evidance.length">
+                              <div class="dropdown" *ngIf="lev.status!='unsubmited'">
                                 <strong>Evidence </strong>:
                                 <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
                                   <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 0;left:unset;font-size:12px;">
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
                                   <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
                                     <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
                                     <button type="button" class="close" (click)="deleteEvidence(evidences,ev,e)" [hidden]="lev.status=='locked'">
@@ -143,7 +138,7 @@
                                   <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
                                   <li role="presentation" class="divider" style="clear: both;"></li>
                                   <li class="text-center" role="presentation">
-                                    <button *ngIf="lev.status=='inprogress'" data-toggle="modal" data-target="#evidenceForm" (click)="selectedQuarter=lev;evForm=0"
+                                    <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" (click)="selectedQuarter=lev;evForm=0"
                                       [disabled]="lev.disable">Upload</button>
                                   </li>
                                 </ul>
@@ -157,19 +152,17 @@
                               <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentCost}}</span>
                             </div>
                             <div class="col-sm-6">
-                              <strong>Current Level </strong>:
+                              <strong>Achievement</strong>:
                               <input type="number" [(ngModel)]="lev.currentTargetLevel" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
                               <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentTargetLevel}}</span>
                             </div>
                           </div>
-                          <span class="status">{{lev.status}}</span>
+                          <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}}</span>
                         </div>
                         <div class="panel-footer text-center" *ngIf="!lev.disable">
                           <button *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)" (click)="saveQuarterResult(lev)"
                             [disabled]="lev.disable"> Save</button>
-                          <!-- <button *ngIf="lev.status=='inprogress'" data-toggle="modal" data-target="#evidenceForm" (click)="selectedQuarter=lev;evForm=0"
-                      [disabled]="lev.disable">Upload Evidence</button> -->
-                          <button *ngIf="lev.status=='inprogress'" (click)="lev.status='unsubmitted';lev.isUpdating=true;" [disabled]="lev.disable">Edit</button>
+                          <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;" [disabled]="lev.disable">Edit</button>
                           <button *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
                           <button *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
                         </div>
@@ -181,21 +174,14 @@
               <!--with student internship form-->
               <div class="row" *ngIf="data.evidanceFormId==1" style="padding:15px;">
                 <table id="accordion" class="table  table-bordered table-edit">
-                  <colgroup>
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="50%">
-                  </colgroup>
                   <thead>
                     <tr>
                       <th>Year</th>
                       <th>Estimated Cost</th>
                       <th>Quarter</th>
-                      <th>EstimatedTargetLevel</th>
+                      <th>Estimated Target Level</th>
                       <th>End Date</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
@@ -204,14 +190,17 @@
                       <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.estimatedCost}}</td>
                     </tr>
                     <ng-template let-lev ngFor [ngForOf]="tdl.levels" let-in="index">
-                      <tr [style.background]="lev.disable?'lightgray':null" data-toggle="collapse" [attr.href]="'#row-collapse'+at+'q'+in" (click)="selectedQuarter=lev;evForm=1;collapseOff('#row-collapse'+at+'q'+in)"
-                        style="cursor:pointer;">
+                      <tr [style.background]="lev.disable?'lightgray':null">
                         <td>{{lev.quarter}}</td>
                         <td>{{lev.estimatedTargetLevel}}</td>
                         <td>{{lev.endDate + tdl.year}}</td>
+                        <td>
+                          <button class="btn-link" data-toggle="collapse" [attr.data-target]="'#row-collapse'+d+'d'+at+'q'+in" (click)="selectedQuarter=lev;evForm=1;collapseOff('#row-collapse'+d+'d'+at+'q'+in)"
+                            style="cursor:pointer;">view</button>
+                        </td>
                       </tr>
                       <ng-container>
-                        <tr [attr.id]="'row-collapse'+at+'q'+in" class="collapse collapse-off">
+                        <tr [attr.id]="'row-collapse'+d+'d'+at+'q'+in" class="collapse collapse-off">
                           <td colspan="6">
                             <table class="table table-bordered">
                               <caption align="top" *ngIf="lev.internshipDetails.length">
@@ -306,14 +295,6 @@
               <!--with mous forms-->
               <div class="row" *ngIf="data.evidanceFormId==2" style="padding:15px;">
                 <table id="accordion" class="table table-hover table-bordered table-edit">
-                  <colgroup>
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="10%">
-                    <col width="50%">
-                  </colgroup>
                   <thead>
                     <tr>
                       <th>Year</th>
@@ -321,6 +302,7 @@
                       <th>Quarter</th>
                       <th>EstimatedTargetLevel</th>
                       <th>End Date</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
@@ -329,11 +311,14 @@
                       <td [attr.rowspan]="tdl.levels.length+4" style="vertical-align: middle;">{{tdl.estimatedCost}}</td>
                     </tr>
                     <ng-template let-lev ngFor [ngForOf]="tdl.levels" let-in="index">
-                      <tr data-toggle="collapse" [attr.href]="'#row-collapse'+at+'lev'+in" (click)="selectedQuarter=lev;collapseOff('#row-collapse'+at+'lev'+in)"
-                        [style.background]="lev.disable?'lightgray':null" style="cursor:pointer;">
+                      <tr [style.background]="lev.disable?'lightgray':null">
                         <td>{{lev.quarter}}</td>
                         <td>{{lev.estimatedTargetLevel}}</td>
                         <td>{{lev.endDate + tdl.year}}</td>
+                        <td>
+                          <button class="btn-link" data-toggle="collapse" [attr.data-target]="'#row-collapse'+at+'lev'+in" (click)="selectedQuarter=lev;collapseOff('#row-collapse'+at+'lev'+in)"
+                            style="cursor:pointer;">view</button>
+                        </td>
                       </tr>
                       <ng-container>
                         <tr [attr.id]="'row-collapse'+at+'lev'+in" class="collapse collapse-off">
@@ -381,7 +366,7 @@
                                   </th>
                                 </tr>
                               </thead>
-                              <tbody *ngFor="let detail of lev.mouDetails;let d = index;">
+                              <tbody *ngFor="let detail of lev.mouDetails;let d=index;">
                                 <tr>
                                   <td rowspan="2">{{d+1}}</td>
                                   <ng-container *ngIf="!detail.edit; else editable">
@@ -442,7 +427,7 @@
                                   <td>
                                     <input class="form-control" [(ngModel)]="lev.organization">
                                   </td>
-                                  <td>
+                                  <td colspan="2">
                                     <button type="button" (click)="saveQuarterResultWithMou(lev)">save </button>
                                     <button type="button" *ngIf="lev.addMore" (click)="lev.addMore=false;">Cancel </button>
                                   </td>
@@ -531,13 +516,12 @@
                         </td>
                         <td>
                           <button class="btn-link" (click)="editActionStep(dept,step)">edit</button>
-                          <button class="btn-link" data-toggle="modal" data-target="#feedbackActionModal" (click)="selectedStep = step;" >feedback</button>
                         </td>
                       </tr>
                     </tbody>
                     <tfoot *ngIf="!actionSteps.length">
                       <tr>
-                        <th class="text-center" colspan="6">No Action Steps added yet</th>
+                        <th class="text-center" colspan="7">No Action Steps added yet</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -568,7 +552,7 @@
                     </div>
                   </form>
                   <div class="emp-list">
-                    <div style="position: absolute;right: -30px;">
+                    <div style="position: absolute;left: -30px;">
                       <button type="button" (click)="hideList()">
                         <span class="glyphicon glyphicon-remove"></span>
                       </button>
@@ -632,37 +616,5 @@
         </div>
       </form>
     </div>
-  </div>
-</div>
-
-<!-- Feedback Modal-->
-<div class="modal fade" id="feedbackActionModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content" *ngIf="selectedStep">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Action : {{selectedStep.description}}</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="optradio">Feedback :</label>
-          <label class="radio-inline">
-            <input type="radio" name="optradio" [(ngModel)]="selectedStep.feedback" value="true">Approve
-          </label>
-          <label class="radio-inline">
-            <input type="radio" name="optradio" [(ngModel)]="selectedStep.feedback" value="false">Reject
-          </label>
-        </div>
-        <div class="form-group">
-          <label for="comment">Comment :</label>
-          <textarea class="form-control" id="comment" name="comment" [(ngModel)]="selectedStep.comment"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-btn-success" (click)="setActionFeedback(selectedStep)">Submit</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
   </div>
 </div>

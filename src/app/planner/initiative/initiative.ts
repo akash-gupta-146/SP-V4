@@ -90,7 +90,7 @@ export class InitiativeComponent extends Filters {
         this.getInitiative();
         $("#add-initiative").hide();
         alertify.notify("You have successfully added a new Initiative.");
-        // $('#initiativeModal').modal('show');
+        $('#add-btn').show();
         this.initiativeForm.controls["initiative"].reset();
       }, err => {
         console.log(err);
@@ -99,12 +99,13 @@ export class InitiativeComponent extends Filters {
       alertify.confirm("Are you sure you want to update this Initiative?", () => {
         this.orgService.updateInitiative(this.selectedInitiative.initiativeId, this.initiativeForm.value).subscribe((res: any) => {
           $("#add-initiative").hide();
+          $('#add-btn').show();
           this.getInitiative();
           alertify.notify("You have successfully updated Initiative.");
           // $('#initiativeModal').modal('show');
           this.isUpdating = false;
         })
-      })
+      }).setHeader("Confirmation");
 
   }
 
@@ -117,7 +118,7 @@ export class InitiativeComponent extends Filters {
       }, (error: any) => {
         alertify.alert("Something went wrong..");
       });
-    });
+    }).setHeader("Confirmation");
   }
 
   selectedInitiative: any;
@@ -164,32 +165,32 @@ export class InitiativeComponent extends Filters {
   }
 
   disable(event: any, initiativeId: any) {
-    if (event.srcElement.checked)
+    if (event.target.checked)
       alertify.confirm("Do you Really want to disable this Initiative??", () => {
         this.orgService.disableInitiative(initiativeId).subscribe((response: any) => {
           alertify.success("You disabled the Initiative..");
           this.getInitiative();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
     else
       alertify.confirm("Do you Really want to enable this Initiative??", () => {
         this.orgService.enableInitiative(initiativeId).subscribe((response: any) => {
           alertify.success("You enabled the Initiative..");
           this.getInitiative();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
   }
 
   get(e) {

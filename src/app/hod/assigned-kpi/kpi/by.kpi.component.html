@@ -1,0 +1,38 @@
+<div class="container filter">
+ <div class="panel panel-default content" >
+  <div class="panel-heading">
+   <div class="panel-title">Selection Section
+    <a class="close" routerLink="../">&times;</a>
+   </div>
+  </div>
+  <div class="panel-body">
+   <div class="form-group col-lg-12">
+    <label for="goal">Goal</label>
+    <select class="form-control" id="goal" (ngModelChange)="initiatives = $event.initiatives;" [(ngModel)]="selectedGoal">
+     <option *ngFor="let goal of goals;let i = index;" [ngValue]="goal">{{goal.goal}}</option>
+    </select>
+   </div>
+   <div class="form-group col-lg-12">
+    <label for="initiative">Initiative</label>
+    <select class="form-control" id="initiative" (ngModelChange)="activities = $event.activities;" [(ngModel)]="selectedInitiative">
+     <option *ngFor="let initiative of initiatives;let i = index;" [ngValue]="initiative">{{initiative.initiative}}</option>
+    </select>
+   </div>
+   <div class="form-group col-lg-12">
+    <label for="activity">Activity</label>
+    <select class="form-control" id="activity" (ngModelChange)="opis = $event.opis" [(ngModel)]="selectedActivity">
+     <option *ngFor="let activity of activities;let i = index;" [ngValue]="activity">{{activity.activity}}</option>
+    </select>
+   </div>
+   <div class="form-group col-lg-12">
+    <label for="opi">KPI</label>
+    <select class="form-control" id="opi" [(ngModel)]="selectedKpi">
+     <option *ngFor="let opi of opis;let i = index;" [ngValue]="opi">{{opi.opi}}</option>
+    </select>
+   </div>
+  </div>
+  <div class="modal-footer">
+   <button type="button" class="btn btn-save" (click)="goBack()">Apply</button>
+  </div>
+ </div>
+</div>

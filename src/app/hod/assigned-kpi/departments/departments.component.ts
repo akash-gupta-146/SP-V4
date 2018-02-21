@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HodService } from '../hod.service';
-import { StorageService } from '../../shared/storage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
+import { HodService } from '../../hod.service';
+import { StorageService } from '../../../shared/storage.service';
 
 declare let $: any;
 
 @Component({
   selector: 'dept',
   templateUrl: './departments.component.html',
-  styleUrls: ['./../hod.component.css']
+  styleUrls: ['./../../hod.component.css']
 })
 export class DepartmentsComponent {
   selectedDepatrtmentId: any;
@@ -29,6 +29,7 @@ export class DepartmentsComponent {
   selectedLevel: any;
   selectedMeasure: any;
   constructor(public route: ActivatedRoute, public utServ: HodService, private storage: StorageService, public fb: FormBuilder) {
+    console.log("asdfds");
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     this.route.params.subscribe((params: any) => {
       this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
@@ -158,7 +159,7 @@ export class DepartmentsComponent {
           dept.isEdit = false;
           alertify.success("Updated");
         });
-      });
+      }).setHeader("Confirmation");
 
     }
   }
@@ -174,7 +175,7 @@ export class DepartmentsComponent {
           alertify.notify("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
-      });
+      }).setHeader("Confirmation");
     else
       alertify.confirm("Do you realy want to Reject this??", () => {
         this.utServ.rejectActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
@@ -182,7 +183,7 @@ export class DepartmentsComponent {
         }, (error: any) => {
           alertify.notify("Something went wrong");
         });
-      })
+      }).setHeader("Confirmation");
   }
 
   linkActionStep(event: any, assignedDepartmentId: any, step: any) {
@@ -196,10 +197,10 @@ export class DepartmentsComponent {
         alertify.success("Linked");
       }, () => {
         alertify.error("Something went wrong..");
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
       });
     }, () => {
-      event.srcElement.checked = !event.srcElement.checked;
+      event.target.checked = !event.target.checked;
     }).setHeader("Confirmation");
   }
 
@@ -229,21 +230,14 @@ export class DepartmentsComponent {
         alertify.error("Something went wrong");
         $('.emp-list').hide({ direction: "left" });
       });
-    });
+    }).setHeader("Confirmation");
 
   }
   selectedStep: any;
   employeeIds: any[] = [];
   showList(selectedStep: any) {
     this.selectedStep = selectedStep;
-    this.employees = this.employeesCopy;
-    selectedStep.employeeAssigned.forEach(element => {
-      this.employees.forEach((ele: any, index: any) => {
-        if (ele.id == element.employeeId) {
-          ele['assigned'] = true;
-        }
-      });
-    });
+    this.employees = selectedStep.otherEmployees;
     $('.emp-list').show({ direction: "left" });
   }
 
@@ -269,7 +263,7 @@ export class DepartmentsComponent {
           alertify.notify("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
-      });
+      }).setHeader("Confirmation");
     else
       alertify.confirm("Do you realy want to Reject this??", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
@@ -280,7 +274,7 @@ export class DepartmentsComponent {
           alertify.notify("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
-      })
+      }).setHeader("Confirmation");
 
   }
 }

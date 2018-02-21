@@ -75,7 +75,7 @@
     </form>
   </div>
 
-  <div class="card table-card">
+  <!-- <div class="card table-card">
     <div class="panel-heading">
       <h4 class="panel-title">
         <a data-toggle="collapse" href="#collapse2"></a>
@@ -149,15 +149,14 @@
                             <ul style="list-style:none;padding:0;">
                               <li>
                                 <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateActivity(goal,initiate,activit,highlight)"
-                                  [disabled]="activit.disable">
+                                  [disabled]="activit.disable" [ngClass]="activit.disable?'icon-mark':'icon-mark2'">
                                   <a scrollTo href="#add-activity">
                                     <i class="glyphicon glyphicon-edit btn-edit"></i>
                                   </a>
                                 </button>
                               </li>
                               <li>
-                                <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteActivity(activit.activityId,initiate.activities,k)"
-                                  [disabled]="activit.disable">
+                                <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteActivity(activit.activityId,initiate.activities,k)" [disabled]="activit.disable" [ngClass]="activit.disable?'icon-mark':'icon-mark2'">
                                   <i class="glyphicon glyphicon-trash btn-del"></i>
                                 </button>
                               </li>
@@ -187,6 +186,87 @@
             </tr>
           </tfoot>
         </table>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="grid">
+    <div class="grid-head" style="grid-template-columns:30% 30% 30% 10%">
+      <div class="item">
+        <span class="hide-text">GOAL</span>
+        <form action="" class="search-form">
+          <div class="form-group has-feedback" style="margin-bottom:10px;">
+            <label for="search" class="sr-only">Search</label>
+            <input type="text" class="form-control" name="search" id="search" (keyup)="searchGoal($event)" placeholder="GOAL">
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+          </div>
+        </form>
+      </div>
+      <div class="item">
+        <span class="hide-text">INITIATIVE</span>
+        <form action="" class="search-form">
+          <div class="form-group has-feedback" style="margin-bottom:10px;">
+            <label for="search" class="sr-only">Search</label>
+            <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)" placeholder="INITIATIVE">
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+          </div>
+        </form>
+      </div>
+      <div class="item">
+        <span class="hide-text">ACTIVITY</span>
+        <form action="" class="search-form">
+          <div class="form-group has-feedback" style="margin-bottom:10px;">
+            <label for="search" class="sr-only">Search</label>
+            <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)" placeholder="ACTIVITY">
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+          </div>
+        </form>
+      </div>
+      <div class="item">
+        <span class="hide-text">Edit</span>
+      </div>
+    </div>
+    <div class="grid-outer-body" style="grid-template-columns:30% 70%" *ngFor="let goal of goals;let i = index;">
+      <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
+        {{goal.goal}}
+      </div>
+      <div class="grid-inner-body" style="grid-template-columns:42.86% 57.14%" *ngFor="let initiate of goal.initiatives;let j=index;">
+        <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
+          {{initiate.initiative}}
+        </div>
+        <div class="grid-inner-body" style="grid-template-columns:75% 25%;" *ngFor="let activit of initiate.activities;let k=index;">
+          <div class="item">{{activit.activity}}</div>
+          <div class="grid-inner-body" style="grid-template-columns:100%;">
+            <div class="item">
+                <ul style="list-style:none;padding:0;">
+                  <li>
+                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateActivity(goal,initiate,activit,highlight)"
+                      [disabled]="activit.disable" [ngClass]="activit.disable?'icon-mark':'icon-mark2'">
+                      <a scrollTo href="#add-activity">
+                        <i class="glyphicon glyphicon-edit btn-edit"></i>
+                      </a>
+                    </button>
+                  </li>
+                  <li>
+                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteActivity(activit.activityId,initiate.activities,k)" [disabled]="activit.disable" [ngClass]="activit.disable?'icon-mark':'icon-mark2'">
+                      <i class="glyphicon glyphicon-trash btn-del"></i>
+                    </button>
+                  </li>
+                  <li>
+                    <label class="switch">
+                      <input type="checkbox" [checked]="activit.disable" (change)="disable($event,activit.activityId)">
+                      <span class="slider round"></span>
+                    </label>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-outer-footer">
+      <div class="item">
+          No Data to Display .,.
       </div>
     </div>
   </div>

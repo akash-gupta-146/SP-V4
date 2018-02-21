@@ -255,6 +255,7 @@ ul {
 /* Loader */
 body{
 padding-top: 55px;
+position: relative;
 }
 .ctooltip {
 position: relative;
@@ -856,4 +857,67 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+.btn-save{
+  background: var(--color-primary);
+  border-color:var(--color-primary);
+  color:var(--color-text);
+}
+
+.btn-save:hover ,.btn-save:active ,.btn-save:focus{
+  background: var(--color-primary);
+  border-color:var(--color-primary);
+  color:var(--color-text);
+}
+
+
+/*Grid By Pankaj*/
+.grid{
+  width: 100%;
+  overflow-x: hidden;
+  background: #563d7c;
+  border-right: 1px solid rebeccapurple;
+}
+
+.grid-head{
+  display: grid;
+  grid-gap: 1px;/*inner gap*/  
+  background: white;
+}
+
+.grid-head .item{
+  background: rebeccapurple;
+  color: white;
+  font-weight: bold;
+}
+
+.grid-outer-body{
+  display: grid;
+  grid-gap: 1px;/*inner gap*/  
+  padding: 1px;/*outer gap or border of table*/
+}
+
+.grid-inner-body{
+  display: grid;
+  grid-gap: 1px;/*inner gap*/
+}
+
+.item {
+  padding: 8px;
+  grid-row-start: 1;
+  background-color: rgb(255, 255, 255);  
+}
+
+.grid-outer-footer{
+  grid-template-columns:100%;
+}
+
+.grid-outer-footer .item{
+  text-align: center;
+}
+
+.hide-text{
+  float: left;
+  position: absolute;
+  margin-top: 10px;
 }

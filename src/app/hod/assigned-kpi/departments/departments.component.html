@@ -1,4 +1,4 @@
-<hod></hod>
+<!-- <hod></hod> -->
 <div class="container-fluid">
   <div class="panel" *ngIf="data" id="edit-block" style="margin-top:50px;">
     <div class="panel-heading">
@@ -94,7 +94,71 @@
               </ng-template>
             </div>
             <div *ngIf="!dept.actionStepView">
-              <table id="accordion" class="table table-bordered table-edit text-center">
+              <div *ngIf="!data.evidanceFormId">
+                <div class="panel panel-default" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+                  <div class="panel-heading">
+                    Year : {{tdl.year}}
+                  </div>
+                  <div class="panel-body row">
+                    <div class="form-group">
+                      <label class="control-label col-sm-3 col-md-3 col-lg-1">BASE LINE :</label>{{dept.baseline}}
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let lev of tdl.levels;let in=index;">
+                      <div class="panel" style="border: 1px solid #0000001c;">
+                        <div class="panel-body quarter-block">
+                          <b class="quarter">{{lev.quarter}}</b>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
+                            </div>
+                            <div class="col-sm-6">
+                              <strong>Target </strong>: {{lev.estimatedTargetLevel}}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <strong>End Date </strong>: {{lev.endDate + tdl.year}}
+                            </div>
+                            <div class="col-sm-6" *ngIf="!data.evidanceFormId">
+                              <div class="dropdown" *ngIf="lev.status!='unsubmited'">
+                                <strong>Evidence </strong>:
+                                <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
+                                  <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                                  <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                                    <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" >evidance {{e+1}}</a>
+                                  </li>
+                                  <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <strong>Current Cost </strong>:{{lev.currentCost}}
+                            </div>
+                            <div class="col-sm-6">
+                              <strong>Achievement</strong>:{{lev.currentTargetLevel}}
+                            </div>
+                          </div>
+                          <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}}</span>
+                        </div>
+                        <div class="panel-footer text-center">
+                          <button class="btn-link" data-toggle="modal" data-target="#feedbackModal" (click)="selectedMeasure = selectedLevel = lev;"
+                          [disabled]="lev.status!='locked'">
+                          Approve/Reject</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <table id="accordion" class="table table-bordered table-edit text-center" *ngIf="data.evidanceFormId">
                 <caption>
                   <strong>BASE LINE : </strong>{{dept.baseline}}
                 </caption>

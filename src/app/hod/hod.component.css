@@ -34,13 +34,6 @@
     color:var(--color0);
   }
   
-  .hide-text{
-    float: left;
-    position: absolute;
-    margin-top: 10px;
-  }
-  
-  
 
 
 /* serach css end */
@@ -679,7 +672,7 @@ input:focus + .slider {
   display: none;
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   height: 100%;
  }
 
@@ -693,15 +686,20 @@ input:focus + .slider {
   background-color: rebeccapurple;
  }
 
- #fiter-box, #fiter-frequency{
-  padding-top: 25px;
+.filter{
   position: absolute;
-  z-index: 5;
-  background: #f3efef;
-  border: 1px solid #cbbde2;
-  display: table;
-  left: 50%;
-  transform: translate(-50%);
-  display:none;
- }
+height: 93vh;
+width: 100%;
+z-index: 10;
+background: #66339947;
+}
+
+.filter .content{
+  position: absolute;
+ top: 25%;
+ left: 50%;
+ width: 50%;
+ z-index: 10;
+ transform: translate(-50%,-25%);
+}
 

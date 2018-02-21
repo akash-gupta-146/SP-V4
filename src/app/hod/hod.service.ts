@@ -8,30 +8,76 @@ import { StorageService } from "../shared/storage.service";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class HodService{
  baseUrl: string;
 
+ public goals: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+
  private parent = new RequestOptions({
   headers: new Headers({
     'parent': true
   })
-});
+ });
+
+ private goalMode = new RequestOptions({
+   headers: new Headers({
+     'goalMode':true
+   })
+ })
 
  constructor(public http: CustomHttpService,private htttp:Http,
   public con: StorageService){
    this.baseUrl = con.baseUrl + con.getData('user_roleInfo')[0].role;
  }
 
- getOpiByDeptId(deptId){
+ public fetchOrganizationInfo() {
+
+  return this.http.get(this.baseUrl + "/university")
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+ getOpiResult(){
   return this.http.get(this.baseUrl + "/result")
     .map(this.extractData)
     .catch(this.handleError);
  }
 
- getKpiByQuarter(quarterId:any){
-  return this.http.get(this.baseUrl + "/result?quarter="+quarterId)
+ getOpiResultByGoalMode(){
+  return this.http.get(this.baseUrl + "/result",this.goalMode)
+  .map(this.extractData)
+  .catch(this.handleError);
+ }
+
+ getAllOpiResult(){
+  return this.http.get(this.baseUrl + "/result?currentYear=false&currentQuarter=false")
+  .map(this.extractData)
+  .catch(this.handleError);
+ }
+
+ getOpiResultByGoal(goalId:any){
+  return this.http.get(this.baseUrl + "/result?goalId="+goalId +"&currentYear=false&currentQuarter=false")
+    .map(this.extractData)
+    .catch(this.handleError);
+ }
+
+ getOpiResultByGoals(){
+  return this.http.get(this.baseUrl + "/opis")
+    .map(this.extractData)
+    .catch(this.handleError);
+ }
+
+ getOpiByDepartmentId(deptId:any[]){
+  return this.http.get(this.baseUrl + "/result?departmentIds="+deptId)
+    .map(this.extractData)
+    .catch(this.handleError);
+ }
+
+ getKpiByQuarter(quarterId:any,year:any){
+  return this.http.get(this.baseUrl + "/result?quarter="+quarterId+"&currentYear=false&currentQuarter=false&year="+year)
   .map(this.extractData)
   .catch(this.handleError);
  }
@@ -191,6 +237,30 @@ updateMou(mouId:any,mou:any){
 //   .catch(this.handleError);
 // }
 
+getActionStep(url:string){
+  return this.http.get(this.baseUrl + url,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getAllActionSteps(){
+  return this.http.get(this.baseUrl + "/action-step",this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getAssignedActionStep(){
+  return this.http.get(this.baseUrl + "/my-action-step",this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getActionStepsWhenPlanMode(){
+  return this.http.get(this.baseUrl + "/action-step?planMode=true",this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 getActionSteps(assignedId:any){
   return this.http.get(this.baseUrl + "/opiDepartment/"+assignedId+"/action-step")
   .map(this.extractData)
@@ -234,6 +304,11 @@ getEmployees(){
 
 assignActionStep(linkingId:any,data:any){
   return this.http.post(this.baseUrl + "/assign/action-step-link/"+linkingId+"/employees",data).map(this.extractData)
+  .catch(this.handleError);
+}
+
+setActionStepStatus(assignmentId:any,data:any){
+  return this.http.post(this.baseUrl + "/action-step/assignment/"+assignmentId+"/status",data).map(this.extractData)
   .catch(this.handleError);
 }
 

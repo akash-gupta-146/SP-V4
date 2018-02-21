@@ -116,6 +116,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       this.orgService.saveActivity(this.activityForm.value)
         .subscribe(response => {
           $("#add-activity").hide();
+          $('#add-btn').show();
           alertify.notify("Saved successfully .,.");
           this.getActivities();
           this.activityForm.controls["activity"].reset();
@@ -124,12 +125,14 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       alertify.confirm("Are you sure you want to Update this Activity?", () => {
         delete this.activityForm.value["initiativeId"];
         this.orgService.updateActivity(this.seletedActivity.activityId, this.activityForm.value).subscribe((res: any) => {
+          $("#add-activity").hide();
+          $('#add-btn').show();
           this.getActivities();
           alertify.notify("Updated successfully .,.");
           this.isUpdating = false;
           this.activityForm = this.setActivity();
         });
-      });
+      }).setHeader("Confirmation");
     }
   }
 
@@ -139,7 +142,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
         activities.splice(index, 1);
         alertify.notify("Deleted successfully .,.");
       });
-    })
+    }).setHeader("Confirmation");
   }
   seletedActivity: any;
   updateActivity(objective: any, initiative: any, activity: any, highlight: any) {
@@ -189,32 +192,32 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   disable(event: any, activityId: any) {
-    if (event.srcElement.checked)
+    if (event.target.checked)
       alertify.confirm("Do you Really want to disable this Activity??", () => {
         this.orgService.disableActivity(activityId).subscribe((response: any) => {
           alertify.success("You disabled the Activity..");
           this.getActivities();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
     else
       alertify.confirm("Do you Really want to enable this Activity??", () => {
         this.orgService.enableActivity(activityId).subscribe((response: any) => {
           alertify.success("You enabled the Activity..");
           this.getActivities();
         }, () => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
+        event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
-      });
+      }).setHeader("Confirmation");
   }
 
   get(e) {

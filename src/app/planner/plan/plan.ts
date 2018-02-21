@@ -89,8 +89,9 @@ export class PlanComponent {
   }
 
   changeStatus(event: any, c: any) {
+    console.log(event);
     alertify.confirm("Are you sure you want to do this?", () => {
-      if (event.srcElement.checked)
+      if (event.target.checked)
         this.orgService.disableCycle(c.cycleId).subscribe((response: any) => {
           alertify.success('You disabled the cycle.');
           this.getCycles();
@@ -105,7 +106,7 @@ export class PlanComponent {
           alertify.error("Something went wrong");
         });
     }, () => {
-      event.srcElement.checked = !event.srcElement.checked;
+      event.target.checked = !event.target.checked;
     }).setHeader('Confirmation');
   }
 
@@ -121,7 +122,7 @@ export class PlanComponent {
   }
 
   defaultCycle(event: any, cycleId: any) {
-    if (!event.srcElement.checked) {
+    if (!event.target.checked) {
       alertify.alert("This cycle is alredy defualt").setHeader("Alert Message")
     } else {
       alertify.confirm("Do you Really want to make it Default Cycle??", () => {
@@ -129,12 +130,12 @@ export class PlanComponent {
           this.getCycles();
           alertify.success("Cycle has been made default..")
         }, (error: any) => {
-          event.srcElement.checked = !event.srcElement.checked;
+          event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
         })
       }, () => {
-        event.srcElement.checked = !event.srcElement.checked;
-      })
+        event.target.checked = !event.target.checked;
+      }).setHeader("Confirmation");
     }
 
   }

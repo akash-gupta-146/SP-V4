@@ -152,8 +152,11 @@
     </form>
   </div>
 
-  <div class="card table-card">
-    <table class="table table-bordered table-data text-center">
+  <!-- <div class="card table-card"> -->
+    <button class="btn btn-save pull-right" (click)="getOpi()" *ngIf="reloadBtn">
+      <span class="glyphicon glyphicon-refresh">Reload</span>
+    </button>
+    <!-- <table class="table table-bordered table-data text-center">
       <colgroup>
         <col style="width:16%">
         <col style="width:16%">
@@ -206,7 +209,11 @@
             </form>
           </th>
           <th style="vertical-align:middle">KPI Detail</th>
-          <th style="vertical-align:middle">Assigned Departments</th>
+          <th style="vertical-align:middle">Assigned Departments
+              <button type="button" class="btn-link pull-right" data-toggle="modal" data-target="#filterModal" (click)="viewDepartmentFilter()">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+          </th>
           <th class="middle">Action</th>
         </tr>
       </thead>
@@ -265,14 +272,14 @@
                             <td [style.border-top]="l?'1px solid #ddd':'none'">
                               <ul style="list-style:none;padding:0;">
                                 <li>
-                                  <button class="btn-link btn-edit" (click)="updateMeasure(goal,initiate,activit,msr,highlight)" [disabled]="msr.disable">
+                                  <button class="btn-link btn-edit" (click)="updateMeasure(goal,initiate,activit,msr,highlight)" [disabled]="msr.disable" [ngClass]="msr.disable?'icon-mark':'icon-mark2'">
                                     <a scrollTo href="#top">
                                       <i class="glyphicon glyphicon-edit"></i>
                                     </a>
                                   </button>
                                 </li>
                                 <li>
-                                  <button class="btn-link btn-edit" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="msr.disable">
+                                  <button class="btn-link btn-edit" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="msr.disable" [ngClass]="msr.disable?'icon-mark':'icon-mark2'">
                                     <i class="glyphicon glyphicon-trash"></i>
                                   </button>
                                 </li>
@@ -300,9 +307,160 @@
           <td colspan="8" class="text-center">No Data to Display .,.</td>
         </tr>
       </tfoot>
-    </table>
-  </div>
+    </table> -->
 
+    <!--Grid View-->
+    <div class="grid">
+      <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 16% 4% ">
+        <div class="item">
+          <span class="hide-text">GOAL</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchGoal($event)" placeholder="GOAL">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">INITIATIVE</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)" placeholder="INITIATIVE">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">ACTIVITY</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)" placeholder="ACTIVITY">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">KPI</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchOpi($event)" placeholder="KPI">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">Kpi Details</span>
+        </div>
+        <div class="item">
+          <span class="hide-text">
+            Assigned Departments
+            <button type="button" class="btn-link pull-right" data-toggle="modal" data-target="#filterModal" (click)="viewDepartmentFilter()">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+          </span>
+        </div>
+        <div class="item">
+          <span class="hide-text">Action</span>
+        </div>
+      </div>
+      <div class="grid-outer-body" style="grid-template-columns:16% 84%;" *ngFor="let goal of goals;let i = index;">
+        <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
+          {{goal.goal}}
+        </div>
+        <div class="grid-inner-body" style="grid-template-columns:19.05% 80.95%;" *ngFor="let initiate of goal.initiatives;let j=index;">
+          <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
+            {{initiate.initiative}}
+          </div>
+          <div class="grid-inner-body" style="grid-template-columns:23.53% 76.47%;" *ngFor="let activit of initiate.activities;let k=index;">
+            <div class="item" [style.grid-row-end]="activit.opis.length + 1">{{activit.activity}}</div>
+            <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngFor="let msr of activit.opis;let l=index">
+              <div class="item">{{msr.opi}}</div>
+              <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;">
+                <div class="item">
+                  <label>Frequency :</label>{{msr.frequency}}
+                  <br>
+                  <label>Cost :</label>10000
+                  <br>
+                  <label>MeasureUnit :</label>{{msr.measureUnit}}
+                  <br>
+                  <label>Direction :</label>
+                  <span [ngClass]="msr.direction ? 'glyphicon glyphicon-sort-by-attributes' : 'glyphicon glyphicon-sort-by-attributes-alt'"
+                    class="icon-mark2"></span>
+                </div>
+                <div class="grid-inner-body" style="grid-template-columns:80% 20%;">
+                  <div class="item">
+                    <ul style="list-style:none;padding:0px;">
+                      <li *ngIf="!msr.assignedDepartments.length">
+                        <a class="" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.assignedDepartments);">Add</a>
+                      </li>
+                      <li *ngFor="let dept of msr.assignedDepartments;let d = index">{{dept.department}}, </li>
+                      <li *ngIf="msr.assignedDepartments.length">
+                        <a data-toggle="modal" data-target="#detailModal" (click)="selectedMeasure=msr;">Detail</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="grid-inner-body">
+                    <div class="item" style="padding: 2px;">
+                      <ul style="list-style:none;padding:0;">
+                        <li>
+                          <button class="btn-link btn-edit" (click)="updateMeasure(goal,initiate,activit,msr,highlight)" [disabled]="msr.disable" [ngClass]="msr.disable?'icon-mark':'icon-mark2'">
+                            <a scrollTo href="#top">
+                              <i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                          </button>
+                        </li>
+                        <li>
+                          <button class="btn-link btn-edit" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="msr.disable" [ngClass]="msr.disable?'icon-mark':'icon-mark2'">
+                            <i class="glyphicon glyphicon-trash"></i>
+                          </button>
+                        </li>
+                        <li>
+                          <label class="switch">
+                            <input type="checkbox" [checked]="msr.disable" (change)="disable($event,msr.opiId)">
+                            <span class="slider round"></span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-outer-footer" *ngIf="!goals.length">
+        <div class="item">
+            No Data to Display .,.
+        </div>
+      </div>
+    </div>
+  <!-- </div> -->
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <!-- Modal -->
   <div class="modal fade modal-add" id="myModal" role="dialog">
     <div class="modal-dialog modal-xl">
@@ -495,3 +653,32 @@
       </div>
     </div>
   </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="filterModal" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div> -->
+      <div class="modal-body">
+        <div class="row" style="margin:0px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div style="height:50vh;overflow-y: scroll;">
+          <b>Organisation Unit</b>
+          <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="filterDepartment($event)"></tree-view>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-save" (click)="applyFilter()">Apply</button>
+        <button type="button" class="btn btn-save" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    
+  </div>
+</div>     

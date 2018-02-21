@@ -1,75 +1,23 @@
-<hod></hod>
-<div class="container-fluid">
-  <div class="container" id="fiter-box">
-    <button type="button" class="close" style="position: absolute;
-    right: 10px;
-    top: 10px;" (click)="hideFilter()">&times;</button>
-    <div class="form-group col-sm-3">
-      <label for="goal">Goal</label>
-      <select class="form-control" id="goal" (ngModelChange)="initiatives = $event.initiatives" ngModel>
-        <option *ngFor="let goal of goals;let i = index;" [ngValue]="goal">{{goal.goal}}</option>
-      </select>
-    </div>
-    <div class="form-group col-sm-3">
-      <label for="initiative">Initiative</label>
-      <select class="form-control" id="initiative" (ngModelChange)="activities = $event.activities" ngModel>
-        <option *ngFor="let initiative of initiatives;let i = index;" [ngValue]="initiative">{{initiative.initiative}}</option>
-      </select>
-    </div>
-    <div class="form-group col-sm-3">
-      <label for="activity">Activity</label>
-      <select class="form-control" id="activity" (ngModelChange)="opis = $event.opis" ngModel>
-        <option *ngFor="let activity of activities;let i = index;" [ngValue]="activity">{{activity.activity}}</option>
-      </select>
-    </div>
-    <div class="form-group col-sm-3">
-      <label for="opi">KPI</label>
-      <!-- <select class="form-control" id="opi"> -->
-        <ul class="form-control">
-        <li *ngFor="let opi of opis;let i = index;"
-        ><a [routerLink]="role!='coordinator'?opi.opiId:'kpis/'+opi.opiId">{{opi.opi}}</a></li>
-        </ul>
-      <!-- </select> -->
-    </div>
-  </div>
-
-  <div class="container" id="fiter-frequency">
-      <button type="button" class="close" style="position: absolute;
-      right: 10px;
-      top: 10px;" (click)="hideQuarterFilter()">&times;</button>
-    <div class="form-group col-sm-4">
-      <label for="frequency">Frequency</label>
-      <select class="form-control" id="frequency" (ngModelChange)="quarters = $event.quarters" ngModel>
-        <option *ngFor="let frequency of frequencies;let i = index;" [ngValue]="frequency">{{frequency.frequency}}</option>
-      </select>
-    </div>
-    <div class="form-group col-sm-4">
-      <label for="quarter">Quarter</label>
-      <select class="form-control" id="quarter" (ngModelChange)="getKpi($event)" ngModel>
-        <option *ngFor="let quarter of quarters;let i = index;" [ngValue]="quarter.id">{{quarter.quarter}}</option>
-      </select>
-    </div>
-  </div>
-  
-  <div class="card table-card" style="margin-top:50px;">
-    <table class="table table-bordered table1 text-center">
-      <caption>
-        <div class="dropdown pull-right">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Filters
-          <span class="glyphicon glyphicon-filter"></span></button>
-          <ul class="dropdown-menu" style="right: 0;left: unset;">
-            <li><a (click)="viewFilter()">By KPI</a></li>
-            <li><a (click)="viewQuarterFilter()">By Quarter</a></li>
-          </ul>
-        </div>
-      </caption>
+<div class="filter-modal">
+  <router-outlet></router-outlet>
+</div>
+<div class="container-fluid" style="padding-top:25px;">
+  <div class="card table-card">
+    <caption class=" pull-right">
+      <h4>Current Year : 2018 Current Quarter : 1st (Jan - March)
+        <button class="btn btn-save" (click)="getOpi();">
+          <span class="glyphicon glyphicon-refresh"></span>
+          Reload
+        </button>
+      </h4>
+    </caption>
+    <!-- <table class="table table-bordered table1 text-center">
       <colgroup>
         <col style="width:20%">
         <col style="width:20%">
         <col style="width:20%">
-        <col style="width:15%">
-        <col style="width:11%">
-        <col style="width:11%">
+        <col style="width:20%">
+        <col style="width:17%">
         <col style="width:3%">
       </colgroup>
       <thead class="header-background" *ngIf="goalsCopy.length">
@@ -114,16 +62,14 @@
               </div>
             </form>
           </th>
-          <!-- <th>Frequency</th> -->
-          <th>Departments</th>
-          <th>Status</th>
-          <th>View</th>
+          <th>Departments + Status</th>
+          <th>Edit</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let goal of goals;let i = index;">
           <td>{{goal.goal}}</td>
-          <td colspan="6" style="padding:0px;border:none;" #element [style.height]="get(element)">
+          <td colspan="5" style="padding:0px;border:none;" #element [style.height]="get(element)">
             <table class="table table-bordered" style="height: inherit;border:0px;">
               <colgroup>
                 <col style="width:25%">
@@ -139,37 +85,46 @@
                     </colgroup>
                     <tr *ngFor="let activit of initiate.activities;let k=index;">
                       <td [style.border-top]="k?'1px solid #ddd':'none'">{{activit.activity}}</td>
-                      <td colspan="4" style="padding:0px;" #element2 [style.height]="get(element2) + ' !important'">
+                      <td colspan="3" style="padding:0px;" #element2 [style.height]="get(element2) + ' !important'">
                         <table class="table table-bordered" style="height: inherit;border:0px;">
                           <colgroup>
-                            <col style="width:37.5%">
-                            <col style="width:55%">
+                            <col style="width:50%">
+                            <col style="width:42.5%">
                             <col style="width:7.5%">
                           </colgroup>
                           <tr *ngFor="let msr of activit.opis;let l=index">
                             <td [style.border-top]="l?'1px solid #ddd':'none'">{{msr.opi}}</td>
-                            <td colspan="2" style="padding:0px;" #element3 [style.height]="get(element3) + ' !important'">
+                            <td style="padding:0px;" #element3 [style.height]="get(element3) + ' !important'">
                               <table class="table table-bordered" style="height: inherit;border:0px;">
                                 <colgroup>
-                                  <col style="width:50%">
-                                  <col style="width:50%">
+                                  <col style="width:100%">
                                 </colgroup>
                                 <tr *ngFor="let dept of msr.departmentInfo;let d = index">
-                                  <td style="padding:0px;">{{dept.department}}</td>
-                                  <td style="padding:0px;">
-                                    <i [style.color]="dept.quarterStatus.successInfo.color" style="font-size: 30px;line-height: 1;">&#x25CF;</i>
-                                    <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">
-                                      {{dept.quarterStatus.status}}
-                                      <br>
-                                      <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
-                                    </a>
+                                  <td style="padding:5px;text-align:left;">
+                                    <p style="margin-bottom: 5px;">{{dept.department}}</p>
+                                    <div [style.background-color]="dept.quarterStatus.successInfo.color" style="    padding: 5px;
+                                      border-radius: 50%;
+                                      height: 25px;
+                                      min-width: 25px;
+                                      width:auto;
+                                      line-height: 1;
+                                      text-align:center;float:left;" [style.color]="!dept.quarterStatus.successInfo.color">
+                                      <b>{{dept.quarterStatus.successInfo.difference}}</b>
+                                    </div>
+                                    <div style="padding: 2px 0px 0px 30px;">
+
+                                      <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">
+                                        {{dept.quarterStatus.status}}
+                                        <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
+                                      </a>
+                                    </div>
                                   </td>
                                 </tr>
                               </table>
                             </td>
                             <td>
-                              <a [routerLink]="msr.opiId" *ngIf="role!='coordinator'">view</a>
-                              <a [routerLink]="'kpis/'+msr.opiId" *ngIf="role=='coordinator'">view</a>
+                              <a [routerLink]="'../' + msr.opiId" *ngIf="role!='coordinator'">Edit</a>
+                              <a [routerLink]="'../kpis/'+msr.opiId" *ngIf="role=='coordinator'">Edit</a>
                             </td>
                           </tr>
                         </table>
@@ -184,12 +139,120 @@
       </tbody>
       <tfoot *ngIf="!goals.length">
         <tr>
-          <td colspan="4" class="text-center">No Data to Display .,.</td>
+          <td colspan="6" class="text-center">No Data to Display .,.</td>
         </tr>
       </tfoot>
-    </table>
-  </div>
-</div>
+    </table> -->
+    <br>
+    <div class="grid">
+      <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 17% 3% ">
+        <div class="item">
+          <span class="hide-text">GOAL</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchGoal($event)" placeholder="GOAL">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">INITIATIVE</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)" placeholder="INITIATIVE">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">ACTIVITY</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)" placeholder="ACTIVITY">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">KPI</span>
+          <form action="" class="search-form">
+            <div class="form-group has-feedback" style="margin-bottom:10px;">
+              <label for="search" class="sr-only">Search</label>
+              <input type="text" class="form-control" name="search" id="search" (keyup)="searchOpi($event)" placeholder="KPI">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </div>
+        <div class="item">
+          <span class="hide-text">Kpi Details</span>
+        </div>
+        <div class="item">
+          <span class="hide-text">Departmentwise Status</span>
+        </div>
+        <div class="item">
+          <span class="hide-text">Edit</span>
+        </div>
+      </div>
+      <div class="grid-outer-body" style="grid-template-columns:16% 84%;" *ngFor="let goal of goals;let i = index;">
+        <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
+          {{goal.goal}}
+        </div>
+        <div class="grid-inner-body" style="grid-template-columns:19.05% 80.95%;" *ngFor="let initiate of goal.initiatives;let j=index;">
+          <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
+            {{initiate.initiative}}
+          </div>
+          <div class="grid-inner-body" style="grid-template-columns:23.53% 76.47%;" *ngFor="let activit of initiate.activities;let k=index;">
+            <div class="item" [style.grid-row-end]="activit.opis.length + 1">{{activit.activity}}</div>
+            <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngFor="let msr of activit.opis;let l=index">
+              <div class="item">{{msr.opi}}</div>
+              <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;">
+                <div class="item">
+                  <p><strong>Frequency</strong> : {{msr.frequency}}</p>
+                  <p><strong>Evidence Form</strong> : {{msr.evidanceForm}}<span *ngIf="!msr.evidanceForm">None</span><p>
+                </div>
+                <div class="grid-inner-body" style="grid-template-columns:85% 15%;">
+                  <div class="item" style="padding:0px;">
+                    <div *ngFor="let dept of msr.departmentInfo;let d = index" style="padding:5px;text-align:left;"
+                    [style.border-bottom]="d!=msr.departmentInfo.length-1?'1px solid':'unset'">
+                      <p style="margin-bottom: 5px;">{{dept.department}}</p>
+                      <div [style.background-color]="dept.quarterStatus.successInfo.color" style="padding: 5px;
+                        border-radius: 50%;height: 25px;min-width: 25px;width:auto;
+                        line-height: 1;text-align:center;float:left;" [style.color]="!dept.quarterStatus.successInfo.color">
+                        <b>{{dept.quarterStatus.successInfo.difference}}</b>
+                      </div>
+                      <div style="padding: 2px 0px 0px 30px;">
+                        <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">
+                          {{dept.quarterStatus.status}}
+                          <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid-inner-body">
+                    <div class="item">
+                      <a [routerLink]="'./opis/' + msr.opiId" *ngIf="role!='coordinator'">Edit</a>
+                      <a [routerLink]="'./kpis/'+msr.opiId" *ngIf="role=='coordinator'">Edit</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-outer-footer" *ngIf="!goals.length">
+        <div class="item">
+            No Data to Display .,.
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+
 
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg bar">
