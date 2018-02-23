@@ -26,7 +26,7 @@ export class HodService{
    headers: new Headers({
      'goalMode':true
    })
- })
+ });
 
  constructor(public http: CustomHttpService,private htttp:Http,
   public con: StorageService){

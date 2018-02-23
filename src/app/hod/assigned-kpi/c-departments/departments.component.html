@@ -110,6 +110,7 @@
                       <div class="panel" style="border: 1px solid #0000001c;">
                         <div class="panel-body quarter-block">
                           <b class="quarter">{{lev.quarter}}</b>
+                          <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}} - {{lev.role}}</span>
                           <div class="row">
                             <div class="col-sm-6">
                               <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
@@ -157,12 +158,14 @@
                               <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentTargetLevel}}</span>
                             </div>
                           </div>
-                          <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}}</span>
                         </div>
                         <div class="panel-footer text-center" *ngIf="!lev.disable">
                           <button *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)" (click)="saveQuarterResult(lev)"
                             [disabled]="lev.disable"> Save</button>
-                          <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;" [disabled]="lev.disable">Edit</button>
+
+                          <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
+                            [disabled]="lev.disable">Edit</button>
+                            
                           <button *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
                           <button *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
                         </div>

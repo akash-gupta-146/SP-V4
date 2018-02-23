@@ -4,9 +4,9 @@ import { RouterModule } from '@angular/router';
 import { KPIComponent } from './kpi.component';
 import { ByKPIComponent } from './kpi/by.kpi.component';
 import { ByFrequency } from './frequency/by-frequency';
-import { ByDepartment } from './department/by.department';
 import { CoordinatorDepartmentsComponent } from './c-departments/departments.component';
 import { DepartmentsComponent } from './departments/departments.component';
+import { ByDepartment } from './department-wise/by.department';
 @NgModule({
  imports: [SharedModule, RouterModule.forChild([
   {

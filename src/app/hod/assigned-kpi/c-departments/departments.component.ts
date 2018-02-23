@@ -134,6 +134,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
       this.loaderService.setTransactionLoader(true);
       this.utServ.updateQuarterResult(quarter.id, object).subscribe((response: any) => {
         quarter.status = 'inprogress';
+        quarter.isUpdating = false;
         this.loaderService.setTransactionLoader(false);
         alertify.success("Updated");
         console.log(response);

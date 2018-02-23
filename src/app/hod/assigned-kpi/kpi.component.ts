@@ -80,45 +80,4 @@ export class KPIComponent extends Filters {
        });
      }).setHeader("Confirmation");     
  }
-
-//  getKpi(event:any){
-//   this.utServ.getKpiByQuarter(event).subscribe((response:any)=>{
-//     console.log(this.goals);
-//     this.goals = response;
-//     // let temp = _.clone(this.goals);
-//     // temp = response;
-//     // console.log(this.goals);
-//   })
-//  }
-
- public showOpi(goal: any, measure: any) {
-   $('#edit-block').show();
-   $('#edit-section').collapse('show');
-   console.log(measure);
- }
-
- hideEditBlock(){
-   $('#edit-block').hide();
- }
-
- get(e) {
-   var promise = new Promise((resolve: any, reject: any) => { $(e)["0"].height = $(e)["0"].clientHeight; resolve(); });
-   return promise;
- }
-
- viewFilter(){
-   $('#fiter-box').show({ direction: "top" });
- }
-
- viewQuarterFilter(){
-  $('#fiter-frequency').show({ direction: "top" });
- }
-
- hideQuarterFilter(){
-  $('#fiter-frequency').hide({ direction: "top" });
- }
-
- hideFilter(){
-  $('#fiter-box').hide({ direction: "top" });
- }
 }

@@ -1,132 +1,134 @@
 <div class="container-fluid" style="margin-top:50px;">
- <div class="container text-center" style="padding: 20px;">
-   <img src="assets/nxtlife.png" style="height: 100px;">
- </div>
- <div *ngIf="organisationInfo">
-  <div class="panel">
-   <div class="panel-body">
-     <h4 style="color: #563d7c;">Mission</h4>
-     <p>{{organisationInfo.mission}}</p>
-   </div>
+  <div class="container text-center" style="padding: 20px;">
+    <img src="assets/nxtlife.png" style="height: 100px;">
   </div>
-  <div class="panel">
-   <div class="panel-body">
-    <h4 style="color: #563d7c;">Vision</h4>
-    <p>{{organisationInfo.vision}}</p>
-   </div>
+  <div *ngIf="organisationInfo">
+    <div class="panel">
+      <div class="panel-body">
+        <h4 style="color: #563d7c;">Mission</h4>
+        <p>{{organisationInfo.mission}}</p>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-body">
+        <h4 style="color: #563d7c;">Vision</h4>
+        <p>{{organisationInfo.vision}}</p>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-body">
+        <h4 style="color: #563d7c;">Values</h4>
+        <ol>
+          <li *ngFor="let value of organisationInfo.values;let v = index;">
+            <p>
+              <strong>{{value.title}} :</strong>
+            </p>
+            <p style="white-space: pre-wrap;">{{value.description}}</p>
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
-  <div class="panel">
-   <div class="panel-body">
-     <h4 style="color: #563d7c;">Values</h4>
-     <ol>
-      <li *ngFor="let value of organisationInfo.values;let v = index;">
-       <p><strong>{{value.title}} :</strong></p>
-       <p style="white-space: pre-wrap;">{{value.description}}</p>
-      </li>
-     </ol>
-   </div>
-  </div>
- </div>
- <div class="panel panel-default" *ngFor="let goal of goals;let i = index;">
-  <div class="panel-heading">
-   <h4 class="panel-title">
-    <b>Goal</b> {{i+1}}. {{goal.goal}}</h4>
-  </div>
-  <div class="panel-body padding-none">
-   <div class="panel" *ngFor="let initiative of goal.initiatives;let j=index;">
+  <div class="panel panel-default" *ngFor="let goal of goals;let i = index;">
     <div class="panel-heading">
-     <h4 class="panel-title">
-      <b>Initiative</b> {{i+1}}.{{j+1}}. {{initiative.initiative}}</h4>
+      <h4 class="panel-title">
+        <b>Goal</b> {{i+1}}. {{goal.goal}}</h4>
     </div>
     <div class="panel-body padding-none">
-     <div class="panel" *ngFor="let activity of initiative.activities;let k=index;">
-      <div class="panel-heading">
-       <h4 class="panel-title">
-        <b>Activity</b> {{i+1}}.{{j+1}}.{{k+1}}. {{activity.activity}}
-       </h4>
-      </div>
-      <div class="panel-body padding-none">
-       <div class="panel" *ngFor="let opi of activity.opis;let l=index">
+      <div class="panel" *ngFor="let initiative of goal.initiatives;let j=index;">
         <div class="panel-heading">
-         <h4 class="panel-title">
-          <b>KPI</b> {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}. {{opi.opi}}
-         </h4>
+          <h4 class="panel-title">
+            <b>Initiative</b> {{i+1}}.{{j+1}}. {{initiative.initiative}}</h4>
         </div>
-        <div class="panel-body padding-left" [attr.id]="'accordion'+ i + j + k + l">
-         <fieldset class="the-fieldset panel" *ngFor="let dept of opi.departmentInfo;let d=index;">
-          <legend class="the-legend" [attr.data-parent]="'#accordion'+ i + j + k + l" [attr.data-target]="'#demo' + dept.departmentId+ i + j + k + l"
-           data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
-
-          <div [attr.id]="'demo' + dept.departmentId + i + j + k + l" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
-           <div class="panel panel-default" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+        <div class="panel-body padding-none">
+          <div class="panel" *ngFor="let activity of initiative.activities;let k=index;">
             <div class="panel-heading">
-             Year : {{tdl.year}}
+              <h4 class="panel-title">
+                <b>Activity</b> {{i+1}}.{{j+1}}.{{k+1}}. {{activity.activity}}
+              </h4>
             </div>
-            <div class="panel-body row">
-             <div class="form-group">
-              <label class="control-label col-sm-3 col-md-3 col-lg-1">BASE LINE :</label>{{dept.baseline}}
-              <div class="pull-right">
-               <label class="control-label">Evidence Form</label> :{{opi.evidanceForm}}
-               <span *ngIf="!opi.evidanceForm">: None</span>
-              </div>
-             </div>
+            <div class="panel-body padding-none">
+              <div class="panel" *ngFor="let opi of activity.opis;let l=index">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <b>KPI</b> {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}. {{opi.opi}}
+                  </h4>
+                </div>
+                <div class="panel-body padding-left" [attr.id]="'accordion'+ i + j + k + l">
+                  <fieldset class="the-fieldset panel" *ngFor="let dept of opi.departmentInfo;let d=index;">
+                    <legend class="the-legend" [attr.data-parent]="'#accordion'+ i + j + k + l" [attr.data-target]="'#demo' + dept.departmentId+ i + j + k + l"
+                      data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
 
-             <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let lev of tdl.levels;let in=index;">
-              <div class="panel" style="border: 1px solid #0000001c;">
-               <div class="panel-body quarter-block">
-                <b class="quarter">{{lev.quarter}}</b>
-                <div class="row">
-                 <div class="col-sm-6">
-                  <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
-                 </div>
-                 <div class="col-sm-6">
-                  <strong>Estimated Target </strong>: {{lev.estimatedTargetLevel}}
-                 </div>
+                    <div [attr.id]="'demo' + dept.departmentId + i + j + k + l" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
+                      <div class="panel panel-default" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+                        <div class="panel-heading">
+                          Year : {{tdl.year}}
+                        </div>
+                        <div class="panel-body row">
+                          <div class="form-group">
+                            <label class="control-label col-sm-3 col-md-3 col-lg-1">BASE LINE :</label>{{dept.baseline}}
+                            <div class="pull-right">
+                              <label class="control-label">Evidence Form</label> :{{opi.evidanceForm}}
+                              <span *ngIf="!opi.evidanceForm">: None</span>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let lev of tdl.levels;let in=index;">
+                            <div class="panel" style="border: 1px solid #0000001c;">
+                              <div class="panel-body quarter-block">
+                                <b class="quarter">{{lev.quarter}}</b>
+                                <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}} - {{lev.role}}</span>
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <strong>Estimated Target </strong>: {{lev.estimatedTargetLevel}}
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <strong>End Date </strong>: {{lev.endDate + tdl.year}}
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <div class="dropdown" *ngIf="lev.evidance&&lev.evidance.length">
+                                      <strong>Evidence </strong>:
+                                      <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
+                                        <span class="caret"></span>
+                                      </a>
+                                      <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 0;left:unset;font-size:12px;">
+                                        <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                                          <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
+                                        </li>
+                                        <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
+                                        <li role="presentation" class="divider" style="clear: both;"></li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <strong>Current Cost </strong>:
+                                    <span>{{lev.currentCost}}</span>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <strong>Achievement</strong>:
+                                    <span>{{lev.currentTargetLevel}}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
-                <div class="row">
-                 <div class="col-sm-6">
-                  <strong>End Date </strong>: {{lev.endDate + tdl.year}}
-                 </div>
-                 <div class="col-sm-6">
-                  <div class="dropdown" *ngIf="lev.evidance&&lev.evidance.length">
-                   <strong>Evidence </strong>:
-                   <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
-                    <span class="caret"></span>
-                   </a>
-                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 0;left:unset;font-size:12px;">
-                    <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
-                     <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
-                    </li>
-                    <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
-                    <li role="presentation" class="divider" style="clear: both;"></li>
-                   </ul>
-                  </div>
-                 </div>
-                </div>
-                <div class="row">
-                 <div class="col-sm-6">
-                  <strong>Current Cost </strong>:
-                  <span>{{lev.currentCost}}</span>
-                 </div>
-                 <div class="col-sm-6">
-                  <strong>Achievement</strong>:
-                  <span>{{lev.currentTargetLevel}}</span>
-                 </div>
-                </div>
-                <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}}</span>
-               </div>
               </div>
-             </div>
             </div>
-           </div>
           </div>
-         </fieldset>
         </div>
-       </div>
       </div>
-     </div>
     </div>
-   </div>
   </div>
- </div>
 </div>

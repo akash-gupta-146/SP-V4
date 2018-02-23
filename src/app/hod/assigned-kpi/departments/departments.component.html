@@ -72,7 +72,7 @@
             <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
           </select>
           <ng-template #heirarchy>
-            <a class="btn btn-link" data-toggle="modal" data-target="#departmentModal" >
+            <a class="btn btn-link" data-toggle="modal" data-target="#departmentModal">
               <i class="glyphicon glyphicon-th-list"></i>Departments</a>
           </ng-template>
         </div>
@@ -107,6 +107,7 @@
                       <div class="panel" style="border: 1px solid #0000001c;">
                         <div class="panel-body quarter-block">
                           <b class="quarter">{{lev.quarter}}</b>
+                          <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}} - {{lev.role}}</span>
                           <div class="row">
                             <div class="col-sm-6">
                               <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
@@ -127,7 +128,7 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
                                   <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
-                                    <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" >evidance {{e+1}}</a>
+                                    <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">evidance {{e+1}}</a>
                                   </li>
                                   <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
                                 </ul>
@@ -145,12 +146,11 @@
                               <strong>Achievement</strong>:{{lev.currentTargetLevel}}
                             </div>
                           </div>
-                          <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}}</span>
                         </div>
                         <div class="panel-footer text-center">
                           <button class="btn-link" data-toggle="modal" data-target="#feedbackModal" (click)="selectedMeasure = selectedLevel = lev;"
-                          [disabled]="lev.status!='locked'">
-                          Approve/Reject</button>
+                            [disabled]="lev.disable">
+                            Approve/Reject</button>
                         </div>
                       </div>
                     </div>
@@ -217,7 +217,7 @@
                     </tr>
                     <tr *ngIf="lev.internshipGraph&&lev.internshipGraph.length">
                       <td></td>
-                      <td colspan="7">
+                      <td colspan="8">
                         <table class="table table-bordered">
                           <caption>
                             <b>Internship Details</b>
@@ -341,7 +341,7 @@
                     </tbody>
                     <tfoot *ngIf="!actionSteps.length">
                       <tr>
-                        <th class="text-center" colspan="6">No Action Steps added yet</th>
+                        <th class="text-center" colspan="7">No Action Steps added yet</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -377,7 +377,7 @@
                         <span class="glyphicon glyphicon-remove"></span>
                       </button>
                       <br>
-                      <button type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
+                      <button type="button" [disabled]="!employeeIds.length" (click)="assignEmployee()">
                         <span class="glyphicon glyphicon-ok"></span>
                       </button>
                     </div>
