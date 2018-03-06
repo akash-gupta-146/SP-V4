@@ -1,5 +1,10 @@
 export class Filters {
+  selectedGoal: any;
+  selectedInitiative: any;
+  selectedActivity: any;
+  selectedKpi: any;
   public goalsCopy: any[] = [];
+  public goalsCopy1: any[] = [];
   public filteredGoals: any[];
   public filteredInitiatives: any[];
   public filteredActivities: any[];
@@ -37,7 +42,6 @@ export class Filters {
       });
     }
   }
-
   public searchActivity(key: any) {
     this.goals = JSON.parse(JSON.stringify(this.filteredInitiatives));
     let val = key.target.value;
@@ -54,7 +58,6 @@ export class Filters {
       });
     }
   }
-
   public searchOpi(key: any) {
     this.goals = JSON.parse(JSON.stringify(this.filteredActivities));
     let val = key.target.value;
@@ -73,4 +76,54 @@ export class Filters {
       });
     }
   }
+
+  public selectGoal(selectedGoal){
+    this.goalsCopy1 = JSON.parse(JSON.stringify(this.goals));
+    this.selectedGoal = selectedGoal;
+    this.goals = this.goalsCopy.filter((element:any,index:number)=>{
+      return (element.goalId === this.selectedGoal.goalId);
+    });
+    console.log(this.goalsCopy1);
+  }
+  public selectInitiative(selectedInitiative){
+    this.selectedInitiative = selectedInitiative;
+    this.goals = JSON.parse(JSON.stringify(this.goalsCopy1));
+    this.goals = this.goals.filter((element:any)=>{
+      element.initiatives = element.initiatives.filter((initiative:any)=>{
+        return (initiative.initiativeId === this.selectedInitiative.initiativeId);
+      });
+      return (element.goalId === this.selectedGoal.goalId);
+    });
+    
+  }
+  public selectActivity(selectedActivity){
+    this.selectedActivity = selectedActivity;
+    this.goals = JSON.parse(JSON.stringify(this.goalsCopy1));
+    this.goals = this.goals.filter((element:any)=>{
+      element.initiatives = element.initiatives.filter((initiative:any)=>{
+        initiative.activities =  initiative.activities.filter((activity:any)=>{
+          return (activity.activityId == this.selectedActivity.activityId);
+        })
+        return (initiative.initiativeId == this.selectedInitiative.initiativeId);
+      })
+      return (element.goalId == this.selectedGoal.goalId);
+    });
+  }
+  public selectKpi(selectedKpi){
+    this.selectedKpi = selectedKpi;
+    this.goals = JSON.parse(JSON.stringify(this.goalsCopy1));
+    this.goals = this.goals.filter((element:any)=>{
+      element.initiatives = element.initiatives.filter((initiative:any)=>{
+        initiative.activities =  initiative.activities.filter((activity:any)=>{
+          activity.opis = activity.opis.filter((opi:any)=>{
+            return (opi.opiId == this.selectedKpi.opiId)
+          })
+          return (activity.activityId == this.selectedActivity.activityId);
+        })
+        return (initiative.initiativeId == this.selectedInitiative.initiativeId);
+      })
+      return (element.goalId == this.selectedGoal.goalId);
+    });
+  }
+  
 }

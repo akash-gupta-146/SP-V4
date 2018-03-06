@@ -42,29 +42,27 @@ export class KPIComponent extends Filters {
  }
 
  getOpi(): any {
+   this.initiatives = this.activities = this.opis = [];
    this.utServ.getOpiResult().subscribe((response: any) => {
      if (response.status == 204) {
        this.goals = [];
        this.goalsCopy = []
      } else {
        this.goals = response;
-       this.goalsCopy = response;
+       this.goalsCopy = JSON.parse(JSON.stringify(response));
        this.utServ.goals.next(response);
        this.initFilters(response);
      }
-   })
+   });
  }
 
  setQuarterFeedback(data:any){
-   console.log(data.feedback);
    if(data.feedback == 'true')
      alertify.confirm("Do you realy want to Approve this??",()=>{
        this.utServ.approve(data.id,{comment:data.comment}).subscribe((reponse)=>{
-         console.log(reponse);
          alertify.notify("Audit has been Approved");
          $("#feedbackModal").modal('hide');
        },(error:any)=>{
-         console.log(error); 
          alertify.notify("Something went wrong");          
          $("#feedbackModal").modal('hide');                 
        });
@@ -72,10 +70,10 @@ export class KPIComponent extends Filters {
    else
      alertify.confirm("Do you realy want to Reject this??", ()=>{
        this.utServ.reject(data.id,{comment:data.comment}).subscribe((reponse)=>{
-         console.log(reponse);
+         
          alertify.notify("Audit has been Rejected");
        },(error:any)=>{
-         console.log(error);        
+                
          alertify.notify("Something went wrong");
        });
      }).setHeader("Confirmation");     

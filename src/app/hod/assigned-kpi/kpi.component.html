@@ -23,6 +23,9 @@
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </form>
+          <select class="form-control" (ngModelChange)="selectGoal($event);initiatives=$event.initiatives" ngModel>
+            <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal">{{goal.goal}}</option>
+          </select>
         </div>
         <div class="item">
           <span class="hide-text">INITIATIVE</span>
@@ -33,6 +36,9 @@
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </form>
+          <select class="form-control" (ngModelChange)="selectInitiative($event);activities=$event.activities" ngModel>
+            <option *ngFor="let initiative of initiatives;let i = index;" [ngValue]="initiative">{{initiative.initiative}}</option>
+          </select>
         </div>
         <div class="item">
           <span class="hide-text">ACTIVITY</span>
@@ -43,6 +49,9 @@
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </form>
+          <select class="form-control" (ngModelChange)="selectActivity($event);opis = $event.opis;" ngModel>
+            <option *ngFor="let activity of activities;let i = index;" [ngValue]="activity">{{activity.activity}}</option>
+          </select>
         </div>
         <div class="item">
           <span class="hide-text">KPI</span>
@@ -53,6 +62,9 @@
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </form>
+          <select class="form-control" (ngModelChange)="selectKpi($event)" ngModel>
+            <option *ngFor="let opi of opis;let i = index;" [ngValue]="opi">{{opi.opi}}</option>
+          </select>
         </div>
         <div class="item">
           <span class="hide-text">Kpi Details</span>
