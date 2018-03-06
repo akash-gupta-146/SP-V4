@@ -6,7 +6,7 @@ import { StorageService } from "./shared/storage.service";
 import { AuthGuard } from "./shared/auth.gaurd";
 import { LoaderService } from './shared/loader.service';
 
-ROLE = JSON.parse(localStorage.getItem('role'));
+// ROLE = JSON.parse(localStorage.getItem('role'));
 
 export const routes: Routes = [
 	{
