@@ -2,16 +2,27 @@
   <router-outlet></router-outlet>
 </div>
 <div class="container-fluid" style="padding-top:25px;">
-  <div class="card table-card">
-    <caption class=" pull-right">
-      <h4>Current Year : 2018 Current Quarter : 1st (Jan - March)
-        <button class="btn btn-save" (click)="getOpi();">
+    <div class="bg-nav">
+      <div class="form-inline" style="margin-bottom: unset">
+        <button class="btn btn-save pull-right" (click)="getOpi();">
           <span class="glyphicon glyphicon-refresh"></span>
           Reload
         </button>
-      </h4>
-    </caption>
-    <br>
+        <div class="form-group dropdown-st">
+          <label class="control-label">Strategic Plan</label>
+          <select id="cycle" name="cycle" class="form-control" (ngModelChange)="getOpiResult($event)" style="width:auto;height: auto;padding: 0px;" [(ngModel)]="defaultCycle">
+            <option *ngFor="let c of cycles;let y = index;" [ngValue]="c" >{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+          </select>
+        </div>
+        <div class="form-group dropdown-st" *ngIf="defaultCycle">
+          <label class="control-label">Plan Year</label>
+          <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" style="width:auto;height: auto;padding: 0px;" ngModel>
+            <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y" >{{y}}]</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  <div class="card table-card">
     <div class="grid">
       <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 17% 3% ">
         <div class="item">

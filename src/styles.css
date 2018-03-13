@@ -921,3 +921,22 @@ input:checked + .slider:before {
   position: absolute;
   margin-top: 10px;
 }
+
+.dropdown-st{
+  background: var(--color-primary);
+  padding: 10px;
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.bg-nav{
+  margin-top: 44px;
+  margin-bottom: 30px;
+  border-bottom: 3px solid var(--color-primary);
+  width: auto;
+  font-family: Raleway ,sans-serif;
+  line-height: 1;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}

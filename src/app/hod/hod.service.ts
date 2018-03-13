@@ -111,11 +111,17 @@ public getDepartments() {
     .catch(this.handleError);
 }
 
-// public getOpiByDeptId(deptId:any){
-//   return this.http.get(this.baseUrl +"/result")
-//   .map(this.extractData)
-//   .catch(this.handleError);
-// }
+public getOpiResultByCycleId(cycleId:number){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public getOpiResultByYear(cycleId:any,year:any){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
 
 public saveQuarterResult(data:any){
   return this.http.post(this.baseUrl + "/result",data)
@@ -226,17 +232,6 @@ updateMou(mouId:any,mou:any){
   .catch(this.handleError);
 }
 
-// getAnnualTargets(opiDepartmentId:any){
-//   return this.http.get(this.baseUrl + "/opiDepartment/"+opiDepartmentId+"/annualTargets?currentYear=false&currentQuarter=false").map(this.extractData)
-//   .catch(this.handleError);
-// }
-
-// getDepartmentByOpiId(opiId:any){
-//   return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments",this.parent)
-//   .map(this.extractData)
-//   .catch(this.handleError);
-// }
-
 getActionStep(url:string){
   return this.http.get(this.baseUrl + url,this.parent)
   .map(this.extractData)
@@ -316,6 +311,129 @@ public getFrequencies() {
   return this.http.get("https://spdemo.ind-cloud.everdata.com/spv4/frequencies")
     .map(this.extractData)
     .catch(this.handleError);
+}
+
+public getCycles() {
+  return this.http.get(this.baseUrl + "/cycles")
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+public postQuarterWithCommunityLearning(quarterId,data){
+  return this.http.post(this.baseUrl + "/level/"+ quarterId + "/community-learning",data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteCommunityLearningProgram(id:any){
+  return this.http.delete(this.baseUrl + "/community-learning/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+saveEvidenceForLearningProgram(data:any,id:any){
+  var options = new RequestOptions({
+    headers: new Headers({
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    })
+  });
+  return this.htttp.post(this.baseUrl + "/community-learning/"+id+"/evidance",data,options)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+deleteEvidenceofLearningProgram(id:any){
+  return this.http.delete(this.baseUrl + "/community-learning/evidance/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public postQuarterWithCurriculumReview(quarterId,data){
+  return this.http.post(this.baseUrl + "/level/"+ quarterId + "/curriculum-review",data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteCurriculumReviewProgram(id:any){
+  return this.http.delete(this.baseUrl + "/curriculum-review/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+saveEvidenceofCurriculumReviewProgram(data:any,id:any){
+  var options = new RequestOptions({
+    headers: new Headers({
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    })
+  });
+  return this.htttp.post(this.baseUrl + "/curriculum-review/"+id+"/evidance",data,options)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+deleteEvidenceofCurriculumReviewProgram(id:any){
+  return this.http.delete(this.baseUrl + "/curriculum-review/evidance/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public postQuarterWithExtraCurricularActivity(quarterId,data){
+  return this.http.post(this.baseUrl + "/level/"+ quarterId + "/extra-curricular-activity",data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteExtraCurricularActivity(id:any){
+  return this.http.delete(this.baseUrl + "/extra-curricular-activity/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public saveEvidenceofExtraCurricularActivity(data:any,id:any){
+  var options = new RequestOptions({
+    headers: new Headers({
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    })
+  });
+  return this.htttp.post(this.baseUrl + "/extra-curricular-activity/"+id+"/evidance",data,options)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteEvidenceofExtraCurricularActivity(id:any){
+  return this.http.delete(this.baseUrl + "/extra-curricular-activity/evidance/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+
+public postQuarterWithExchangeProgram(quarterId,data){
+  return this.http.post(this.baseUrl + "/level/"+ quarterId + "/exchange-program",data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteExchangeProgram(id:any){
+  return this.http.delete(this.baseUrl + "/exchange-program/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+saveEvidenceofExchangeProgram(data:any,id:any){
+  var options = new RequestOptions({
+    headers: new Headers({
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    })
+  });
+  return this.htttp.post(this.baseUrl + "/exchange-program/"+id+"/evidance",data,options)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteEvidenceofExchangeProgram(id:any){
+  return this.http.delete(this.baseUrl + "/exchange-program/evidance/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
 }
 
  private extractData(res: Response) {

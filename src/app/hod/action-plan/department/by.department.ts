@@ -20,7 +20,11 @@ export class ActionPlanByDepartment {
  constructor(private storage: StorageService, private utServ: HodService, public fb: FormBuilder) {
 
   this.utServ.getActionStepsWhenPlanMode().subscribe((response: any) => {
-   this.actionSteps = response;
+   if(response.status === 204){
+    this.actionSteps = [];
+   }else{
+    this.actionSteps = response;
+   }
   });
 
   this.actionForm = this.fb.group({

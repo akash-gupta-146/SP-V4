@@ -78,11 +78,13 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label>MeasureUnit</label>
-              <select class="form-control" formControlName="measureUnit">
+              <select class="form-control" formControlName="measureUnitId">
                 <option value="" disabled selected>Choose Measurement Unit</option>
-                <option value="percentage">Percent</option>
-                <option value="number">Decimal</option>
-                <option value="rate">Rate</option>
+                <option value="1">Increase in number</option>
+                <option value="2">Total Number</option>
+                <option value="3">Increase in percentage </option>
+                <option value="4">Total Percentage</option>
+                <option value="5">Rate</option>
               </select>
             </div>
           </div>
@@ -288,26 +290,6 @@
       </div>
     </div>
   </div>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   <!-- Modal -->
   <div class="modal fade modal-add" id="myModal" role="dialog">
@@ -429,7 +411,7 @@
                       <ng-container>
                         <td width="40%" *ngFor="let level of array.levels;let l = index;" style="padding-bottom:10px">
                           <div class="input-group">
-                            <div class="input-group-addon base-color2">Q{{level.quarterId}}</div>
+                            <div class="input-group-addon base-color2">{{level.quarter}}</div>
                             <div class="form-control">{{level.estimatedTargetLevel}}</div>
                           </div>
                         </td>
@@ -457,7 +439,7 @@
                       <ng-container formArrayName="levels">
                         <td *ngFor="let level of array.controls.levels.controls;let l = index;" [formGroupName]="l" width="40%" style="padding-bottom:20px">
                           <div class="input-group">
-                            <div class="input-group-addon base-color2">Q{{dept.opiAnnualTargets[op].levels[l].quarterId}}</div>
+                            <div class="input-group-addon base-color2">{{dept.opiAnnualTargets[op].levels[l].quarter}}</div>
                             <input type="number" class="form-control" id="exampleInputAmount" style="width: 50%;" formControlName="estimatedTargetLevel">
                           </div>
                         </td>

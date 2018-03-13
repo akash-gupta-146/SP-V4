@@ -97,7 +97,7 @@
             </div>
             <div *ngIf="!dept.actionStepView">
               <!-- without evidenceformId -->
-              <div *ngIf="!data.evidanceFormId">
+              <!-- <div *ngIf="!data.evidanceFormId">
                 <div class="panel panel-default" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
                   <div class="panel-heading">
                     Year : {{tdl.year}}
@@ -173,9 +173,10 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
+              <without-evidence-form [department]="dept" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)"> </without-evidence-form>
               <!--with student internship form-->
-              <div class="row" *ngIf="data.evidanceFormId==1" style="padding:15px;">
+              <!-- <div class="row" *ngIf="data.evidanceFormId==1" style="padding:15px;">
                 <table id="accordion" class="table  table-bordered table-edit">
                   <thead>
                     <tr>
@@ -253,7 +254,7 @@
                                     <ul style="list-style: none;padding: 0;">
                                       <li *ngFor="let ev of file.evidance;let e=index;">
                                         <a [attr.href]="ev.url">evidence {{e+1}}</a>
-                                        <button type="button" class="close" (click)="deleteInternshipEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'">
+                                        <button type="button" class="close" (click)="deleteInternshipEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'" style="clear:both;">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </li>
@@ -294,9 +295,10 @@
                     </ng-template>
                   </tbody>
                 </table>
-              </div>
+              </div> -->
+              <student-internship [department]="dept" [d]="d"  *ngIf="data.evidanceFormId==1" (changeSelected)="passQuarter($event)"></student-internship>
               <!--with mous forms-->
-              <div class="row" *ngIf="data.evidanceFormId==2" style="padding:15px;">
+              <!-- <div class="row" *ngIf="data.evidanceFormId==2" style="padding:15px;">
                 <table id="accordion" class="table table-hover table-bordered table-edit">
                   <thead>
                     <tr>
@@ -468,7 +470,13 @@
                     </ng-template>
                   </tbody>
                 </table>
-              </div>
+              </div> -->
+              <mous-form [department]="dept" [d]="d" *ngIf="data.evidanceFormId==2" (changeSelected)="passQuarter($event)"></mous-form>
+              <!-- community-learning --> 
+              <community-learning [department]="dept" [d]="d" *ngIf="data.evidanceFormId==5" (changeSelected)="passQuarter($event)"></community-learning>
+              <curriculum-review [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==6"></curriculum-review>
+              <extra-curricular-activity [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==3"> </extra-curricular-activity>
+              <exchange-program [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==4"></exchange-program>
             </div>
             <div class="row" *ngIf="dept.actionStepView" style="padding:15px;">
               <div class="panel panel-default">
@@ -585,19 +593,17 @@
   </div>
 </div>
 
-<!--Evidence Form-->
+<!-- Evidence Form-->
 <div class="modal fade" id="evidenceForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog ">
     <div class="modal-content" *ngIf="data">
-      <!-- Modal Header -->
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title" id="myModalLabel">Attach Evidence</h4>
       </div>
-      <!-- Modal Body -->
-      <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(evForm)">
+      <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(data.evidanceFormId)">
         <div class="modal-body">
           <div class="form-group">
             <label for="title">Title</label>
@@ -612,7 +618,6 @@
             <input type="file" class="form-control-file" id="exampleInputFile" formControlName="files" (change)="getFile($event)" aria-describedby="fileHelp">
           </div>
         </div>
-        <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="submit" class="btn btn-default">Submit</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

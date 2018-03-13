@@ -408,7 +408,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       "activityId": [{ value: '', disabled: false }, [Validators.required]],
       "opi": ['', [Validators.required]],
       "frequencyId": [1, [Validators.required]],
-      "measureUnit": ['percentage', [Validators.required]],
+      "measureUnitId": ['percentage', [Validators.required]],
       "evidanceFormId": [null, []],
       "direction": [false, [Validators.required]],
       "approvalRequired": [false, [Validators.required]],
@@ -430,7 +430,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         alertify.notify("You have successfully added a new OPI.");
         this.measureForm.reset({
           opi: '',
-          measureUnit: '', frequencyId: 1, baseline: '', direction: '', remarks: '', helpText: '', approvalRequired: ''
+          measureUnitId: '', frequencyId: 1, baseline: '', direction: '', remarks: '', helpText: '', approvalRequired: ''
         });
         $('#add-opi').hide();
         $('#add-btn').show();
@@ -438,12 +438,12 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         console.log(error);
       });
     } else {
-      // Object.keys(this.measureForm.value).forEach((key: any) => {
-      //   if (this.selectedMeasure[key] != this.measureForm.value[key]) {
-      //     formChanges[key] = this.measureForm.value[key];
-      //     msg += "\n" + key + " = " + formChanges[key] + ",";
-      //   }
-      // });
+      Object.keys(this.measureForm.value).forEach((key: any) => {
+        if (this.selectedMeasure[key] != this.measureForm.value[key]) {
+          formChanges[key] = this.measureForm.value[key];
+          msg += "\n" + key + " = " + formChanges[key] + ",";
+        }
+      });
       alertify.confirm("Are you sure you want to update this OPI", () => {
         delete this.measureForm.value["activityId"];
         this.orgService.updateMeasure(this.selectedMeasure.opiId, formChanges).subscribe((response: any) => {
@@ -473,7 +473,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       initiativeId: initiative.initiativeId,
       activityId: activity.activityId,
       opi: measure.opi,
-      measureUnit: measure.measureUnit,
+      measureUnitId: measure.measureUnit,
       frequencyId: measure.frequencyId,
       baseline: measure.baselineOfOpi,
       evidanceFormId: measure.evidanceFormId,
