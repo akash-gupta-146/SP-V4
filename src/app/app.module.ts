@@ -5,14 +5,12 @@ import { AppComponent } from './app.component';
 import { StorageService } from "./shared/storage.service";
 import { AuthGuard } from "./shared/auth.gaurd";
 import { LoaderService } from './shared/loader.service';
-
-// ROLE = JSON.parse(localStorage.getItem('role'));
-
+ROLE =  JSON.parse(localStorage.getItem('role'));
 export const routes: Routes = [
 	{
 		path: '',
-		redirectTo: "/" + JSON.parse(localStorage.getItem('role')),
-		pathMatch: 'full'
+		redirectTo: "/" + ROLE,
+		pathMatch: 'full',
 	},
 	{
 		path: 'login',
@@ -60,4 +58,7 @@ export const routes: Routes = [
 	bootstrap: [AppComponent],
 	exports: []
 })
-export class AppModule { }
+export class AppModule { 
+
+}
+

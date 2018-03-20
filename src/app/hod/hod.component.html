@@ -1,6 +1,6 @@
 <nav class="navbar navbar-fixed-top" id="top">
   <div class="navbar-header">
-    <a class="navbar-brand" [attr.href]="'#/'+userDetails.roleInfo[0].role+'/home'">NxtLife</a>
+    <a class="navbar-brand" [attr.href]="'#/'+userDetails.roleInfo[0].role">NxtLife</a>
   </div>
   <!-- <ul class="nav navbar-nav navbar-left">
     <li routerLinkActive="active">
@@ -8,15 +8,15 @@
     </li>
   </ul> -->
   <ul class="nav navbar-nav">
-    <li routerLinkActive="active"><a routerLink="home">Operational Performance Indicators</a></li>
+    <li routerLinkActive="active"><a routerLink="./home">Operational Performance Indicators</a></li>
     <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">Achievement
       <span class="caret"></span></a>
       <ul class="dropdown-menu">
         <li><a routerLink="by-goal">By Goal</a></li>
-        <li><a routerLink="home/by-kpi">By KPI</a></li>
-        <li><a routerLink="home/by-department">By Department</a></li>
-        <li><a routerLink="home/by-frequency">By Quarter</a></li> 
+        <li><a routerLink="by-kpi">By KPI</a></li>
+        <li><a routerLink="by-department">By Department</a></li>
+        <li><a routerLink="by-frequency">By Quarter</a></li> 
       </ul>
     </li>
     <li class="dropdown" >

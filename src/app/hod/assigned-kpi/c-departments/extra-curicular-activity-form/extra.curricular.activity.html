@@ -10,7 +10,12 @@
       <div class="panel" style="border: 1px solid #0000001c;">
         <div class="panel-body quarter-block">
           <b class="quarter">{{lev.quarter}}</b>
-          <span class="status" [style.background-color]="lev.SuccessInfo.color">{{lev.status}} - {{lev.role}}</span>
+          <span class="status" [style.background-color]="lev.successInfo.color">{{lev.status}} - {{lev.role}}</span>
+          <div class="row">
+              <div class="col-sm-6">
+                  <strong>BASE LINE : </strong> {{lev.baseline}}
+              </div>
+            </div>
           <div class="row">
             <div class="col-sm-6">
               <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
@@ -120,7 +125,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="button" class="btn btn-default" (click)="activityListView = true;">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+          </button>          
+          <button type="submit" class="btn btn-default" [disabled]="extraCurricularActivityForm.invalid">Submit</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </form>
@@ -158,7 +166,7 @@
                 <td>{{activity.totalOutsideParticipants}}</td>
                 <td>
                   <div class="dropdown">
-                    <!-- <strong>Evidence </strong>: -->
+                    <strong>Evidence </strong>:
                     <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files {{activity.evidance.length}}
                       <span class="caret"></span>
                     </a>
@@ -177,19 +185,22 @@
                     </ul>
                   </div>
                 </td>
-                <!-- <span class="option">
-                  <button>
+                <span class="option">
+                  <button (click)="edit(activity)">
                     <span class="glyphicon glyphicon-pencil"></span>
                   </button>
                   <button (click)="delete(activity,selectedQuarter.extraCurricularActivities)">
                     <span class="glyphicon glyphicon-trash"></span>
                   </button>
-                </span> -->
+                </span>
               </tr>
             </tbody>
           </table>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="activityListView = false;resetForm()">
+            <span class="glyphicon glyphicon-plus"></span> Add
+          </button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>

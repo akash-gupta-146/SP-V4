@@ -4,6 +4,8 @@ import { HodService } from '../../../hod.service';
 import * as alertify from 'alertifyjs';
 import { LoaderService } from '../../../../shared/loader.service';
 
+declare let $:any;
+
 @Component({
  selector:'exchange-program',
  templateUrl:'exchange.program.form.html',
@@ -12,6 +14,7 @@ import { LoaderService } from '../../../../shared/loader.service';
 export class ExchangeProgram{
 
  selectedQuarter: any;
+ programListView:boolean;
 
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
@@ -34,7 +37,9 @@ export class ExchangeProgram{
  submitForm(){
   console.log(this.exchangeProgramForm.value);
   this.utServ.postQuarterWithExchangeProgram(this.selectedQuarter.id,this.exchangeProgramForm.value).subscribe((response:any)=>{
-   console.log(response);
+   this.selectedQuarter.exchangePrograms.push(response.exchangePrograms[0]);
+   this.selectedQuarter.currentCost += response.currentCost;
+   $("#myModal"+this.d).modal('hide');
   })
  }
 
@@ -62,7 +67,7 @@ export class ExchangeProgram{
   alertify.confirm("Are you sure you want to Delete it?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
    this.loaderService.setTransactionLoader(true);
-   this.utServ.deleteCommunityLearningProgram(program.exchangeProgramId).subscribe((response:any)=>{
+   this.utServ.deleteExchangeProgram(program.exchangeProgramId).subscribe((response:any)=>{
     exchangeProgram.splice(exchangeProgram.indexOf(program),1);
     this.loaderService.setTransactionLoader(false);
    }, (error: any) => {
@@ -82,6 +87,15 @@ export class ExchangeProgram{
     alertify.error("Something went wrong");
    });
   }).setHeader("Confirmation");
+ }
+
+ edit(program:any){
+  this.exchangeProgramForm.patchValue(program);
+  this.programListView = false;
+ }
+
+ resetForm(){
+  this.exchangeProgramForm.reset();
  }
 
  selectProgram(program:any){

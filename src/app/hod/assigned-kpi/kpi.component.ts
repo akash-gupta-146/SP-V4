@@ -23,6 +23,7 @@ export class KPIComponent extends Filters {
   activities: any[] = [];
   opis: any[] = [];
   quarters: any[];
+  selectedYear: any = new Date().getFullYear();
   constructor(private utServ: HodService,
     private storage: StorageService) {
     super();
@@ -48,10 +49,10 @@ export class KPIComponent extends Filters {
         this.cycles = [];
       else
         this.cycles = response;
-        this.cycles.forEach(element => {
-          if (element.defaultCycle)
-            this.defaultCycle = element;
-        });
+      this.cycles.forEach(element => {
+        if (element.defaultCycle)
+          this.defaultCycle = element;
+      });
     })
   }
 
@@ -121,5 +122,14 @@ export class KPIComponent extends Filters {
           alertify.notify("Something went wrong");
         });
       }).setHeader("Confirmation");
+  }
+
+  getOpiResultByQuarter(quarter: any) {
+    this.utServ.getOpiResultByQuarter(this.defaultCycle.cycleId,this.selectedYear,quarter).subscribe((response:any)=>{
+      this.goals = response;
+        this.goalsCopy = JSON.parse(JSON.stringify(response));
+        this.utServ.goals.next(response);
+        this.initFilters(response);
+    });
   }
 }

@@ -104,10 +104,10 @@
           <td class="text-center">
             <label style="cursor:pointer;">
               <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)" style="display:none">
-              <span class="icon-mark" *ngIf="c.defaultCycle">
+              <span [ngClass]="c.disable||c.defaultCycle?'icon-mark':'icon-mark2'" *ngIf="c.defaultCycle">
                 <i class="glyphicon glyphicon-ok-sign"></i>
               </span>
-              <span class="icon-mark2" *ngIf="!c.defaultCycle">
+              <span [ngClass]="c.disable?'icon-mark':'icon-mark2'" *ngIf="!c.defaultCycle">
                 <i class="glyphicon glyphicon-exclamation-sign"></i>
               </span>
             </label>

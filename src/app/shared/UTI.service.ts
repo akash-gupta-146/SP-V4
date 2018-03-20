@@ -444,6 +444,12 @@ export class UniversityService {
       .catch(this.handleError);
   }
 
+  public getOpiResultByYear(cycleId:any,year:any){
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year,this.parent)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     if (res.status === 204) { return res; }
     let body = res.json();

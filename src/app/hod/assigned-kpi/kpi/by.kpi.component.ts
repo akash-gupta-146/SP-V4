@@ -13,6 +13,9 @@ export class ByKPIComponent {
   departments: any[];
   goalsCopy: any[]=[];
   goals;
+  initiatives:any[];
+  opis:any[];
+  activities:any[];
   role;
   selectedGoal:any;
   selectedInitiative:any;

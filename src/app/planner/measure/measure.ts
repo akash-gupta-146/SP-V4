@@ -17,7 +17,7 @@ declare let $: any;
 export class MeasureComponent extends Filters implements AfterViewInit {
   reloadBtn: boolean = false;
   selectedDepartmentIds: any[]=[];
-  defaultCycle: any;
+  defaultCycle: any = {};
   objectives: any[] = [];
   initiatives: any[] = [];
   activities: any[] = [];
@@ -61,13 +61,16 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
       this.cycles = response;
       this.cycles.forEach(element => {
-        if (element.defaultCycle)
-          this.defaultCycle = element.cycleId;
+        if (element.defaultCycle){
+          this.defaultCycle = element;
+          this.objectives = element.goals;
+        }
       });
       if (!flag) {
         this.getMeasure();
         this.getEvidenceForms();
       }
+      this.measureForm = this.setMeasure();
     });
   }
 
@@ -109,7 +112,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   getMeasure() {
-    this.orgService.getMeasuresByCycleId(this.defaultCycle).subscribe((response: any) => {
+    this.orgService.getMeasuresByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
@@ -306,7 +309,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   cycle: any[];
   assignDepartment() {
     this.cycles.forEach(element => {
-      if (this.defaultCycle == element.cycleId)
+      if (this.defaultCycle.cycleId == element.cycleId)
         this.cycle = element.cycle;
     });
     this.departmentForm = this.formBuilder.group({
@@ -402,7 +405,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   setMeasure() {
     return this.formBuilder.group({
-      "cycleId": [{ value: this.defaultCycle, disabled: true }, [Validators.required]],
+      "cycleId": [{ value: this.defaultCycle.cycleId, disabled: true }, [Validators.required]],
       "objectiveId": [{ value: '', disabled: false }, [Validators.required]],
       "initiativeId": [{ value: '', disabled: false }, [Validators.required]],
       "activityId": [{ value: '', disabled: false }, [Validators.required]],
@@ -426,7 +429,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     if (!this.isUpdating) {
       this.orgService.saveMeasure(this.measureForm.value).subscribe((response: any) => {
         this.getMeasure();
-        // $('#measureModal').modal('show');
         alertify.notify("You have successfully added a new OPI.");
         this.measureForm.reset({
           opi: '',
@@ -468,7 +470,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.isUpdating = true;
     this.selectedMeasure = measure;
     this.measureForm.patchValue({
-      cycleId: this.defaultCycle,
+      cycleId: this.defaultCycle.cycleId,
       objectiveId: objective.goalId,
       initiativeId: initiative.initiativeId,
       activityId: activity.activityId,
@@ -529,7 +531,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.initiatives = [];
     this.activities = [];
     this.getCycleWithChildren(true);
-    this.measureForm = this.setMeasure();
   }
 
   disable(event: any, opiId: any) {
@@ -559,6 +560,18 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
+  }
+
+  getOpiResultByYear(cycleId: any, year: any) {
+    this.orgService.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
+      if (response.status == 204) {
+        this.goals = [];
+        this.goalsCopy = []
+      } else {
+        this.goals = response;
+        this.goalsCopy = JSON.parse(JSON.stringify(response));
+      }
+    });
   }
 
   get(e) {

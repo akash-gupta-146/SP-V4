@@ -123,6 +123,19 @@ public getOpiResultByYear(cycleId:any,year:any){
   .catch(this.handleError);
 }
 
+public getOpiResultByYearOnly(year:any){
+  return this.http.get(this.baseUrl +"/result?&year="+year+"&currentQuarter=false",this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+
+public getOpiResultByQuarter(cycleId:any,year:any,quarter:any){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year+"&quarter="+quarter,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 public saveQuarterResult(data:any){
   return this.http.post(this.baseUrl + "/result",data)
   .map(this.extractData)
@@ -331,6 +344,18 @@ public deleteCommunityLearningProgram(id:any){
   .catch(this.handleError);
 }
 
+public deleteResearchConsultancy(id:any){
+  return this.http.delete(this.baseUrl + "/research-consultancy/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteStudentResearch(id:any){
+  return this.http.delete(this.baseUrl + "/student-research/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 saveEvidenceForLearningProgram(data:any,id:any){
   var options = new RequestOptions({
     headers: new Headers({
@@ -413,6 +438,18 @@ public postQuarterWithExchangeProgram(quarterId,data){
   .catch(this.handleError);
 }
 
+public postQuarterWithResearchConsultancy(quarterId,data){
+  return this.http.post(this.baseUrl + "/level/"+ quarterId + "/research-consultancy",data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public postQuarterWithStudentResearch(quarterId,data){
+  return this.http.post(this.baseUrl + "/level/"+ quarterId + "/student-research",data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 public deleteExchangeProgram(id:any){
   return this.http.delete(this.baseUrl + "/exchange-program/"+id)
   .map(this.extractData)
@@ -432,6 +469,18 @@ saveEvidenceofExchangeProgram(data:any,id:any){
 
 public deleteEvidenceofExchangeProgram(id:any){
   return this.http.delete(this.baseUrl + "/exchange-program/evidance/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteEvidenceofResearchConsultancy(id:any){
+  return this.http.delete(this.baseUrl + "/research-consultancy/evidance/"+id)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public deleteEvidenceofStudentResearch(id:any){
+  return this.http.delete(this.baseUrl + "/student-research/evidance/"+id)
   .map(this.extractData)
   .catch(this.handleError);
 }

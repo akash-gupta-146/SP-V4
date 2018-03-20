@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import * as alertify from 'alertifyjs';
 import { LoaderService } from '../../../../shared/loader.service';
@@ -7,33 +7,39 @@ import { LoaderService } from '../../../../shared/loader.service';
 declare let $:any;
 
 @Component({
- selector: 'curriculum-review',
- templateUrl: 'curriculum.review.form.html',
+ selector:'research-consultancy',
+ templateUrl:'research.consultancy.html',
  styleUrls: ['./../../../hod.component.css'],
 })
-export class CurriculumReviewForm {
+export class ResearchConsultancy{
+
  selectedQuarter: any;
+ programListView:boolean;
 
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
  @Input() d: number;
- public curriculumReviewForm:FormGroup
- programListView:boolean;
-
+ public researchConsultancyForm:FormGroup
  constructor(private fb: FormBuilder,public utServ: HodService, public loaderService: LoaderService) {
-  this.curriculumReviewForm = this.fb.group({
-   currentCost:['',[Validators.required]],
-   program:['',[Validators.required]],
-   reviewType:['',[Validators.required]],
-   totalCollegeStaffInvolved:['',[Validators.required]],
-   sentToCurriculamCommittee:['',[Validators.required]],
-  })
+  this.researchConsultancyForm = this.fb.group({
+   "currentCost":['',[Validators.required]],
+   "projectTitle":['',[Validators.required]],
+   "interDisciplinaryProject":[false,[Validators.required]],
+   "description":['',[Validators.required]],
+   "startDate":['',[Validators.required]],
+   "estimatedTime":['',[Validators.required]],
+   "externalPartners":['',[Validators.required]],
+   "fundFromExternalPartners":['',[Validators.required]],
+   "fundFromUniversity":['',[Validators.required]],
+   "totalResearchersInvolved":['',[Validators.required]],
+   "totalFacultyInvolved":['',[Validators.required]],
+  });
  }
 
  submitForm(){
-  console.log(this.curriculumReviewForm.value);
-  this.utServ.postQuarterWithCurriculumReview(this.selectedQuarter.id,this.curriculumReviewForm.value).subscribe((response:any)=>{
-   this.selectedQuarter.curriculamReview.push(response.curriculamReview[0]);
+  console.log(this.researchConsultancyForm.value);
+  this.utServ.postQuarterWithResearchConsultancy(this.selectedQuarter.id,this.researchConsultancyForm.value).subscribe((response:any)=>{
+   this.selectedQuarter.researchConsultancies.push(response.researchConsultancies[0]);
    this.selectedQuarter.currentCost += response.currentCost;
    $("#myModal"+this.d).modal('hide');
   })
@@ -59,12 +65,12 @@ export class CurriculumReviewForm {
   }).setHeader("Confirmation");
  }
 
- delete(review:any,curriculumReview:any[]){
+ delete(program:any,researchConsultancy:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
    this.loaderService.setTransactionLoader(true);
-   this.utServ.deleteCurriculumReviewProgram(review.curriculamReviewId).subscribe((response:any)=>{
-    curriculumReview.splice(curriculumReview.indexOf(review),1);
+   this.utServ.deleteResearchConsultancy(program.exchangeProgramId).subscribe((response:any)=>{
+    researchConsultancy.splice(researchConsultancy.indexOf(program),1);
     this.loaderService.setTransactionLoader(false);
    }, (error: any) => {
     alertify.error("Something went wrong");
@@ -76,7 +82,7 @@ export class CurriculumReviewForm {
   alertify.confirm("Are you sure you want to Delete it?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
    this.loaderService.setTransactionLoader(true);
-   this.utServ.deleteEvidenceofCurriculumReviewProgram(evidence.id).subscribe((response:any)=>{
+   this.utServ.deleteEvidenceofResearchConsultancy(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);
     this.loaderService.setTransactionLoader(false);
    }, (error: any) => {
@@ -86,12 +92,12 @@ export class CurriculumReviewForm {
  }
 
  edit(program:any){
-  this.curriculumReviewForm.patchValue(program);
+  this.researchConsultancyForm.patchValue(program);
   this.programListView = false;
  }
 
  resetForm(){
-  this.curriculumReviewForm.reset();
+  this.researchConsultancyForm.reset();
  }
 
  selectProgram(program:any){

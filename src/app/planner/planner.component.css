@@ -311,6 +311,7 @@ body{
 }
 
 .icon-mark{
+  cursor: no-drop;
   font-size: 22px;
   color: var(--color-text);
 }

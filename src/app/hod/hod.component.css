@@ -568,12 +568,6 @@ input:focus + .slider {
  }
  /* legand */
  
- 
- .panel-heading{
-   background: var(--color-primary);
-   color:var(--color-text);
- }
- 
  .bar .modal-header{
    background: var(--color-primary);
    color:var(--color-text);
@@ -698,3 +692,7 @@ background: #66339947;
  transform: translate(-50%,-25%);
 }
 
+.panel-heading{
+  background: var(--color-primary);
+  color:var(--color-text);
+}

@@ -7,7 +7,14 @@
       <div class="form-group dropdown-st">
         <label class="control-label">Strategic Plan</label>
         <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getMeasure()" style="width:auto;height: auto;padding: 0px;">
-          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}} : [{{c.startYear}} To {{c.endYear}}]</option>
+          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}} : [{{c.startYear}} To {{c.endYear}}]</option>
+        </select>
+      </div>
+      <div class="form-group dropdown-st" *ngIf="defaultCycle">
+        <label class="control-label">Plan Year</label>
+        <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" style="width:auto;height: auto;padding: 0px;"
+          [(ngModel)]="selectedYear">
+          <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y">{{y}}</option>
         </select>
       </div>
     </div>
@@ -30,7 +37,7 @@
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label" for="year">Plan Year:</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" (ngModelChange)="getObjective($event)" disabled>
                 <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
               </select>
             </div>
@@ -161,7 +168,7 @@
 
     <!--Grid View-->
     <div class="grid">
-      <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 16% 4% ">
+      <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 16% 4%">
         <div class="item">
           <span class="hide-text">GOAL</span>
           <form action="" class="search-form">
@@ -218,19 +225,19 @@
         </div>
       </div>
       <div class="grid-outer-body" style="grid-template-columns:16% 84%;" *ngFor="let goal of goals;let i = index;">
-        <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
+        <div class="item" [style.grid-row-end]="goal.initiatives.length + 1" [style.background]="goal.disable?'#f3efef':''">
           {{goal.goal}}
         </div>
         <div class="grid-inner-body" style="grid-template-columns:19.05% 80.95%;" *ngFor="let initiate of goal.initiatives;let j=index;">
-          <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
+          <div class="item" [style.grid-row-end]="initiate.activities.length + 1" [style.background]="goal.disable||initiate.disable?'#f3efef':''">
             {{initiate.initiative}}
           </div>
           <div class="grid-inner-body" style="grid-template-columns:23.53% 76.47%;" *ngFor="let activit of initiate.activities;let k=index;">
-            <div class="item" [style.grid-row-end]="activit.opis.length + 1">{{activit.activity}}</div>
+            <div class="item" [style.grid-row-end]="activit.opis.length + 1" [style.background]="goal.disable||initiate.disable||activit.disable?'#f3efef':''">{{activit.activity}}</div>
             <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngFor="let msr of activit.opis;let l=index">
-              <div class="item">{{msr.opi}}</div>
+              <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">{{msr.opi}}</div>
               <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;">
-                <div class="item">
+                <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">
                   <label>Frequency :</label>{{msr.frequency}}
                   <br>
                   <label>Cost :</label>10000
@@ -242,10 +249,10 @@
                     class="icon-mark2"></span>
                 </div>
                 <div class="grid-inner-body" style="grid-template-columns:80% 20%;">
-                  <div class="item">
+                  <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">
                     <ul style="list-style:none;padding:0px;">
                       <li *ngIf="!msr.assignedDepartments.length">
-                        <a class="" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.assignedDepartments);">Add</a>
+                        <button class="btn-link" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.assignedDepartments);" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable">Add</button>
                       </li>
                       <li *ngFor="let dept of msr.assignedDepartments;let d = index">{{dept.department}}, </li>
                       <li *ngIf="msr.assignedDepartments.length">
@@ -254,23 +261,23 @@
                     </ul>
                   </div>
                   <div class="grid-inner-body">
-                    <div class="item" style="padding: 2px;">
+                    <div class="item" style="padding: 2px;" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">
                       <ul style="list-style:none;padding:0;">
                         <li>
-                          <button class="btn-link btn-edit" (click)="updateMeasure(goal,initiate,activit,msr,highlight)" [disabled]="msr.disable" [ngClass]="msr.disable?'icon-mark':'icon-mark2'">
-                            <a scrollTo href="#top">
+                          <button class="btn-link btn-edit" (click)="updateMeasure(goal,initiate,activit,msr,highlight)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable" [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
+                            <a scrollTo href="#top" style="cursor:inherit">
                               <i class="glyphicon glyphicon-edit"></i>
                             </a>
                           </button>
                         </li>
                         <li>
-                          <button class="btn-link btn-edit" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="msr.disable" [ngClass]="msr.disable?'icon-mark':'icon-mark2'">
+                          <button class="btn-link btn-edit" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable" [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
                             <i class="glyphicon glyphicon-trash"></i>
                           </button>
                         </li>
                         <li>
                           <label class="switch">
-                            <input type="checkbox" [checked]="msr.disable" (change)="disable($event,msr.opiId)">
+                            <input type="checkbox" [checked]="goal.disable||initiate.disable||activit.disable||msr.disable" (change)="disable($event,msr.opiId)">
                             <span class="slider round"></span>
                           </label>
                         </li>

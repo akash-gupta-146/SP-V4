@@ -3,6 +3,9 @@ import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import { LoaderService } from '../../../../shared/loader.service';
 import * as alertify from 'alertifyjs';
+
+declare let $:any;
+
 @Component({
  selector: 'community-learning',
  templateUrl: './community.learning.html',
@@ -14,6 +17,7 @@ export class CommunityLearningForm {
  @Output() changeSelected: any = new EventEmitter();
  public communityLearningForm: FormGroup;
  public selectedQuarter:any;
+ learningListView:boolean;
  constructor(private fb: FormBuilder,public utServ: HodService, public loaderService: LoaderService) {
   this.communityLearningForm = this.fb.group({
    "currentCost": ['',[Validators.required]],
@@ -31,7 +35,9 @@ export class CommunityLearningForm {
  submitForm(){
   console.log(this.communityLearningForm.value);
   this.utServ.postQuarterWithCommunityLearning(this.selectedQuarter.id,this.communityLearningForm.value).subscribe((response:any)=>{
-   console.log(response);
+   this.selectedQuarter.communityLearnings.push(response.communityLearnings[0]);
+   this.selectedQuarter.currentCost += response.currentCost;
+   $("#myModal"+this.d).modal('hide');
   })
  }
 
@@ -78,6 +84,15 @@ export class CommunityLearningForm {
     alertify.error("Something went wrong");
    });
   }).setHeader("Confirmation");
+ }
+
+ edit(learning:any){
+  this.communityLearningForm.patchValue(learning);
+  this.learningListView = false;
+ }
+
+ resetForm(){
+  this.communityLearningForm.reset();
  }
 
  selectLearning(learning:any){

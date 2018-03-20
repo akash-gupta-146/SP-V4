@@ -12,6 +12,7 @@ import { LoaderService } from '../../../../shared/loader.service';
 export class ExtraCurricularActivity {
 
  selectedQuarter: any;
+ activityListView:boolean;
 
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
@@ -81,6 +82,15 @@ export class ExtraCurricularActivity {
     alertify.error("Something went wrong");
    });
   }).setHeader("Confirmation");
+ }
+
+ edit(program:any){
+  this.extraCurricularActivityForm.patchValue(program);
+  this.activityListView = false;
+ }
+
+ resetForm(){
+  this.extraCurricularActivityForm.reset();
  }
 
  selectActivity(program:any){

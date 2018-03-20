@@ -838,6 +838,7 @@ button:disabled{
 
 input:checked + .slider {
   background-color: #ccc;
+  cursor: no-drop;
 }
 
 input:focus + .slider {
