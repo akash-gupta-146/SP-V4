@@ -15,6 +15,10 @@ import { SharedModule } from "../shared/shared.module";
 			component: PlannerComponent,
 			children: [
 				{
+					path: '',
+					loadChildren: 'app/planner/home/home.module#HomeModule'
+				},
+				{
 					path: 'home',
 					loadChildren: 'app/planner/home/home.module#HomeModule'
 				},

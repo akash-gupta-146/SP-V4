@@ -133,28 +133,9 @@ body{
 
 /* serach css */
 
-.dropdown-st{
-  background: var(--color-primary);
-  padding: 10px;
-  color: white;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
 
 .dropdown-menu{
   border:2px solid var(--color-primary);
-}
-
-.bg-nav{
-  margin-top: 44px;
-  margin-bottom: 30px;
-  border-bottom: 3px solid var(--color-primary);
-  width: auto;
-  font-family: Raleway ,sans-serif;
-  line-height: 1;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 }
 
 
@@ -330,6 +311,7 @@ body{
 }
 
 .icon-mark{
+  cursor: no-drop;
   font-size: 22px;
   color: var(--color-text);
 }

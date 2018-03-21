@@ -10,6 +10,7 @@ import { StorageService } from '../../../shared/storage.service';
 export class ByFrequency implements AfterViewInit{
   goalsCopy: any[];
   goals: any[];
+  quarters:any[];
  role: any;
  year:any;
  frequencies: any;

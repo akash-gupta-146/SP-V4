@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { UniversityService } from "../../shared/UTI.service";
-import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
+import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
 import { TreeView } from "./tree-view";
 import { Filters } from '../../shared/filters';
@@ -15,9 +15,10 @@ declare let $: any;
   styleUrls: ['./measure.css', './../planner.component.css']
 })
 export class MeasureComponent extends Filters implements AfterViewInit {
+  selectedYear: number;
   reloadBtn: boolean = false;
   selectedDepartmentIds: any[]=[];
-  defaultCycle: any;
+  defaultCycle: any = {};
   objectives: any[] = [];
   initiatives: any[] = [];
   activities: any[] = [];
@@ -61,13 +62,16 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
       this.cycles = response;
       this.cycles.forEach(element => {
-        if (element.defaultCycle)
-          this.defaultCycle = element.cycleId;
+        if (element.defaultCycle){
+          this.defaultCycle = element;
+          this.objectives = element.goals;
+        }
       });
       if (!flag) {
         this.getMeasure();
         this.getEvidenceForms();
       }
+      this.measureForm = this.setMeasure();
     });
   }
 
@@ -109,7 +113,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   getMeasure() {
-    this.orgService.getMeasuresByCycleId(this.defaultCycle).subscribe((response: any) => {
+    this.orgService.getMeasuresByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
@@ -120,6 +124,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         this.filteredGoals = response;
         this.filteredInitiatives = response;
         this.filteredOpis = response;
+        this.selectedYear = new Date().getFullYear();
       }
       this.loaderService.display(false);
     }, (error: any) => {
@@ -272,6 +277,8 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   checkAssignDept(assignedDepartments: any[]) {
+    setTimeout(function(){ $('#myModal').modal('show') }, 500);
+    $('#detailModal').modal('hide');    
     this.selectedDepartmentIds = [];
     this.selectedDepartments = [];
     this.departments = JSON.parse(JSON.stringify(this.departmentsCopy));
@@ -306,12 +313,25 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   cycle: any[];
   assignDepartment() {
     this.cycles.forEach(element => {
-      if (this.defaultCycle == element.cycleId)
+      if (this.defaultCycle.cycleId == element.cycleId)
         this.cycle = element.cycle;
     });
     this.departmentForm = this.formBuilder.group({
       departmentsArray: this.formBuilder.array(this.getDepartmentFormArray())
     });
+    if(this.selectedMeasure.measureUnitId == 3 || this.selectedMeasure.measureUnitId == 4){
+      const departmentsArray = <FormArray>this.departmentForm.controls["departmentsArray"];
+      departmentsArray.controls.forEach((element:FormGroup) => {
+        const opiAnnualTargets = <FormArray>element.controls.opiAnnualTargets;
+        opiAnnualTargets.controls.forEach((element:FormGroup) => {
+          const levels = <FormArray>element.controls.levels;
+          levels.controls.forEach((element:FormGroup) => {
+            element.controls.estimatedTargetLevel.setValidators([Validators.required, Validators.min(0),Validators.max(100)]);
+            element.controls.estimatedTargetLevel.setValue(0,{'max':100});
+          });
+        });
+      });
+    }
   }
 
   assign() {
@@ -374,9 +394,9 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     const quarterLevel: any[] = [];
     levels.forEach(element => {
       quarterLevel.push(this.formBuilder.group({
-        quarterName: element.quarter,
-        quarterId: element.quarterId,
-        estimatedTargetLevel: element.estimatedTargetLevel
+        quarterName:[ element.quarter,],
+        quarterId:[ element.quarterId,],
+        estimatedTargetLevel:[ element.estimatedTargetLevel,[Validators.required,Validators.min(0)]],
       }))
     });
     return quarterLevel;
@@ -396,19 +416,19 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     return this.formBuilder.group({
       quarterName: this.quarters[q].quarter,
       quarterId: this.quarters[q].id,
-      estimatedTargetLevel: [0]
+      estimatedTargetLevel: [0,[Validators.required,Validators.min(0)]]
     });
   }
 
   setMeasure() {
     return this.formBuilder.group({
-      "cycleId": [{ value: this.defaultCycle, disabled: true }, [Validators.required]],
+      "cycleId": [{ value: this.defaultCycle.cycleId, disabled: true }, [Validators.required]],
       "objectiveId": [{ value: '', disabled: false }, [Validators.required]],
       "initiativeId": [{ value: '', disabled: false }, [Validators.required]],
       "activityId": [{ value: '', disabled: false }, [Validators.required]],
       "opi": ['', [Validators.required]],
       "frequencyId": [1, [Validators.required]],
-      "measureUnit": ['percentage', [Validators.required]],
+      "measureUnitId": ['percentage', [Validators.required]],
       "evidanceFormId": [null, []],
       "direction": [false, [Validators.required]],
       "approvalRequired": [false, [Validators.required]],
@@ -426,11 +446,10 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     if (!this.isUpdating) {
       this.orgService.saveMeasure(this.measureForm.value).subscribe((response: any) => {
         this.getMeasure();
-        // $('#measureModal').modal('show');
         alertify.notify("You have successfully added a new OPI.");
         this.measureForm.reset({
           opi: '',
-          measureUnit: '', frequencyId: 1, baseline: '', direction: '', remarks: '', helpText: '', approvalRequired: ''
+          measureUnitId: '', frequencyId: 1, baseline: '', direction: '', remarks: '', helpText: '', approvalRequired: ''
         });
         $('#add-opi').hide();
         $('#add-btn').show();
@@ -438,12 +457,12 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         console.log(error);
       });
     } else {
-      // Object.keys(this.measureForm.value).forEach((key: any) => {
-      //   if (this.selectedMeasure[key] != this.measureForm.value[key]) {
-      //     formChanges[key] = this.measureForm.value[key];
-      //     msg += "\n" + key + " = " + formChanges[key] + ",";
-      //   }
-      // });
+      Object.keys(this.measureForm.value).forEach((key: any) => {
+        if (this.selectedMeasure[key] != this.measureForm.value[key]) {
+          formChanges[key] = this.measureForm.value[key];
+          msg += "\n" + key + " = " + formChanges[key] + ",";
+        }
+      });
       alertify.confirm("Are you sure you want to update this OPI", () => {
         delete this.measureForm.value["activityId"];
         this.orgService.updateMeasure(this.selectedMeasure.opiId, formChanges).subscribe((response: any) => {
@@ -468,12 +487,12 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.isUpdating = true;
     this.selectedMeasure = measure;
     this.measureForm.patchValue({
-      cycleId: this.defaultCycle,
+      cycleId: this.defaultCycle.cycleId,
       objectiveId: objective.goalId,
       initiativeId: initiative.initiativeId,
       activityId: activity.activityId,
       opi: measure.opi,
-      measureUnit: measure.measureUnit,
+      measureUnitId: measure.measureUnit,
       frequencyId: measure.frequencyId,
       baseline: measure.baselineOfOpi,
       evidanceFormId: measure.evidanceFormId,
@@ -529,7 +548,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.initiatives = [];
     this.activities = [];
     this.getCycleWithChildren(true);
-    this.measureForm = this.setMeasure();
   }
 
   disable(event: any, opiId: any) {
@@ -561,8 +579,34 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       }).setHeader("Confirmation");
   }
 
+  getOpiResultByYear(cycleId: any, year: any) {
+    this.orgService.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
+      if (response.status == 204) {
+        this.goals = [];
+        this.goalsCopy = []
+      } else {
+        this.goals = response;
+        this.goalsCopy = JSON.parse(JSON.stringify(response));
+      }
+    });
+  }
+
   get(e) {
     var promise = new Promise((resolve: any, reject: any) => { $(e)["0"].height = $(e)["0"].clientHeight; resolve(); });
     return promise;
+  }
+
+  sameForAll(departmentArray:FormArray){
+    departmentArray.controls.forEach((element:any,index:number) => {
+      if(index){
+        let department = <FormGroup>departmentArray.controls[0];
+        element.controls.opiAnnualTargets.patchValue(department.controls.opiAnnualTargets.value);
+        element.controls.baseline.patchValue(department.controls.baseline.value);
+      }
+    });
+  }
+
+  isFuture(y:number){
+    return (y > new Date().getFullYear());
   }
 }

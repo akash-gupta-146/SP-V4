@@ -1,0 +1,80 @@
+<div class="panel panel-default" *ngFor="let tdl of department.opiAnnualTargets;let at=index;">
+  <div class="panel-heading">
+    Year : {{tdl.year}}
+  </div>
+  <div class="panel-body row">
+    <div class="col-lg-12" style="margin-bottom:5px;">
+      <strong>BASE LINE : </strong> {{department.baseline}}
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let lev of tdl.levels;let in=index;">
+      <div class="panel" style="border: 1px solid #0000001c;">
+        <div class="panel-body quarter-block">
+          <b class="quarter">{{lev.quarter}}</b>
+          <span class="status" [style.background-color]="lev.successInfo.color">{{lev.status}} - {{lev.role}}</span>
+          <div class="row">
+            <div class="col-sm-6">
+                <strong>BASE LINE : </strong> {{lev.baseline}}
+            </div>
+          </div>
+          <div class="row">              
+            <div class="col-sm-6">
+              <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
+            </div>
+            <div class="col-sm-6">
+              <strong>Target </strong>: {{lev.estimatedTargetLevel}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <strong>End Date </strong>: {{lev.endDate + tdl.year}}
+            </div>
+            <div class="col-sm-6">
+              <div class="dropdown" *ngIf="lev.status!='unsubmited'">
+                <strong>Evidence </strong>:
+                <a class="btn btn-link dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                  <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                    <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
+                    <button type="button" class="close" (click)="deleteEvidence(evidences,ev,e)" [hidden]="lev.status=='locked'">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </li>
+                  <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
+                  <li role="presentation" class="divider" style="clear: both;"></li>
+                  <li class="text-center" role="presentation">
+                    <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" (click)="selectQuarter(lev)"
+                      [disabled]="lev.disable">Upload</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <strong>Current Cost </strong>:
+              <input type="number" [(ngModel)]="lev.currentCost" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+              <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentCost}}</span>
+            </div>
+            <div class="col-sm-6">
+              <strong>Achievement</strong>:
+              <input type="number" [(ngModel)]="lev.currentTargetLevel" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+              <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentTargetLevel}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-center" *ngIf="!lev.disable">
+          <button *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)" (click)="saveQuarterResult(lev)"
+            [disabled]="lev.disable"> Save</button>
+
+          <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
+            [disabled]="lev.disable">Edit</button>
+
+          <button *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
+          <button *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

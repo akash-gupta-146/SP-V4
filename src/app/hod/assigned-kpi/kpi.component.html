@@ -2,16 +2,39 @@
   <router-outlet></router-outlet>
 </div>
 <div class="container-fluid" style="padding-top:25px;">
+  <div class="bg-nav">
+    <div class="form-inline" style="margin-bottom: unset">
+      <button class="btn btn-save pull-right" (click)="getOpi();">
+        <span class="glyphicon glyphicon-refresh"></span>
+        Reload
+      </button>
+      <div class="form-group dropdown-st">
+        <label class="control-label">Strategic Plan</label>
+        <select id="cycle" name="cycle" class="form-control" (ngModelChange)="getOpiResult($event)" style="width:auto;height: auto;padding: 0px;"
+          [(ngModel)]="defaultCycle">
+          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+        </select>
+      </div>
+      <div class="form-group dropdown-st" *ngIf="defaultCycle">
+        <label class="control-label">Plan Year</label>
+        <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" style="width:auto;height: auto;padding: 0px;"
+          [(ngModel)]="selectedYear">
+          <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y">{{y}}</option>
+        </select>
+      </div>
+      <div class="form-group dropdown-st" *ngIf="defaultCycle">
+        <label class="control-label">Quarter</label>
+        <select id="quarter" name="quarter" class="form-control" (ngModelChange)="getOpiResultByQuarter($event)" style="width:auto;height: auto;padding: 0px;"
+          [(ngModel)]="selectedQuarter">
+          <option value="q1">Q1</option>
+          <option value="q2">Q2</option>
+          <option value="q3">Q3</option>
+          <option value="q4">Q4</option>
+        </select>
+      </div>
+    </div>
+  </div>
   <div class="card table-card">
-    <caption class=" pull-right">
-      <h4>Current Year : 2018 Current Quarter : 1st (Jan - March)
-        <button class="btn btn-save" (click)="getOpi();">
-          <span class="glyphicon glyphicon-refresh"></span>
-          Reload
-        </button>
-      </h4>
-    </caption>
-    <br>
     <div class="grid">
       <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 17% 3% ">
         <div class="item">
@@ -88,26 +111,40 @@
             <div class="item" [style.grid-row-end]="activit.opis.length + 1">{{activit.activity}}</div>
             <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngFor="let msr of activit.opis;let l=index">
               <div class="item">{{msr.opi}}</div>
-              <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;">
+              <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;" [attr.id]="'accordion'+msr.opiId">
                 <div class="item">
                   <p><strong>Frequency</strong> : {{msr.frequency}}</p>
-                  <p><strong>Evidence Form</strong> : {{msr.evidanceForm}}<span *ngIf="!msr.evidanceForm">None</span><p>
+                  <p><strong>Evidence Form</strong> : {{msr.evidanceForm}}
+                    <span *ngIf="!msr.evidanceForm">None</span>
+                  <p>
+                  <p><strong>MeasureUnit</strong> : {{msr.measureUnit}}</p>
                 </div>
                 <div class="grid-inner-body" style="grid-template-columns:85% 15%;">
                   <div class="item" style="padding:0px;">
-                    <div *ngFor="let dept of msr.departmentInfo;let d = index" style="padding:5px;text-align:left;"
-                    [style.border-bottom]="d!=msr.departmentInfo.length-1?'1px solid':'unset'">
-                      <p style="margin-bottom: 5px;">{{dept.department}}</p>
-                      <div [style.background-color]="dept.quarterStatus.successInfo.color" style="padding: 5px;
-                        border-radius: 50%;height: 25px;min-width: 25px;width:auto;
-                        line-height: 1;text-align:center;float:left;" [style.color]="!dept.quarterStatus.successInfo.color">
-                        <b>{{dept.quarterStatus.successInfo.difference}}</b>
+                    <div class="panel" style="position:relative">
+                      <div class="panel-heading" [style.background]="msr.successInfo.color">
+                        <h4 class="panel-title">
+                          <b>{{msr.successInfo.difference}}</b>
+                          <a data-toggle="collapse" [attr.data-parent]="'#accordion'+msr.opiId" [attr.href]="'#opi-dept'+msr.opiId">{{msr.successInfo.status}}</a>
+                        </h4>
                       </div>
-                      <div style="padding: 2px 0px 0px 30px;">
-                        <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">
-                          {{dept.quarterStatus.status}}
-                          <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
-                        </a>
+                      <div [attr.id]="'opi-dept'+msr.opiId" class="panel-collapse collapse" style="position: absolute;z-index: 1;width:100%;" [style.border] = "'1px groove ' + msr.successInfo.color">
+                        <ul class="list-group" >
+                          <li class="list-group-item" *ngFor="let dept of msr.departmentInfo;let d = index" style="padding:5px;text-align:left;" [style.border-bottom]="d!=msr.departmentInfo.length-1?'1px solid':'unset'">
+                            <p style="margin-bottom: 5px;">{{dept.department}}</p>
+                            <div [style.background-color]="dept.quarterStatus.successInfo.color" style="padding: 5px;
+                            border-radius: 50%;height: 25px;min-width: 25px;width:auto;
+                            line-height: 1;text-align:center;float:left;" [style.color]="!dept.quarterStatus.successInfo.color">
+                              <b>{{dept.quarterStatus.successInfo.difference}}</b>
+                            </div>
+                            <div style="padding: 2px 0px 0px 30px;">
+                              <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">
+                                {{dept.quarterStatus.status}}
+                                <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
+                              </a>
+                            </div>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -125,12 +162,12 @@
       </div>
       <div class="grid-outer-footer" *ngIf="!goals.length">
         <div class="item">
-            No Data to Display .,.
+          No Data to Display .,.
         </div>
       </div>
     </div>
-    </div>
-    </div>
+  </div>
+</div>
 
 
 

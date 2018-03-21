@@ -10,6 +10,7 @@ import {
   NavigationError
 } from '@angular/router';
 import { LoaderService } from './shared/loader.service';
+import { StorageService } from './shared/storage.service';
 
 @Component({
   selector: 'my-app',
@@ -39,7 +40,7 @@ export class AppComponent {
   transactionLoader: boolean;
   loadingStatus: string;
 
-  constructor(private router: Router, private loaderService: LoaderService) {
+  constructor(private router: Router, private loaderService: LoaderService,private storage:StorageService) {
     // router.events.subscribe((event: RouterEvent) => {
     //   this.navigationInterceptor(event)
     // })

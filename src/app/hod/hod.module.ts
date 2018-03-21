@@ -8,13 +8,15 @@ import { ActionPlanByDepartment } from './action-plan/department/by.department';
 import { AnnualAchievement } from './annual-achievement/annual.achievement';
 import { ByGoal } from './achievement-by-goal/by.goal';
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild([
-    { path: '', redirectTo: 'home' },    
+  imports: [SharedModule, RouterModule.forChild([  
     {
       path: '',
       component: HodComponent,
-
       children: [
+        {
+          path: '',
+          loadChildren: "app/hod/assigned-kpi/kpi.module#KPIModule",
+        },
         {
           path: 'home',
           loadChildren: "app/hod/assigned-kpi/kpi.module#KPIModule",

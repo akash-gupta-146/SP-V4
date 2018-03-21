@@ -105,7 +105,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let goal of goals;let i = index;">
+          <tr *ngFor="let goal of goals;let i = index;" [style.background]="goal.disable?'#f3efef':'unset'">
             <td>{{goal.goal}}</td>
             <td colspan="4" style="padding:0px;border:none;" #element [style.height]="get(element)">
               <table class="table table-bordered text-center" style="height: inherit;">
@@ -115,24 +115,24 @@
                   <col style="width:10%">
                   <col style="width:10%">
                 </colgroup>
-                <tr class="to-be-highlighted" *ngFor="let initiate of goal.initiatives;let j=index;" #highlight>
+                <tr class="to-be-highlighted" *ngFor="let initiate of goal.initiatives;let j=index;" #highlight [style.background]="goal.disable||initiate.disable?'#f3efef':'unset'">
                   <td>{{initiate.initiative}}</td>
                   <td class="text-center">
                     <label class="switch">
-                      <input type="checkbox" [checked]="initiate.disable" (change)="disable($event,initiate.initiativeId)">
+                      <input type="checkbox" [checked]="goal.disable||initiate.disable" (change)="disable($event,initiate.initiativeId)">
                       <span class="slider round"></span>
                     </label>
                   </td>
                   <td>
-                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateInitiative(goal.goalId,initiate,highlight)"[disabled]="initiate.disable" [ngClass]="initiate.disable?'icon-mark':'icon-mark2'">
-                      <a scrollTo href="#add-initiative" >
-                        <i class="glyphicon glyphicon-edit btn-edit"></i>
+                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateInitiative(goal.goalId,initiate,highlight)"[disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
+                      <a scrollTo href="#add-initiative" style="cursor: inherit;">
+                        <i class="glyphicon glyphicon-edit"></i>
                       </a>
                     </button>
                   </td>
                   <td>
-                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)" [disabled]="initiate.disable" [ngClass]="initiate.disable?'icon-mark':'icon-mark2'">
-                      <i class="glyphicon glyphicon-trash btn-del"></i>
+                    <button class="btn-link" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)" [disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
+                      <i class="glyphicon glyphicon-trash"></i>
                     </button>
                   </td>
                 </tr>

@@ -14,10 +14,6 @@ declare let $: any;
 export class HodComponent{
   userDetails: any = {};
 
-  selectedLevel:any;
-  selectedOpi:any;
-  roles: any[] = ["coordinator", "hod", "dvc", "vc", "chanceller"];
-
   constructor(private storage: StorageService) {
     this.userDetails = storage.getData('userDetails');
   }

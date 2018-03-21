@@ -83,7 +83,7 @@
         </tr>
       </thead>
       <tbody class="body-background">
-        <tr *ngFor="let goal of goals;let i = index;">
+        <tr *ngFor="let goal of goals;let i = index;" [style.background]="goal.disable?'#f3efef':'unset'">
           <td style="vertical-align: middle;">{{goal.goal}}</td>
           <td>
             <label class="switch">
@@ -93,12 +93,12 @@
           </td>
           <td style="vertical-align: middle;">
             <button class="btn-link" scrollTo href="#add-initiative" (click)="updateGoal(goal)" [disabled]="goal.disable" [ngClass]="goal.disable?'icon-mark':'icon-mark2'">
-              <i class="glyphicon glyphicon-edit btn-del"></i>
+              <i class="glyphicon glyphicon-edit"></i>
             </button>
           </td>
           <td style="vertical-align: middle;">
             <button class="btn-link" (click)="deleteGoal(goal.goalId,goals,i)" [disabled]="goal.disable" [ngClass]="goal.disable?'icon-mark':'icon-mark2'">
-              <i class="glyphicon glyphicon-trash btn-del"></i>
+              <i class="glyphicon glyphicon-trash"></i>
             </button>
           </td>
         </tr>
