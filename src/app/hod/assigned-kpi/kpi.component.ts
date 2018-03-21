@@ -12,6 +12,7 @@ declare let $: any;
   styleUrls: ['./../hod.component.css']
 })
 export class KPIComponent extends Filters {
+  selectedQuarter: string = "q1";
   defaultCycle: any;
   cycles: any[];
   selectedLevel: any;
@@ -87,6 +88,7 @@ export class KPIComponent extends Filters {
   }
 
   getOpiResultByYear(cycleId: any, year: any) {
+    this.selectedQuarter = "q1";
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
       if (response.status == 204) {

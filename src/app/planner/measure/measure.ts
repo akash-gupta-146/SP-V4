@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { UniversityService } from "../../shared/UTI.service";
-import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
+import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
 import { TreeView } from "./tree-view";
 import { Filters } from '../../shared/filters';
@@ -15,6 +15,7 @@ declare let $: any;
   styleUrls: ['./measure.css', './../planner.component.css']
 })
 export class MeasureComponent extends Filters implements AfterViewInit {
+  selectedYear: number;
   reloadBtn: boolean = false;
   selectedDepartmentIds: any[]=[];
   defaultCycle: any = {};
@@ -123,6 +124,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         this.filteredGoals = response;
         this.filteredInitiatives = response;
         this.filteredOpis = response;
+        this.selectedYear = new Date().getFullYear();
       }
       this.loaderService.display(false);
     }, (error: any) => {
@@ -275,6 +277,8 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   checkAssignDept(assignedDepartments: any[]) {
+    setTimeout(function(){ $('#myModal').modal('show') }, 500);
+    $('#detailModal').modal('hide');    
     this.selectedDepartmentIds = [];
     this.selectedDepartments = [];
     this.departments = JSON.parse(JSON.stringify(this.departmentsCopy));
@@ -315,6 +319,19 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.departmentForm = this.formBuilder.group({
       departmentsArray: this.formBuilder.array(this.getDepartmentFormArray())
     });
+    if(this.selectedMeasure.measureUnitId == 3 || this.selectedMeasure.measureUnitId == 4){
+      const departmentsArray = <FormArray>this.departmentForm.controls["departmentsArray"];
+      departmentsArray.controls.forEach((element:FormGroup) => {
+        const opiAnnualTargets = <FormArray>element.controls.opiAnnualTargets;
+        opiAnnualTargets.controls.forEach((element:FormGroup) => {
+          const levels = <FormArray>element.controls.levels;
+          levels.controls.forEach((element:FormGroup) => {
+            element.controls.estimatedTargetLevel.setValidators([Validators.required, Validators.min(0),Validators.max(100)]);
+            element.controls.estimatedTargetLevel.setValue(0,{'max':100});
+          });
+        });
+      });
+    }
   }
 
   assign() {
@@ -377,9 +394,9 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     const quarterLevel: any[] = [];
     levels.forEach(element => {
       quarterLevel.push(this.formBuilder.group({
-        quarterName: element.quarter,
-        quarterId: element.quarterId,
-        estimatedTargetLevel: element.estimatedTargetLevel
+        quarterName:[ element.quarter,],
+        quarterId:[ element.quarterId,],
+        estimatedTargetLevel:[ element.estimatedTargetLevel,[Validators.required,Validators.min(0)]],
       }))
     });
     return quarterLevel;
@@ -399,7 +416,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     return this.formBuilder.group({
       quarterName: this.quarters[q].quarter,
       quarterId: this.quarters[q].id,
-      estimatedTargetLevel: [0]
+      estimatedTargetLevel: [0,[Validators.required,Validators.min(0)]]
     });
   }
 
@@ -577,5 +594,19 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   get(e) {
     var promise = new Promise((resolve: any, reject: any) => { $(e)["0"].height = $(e)["0"].clientHeight; resolve(); });
     return promise;
+  }
+
+  sameForAll(departmentArray:FormArray){
+    departmentArray.controls.forEach((element:any,index:number) => {
+      if(index){
+        let department = <FormGroup>departmentArray.controls[0];
+        element.controls.opiAnnualTargets.patchValue(department.controls.opiAnnualTargets.value);
+        element.controls.baseline.patchValue(department.controls.baseline.value);
+      }
+    });
+  }
+
+  isFuture(y:number){
+    return (y > new Date().getFullYear());
   }
 }
