@@ -1,15 +1,38 @@
-<div class="login-page">
-  <div class="title animate_fadein"> 
-    Strategic Planning
+<div class="login-page login-bg">
+  <div class="block">
+    <div class="block-border">
+      <div class="block-content">
+        <h1>Login</h1>
+        <div class="block-header">
+          Strategic Planning
+        </div>
+        <div class="form">
+          <form [formGroup]="loginForm" (submit)="onSubmit()" class="form with-margin">
+            <p class="inline-small-label">
+              <label for="login">
+                <span class="big">
+                  Username
+                </span>
+                <input type="text" class="full-width" name='username' id='username' formControlName="username" />
+              </label>
+            </p>
+            <p class="inline-small-label">
+              <label for="password">
+                <span class="big">
+                  Password
+                </span>
+                <input type='password' name='password' id='password' formControlName="password" />
+              </label>
+            </p>
+            <button type="submit" class="full-width login-btn" value="Sign in" [disabled]="loginForm.invalid">Login</button>
+            <div *ngIf="loginStart"></div>
+            <p *ngIf="error" class="message">Invalid Username/Password</p>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
   </div>
-  <div class="form">
-    <form [formGroup]="loginForm" (submit)="onSubmit()" class="login-form">
-      <input type="text" name='username' id='username' formControlName="username" placeholder="Username"/>
-      <input type='password' name='password' id='password' formControlName="password" placeholder="Password"/>
-      <button type="submit" value="Sign in" [disabled]="loginForm.invalid">login</button>
-      <div *ngIf="loginStart"></div>
-      <!-- <p class="message">Not registered? <a href="#">Create an account</a></p> -->
-      <p *ngIf="error" class="message">Invalid Username/Password</p>
-    </form>
-  </div>
+
 </div>

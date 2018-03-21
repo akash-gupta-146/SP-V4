@@ -3,67 +3,85 @@
     <i class="glyphicon glyphicon-plus"></i>
   </button>
   <!-- new code for form-->
-  <div class="card card-form" id="add-plan" style="display:none">
-    <form [formGroup]="cycleForm" (submit)="onSubmit()">
-      <div class="card-header">
-        <button type="button" class="close" aria-label="Close" data-toggle="tooltip" data-placement="auto" title="Reset Form" (click)="reset()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4>ADD STRATEGIC PLAN</h4>
-      </div>
-      <div class="card-body" style="margin-left:15px;">
-        <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable
-          English. </p>
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="form-group">
-              <label for="year">Plan Year:</label>
-              <select id="year" name="year" class="form-control" formControlName="planYear">
-                <option value="2018">2018</option>
-              </select>
+  <div class="block" id="add-plan" style="display:none">
+    <div class="block-border">
+        <div class="block-content">
+          <h1>
+              ADD STRATEGIC PLAN
+          </h1>
+            <div class="block-header">
+                <button type="button" class="close" aria-label="Close" data-toggle="tooltip" data-placement="auto"  (click)="reset()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+               
+                  
+                    <h4 style="margin-top:40px;">
+                        The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable
+                        English.
+                      </h4> 
             </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="form-group">
-              <label for="year">From Year:</label>
-              <select id="from-year" name="from-year" class="form-control" formControlName="startYear">
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="form-group">
-              <label for="year">To Year:</label>
-              <select id="to-year" name="to-year" class="form-control" formControlName="endYear">
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-              </select>
-            </div>
-          </div>
+            <form [formGroup]="cycleForm" (submit)="onSubmit()">
+
+                <div class="card-body" style="margin-left:15px;">
+                  <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                      <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="year">Plan Year:</label>
+                                <select id="year" name="year" class="form-control" formControlName="planYear">
+                                  <option value="2018">2018</option>
+                                </select>
+                              </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="year">From Year:</label>
+                                <select id="from-year" name="from-year" class="form-control" formControlName="startYear">
+                                  <option value="2018">2018</option>
+                                  <option value="2019">2019</option>
+                                  <option value="2020">2020</option>
+                                  <option value="2021">2021</option>
+                                </select>
+                              </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="year">To Year:</label>
+                                <select id="to-year" name="to-year" class="form-control" formControlName="endYear">
+                                  <option value="2018">2018</option>
+                                  <option value="2019">2019</option>
+                                  <option value="2020">2020</option>
+                                  <option value="2021">2021</option>
+                                </select>
+                              </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea style="height:100%" class="form-control" id="description" name="description" formControlName="description"></textarea>
+                          </div>
+                      </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-sm-6"></div>
+                    <div class="col-sm-6">
+                      <button type="submit" class="btn btn-save pull-right" [disabled]="cycleForm.invalid">
+                        SUBMIT
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
         </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="form-group">
-              <label for="description">Description:</label>
-              <textarea class="form-control" id="description" name="description" formControlName="description"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6"></div>
-          <div class="col-sm-6">
-            <button type="submit" class="btn btn-save pull-right" [disabled]="cycleForm.invalid">
-              SUBMIT
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
+
+
+    </div>
+
   </div>
 
   <div class="card table-card">
