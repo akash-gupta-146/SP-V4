@@ -1,38 +1,77 @@
-<div class="login-page login-bg">
-  <div class="block">
-    <div class="block-border">
-      <div class="block-content">
-        <h1>Login</h1>
-        <div class="block-header">
-          Strategic Planning
-        </div>
-        <div class="form">
-          <form [formGroup]="loginForm" (submit)="onSubmit()" class="form with-margin">
-            <p class="inline-small-label">
+<!-- 
+          <form [formGroup]="loginForm" (submit)="onSubmit()" class="form">
               <label for="login">
-                <span class="big">
                   Username
-                </span>
-                <input type="text" class="full-width" name='username' id='username' formControlName="username" />
+                <input type="text" name='username' id='username' formControlName="username" />
               </label>
-            </p>
-            <p class="inline-small-label">
               <label for="password">
-                <span class="big">
                   Password
-                </span>
                 <input type='password' name='password' id='password' formControlName="password" />
               </label>
-            </p>
-            <button type="submit" class="full-width login-btn" value="Sign in" [disabled]="loginForm.invalid">Login</button>
+            <button type="submit" class="btn btn-default" value="Sign in" [disabled]="loginForm.invalid">Login</button>
             <div *ngIf="loginStart"></div>
-            <p *ngIf="error" class="message">Invalid Username/Password</p>
+            <p *ngIf="error">Invalid Username/Password</p>
           </form>
+
+ -->
+
+ <div id="container">
+
+  <div id="topline"></div>
+  
+  
+  
+  <div id="section-material">
+    <div id="container-inside">
+      <div id="circle-small"></div>
+      <div id="circle-medium"></div>
+      <div id="circle-large"></div>
+      <div id="circle-xlarge"></div>
+      <div id="circle-xxlarge"></div>
+      <div class="card middle-fixed-box login-card">
+        <div class="title">
+          Strategic Planning
         </div>
-
+        <div>
+          <h3>Sign in</h3>
+          <h6>to continue Strategic Planning</h6>
+        </div>
+        <div class="form">
+            <form [formGroup]="loginForm" (submit)="onSubmit()" class="">
+              <div class="input">
+                  <small for="login">
+                      Username
+                  </small>
+                  <div class="input-area">
+                      <input type="text" name='username' id='username' formControlName="username" />
+                  </div>
+              </div>  
+              <div class="input">
+                  <small for="password">
+                      Password
+                    </small>
+                    <div  class="input-area">
+                        <input type='password' name='password' id='password' formControlName="password" />
+                    </div>
+                </div>
+                <div class="buttons-area">
+                    <button type="submit" class="btn-sp btn-default pull-right" value="Sign in" [disabled]="loginForm.invalid">Login</button>
+                </div>
+                <div>
+                    <div *ngIf="error" class="message-danger animate slideInDown">Invalid Username/Password</div>
+                </div>
+              <div *ngIf="loginStart"></div>
+             
+            </form>
+        </div>
       </div>
-
     </div>
   </div>
-
-</div>
+  
+  
+  
+  
+  <div id="topline"></div>
+  
+  </div>
+  

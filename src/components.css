@@ -1,0 +1,76 @@
+/* animations */
+.animate{
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
+}
+@keyframes slideInDown{
+    from{
+        transform:translateY(50px);
+        opacity:0;
+    }
+    to{
+        transform:translateY(0px);
+        opacity:1;
+    }
+}
+.slideInDown{
+    animation-name:slideInDown;
+}
+/* end of animation */
+
+.card{
+    background:white;
+    box-shadow: 0 0 10px #0000006b;
+}
+.card .card-header{
+    background:hotpink;
+    color:white;
+    padding:20px;
+}
+
+.card .card-header h1,h2,h3,h4,h5,h6{
+    margin:0px;
+}
+
+
+/* buttons */
+.btn-sp{
+    box-shadow:0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
+    border-radius:3px;
+    padding: 8px 25px;
+    border: 0;
+    transition: 0.3s;
+}
+.btn-sp:focus{
+    outline:0;
+}
+.btn-default{
+    background:var(--color-primary);
+    color:white;
+}
+.btn-default:hover{
+    background:var(--color-primary) !important;
+    color:white;
+}
+.btn-default:active{
+    background:var(--color-primary) !important;
+    color:white !important;
+    box-shadow:0 4px 12px rgba(0, 0, 0, 0.47);
+}
+/* end of buttons */
+
+/* messages */
+.message-danger{
+    border: 1px solid #F44336;
+    border-radius: 3px;
+    padding: 5px;
+    color: #F44336;
+    background: #ff000021;
+    margin:10px auto;
+}
+/* end of messages */
