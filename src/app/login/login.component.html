@@ -55,10 +55,10 @@
                     </div>
                 </div>
                 <div class="buttons-area">
-                    <button type="submit" class="btn-sp btn-default pull-right" value="Sign in" [disabled]="loginForm.invalid">Login</button>
+                    <button type="submit" class="btn-sp btn-default" style="float:right" value="Sign in" [disabled]="loginForm.invalid">Login</button>
                 </div>
                 <div>
-                    <div *ngIf="error" class="message-danger animate slideInDown">Invalid Username/Password</div>
+                    <div *ngIf="error" class="message-danger animate slideInUp">Invalid Username/Password</div>
                 </div>
               <div *ngIf="loginStart"></div>
              

@@ -1,73 +1,103 @@
-<div class="container-fluid" *ngIf="organizationInfo">
-  <div class="container text-center" style="padding: 20px;">
-    <img src="assets/nxtlife.png" style="height: 100px;">
-  </div>
 
-  <div class="block">
-  <div class="block-border">
-  <div class="card nav-card">
-    <div id='cssmenu'>
-      <ul class="nav nav-tabs">
-        <li class="active">
-          <a data-toggle="tab" href="#mission">MISSION</a>
-        </li>
-        <button type="button" class="btn btn-default pull-right margin" data-toggle="modal" data-target="#missionVisionForm" (click)="editMisionVision('mission', organizationInfo.mission);">
-          <i class="glyphicon glyphicon-edit"></i>
-        </button>
-      </ul>
-    </div>
 
-    <div class="tab-content" style="margin-top:15px;margin-left: 10px;" *ngIf="organizationInfo">
-      <div id="mission" class="tab-pane fade in active">
-        <p style="white-space:pre-wrap">{{organizationInfo.mission}}</p>
-      </div>
-      <div id="cssmenu" style="margin-top:40px;">
-        <ul class="nav nav-tabs">
-          <li class="active">
-            <a data-toggle="tab" href="#vision">VISION</a>
-          </li>
-          <button type="button" class="btn btn-default pull-right margin" data-toggle="modal" data-target="#missionVisionForm" (click)="editMisionVision('vision', organizationInfo.vision);">
-            <i class="glyphicon glyphicon-edit"></i>
-          </button>
-        </ul>
-      </div>
-      <div id="vision" class="tab-pane fade in active" style="margin-top:15px;margin-left: 10px;">
-        <p style="white-space:pre-wrap">{{organizationInfo.vision}}</p>
-      </div>
-      <div id="cssmenu" style="margin-top:40px;">
-        <ul class="nav nav-tabs">
-          <li class="active">
-            <a data-toggle="tab" href="#values">VALUES</a>
-          </li>
-          <button type="button" class="btn btn-default pull-right margin" (click)="onValueSelected('',null)" data-toggle="modal" data-target="#valueForm">
-            <i class="glyphicon glyphicon-plus"></i>
-          </button>
-        </ul>
-      </div>
-      <div id="values" class="tab-pane fade in active">
-        <div  style="margin-top: 40px;">
-            <div class="card value-card" *ngFor="let val of organizationInfo.values;let i = index;">
-                <div class="card-header">
-                  <h5>{{i+1}}.{{val.title}}</h5>
-                </div>
-                <div class="card-body">
-                  <p style="white-space:pre-wrap">{{val.description}} </p>
-                  <br>
-                  <button type="button" class="btn btn-default pull-right icon-add" data-toggle="modal" data-target="#valueForm" (click)="onValueSelected(val,i)">
-                    <i class="glyphicon glyphicon-edit"></i>
-                  </button>
-                  <button type="button" class="btn btn-default pull-right icon-btn " (click)="deleteValue(val,i)">
-                    <i class="glyphicon glyphicon-trash"></i>
-                  </button>
+
+<div class="container" *ngIf="organizationInfo">
+      <p>
+          <a class="btn btn-primary btn-sp" data-toggle="collapse" href="#mission" role="button" aria-expanded="false" aria-controls="mission">Mission</a>
+          <button class="btn btn-primary btn-sp" type="button" data-toggle="collapse" data-target="#vision" aria-expanded="false" aria-controls="vision">Vision</button>
+          <button class="btn btn-primary btn-sp" type="button" data-toggle="collapse" data-target="#value" aria-expanded="false" aria-controls="value">Values</button>
+          <button class="btn btn-primary btn-sp" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="mission vision values">All</button>
+      </p>
+        <div class="row">
+          <div class="col col-lg-12 col-sm-12 collapse multi-collapse" id="mission">
+            <div class="card">
+            <div class="card-icon-title">
+              <div class="icon">
+                  <i class="fas fa-bullseye"></i>
+              </div>
+              <div class="title">
+                  Mission
+              </div>
+              <div class="right-action-btn">
+                <div class='dropdown'>
+                    <i class="fas fa-ellipsis-v dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                    <div class="dropdown-menu animate openBox" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#missionVisionForm" (click)="editMisionVision('mission', organizationInfo.mission);">Edit</a>
+                      </div>
                 </div>
               </div>
-
+            </div>
+              <div class="icon-card-body">
+                  {{organizationInfo.mission}}
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-12 col-sm-12 collapse multi-collapse" id="vision">
+            <div  class="card">
+                <div class="card-icon-title">
+                    <div class="icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="title">
+                        Vision
+                    </div>
+                    <div class="right-action-btn">
+                        <div class='dropdown'>
+                            <i class="fas fa-ellipsis-v dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                            <div class="dropdown-menu animate openBox" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" data-toggle="modal" data-toggle="modal" data-target="#valueForm" (click)="onValueSelected('',null)">Edit</a>
+                              </div>
+                        </div>
+                      </div>
+                  </div>
+              <div class="icon-card-body">
+                  {{organizationInfo.vision}}
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-12 col-sm-12 collapse multi-collapse" id="value">
+              <div class="card">
+                  <div class="card-icon-title">
+                      <div class="icon">
+                          <i class="fas fa-align-left"></i>
+                      </div>
+                      <div class="title">
+                          Values
+                      </div>
+                      <div class="right-action-btn">
+                          <div class='dropdown'>
+                              <i class="fas fa-ellipsis-v dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                              <div class="dropdown-menu animate openBox" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" data-toggle="modal" data-target="#valueForm" (click)="onValueSelected('',null)">Add new</a>
+                                </div>
+                          </div>
+                        </div>
+                    </div>
+                <div class="icon-card-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12 card-box" *ngFor="let val of organizationInfo.values;let i = index;">
+                          <div class='d-flex flex-column justify-content-between h-100'>
+                              <h6><span>{{i+1}}) </span>  {{val.title}}</h6>
+                              <p>
+                                  {{val.description}}
+                              </p>
+                              <div class="d-flex justify-content-between">
+                                  <a data-toggle="modal" data-target="#valueForm" (click)="onValueSelected(val,i)" class="primary-text">Edit</a>
+                                  <a (click)="deleteValue(val,i)" class="danger-text">Delete</a>
+                              </div>
+                          </div>  
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  </div>
+
+</div>
+
+
+<div *ngIf="organizationInfo">
+
 
 
       <div class="modal fade" id="valueForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -80,7 +110,7 @@
                   <span class="sr-only">Close</span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                  Value
+                  Add New Value
                 </h4>
               </div>
               <!-- Modal Body -->

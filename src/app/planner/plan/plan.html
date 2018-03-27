@@ -1,7 +1,8 @@
 <div class="container-fluid">
-  <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewPlan()" style="margin-top:24px;margin-bottom:10px;">
+
+  <div fab (click)="addNewPlan()" id="add-btn">
     <i class="glyphicon glyphicon-plus"></i>
-  </button>
+  </div>
   <!-- new code for form-->
   <div class="block" id="add-plan" style="display:none">
     <div class="block-border">
@@ -12,13 +13,12 @@
             <div class="block-header">
                 <button type="button" class="close" aria-label="Close" data-toggle="tooltip" data-placement="auto"  (click)="reset()">
                     <span aria-hidden="true">&times;</span>
-                  </button>
-               
-                  
-                    <h4 style="margin-top:40px;">
-                        The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable
-                        English.
-                      </h4> 
+                </button>
+
+                  <h4 style="margin-top:40px;">
+                      The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable
+                      English.
+                  </h4> 
             </div>
             <form [formGroup]="cycleForm" (submit)="onSubmit()">
 
@@ -61,7 +61,7 @@
                     <div class="col-lg-6 col-sm-12">
                         <div class="form-group">
                             <label for="description">Description:</label>
-                            <textarea style="height:100%" class="form-control" id="description" name="description" formControlName="description"></textarea>
+                            <textarea style="height:180px" class="form-control" id="description" name="description" formControlName="description"></textarea>
                           </div>
                       </div>
                   </div>
@@ -84,65 +84,69 @@
 
   </div>
 
-  <div class="card table-card">
-    <table class="table table-bordered  table-data text-center">
-      <colgroup>
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
-        <col width="40%">
-        <col width="10%">
-        <col width="10%">
-        <col width="10%">
-      </colgroup>
-      <thead class="center">
-        <tr>
-          <th>Plan Year</th>
-          <th>From Year</th>
-          <th>End Year</th>
-          <th>Description</th>
-          <th>Enable</th>
-          <th>Default</th>
-          <th>Delete</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let c of cycles;let y = index;">
-          <td>{{c.planYear}}</td>
-          <td>{{c.startYear}}</td>
-          <td>{{c.endYear}}</td>
-          <td style="white-space: pre-wrap;text-align: justify;">{{c.description}}</td>
-          <td class="text-center">
-            <label class="switch">
-              <input type="checkbox" [checked]="c.disable" (change)="changeStatus($event,c)">
-              <span class="slider round"></span>
-            </label>
-          </td>
-          <td class="text-center">
-            <label style="cursor:pointer;">
-              <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)" style="display:none">
-              <span [ngClass]="c.disable||c.defaultCycle?'icon-mark':'icon-mark2'" *ngIf="c.defaultCycle">
-                <i class="glyphicon glyphicon-ok-sign"></i>
-              </span>
-              <span [ngClass]="c.disable?'icon-mark':'icon-mark2'" *ngIf="!c.defaultCycle">
-                <i class="glyphicon glyphicon-exclamation-sign"></i>
-              </span>
-            </label>
-            <!-- <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)">
-            <span style="color:green" *ngIf="c.defaultCycle">*default</span> -->
-          </td>
-          <td>
-            <button class="btn-link btn-del" (click)="deleteCycle(c.cycleId)" type="button" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
-              <i class="glyphicon glyphicon-trash"></i>
-            </button>
-          </td>
-          <td>
-            <button class="btn-link btn-del" type="button" (click)="editCycle(c)" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
-              <i class="glyphicon glyphicon-edit"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="block">
+    <div class="block-border">
+      <div class="">
+        <table class="table table-bordered  table-data text-center">
+          <colgroup>
+            <col width="10%">
+            <col width="10%">
+            <col width="10%">
+            <col width="40%">
+            <col width="10%">
+            <col width="10%">
+            <col width="10%">
+          </colgroup>
+          <thead class="center block-header">
+            <tr>
+              <th><h5>Plan Year</h5></th>
+              <th><h5>From Year</h5></th>
+              <th><h5>End Year</h5></th>
+              <th><h5>Description</h5></th>
+              <th><h5>Enable</h5></th>
+              <th><h5>Default</h5></th>
+              <th><h5>Delete</h5></th>
+              <th><h5>Edit</h5></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of cycles;let y = index;" [class.disable-cell]="c.disable" [class.default-cell]="c.defaultCycle">
+              <td>{{c.planYear}}</td>
+              <td>{{c.startYear}}</td>
+              <td>{{c.endYear}}</td>
+              <td style="white-space: pre-wrap;text-align: justify;">{{c.description}}</td>
+              <td class="text-center">
+                <label class="switch">
+                  <input type="checkbox" [checked]="c.disable" (change)="changeStatus($event,c)">
+                  <span class="slider round"></span>
+                </label>
+              </td>
+              <td class="text-center">
+                <label class="checkbox-container">
+                  <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)">
+                  <span class="checkmark"></span>
+                  <!-- <span [ngClass]="c.disable||c.defaultCycle?'icon-mark':'icon-mark2'" *ngIf="c.defaultCycle">
+                    <i class="glyphicon glyphicon-ok-sign"></i>
+                  </span>
+                  <span [ngClass]="c.disable?'icon-mark':'icon-mark2'" *ngIf="!c.defaultCycle">
+                    <i class="glyphicon glyphicon-exclamation-sign"></i>
+                  </span> -->
+                </label>
+              </td>
+              <td>
+                <button class="btn-link planner-action-button" (click)="deleteCycle(c.cycleId)" type="button" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
+                  <i class="glyphicon glyphicon-trash"></i>
+                </button>
+              </td>
+              <td>
+                <button class="btn-link planner-action-button" type="button" (click)="editCycle(c)" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
+                  <i class="glyphicon glyphicon-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
+
