@@ -41,7 +41,7 @@ export class InitiativeComponent extends Filters {
         this.cycles = response;
         this.cycles.forEach(element => {
           if (element.defaultCycle)
-            this.defaultCycle = element.cycleId;
+            this.defaultCycle = element;
         });
         if (!flag)
           this.getInitiative();
@@ -58,9 +58,10 @@ export class InitiativeComponent extends Filters {
     });
   }
 
-  defaultCycle: any;
+  defaultCycle: any = {};
   getInitiative() {
-    this.orgService.getInitiativesByCycleId(this.defaultCycle).subscribe((response: any) => {
+    console.log(this.defaultCycle);
+    this.orgService.getInitiativesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
@@ -77,7 +78,7 @@ export class InitiativeComponent extends Filters {
 
   initForm() {
     return this.formBuilder.group({
-      "cycleId": [this.defaultCycle, [Validators.required]],
+      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
       "goalId": ['', [Validators.required]],
       "initiative": ['', [Validators.required]]
     });
@@ -131,7 +132,7 @@ export class InitiativeComponent extends Filters {
     this.initiativeForm.controls["goalId"].disable();
     this.selectedInitiative = initiative;
     this.initiativeForm.patchValue({
-      cycleId: this.defaultCycle,
+      cycleId: this.defaultCycle.cycleId,
       goalId: goalId,
       initiative: initiative.initiative
     });

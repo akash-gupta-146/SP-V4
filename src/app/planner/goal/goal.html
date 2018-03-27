@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <div class="bg-nav">
     <div class="form-inline" style="margin-bottom: unset">
-      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewGoal()">
+      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewGoal()" [disabled]="defaultCycle.disable">
         <i class="glyphicon glyphicon-plus"></i>
       </button>
       <div class="form-group dropdown-st">
         <label class="control-label">Strategic Plan</label>
-        <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getGoals()" style="width:auto;height: auto;padding: 0px;">
-          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId" [attr.selected]="c.defaultCycle">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+        <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getGoals()" style="width:auto;height: auto;padding: 0px;" >
+          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c" [attr.selected]="c.defaultCycle">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
         </select>
       </div>
     </div>
@@ -31,8 +31,8 @@
           <div class="col-sm-12">
             <div class="form-group">
               <label class="control-label" for="year">Strategic Plan:</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" disabled>
-                <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" disabled>
+                <option *ngFor="let c of cycles;let y = index;" [ngValue]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
               </select>
             </div>
           </div>

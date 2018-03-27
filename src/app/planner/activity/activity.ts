@@ -52,7 +52,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
         this.cycles = response;
         this.cycles.forEach(element => {
           if (element.defaultCycle) {
-            this.defaultCycle = element.cycleId;
+            this.defaultCycle = element;
           }
         });
         if (!flag)
@@ -69,9 +69,9 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       }
     });
   }
-  defaultCycle: any;
+  defaultCycle: any = {};
   getActivities() {
-    this.orgService.getActivitiesByCycleId(this.defaultCycle).subscribe((response: any) => {
+    this.orgService.getActivitiesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
@@ -102,7 +102,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
 
   setActivity() {
     return this.formBuilder.group({
-      "cycleId": [this.defaultCycle, [Validators.required]],
+      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
       "objectiveId": ['', [Validators.required]],
       "initiativeId": ['', [Validators.required]],
       "activity": ['', [Validators.required]],
@@ -157,7 +157,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     this.activityForm.controls["objectiveId"].disable();
     this.activityForm.controls["initiativeId"].disable();
     this.activityForm.patchValue({
-      cycleId: this.defaultCycle,
+      cycleId: this.defaultCycle.cycleId,
       objectiveId: objective.goalId,
       initiativeId: initiative.initiativeId,
       activity: activity.activity

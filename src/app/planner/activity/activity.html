@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <div class="bg-nav">
     <div class="form-inline" style="margin-bottom:unset;">
-      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewActivity()">
+      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewActivity()" [disabled]="defaultCycle.disable">
         <i class="glyphicon glyphicon-plus"></i>
       </button>
       <div class="form-group dropdown-st">
         <label class="control-label">Strategic Plan</label>
         <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getActivities()" style="width:auto;height: auto;padding: 0px;">
-          <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
         </select>
       </div>
     </div>
@@ -28,7 +28,7 @@
           <div class="col-sm-12">
             <div class="form-group">
               <label for="year">Plan Year:</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" (ngModelChange)="getObjective($event)" disabled>
                 <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
               </select>
             </div>
