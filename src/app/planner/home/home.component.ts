@@ -71,16 +71,30 @@ export class HomeComponent {
   }
 
   deleteValue(val: any, index: any) {
-    alertify.confirm("Are you sure to delete this Value",(response:any)=>{
+    alertify.confirm("This will permanently delete the selected value",(response:any)=>{
       this.orgSer.deleteValue(val.valueId).subscribe((res: any) => {
         alertify.success("Value has been deleted");
         this.organizationInfo.values.splice(index, 1);
       },(error:any)=>{
         alertify.error("Something went wrong");
       });
-    }).setHeader("Confirmation");
-    
+    }).setHeader("Delete data")
+    .setting({
+      'closableByDimmer': false,
+      'movable': false,
+      'labels': { ok: 'Delete', cancel: 'Cancel' },
+      })
+      .set({transition:'fade'})
+      .show();
+
+      let btn = $('.ajs-ok');
+      console.log(btn[0].innerHTML);
+      if(btn[0].innerHTML == 'Delete'){
+        btn.addClass('btn-danger btn-sp');
+        btn.removeClass('ajs-button ajs-ok');
+      }
   }
+
   selectedValueIndex: any;
   onValueSelected(val: any, index: any) {
     this.valueForm.controls["title"].patchValue(val.title);
