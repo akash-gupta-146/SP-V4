@@ -111,14 +111,14 @@ export class PlanComponent {
   }
 
   deleteCycle(cycleId: any) {
-    alertify.confirm("Do you Really want to Delete this Cycle??", () => {
+    
+    alertify.confirm("Do you Really want to Delete this Cycle?", () => {
       this.orgService.deleteCycle(cycleId).subscribe((response: any) => {
         this.getCycles();
       }, (error: any) => {
         alertify.alert("You Can not Delete this Cycle??");
       })
-    }).setHeader('Confirmation');
-
+    }).setHeader('Delete Cycle')
   }
 
   defaultCycle(event: any, cycleId: any) {
@@ -146,6 +146,7 @@ export class PlanComponent {
   }
 
   reset() {
+    
     $("#add-plan").hide();
     this.isUpdating = false;
     this.cycleForm.reset();

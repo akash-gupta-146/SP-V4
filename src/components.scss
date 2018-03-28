@@ -102,31 +102,6 @@ $primary:var(--color-primary);
             padding-bottom: 40px;
             padding-top:20px;
         }
-        .link{
-            padding: 2px 20px;
-            transition:background 0.3s;
-            cursor: pointer;
-        }
-        .primary-link{
-            color:$primary !important;
-            &:hover{
-                color:var(--color-primary);
-                background:rgba(0, 122, 255, 0.10980392156862745);
-            }
-        }
-        .danger-link{
-            color:var(--color-danger);
-            &:hover{
-                background: rgba(255, 204, 204, 0.35);
-                color:var(--color-danger);
-            }
-        }
-        .dull-link{
-            color:gray;
-            &:hover{
-                background:rgba(0, 122, 255, 0.10980392156862745);
-            }
-        }
     }
 }
 
@@ -174,13 +149,21 @@ $primary:var(--color-primary);
 .btn-sp:focus{
     outline:0 !important;
 }
+.btn-plain{
+    box-shadow:0px 0 0;
+    background:transparent;
+    color:gray;
+}
+.btn-plain:active{
+    box-shadow:0px 2px 5px gray;
+}
 .btn-default{
-    background:var(--color-primary);
-    color:white;
+    background:var(--color-primary) !important;
+    color:white !important;
 }
 .btn-default:hover{
     background:var(--color-primary) !important;
-    color:white;
+    color:white !important;
 }
 .btn-default:active{
     background:var(--color-primary) !important;
@@ -236,6 +219,31 @@ $primary:var(--color-primary);
     cursor:no-drop;
 }
 
+.link{
+    padding: 2px 20px;
+    transition:background 0.3s;
+    cursor: pointer;
+}
+.primary-link{
+    color:$primary !important;
+    &:hover{
+        color:var(--color-primary);
+        background:rgba(0, 122, 255, 0.10980392156862745);
+    }
+}
+.danger-link{
+    color:var(--color-danger);
+    &:hover{
+        background: rgba(255, 204, 204, 0.35);
+        color:var(--color-danger);
+    }
+}
+.dull-link{
+    color:gray;
+    &:hover{
+        background:rgba(0, 122, 255, 0.10980392156862745);
+    }
+}
 /* end of buttons */
 
 /* messages */
@@ -248,3 +256,25 @@ $primary:var(--color-primary);
     padding: 12px 24px 12px 24px;
 }
 /* end of messages */
+
+// data fidder
+.data-fidder{
+    transition:0.3s;
+    background:white;
+    box-shadow:0 5px 10px rgba(0, 0, 0, 0.23921568627450981);
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+    .small-fidder{
+        padding: 10px 80px;
+        .modal-header{
+            padding:0px;
+            color:$primary;
+        }
+        .modal-footer{
+            padding:0px;
+        }
+    }
+}
+
+// end of data fidder

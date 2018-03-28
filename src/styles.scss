@@ -348,11 +348,11 @@ div[fab]{
   color: white;
   transition:0.3s;
   cursor: pointer;
+  padding:10px;
 }
-div[fab]:hover{
-  color: var(--color-primary);
-  background: white;
-  // box-shadow:0 0 20px #0000007d;
+div[fab]:active{
+  background:darken($primary,10);
+  box-shadow:0 5px 10px rgba(0,0,0,0.27);
 }
 div[fab] i{
   position: absolute;
@@ -416,14 +416,12 @@ body{
 
 /* overriding bootstrap modal */
 .modal{
-  .modal-dialog{
+  .modal-dialog, .data-fidder{
     box-shadow: 0 17px 17px rgba(0,0,0,.15), 0 27px 55px rgba(0,0,0,.3);
     .modal-content{
       background:$second-back;
       border-radius:0px !important;
-      .modal-header{
-        border-bottom:0px;
-      }
+
       .modal-title{
         color:black;
       }
@@ -433,6 +431,7 @@ body{
         opacity: 1;
         padding: 0px;
         margin: 0;
+        margin-top:-10px;
         height: 30px;
         width: 30px;
         &:hover{
@@ -445,6 +444,12 @@ body{
     }
   }
 }
+.modal-header{
+  border-bottom:0px;
+}
+.modal-footer{
+  border-top:0px;
+}
 
 .form-group{
   label{
@@ -453,7 +458,7 @@ body{
 
   }
 }
-.form-control{
+.form-control, {
   border-radius: 0px;
 }
 .ajs-modal{
@@ -461,6 +466,10 @@ body{
     .ajs-header{
       background:white;
       border-bottom:0px;
+    }
+    .ajs-ok{
+      @extend .btn-sp;
+      @extend .btn-default;
     }
     .ajs-close{
       color:gray;
@@ -509,6 +518,18 @@ body{
   }
 }
 
+thead{
+  background:$primary;
+  color:white;
+}
+
+input[type=checkbox], input[type=radio]{
+  cursor: pointer;
+}
+
+input[disabled]{
+  cursor:no-drop;
+}
 /* end of bootstrap modal */
 
 
