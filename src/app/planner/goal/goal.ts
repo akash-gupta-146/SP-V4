@@ -28,7 +28,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
     public commonService: StorageService,
     private loaderService: LoaderService) {
     super();
-    this.getCycles();
+    this.getCycles(false);
     this.goalForm = this.initObjectiveForm();
   }
 
@@ -37,25 +37,25 @@ export class GoalComponent extends Filters implements AfterViewInit {
 
   }
 
-  getCycles() {
+  getCycles(disable:boolean) {
     this.loaderService.display(true);
-    this.orgService.getCycles().subscribe((response: any) => {
+    this.orgService.getCycleWithChildren(disable).subscribe((response: any) => {
       if (response.status == 204) {
         this.cycles = [];
       } else {
         this.cycles = response;
         this.cycles.forEach(element => {
           if (element.defaultCycle)
-            this.defaultCycle = element.cycleId;
+            this.defaultCycle = element;
         });
         this.getGoals();
       }
     });
   }
 
-  defaultCycle: any;
+  defaultCycle: any = {};
   getGoals() {
-    this.orgService.getObjectivesByCycleId(this.defaultCycle).subscribe((response: any) => {
+    this.orgService.getObjectivesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
@@ -71,7 +71,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
 
   initObjectiveForm() {
     return this.formBuilder.group({
-      "cycleId": [this.defaultCycle, [Validators.required]],
+      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
       "goal": ['', [Validators.required]],
       // "totalCost": ['', [Validators.required]],
       // "spis": this.formBuilder.array([this.inItSpi()]),
@@ -126,7 +126,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
     $(highlight).addClass("highlight");
     this.selectedObjective = goal;
     this.isUpdating = true;
-    this.goalForm.patchValue({ goal: goal.goal, cycleId: this.defaultCycle });
+    this.goalForm.patchValue({ goal: goal.goal, cycleId: this.defaultCycle.cycleId });
     $("#add-plan").show();
     $("#collapse1").collapse('show');
   }

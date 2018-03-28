@@ -15,8 +15,8 @@
       <div class="block-content" style="background:white;">
         <h1>
           <div class="form-group no-margin">
-            <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getGoals()" style="width:auto;height: auto;padding: 0px;">
-              <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId" [attr.selected]="c.defaultCycle">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+            <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getGoals()" style="width:auto;height: auto;padding: 0px;" >
+              <option *ngFor="let c of cycles;let y = index;" [ngValue]="c" [attr.selected]="c.defaultCycle">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
             </select>
           </div>
         </h1>

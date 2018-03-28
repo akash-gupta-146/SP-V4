@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="bg-nav" id="top">
     <div class="form-inline" style="margin-bottom:unset;">
-      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewMeasure()">
+      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewMeasure()" [disabled]="defaultCycle.disable">
         <i class="glyphicon glyphicon-plus"></i>
       </button>
       <div class="form-group dropdown-st">

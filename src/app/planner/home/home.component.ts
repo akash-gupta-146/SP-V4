@@ -71,9 +71,15 @@ export class HomeComponent {
   }
 
   deleteValue(val: any, index: any) {
-    this.orgSer.deleteValue(val.valueId).subscribe((res: any) => {
-      this.organizationInfo.values.splice(index, 1);
-    })
+    alertify.confirm("Are you sure to delete this Value",(response:any)=>{
+      this.orgSer.deleteValue(val.valueId).subscribe((res: any) => {
+        alertify.success("Value has been deleted");
+        this.organizationInfo.values.splice(index, 1);
+      },(error:any)=>{
+        alertify.error("Something went wrong");
+      });
+    }).setHeader("Confirmation");
+    
   }
   selectedValueIndex: any;
   onValueSelected(val: any, index: any) {
