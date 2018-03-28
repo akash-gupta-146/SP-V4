@@ -490,6 +490,25 @@ body{
     background:lighten(black,20) !important;
     color:white;
 }
+
+
+.breadcrumb{
+  background:#d5d5d5;
+  li{
+    a{
+      color: #707070;
+    }
+  }
+}
+
+.navbar{
+  .navbar-nav{
+    a{
+      color:initial;
+    }
+  }
+}
+
 /* end of bootstrap modal */
 
 

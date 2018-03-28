@@ -14,6 +14,7 @@ declare let $: any;
 })
 export class PlannerComponent {
 	userDetails: any;
+	breadcrumb:boolean = false;
 	constructor(public stogareService: StorageService,
 		public utiService: UniversityService,
 		public router: Router) {
@@ -25,6 +26,12 @@ export class PlannerComponent {
 
 	logout() {
 		localStorage.clear();
+	}
+	showBreadcrumb(){
+			this.breadcrumb = true;
+	}
+	hideBreadcrumb(){
+		this.breadcrumb = false;
 	}
 
 }	
