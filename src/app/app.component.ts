@@ -25,9 +25,9 @@ import { StorageService } from './shared/storage.service';
     </div>
   </div>
   <div class="loading-outer-overlay" *ngIf="showLoader">
-    <div class="loading-overlay">
-      <div class="loader"></div>
-    </div>
+  <div class="center" style="background:transparent">
+  <div class="spinner"></div>
+</div>
   </div>
   </router-outlet>
   `,
