@@ -361,7 +361,7 @@ $primary:var(--color-primary);
 
 // filter
  .filter{
-     margin:50px;
+     margin:5px 50px;
      display: flex;
      flex-flow: row-reverse;
      .icon{
@@ -426,3 +426,23 @@ div[no-content]{
     }
 }
 // end of no-content
+/* background */
+.background{
+    height:100vh;
+    width:100vw;
+    background-attachment: fixed !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    position: fixed;
+    z-index: -6;
+    background-size:auto 50% !important;
+    &:after{
+        position:absolute;
+        font-size:5vh;
+        font-weight:bold;
+        top:70vh;
+        left:50%;
+        transform: translate(-50%);
+    }
+}
+/* end of background */
