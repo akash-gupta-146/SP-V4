@@ -87,12 +87,12 @@ export class HomeComponent {
       .set({transition:'fade'})
       .show();
 
-      let btn = $('.ajs-ok');
-      console.log(btn[0].innerHTML);
-      if(btn[0].innerHTML == 'Delete'){
-        btn.addClass('btn-danger btn-sp');
-        btn.removeClass('ajs-button ajs-ok');
-      }
+      // let btn = $('.ajs-ok');
+      // console.log(btn[0].innerHTML);
+      // if(btn[0].innerHTML == 'Delete'){
+      //   btn.addClass('btn-danger btn-sp');
+      //   btn.removeClass('ajs-button ajs-ok');
+      // }
   }
 
   selectedValueIndex: any;
