@@ -278,3 +278,27 @@ $primary:var(--color-primary);
 }
 
 // end of data fidder
+
+// highlight
+.highlight{
+    position:relative;
+    padding-left:30px !important;
+    vertical-align: middle !important;
+    transition:0.3s ease-in;
+}
+.highlight{
+    span:before{
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        content: '';
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: $primary;
+        border: 2px solid white;
+        box-shadow: 0 0 3px;
+    }
+}
+// end of highlight

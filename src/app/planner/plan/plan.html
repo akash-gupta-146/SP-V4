@@ -89,6 +89,7 @@
           <th class="align-middle">Default</th>
           <th class="align-middle">Delete</th>
           <th class="align-middle">Edit</th>
+          <th class="align-middle">Goals...</th>
         </tr>
       </thead>
       <tbody>
@@ -96,7 +97,7 @@
           <td>{{c.planYear}}</td>
           <td>{{c.startYear}}</td>
           <td>{{c.endYear}}</td>
-          <td>{{c.description}}</td>
+          <td [class.highlight]="c.defaultCycle"><span>{{c.description}}</span></td>
           <td>
               <input type="checkbox" [checked]="c.disable" (change)="changeStatus($event,c)">
           </td>
@@ -111,6 +112,11 @@
           <td>
             <button class="btn btn-link" type="button" (click)="editCycle(c)" [disabled]="c.disable">
              <i class="fas fa-edit"></i>
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-link" type="button" [disabled]="c.disable">
+             <i class="fas fa-eye"></i>
             </button>
           </td>
         </tr>
@@ -189,6 +195,8 @@
 </div>
 <!-- end of modal -->
 
+<!-- add new -->
 <div fab (click)="addNewPlan()" id="add-btn" class="btn btn-primary">
     <i class="fas fa-plus"></i>
 </div>
+<!-- end of add new -->
