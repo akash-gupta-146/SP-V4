@@ -1,75 +1,77 @@
-<div class="container-fluid">
-      <div fab id="add-btn" (click)="addNewInitiative()">
-          <i class="glyphicon glyphicon-plus"></i>
+<!-- new code for form-->
+<!-- <div class="block card-form" id="add-initiative" style="display:none">
+    <div class="block-border">
+      <div class="block-content">
+        <h1 *ngIf="!isUpdating;else editKpi">
+          ADD INITIATIVE
+
+        </h1>
+        <ng-template #editKpi>
+          <h1>EDIT INITIATIVE</h1>
+        </ng-template>
+        <div class="block-header">
+          <button type="button" class="close" aria-label="Close" data-toggle="tooltip" data-placement="auto" (click)="closeForm();">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
         </div>
-  <!-- new code for form-->
-  <div class="block card-form" id="add-initiative" style="display:none">
-      <div class="block-border">
-        <div class="block-content">
-          <h1 *ngIf="!isUpdating;else editKpi">
-            ADD INITIATIVE
+        <form [formGroup]="initiativeForm" (submit)="submitInitiative()">
 
-          </h1>
-          <ng-template #editKpi>
-              <h1>EDIT INITIATIVE</h1>
-            </ng-template>
-          <div class="block-header">
-            <button type="button" class="close" aria-label="Close" data-toggle="tooltip" data-placement="auto" (click)="closeForm();">
-              <span aria-hidden="true">&times;</span>
-            </button>
-
-          </div>
-          <form [formGroup]="initiativeForm" (submit)="submitInitiative()">
-
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-lg-6 col-sm-12">
-                    <div class="form-group">
-                      <label class="control-label" for="year">Strategic Plan :</label>
-                      <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
-                        <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sel1">Goal:</label>
-                        <select class="form-control" id="sel1" formControlName="goalId">
-                          <option *ngFor="let goal of objectives;let i=index;" [value]="goal.goalId">{{i+1}}. {{goal.goal}}</option>
-                        </select>
-                      </div>
-                  </div>
-                  <div class="col-lg-6 col-sm-12">
-                      <div class="form-group ">
-                          <label>Proposed Initiative</label>
-                          <textarea class="form-control" rows="5" formControlName="initiative"></textarea>
-                        </div>
-                    </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6 col-sm-12">
+                <div class="form-group">
+                  <label class="control-label" for="year">Strategic Plan :</label>
+                  <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)"
+                    disabled>
+                    <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
+                  </select>
                 </div>
-                <button type="submit" class="btn btn-default pull-right btn-sub" [disabled]="initiativeForm.invalid" data-toggle="tooltip"
-                data-placement="auto" title="Submit Form">
-                SUBMIT
-              </button>
+                <div class="form-group">
+                  <label for="sel1">Goal:</label>
+                  <select class="form-control" id="sel1" formControlName="goalId">
+                    <option *ngFor="let goal of objectives;let i=index;" [value]="goal.goalId">{{i+1}}. {{goal.goal}}</option>
+                  </select>
+                </div>
               </div>
-            </form>
-        </div>
+              <div class="col-lg-6 col-sm-12">
+                <div class="form-group ">
+                  <label>Proposed Initiative</label>
+                  <textarea class="form-control" rows="5" formControlName="initiative"></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-default pull-right btn-sub" [disabled]="initiativeForm.invalid" data-toggle="tooltip"
+              data-placement="auto" title="Submit Form">
+              SUBMIT
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  <!-- for table -->
+  </div> -->
 
 
+
+
+
+<!-- for table -->
+
+<!-- 
   <div class="block">
     <div class="block-border">
       <div class="block-content" style="background:white;">
         <h1>
           <div class="form-group no-margin">
             <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getInitiative()" style="width:auto;height: auto;padding: 0px;">
-              <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId" >{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+              <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
             </select>
           </div>
         </h1>
         <div class="block-header">
           <h4 style="margin-top:40px;">Proposed Initiatives</h4>
         </div>
-        <table class="table table-bordered table-data"  *ngIf="goals.length">
+        <table class="table table-bordered table-data" *ngIf="goals.length">
           <colgroup>
             <col style="width:30%">
             <col style="width:40%">
@@ -124,14 +126,16 @@
                       </label>
                     </td>
                     <td>
-                      <button class="btn-link planner-action-button" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateInitiative(goal.goalId,initiate,highlight)"[disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
+                      <button class="btn-link planner-action-button" data-toggle="tooltip" data-placement="auto" title="Edit" (click)="updateInitiative(goal.goalId,initiate,highlight)"
+                        [disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
                         <a scrollTo href="#add-initiative" style="cursor: inherit;">
                           <i class="glyphicon glyphicon-edit"></i>
                         </a>
                       </button>
                     </td>
                     <td>
-                      <button class="btn-link planner-action-button" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)" [disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
+                      <button class="btn-link planner-action-button" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)"
+                        [disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
                         <i class="glyphicon glyphicon-trash"></i>
                       </button>
                     </td>
@@ -143,13 +147,166 @@
         </table>
 
         <img *ngIf="!goals.length" src="http://www.nmsf.gov.sd/includes/slides/no-records1.png" class="center-block">
-        
+
       </div>
     </div>
-  </div>
-  <div class="card table-card">
-    <div class="panel-body">
+  </div> -->
 
+
+
+
+
+
+
+
+
+<!-- data fidder -->
+<div class="container card data-fidder animate slideInDown" style="display:none" id="add-initiative">
+  <div class="small-fidder">
+    <div class="modal-header">
+      <h5 *ngIf="!isUpdating;else editKpi">ADD INITIATIVE</h5>
+      <ng-template #editKpi>
+        <h5>EDIT INITIATIVE</h5>
+      </ng-template>
+      <button type="button" class="close" (click)="closeForm();">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="initiativeForm" (submit)="submitInitiative()">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12">
+            <div class="form-group">
+              <label class="control-label" for="year">Strategic Plan :</label>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)"
+                disabled>
+                <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sel1">Goal:</label>
+              <select class="form-control" id="sel1" formControlName="goalId">
+                <option *ngFor="let goal of objectives;let i=index;" [value]="goal.goalId">{{i+1}}. {{goal.goal}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12">
+            <div class="form-group ">
+              <label>Proposed Initiative</label>
+              <textarea class="form-control" rows="5" formControlName="initiative"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="reset" class="btn-sp btn-plain">
+          Clear
+        </button>
+        <button type="submit" class="btn-sp btn-primary" [disabled]="initiativeForm.invalid" data-toggle="tooltip" data-placement="auto"
+          title="Submit Form">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- end of data fidder -->
+
+<!-- table -->
+<div class="container-fluid mt-3 animate slideInDown">
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <colgroup>
+          <col style="width:30%">
+          <col style="width:40%">
+          <col style="width:10%">
+          <col style="width:10%">
+          <col style="width:10%">
+        </colgroup>
+        <thead *ngIf="goalsCopy.length">
+          <tr>
+            <th>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  Goal
+                </div>
+                <div class="search-box">
+                  <span>
+                    <i class="fas fa-search"></i>
+                  </span>
+                  <form>
+                    <input name="search" id="search" (keyup)="searchGoal($event)">
+                  </form>
+                </div>
+              </div>
+            </th>
+            <th>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  Initiative
+                </div>
+                <div class="search-box">
+                  <span>
+                    <i class="fas fa-search"></i>
+                  </span>
+                  <form>
+                    <input name="search" id="search" (keyup)="searchInitiative($event)">
+                  </form>
+                </div>
+              </div>
+            </th>
+            <th class="text-center">Disable</th>
+            <th class="text-center">Edit</th>
+            <th class="text-center">Delete</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="goals.length">
+          <tr *ngFor="let goal of goals;let i = index;">
+            <td>{{goal.goal}}</td>
+            <td colspan="4" class="p-0" style="border:none;" #element [style.height]="get(element)">
+              <table class="table table-hover table-striped text-center mb-0">
+                <colgroup>
+                  <col style="width:40%">
+                  <col style="width:10%">
+                  <col style="width:10%">
+                  <col style="width:10%">
+                </colgroup>
+                <tr *ngFor="let initiate of goal.initiatives;let j=index;" #highlight>
+                  <td>{{initiate.initiative}}</td>
+                  <td>
+                    <input type="checkbox" [checked]="goal.disable||initiate.disable" (change)="disable($event,initiate.initiativeId)">
+                  </td>
+                  <td>
+                    <button class="btn btn-link" type="button" scrollTo href="#add-initiative" (click)="updateInitiative(goal.goalId,initiate,highlight)"
+                      [disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-link" type="button" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)"
+                      [disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- No content -->
+      <div no-content *ngIf="!goals.length">
+        Data not available
+      </div>
+      <!-- end of no content -->
     </div>
   </div>
 </div>
+<!-- end of table -->
+
+<!-- add new -->
+<div fab class="btn btn-primary" id="add-btn" (click)="addNewInitiative()">
+  <i class="fas fa-plus"></i>
+</div>
+<!-- end of add new -->
