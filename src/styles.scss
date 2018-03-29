@@ -27,6 +27,7 @@
   --color-header: #77909b;
 }
 $primary: #4285f4;
+$danger: var(--color-danger);
 $second-back: #fafafa;
 /* end of variables  */
 
@@ -163,10 +164,6 @@ button:disabled{
   cursor: no-drop;
 }
 
-.highlight{
-  background-color: gray;
-  color: white;
-}
 .btn-del{
   color: var(--color-primary);
 }
@@ -491,9 +488,10 @@ body{
       border-top:0px;
     }
   }
-
 }
-
+.ajs-error{
+  background:$danger;
+}
 
 .alertify-notifier .ajs-message.ajs-success{
     background:lighten(black,20) !important;
