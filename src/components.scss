@@ -240,7 +240,7 @@ $primary:var(--color-primary);
     color:white;
     transition: 0.3s ease-in-out;
     &:hover{
-        transform:rotate(-1.5deg);
+        transform:scale(1.5);
         color:white;
     }
 }

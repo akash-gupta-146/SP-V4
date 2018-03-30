@@ -260,63 +260,66 @@
         </div>
       </div>
       <div class="grid-outer-body" style="grid-template-columns:16% 84%;" *ngFor="let goal of goals;let i = index;">
-        <div class="item" [style.grid-row-end]="goal.initiatives.length + 1" [style.background]="goal.disable?'#f3efef':''">
+        <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
           {{goal.goal}}
         </div>
         <div class="grid-inner-body" style="grid-template-columns:19.05% 80.95%;" *ngFor="let initiate of goal.initiatives;let j=index;">
-          <div class="item" [style.grid-row-end]="initiate.activities.length + 1" [style.background]="goal.disable||initiate.disable?'#f3efef':''">
+          <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
             {{initiate.initiative}}
           </div>
           <div class="grid-inner-body" style="grid-template-columns:23.53% 76.47%;" *ngFor="let activit of initiate.activities;let k=index;">
-            <div class="item" [style.grid-row-end]="activit.opis.length + 1" [style.background]="goal.disable||initiate.disable||activit.disable?'#f3efef':''">{{activit.activity}}</div>
+            <div class="item" [style.grid-row-end]="activit.opis.length + 1">{{activit.activity}}</div>
             <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngFor="let msr of activit.opis;let l=index">
-              <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">{{msr.opi}}</div>
+              <div class="item">{{msr.opi}}</div>
               <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;">
-                <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">
-                  <label>Frequency :</label>{{msr.frequency}}
-                  <br>
-                  <label>Cost :</label>10000
-                  <br>
-                  <label>MeasureUnit :</label>{{msr.measureUnit}}
-                  <br>
-                  <label>Direction :</label>
-                  <span [ngClass]="msr.direction ? 'glyphicon glyphicon-sort-by-attributes' : 'glyphicon glyphicon-sort-by-attributes-alt'"
-                    class="icon-mark2"></span>
+                <div class="item">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between " >
+                      <div>Frequency:</div>
+                      <div class="text-right">{{msr.frequency}}</div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between " >
+                        <div>MeasureUnit:</div>
+                        <div class="text-right">{{msr.measureUnit}}</div>
+                      </li>
+                    <li class="list-group-item d-flex justify-content-between ">
+                        <div>Cost:</div>
+                        <div class="text-right">10000</div>
+                      </li>
+                        <li class="list-group-item d-flex justify-content-between ">
+                            <div>Direction:</div>
+                            <div><i class="text-primary" [ngClass]="msr.direction ? 'fas fa-sort-amount-down' : 'fas fa-sort-amount-up'"></i></div>
+                          </li>
+                  </ul>
                 </div>
                 <div class="grid-inner-body" style="grid-template-columns:80% 20%;">
-                  <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">
-                    <ul style="list-style:none;padding:0px;">
-                      <li *ngIf="!msr.assignedDepartments.length">
-                        <button class="btn-link" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.assignedDepartments);" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable">Add</button>
+                  <div class="item">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item" *ngFor="let dept of msr.assignedDepartments;let d = index">{{dept.department}}</li>
+                      <li class="list-group-item" *ngIf="msr.assignedDepartments.length">
+                          <a class="text-primary link primary-link float-right" data-toggle="modal" data-target="#detailModal" (click)="selectedMeasure=msr;">View more</a>
                       </li>
-                      <li *ngFor="let dept of msr.assignedDepartments;let d = index">{{dept.department}}, </li>
-                      <li *ngIf="msr.assignedDepartments.length">
-                        <a data-toggle="modal" data-target="#detailModal" (click)="selectedMeasure=msr;">Detail</a>
+                      <li class="list-group-item" *ngIf="!msr.assignedDepartments.length">
+                          <button class="btn btn-link" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.assignedDepartments);" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable">
+                              <i class="fas fa-plus-circle"></i>
+                            </button>
                       </li>
                     </ul>
                   </div>
                   <div class="grid-inner-body">
-                    <div class="item" style="padding: 2px;" [style.background]="goal.disable||initiate.disable||activit.disable||msr.disable?'#f3efef':''">
-                      <ul style="list-style:none;padding:0;">
-                        <li>
-                          <button class="btn-link btn-edit" (click)="updateMeasure(goal,initiate,activit,msr,highlight)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable" [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
-                            <a scrollTo href="#top" style="cursor:inherit">
-                              <i class="glyphicon glyphicon-edit"></i>
-                            </a>
+                    <div class="item d-flex flex-column justify-content-around">
+                      <!-- <div class=""> -->
+                          <button class="btn btn-link" scrollTo href="#top" (click)="updateMeasure(goal,initiate,activit,msr,highlight)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable" [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
+                                  <i class="fas fa-edit"></i>
                           </button>
-                        </li>
-                        <li>
-                          <button class="btn-link btn-edit" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable" [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
-                            <i class="glyphicon glyphicon-trash"></i>
+                          <button class="btn btn-link" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable" [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
+                              <i class="fas fa-trash-alt"></i>
                           </button>
-                        </li>
-                        <li>
-                          <label class="switch">
-                            <input type="checkbox" [checked]="goal.disable||initiate.disable||activit.disable||msr.disable" (change)="disable($event,msr.opiId)">
-                            <span class="slider round"></span>
-                          </label>
-                        </li>
-                      </ul>
+                          <div class="text-center">
+                              <input type="checkbox" [checked]="goal.disable||initiate.disable||activit.disable||msr.disable" (change)="disable($event,msr.opiId)">
+                              <span class="badge badge-primary">Disable</span>
+                          </div>
+                      <!-- </div> -->
                     </div>
                   </div>
                 </div>
