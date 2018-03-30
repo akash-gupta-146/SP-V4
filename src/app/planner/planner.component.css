@@ -8,6 +8,10 @@
   margin-top:20px;
 }
 
+.breadcrumb .active a{
+  color:var(--color-primary);
+  font-weight: bold;
+}
 
 .breadcrumb-item+.breadcrumb-item::before{
   content: "›";

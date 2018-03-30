@@ -1,56 +1,13 @@
-.department-hierarchy{
-  overflow: scroll;
-  height: 60vh;
-}
-.modal-xl{
-  width: 80%;
-}
-.p-3 {
-  flex: 6 !important;
-}
-.p-3o{
-  flex:2;
-}
-
-.table{
-  margin-bottom: 0px;
- }
- .table .table {
-  background-color: inherit;
- }
-
- .sibling-list-element{
-  border-radius:6px;
-  padding:15px;
+.item{
   position:relative;
-  margin-bottom: 5px;
 }
-
-.sibling-list-element .edit-btn{
-  position: absolute;
-  right: 0;
-  z-index: 1;
+.search-box{
+  margin-left:5px;
 }
-
-.table>.table,.table>.table>.table{
-  border-spacing: 0;
-    border-collapse: collapse;
-}
-
-.middle{
-  padding-bottom: 20px;
-  padding-left: -1px;
-}
-
-.table-list li{
-  text-align: center;
-  margin-top: 10px;
-}
-
-
-.table-list li a{
-  background: #563d7c;
-  border-radius: 17px;
-  padding: 6px;
-  color:white!important;
+.search-box:focus-within{
+  transition:0.3s ease-in-out;
+  position:absolute;
+  left:0;
+  top:8px;
+  margin-left:5px;
 }

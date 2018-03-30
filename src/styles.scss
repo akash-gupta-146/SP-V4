@@ -168,9 +168,6 @@ button:disabled{
   color: var(--color-primary);
 }
 
-.btn-link:focus {
-  outline: -webkit-focus-ring-color auto 0px;
-}
 
 .margin:focus {
   background-color: var(--color0);
@@ -338,7 +335,7 @@ div[fab]{
   border-radius: 50%;
   background: var(--color-primary);
   text-align: center;
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   right: 30px;
   font-size: 20px;

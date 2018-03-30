@@ -236,6 +236,14 @@ $primary:var(--color-primary);
     transition:background 0.3s;
     cursor: pointer;
 }
+.btn-link-secondary{
+    color:white;
+    transition: 0.3s ease-in-out;
+    &:hover{
+        transform:rotate(-1.5deg);
+        color:white;
+    }
+}
 .primary-link{
     color:$primary !important;
     &:hover{
@@ -278,7 +286,7 @@ $primary:var(--color-primary);
     top: 0px;
     z-index: 2;
     .small-fidder{
-        padding: 10px 80px;
+        padding: 25px 20px 10px 20px;
         .modal-header{
             padding:0px;
             color:$primary;
