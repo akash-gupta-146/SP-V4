@@ -12,7 +12,7 @@ declare let $: any;
 @Component({
   selector: 'measure',
   templateUrl: './measure.html',
-  styleUrls: ['./measure.css', './../planner.component.css']
+  styleUrls: ['./measure.scss', './../planner.component.css']
 })
 export class MeasureComponent extends Filters implements AfterViewInit {
   selectedYear: number;

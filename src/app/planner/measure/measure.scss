@@ -1,0 +1,41 @@
+@import "../../../styles.scss";
+.item{
+  position:relative;
+}
+.search-box{
+  margin-left:5px;
+}
+.search-box:focus-within{
+  transition:0.3s ease-in-out;
+  position:absolute;
+  left:0;
+  top:8px;
+  margin-left:5px;
+}
+.quaters{
+  .box{
+    border:1px solid lightgray;
+    border-radius: 5px;
+    .title{
+      background:lightgray;
+    }
+  }
+  input{
+    border: 0px;
+    border-bottom: 1px solid $primary;
+    width: 50px;
+    text-align: center;
+    transition: 0.3s ease-in-out;
+    &:focus-within{
+      border-bottom-color:#4caf50;
+      outline:0px;
+    }
+  }
+}
+tree-view{
+  label{
+    input{
+      margin-right: 10px !important;
+    }
+  }
+}

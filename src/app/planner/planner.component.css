@@ -62,3 +62,10 @@ margin-top:5px;
   display:flex;
   justify-content: space-between;
 }
+
+
+/* /background */
+.background{
+  background:url(http://www.gstatic.com/pantheon/images/marketplace/storefront_header_bg_v3-2x.png);
+}
+/* end of background */

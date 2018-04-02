@@ -251,6 +251,7 @@ $primary:var(--color-primary);
         background:rgba(0, 122, 255, 0.10980392156862745);
     }
 }
+
 .danger-link{
     color:var(--color-danger);
     &:hover{
@@ -262,6 +263,15 @@ $primary:var(--color-primary);
     color:gray;
     &:hover{
         background:rgba(0, 122, 255, 0.10980392156862745);
+    }
+}
+
+button[disabled]{
+    .primary-link,.danger-link,.dull-link{
+        cursor: no-drop;
+        &:hover{
+            background:transparent;
+        }
     }
 }
 /* end of buttons */
