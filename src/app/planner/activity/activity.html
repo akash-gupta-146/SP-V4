@@ -1,190 +1,186 @@
-<div class="container-fluid">
-    <!-- <div fab id="add-btn" (click)="addNewActivity()">
-      <i class="glyphicon glyphicon-plus"></i>
-    </div> -->
-    <div fab id="add-btn" (click)="addNewActivity()">
-      <i class="glyphicon glyphicon-plus"></i>
-    </div>
-  <div class="bg-nav">
-    <div class="form-inline" style="margin-bottom:unset;">
-      <button type="button" class="btn btn-default pull-right margin" id="add-btn" (click)="addNewActivity()" [disabled]="defaultCycle.disable">
-        <i class="glyphicon glyphicon-plus"></i>
-      </button>
+<!-- filter -->
+<div class="filter animate slideInUp">
+    <div class="d-flex">
+      <div class="icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
       <div class="form-group dropdown-st">
-        <label class="control-label">Strategic Plan</label>
-        <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getActivities()" style="width:auto;height: auto;padding: 0px;">
+        <label class="control-label">Current Strategic Plan</label>
+        <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getActivities()" >
           <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
         </select>
       </div>
     </div>
   </div>
+  <!-- end of filter     -->
 
-  <!-- new code for form -->
-  <div class="block" id="add-plan" style="display:none">
-    <div class="block-border">
-      <div class="block-content">
-        <h1 *ngIf="!isUpdating;else editKpi">
-          ADD ACTIVITY
-        </h1>
-        <ng-template #editKpi>
-          <h1>EDIT ACTIVITY</h1>
-        </ng-template>
-        <div class="block-header">
-          <button type="button" class="close" aria-label="Close" data-toggle="tooltip" data-placement="auto" (click)="reset()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 style="margin-top:40px;">
-            The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable
-            English.
-          </h4>
-        </div>
-        <form [formGroup]="activityForm" (submit)="submitActivity()">
-          <div class="card-header">
-            <button type="button" class="close" (click)="closeForm();">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 *ngIf="!isUpdating;else editKpi">ADD ACTIVITY</h4>
+<!-- data fidder -->
+<div class="container card data-fidder animate slideInDown" style="display:none" id="add-activity">
+    <div class="small-fidder">
+      <div class="modal-header">
+          <h5 *ngIf="!isUpdating;else editKpi">
+              Add activity
+            </h5>
             <ng-template #editKpi>
-              <h4>EDIT ACTIVITY</h4>
+              <h5>Edit activity</h5>
             </ng-template>
-          </div>
-          <div class="card-body">
+        <button type="button" class="close" (click)="closeForm();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="activityForm" (submit)="submitActivity()">
+        <div class="modal-body">
             <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="year">Plan Year:</label>
-                  <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
-                    <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
-                  </select>
+                <div class="col-sm-12 col-lg-4 col-md-12">
+                  <div class="form-group">
+                    <label for="year">Plan Year:</label>
+                    <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
+                      <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-lg-4 col-md-12">
+                  <div class="form-group">
+                    <label for="sel1">Goal:</label>
+                    <select class="form-control" id="sel1" formControlName="objectiveId" (ngModelChange)="getInitiative($event)">
+                      <option *ngFor="let objective of objectives;let i=index;" [value]="objective.goalId">{{i+1}}.{{objective.goal}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-lg-4 col-md-12">
+                  <div class="form-group">
+                    <label for="sel1">Initiative:</label>
+                    <select class="form-control" id="sel1" formControlName="initiativeId">
+                      <option *ngFor="let initiative of initiatives;let j=index;" [value]="initiative.initiativeId">{{j+1}}.{{initiative.initiative}}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="sel1">Goal:</label>
-                  <select class="form-control" id="sel1" formControlName="objectiveId" (ngModelChange)="getInitiative($event)">
-                    <option *ngFor="let objective of objectives;let i=index;" [value]="objective.goalId">{{i+1}}.{{objective.goal}}</option>
-                  </select>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label>Activity</label>
+                    <textarea class="form-control" rows="3" formControlName="activity"></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="sel1">Initiative:</label>
-                  <select class="form-control" id="sel1" formControlName="initiativeId">
-                    <option *ngFor="let initiative of initiatives;let j=index;" [value]="initiative.initiativeId">{{j+1}}.{{initiative.initiative}}</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label>Activity</label>
-                  <textarea class="form-control" rows="3" formControlName="activity"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-              </div>
-              <div class="col-sm-6">
-                <button type="submit" class="btn btn-default pull-right btn-sub" [disabled]="activityForm.invalid">
-                  SUBMIT
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!-- end of form -->
-
-  <div class="card card-form" id="add-activity" style="display:none">
-
-  </div>
-
-  <div class="grid">
-    <div class="grid-head" style="grid-template-columns:30% 30% 30% 10%">
-      <div class="item">
-        <span class="hide-text">GOAL</span>
-        <form action="" class="search-form">
-          <div class="form-group has-feedback" style="margin-bottom:10px;">
-            <label for="search" class="sr-only">Search</label>
-            <input type="text" class="form-control" name="search" id="search" (keyup)="searchGoal($event)" placeholder="GOAL">
-            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-          </div>
-        </form>
-      </div>
-      <div class="item">
-        <span class="hide-text">INITIATIVE</span>
-        <form action="" class="search-form">
-          <div class="form-group has-feedback" style="margin-bottom:10px;">
-            <label for="search" class="sr-only">Search</label>
-            <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)" placeholder="INITIATIVE">
-            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-          </div>
-        </form>
-      </div>
-      <div class="item">
-        <span class="hide-text">ACTIVITY</span>
-        <form action="" class="search-form">
-          <div class="form-group has-feedback" style="margin-bottom:10px;">
-            <label for="search" class="sr-only">Search</label>
-            <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)" placeholder="ACTIVITY">
-            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-          </div>
-        </form>
-      </div>
-      <div class="item">
-        <span class="hide-text">Edit</span>
-      </div>
-    </div>
-    <div class="grid-outer-body" style="grid-template-columns:30% 70%" *ngFor="let goal of goals;let i = index;" >
-      <div class="item" [style.grid-row-end]="goal.initiatives.length + 1" [style.background]="goal.disable?'#f3efef':''">
-        {{goal.goal}}
-      </div>
-      <div class="grid-inner-body" style="grid-template-columns:42.86% 57.14%" *ngFor="let initiate of goal.initiatives;let j=index;" >
-        <div class="item" [style.grid-row-end]="initiate.activities.length + 1" [style.background]="goal.disable||initiate.disable?'#f3efef':''">
-          {{initiate.initiative}}
         </div>
-        <div class="grid-inner-body" style="grid-template-columns:75% 25%;" *ngFor="let activit of initiate.activities;let k=index;" >
-          <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable?'#f3efef':''">{{activit.activity}}</div>
-          <div class="grid-inner-body" style="grid-template-columns:100%;">
-            <div class="item" [style.background]="goal.disable||initiate.disable||activit.disable?'#f3efef':''">
-                <ul class="flex-center">
-                  <li>
-                    <button class="btn-link" (click)="updateActivity(goal,initiate,activit,highlight)"
-                      [disabled]="goal.disable||initiate.disable||activit.disable" [ngClass]="goal.disable||initiate.disable||activit.disable?'icon-mark':'icon-mark2'">
-                      <a scrollTo href="#add-activity" style="cursor:inherit">
-                        <i class="glyphicon glyphicon-edit"></i>
-                      </a>
-                    </button>
-                  </li>
-                  <li>
-                    <button class="btn-link" (click)="deleteActivity(activit.activityId,initiate.activities,k)" [disabled]="goal.disable||initiate.disable||activit.disable" [ngClass]="goal.disable||initiate.disable||activit.disable?'icon-mark':'icon-mark2'">
-                      <i class="glyphicon glyphicon-trash"></i>
-                    </button>
-                  </li>
-                  <li>
-                    <label class="switch">
-                      <input type="checkbox" [checked]="goal.disable||initiate.disable||activit.disable" (change)="disable($event,activit.activityId)">
-                      <span class="slider round"></span>
-                    </label>
-                  </li>
-                </ul>
-            </div>
-          </div>
+        <div class="modal-footer">
+          <button type="reset" class="btn-sp btn-plain">
+            Clear
+          </button>
+          <button type="submit" class="btn-sp btn-primary" [disabled]="activityForm.invalid">
+            Save
+          </button>
         </div>
-      </div>
+      </form>
     </div>
-    <div class="grid-outer-footer" *ngIf="!goals.length">
-      <div class="item">
-          No Data to Display .,.
+  </div>
+  <!-- end of data fidder -->
+
+  <!-- table -->
+<div class="container-fluid mt-3 animate slideInDown">
+    <div class="card">
+      <div class="table-responsive">
+          <div class="grid">
+              <div class="grid-head" style="grid-template-columns:30% 30% 30% 10%">
+                <div class="item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          Goal
+                        </div>
+                        <div class="search-box">
+                          <span>
+                            <i class="fas fa-search"></i>
+                          </span>
+                          <form>
+                            <input name="search" id="search" (keyup)="searchGoal($event)" >
+                          </form>
+                        </div>
+                      </div>
+                </div>
+                <div class="item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            Initiative
+                        </div>
+                        <div class="search-box">
+                          <span>
+                            <i class="fas fa-search"></i>
+                          </span>
+                          <form>
+                            <input name="search" id="search"  (keyup)="searchInitiative($event)">
+                          </form>
+                        </div>
+                      </div>
+                </div>
+                <div class="item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          Activity
+                        </div>
+                        <div class="search-box">
+                          <span>
+                            <i class="fas fa-search"></i>
+                          </span>
+                          <form>
+                            <input name="search" id="search" (keyup)="searchActivity($event)">
+                          </form>
+                        </div>
+                      </div>
+                </div>
+                <div class="item">
+                 Edit
+                </div>
+              </div>
+              <div class="grid-outer-body" style="grid-template-columns:30% 70%" *ngFor="let goal of goals;let i = index;" >
+                <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
+                  {{goal.goal}}
+                </div>
+                <div class="grid-inner-body" style="grid-template-columns:42.86% 57.14%" *ngFor="let initiate of goal.initiatives;let j=index;" >
+                  <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
+                    {{initiate.initiative}}
+                  </div>
+                  <div class="grid-inner-body" style="grid-template-columns:75% 25%;" *ngFor="let activit of initiate.activities;let k=index;" >
+                    <div class="item">{{activit.activity}}</div>
+                    <div class="grid-inner-body" style="grid-template-columns:100%;">
+                      <div class="item" >
+                          <div class="d-flex justify-content-center">
+                           <div>
+                              <button class="btn btn-link" type="button" (click)="updateActivity(goal,initiate,activit,highlight)"
+                              [disabled]="goal.disable||initiate.disable||activit.disable" >
+                                  <i class="fas fa-edit"></i>
+                          </button>
+                           </div>
+                           <div>
+                              <button class="btn btn-link" type="button" [disabled]="goal.disable||initiate.disable||activit.disable" (click)="deleteActivity(activit.activityId,initiate.activities,k)">
+                                  <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            <div class="pt-1 pl-3">
+                                <input type="checkbox" [checked]="goal.disable||initiate.disable||activit.disable" (change)="disable($event,activit.activityId)">
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <!-- No content -->
+        <div no-content *ngIf="!goals.length">
+          Data not available
+        </div>
+        <!-- end of no content -->
       </div>
     </div>
   </div>
-</div>
+  <!-- end of table -->
+
+
+<!-- add new -->
+<div fab class="btn btn-primary" id="add-btn" (click)="addNewActivity()">
+    <i class="fas fa-plus"></i>
+  </div>
+  <!-- end of add new -->
+  
