@@ -12,18 +12,28 @@
         <h4>ADD STRATEGIC PLAN</h4>
       </div>
       <div class="card-body" style="margin-left:15px;">
-        <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters making it look like readable
-          English. </p>
         <div class="row">
-          <div class="col-sm-4">
+          <!-- <div class="col-sm-4">
             <div class="form-group">
               <label for="year">Plan Year:</label>
               <select id="year" name="year" class="form-control" formControlName="planYear">
                 <option value="2018">2018</option>
               </select>
             </div>
+          </div> -->
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="description">Title:</label>
+              <input class="form-control" type="text" id="title" name="title" formControlName="title">
+            </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea class="form-control" id="description" name="description" formControlName="description"></textarea>
+            </div>
+          </div>
+          <div class="col-sm-6">
             <div class="form-group">
               <label for="year">From Year:</label>
               <select id="from-year" name="from-year" class="form-control" formControlName="startYear">
@@ -34,7 +44,7 @@
               </select>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <div class="form-group">
               <label for="year">To Year:</label>
               <select id="to-year" name="to-year" class="form-control" formControlName="endYear">
@@ -43,14 +53,6 @@
                 <option value="2020">2020</option>
                 <option value="2021">2021</option>
               </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="form-group">
-              <label for="description">Description:</label>
-              <textarea class="form-control" id="description" name="description" formControlName="description"></textarea>
             </div>
           </div>
         </div>
@@ -83,7 +85,7 @@
           <th>From Year</th>
           <th>End Year</th>
           <th>Description</th>
-          <th>Enable</th>
+          <th>Active</th>
           <th>Default</th>
           <th>Delete</th>
           <th>Edit</th>
@@ -104,7 +106,7 @@
           <td class="text-center">
             <label style="cursor:pointer;">
               <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)" style="display:none">
-              <span [ngClass]="c.disable||c.defaultCycle?'icon-mark':'icon-mark2'" *ngIf="c.defaultCycle">
+              <span [ngClass]="c.disable?'icon-mark':'icon-mark2'" *ngIf="c.defaultCycle">
                 <i class="glyphicon glyphicon-ok-sign"></i>
               </span>
               <span [ngClass]="c.disable?'icon-mark':'icon-mark2'" *ngIf="!c.defaultCycle">
@@ -115,12 +117,12 @@
             <span style="color:green" *ngIf="c.defaultCycle">*default</span> -->
           </td>
           <td>
-            <button class="btn-link btn-del" (click)="deleteCycle(c.cycleId)" type="button" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
+            <button class="btn-link" (click)="deleteCycle(c.cycleId)" type="button" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
               <i class="glyphicon glyphicon-trash"></i>
             </button>
           </td>
           <td>
-            <button class="btn-link btn-del" type="button" (click)="editCycle(c)" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
+            <button class="btn-link" type="button" (click)="editCycle(c)" [disabled]="c.disable" [ngClass]="c.disable?'icon-mark':'icon-mark2'">
               <i class="glyphicon glyphicon-edit"></i>
             </button>
           </td>

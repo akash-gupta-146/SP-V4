@@ -430,7 +430,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       "frequencyId": [1, [Validators.required]],
       "measureUnitId": ['percentage', [Validators.required]],
       "evidanceFormId": [null, []],
-      "direction": [false, [Validators.required]],
+      "direction": [true, [Validators.required]],
       "approvalRequired": [false, [Validators.required]],
       "remarks": [''],
       "helpText": ['']

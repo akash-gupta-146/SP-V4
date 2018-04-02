@@ -28,8 +28,9 @@ export class PlanComponent {
   initForm() {
     return new FormGroup({
       "universityId": new FormControl(this.ss.getData('org_info').universityId),
+      "title":new FormControl('',[Validators.required]),
       "description": new FormControl('', [Validators.required]),
-      "planYear": new FormControl('', [Validators.required]),
+      "planYear": new FormControl(new Date().getFullYear(), [Validators.required]),
       "startYear": new FormControl('', [Validators.required]),
       "endYear": new FormControl('', [Validators.required])
     });
@@ -89,18 +90,21 @@ export class PlanComponent {
   }
 
   changeStatus(event: any, c: any) {
-    console.log(event);
+    if(c.defaultCycle){
+      alertify.alert("You can not Disable a Default Cycle.");
+      event.target.checked = !event.target.checked;
+    }else
     alertify.confirm("Are you sure you want to do this?", () => {
       if (event.target.checked)
         this.orgService.disableCycle(c.cycleId).subscribe((response: any) => {
-          alertify.success('You disabled the cycle.');
+          alertify.success('You inactive the cycle.');
           this.getCycles();
         }, (error: any) => {
           alertify.error("Something went wrong");
         });
       else
         this.orgService.enableCycle(c.cycleId).subscribe((response: any) => {
-          alertify.success('You enabled the cycle.');
+          alertify.success('You active the cycle.');
           this.getCycles();
         }, (error: any) => {
           alertify.error("Something went wrong");

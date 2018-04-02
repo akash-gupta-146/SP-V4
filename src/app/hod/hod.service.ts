@@ -117,14 +117,20 @@ public getOpiResultByCycleId(cycleId:number){
   .catch(this.handleError);
 }
 
+public getAllOpiResultByCycleId(cycleId:number){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&currentYear=false&currentQuarter=false",this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 public getOpiResultByYear(cycleId:any,year:any){
   return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year,this.parent)
   .map(this.extractData)
   .catch(this.handleError);
 }
 
-public getOpiResultByYearOnly(year:any){
-  return this.http.get(this.baseUrl +"/result?&year="+year+"&currentQuarter=false",this.parent)
+public getOpiAllResultByYear(cycleId:any,year:any){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year+"&currentQuarter=false",this.parent)
   .map(this.extractData)
   .catch(this.handleError);
 }

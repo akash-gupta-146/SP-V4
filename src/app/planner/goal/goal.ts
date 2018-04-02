@@ -142,7 +142,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
 
   disable(event: any, goalId: any) {
     if (event.target.checked)
-      alertify.confirm("Do you Really want to disable this Goal??", () => {
+      alertify.confirm("Do you Really want to Inactive this Goal??", () => {
         this.orgService.disableGoal(goalId).subscribe((response: any) => {
           alertify.success("You disabled the Goal..");
           this.getGoals();
@@ -155,7 +155,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you Really want to enable this Goal??", () => {
+      alertify.confirm("Do you Really want to Active this Goal??", () => {
         this.orgService.enableGoal(goalId).subscribe((response: any) => {
           alertify.success("You enabled the Goal..");
           this.getGoals();
