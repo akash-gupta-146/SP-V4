@@ -1,4 +1,4 @@
-<div class="row" style="padding:15px;">
+
  <table id="accordion" class="table  table-bordered table-edit">
    <thead>
      <tr>
@@ -7,7 +7,7 @@
        <th>Quarter</th>
        <th>Estimated Target Level</th>
        <th>End Date</th>
-       <th></th>
+       <th>More</th>
      </tr>
    </thead>
    <tbody *ngFor="let tdl of department.opiAnnualTargets;let at=index;">
@@ -16,13 +16,15 @@
        <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.estimatedCost}}</td>
      </tr>
      <ng-template let-lev ngFor [ngForOf]="tdl.levels" let-in="index">
-       <tr [style.background]="lev.disable?'lightgray':null">
+       <tr>
          <td>{{lev.quarter}}</td>
          <td>{{lev.estimatedTargetLevel}}</td>
          <td>{{lev.endDate + tdl.year}}</td>
          <td>
-           <button class="btn-link" data-toggle="collapse" [attr.data-target]="'#row-collapse'+d+'d'+at+'q'+in" (click)="collapseOff('#row-collapse'+d+'d'+at+'q'+in,lev)"
-             style="cursor:pointer;">view</button>
+           <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#row-collapse'+d+'d'+at+'q'+in" (click)="collapseOff('#row-collapse'+d+'d'+at+'q'+in,lev)"
+             style="cursor:pointer;">
+             <i class="fas fa-eye"></i>
+            </button>
          </td>
        </tr>
        <ng-container>
@@ -30,35 +32,35 @@
            <td colspan="6">
              <table class="table table-bordered">
                <caption align="top" *ngIf="lev.internshipDetails.length">
-                 <div class="input-group">
-                   <div class="input-group-addon bg-color">Current Cost</div>
-                   <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
-                   <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
-                     <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
-                       <i class="glyphicon glyphicon-pencil"></i>
-                     </button>
-                   </div>
-
-                   <ng-template #savebtn>
-                     <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
-                       <i class="glyphicon glyphicon-floppy-saved"></i>
-                     </button>
-                     <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
-                       <i class="glyphicon glyphicon-remove"></i>
-                     </button>
-                   </ng-template>
-
-                   <div class="pull-right">
-                     <button type="button" class="btn btn-primary btn-save" (click)="lockQuarterResult(lev)" *ngIf="lev.internshipDetails.length"
-                       [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
-                   </div>
-                 </div>
+                  <div class="d-flex justify-content-around align-items-center">
+                      <label class="ml-2" style="width:20%">Current Cost</label>
+                      <input class="form-control ml-2" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
+                      <div class="ml-2">
+                          <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                              <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                              </button>
+                            </div>
+                            <ng-template #savebtn>
+                              <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
+                                 <i class="fas fa-save"></i>
+                              </button>
+                              <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                                 <i class="fas fa-times"></i>
+                              </button>
+                            </ng-template>
+                      </div>
+                      <div class="ml-2">
+                          <button type="button" class="btn btn-primary" (click)="lockQuarterResult(lev)" *ngIf="lev.internshipDetails.length"
+                            [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                        </div>
+                    </div>
                </caption>
                <thead>
                  <tr>
                    <th>Internship Detail</th>
                    <th *ngIf="lev.internshipDetails.length">Evidence
-                     <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.internshipDetails[0];selectedQuarter=lev;"
+                     <button class="float-right btn btn-primary" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.internshipDetails[0];selectedQuarter=lev;"
                        *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button>
                    </th>
                  </tr>
@@ -66,7 +68,7 @@
                <tbody *ngFor="let file of lev.internshipDetails;let f=index;">
                  <tr>
                    <td>
-                     <a [attr.href]="file.internshipFileUrl">File 1</a>
+                     <a [attr.href]="file.internshipFileUrl" class="text-primary link primary-link"><i class="fas fa-file"></i>  File 1</a>
                      <button type="button" class="close" (click)="deleteInternshipFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'"
                        [disabled]="lev.disable">
                        <span aria-hidden="true">&times;</span>
@@ -75,7 +77,7 @@
                    <td>
                      <ul style="list-style: none;padding: 0;">
                        <li *ngFor="let ev of file.evidance;let e=index;">
-                         <a [attr.href]="ev.url">evidence {{e+1}}</a>
+                         <a [attr.href]="ev.url" class="text-primary link primary-link"><i class="fas fa-hand-paper"></i> Evidence {{e+1}}</a>
                          <button type="button" class="close" (click)="deleteInternshipEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'" style="clear:both;">
                            <span aria-hidden="true">&times;</span>
                          </button>
@@ -117,4 +119,3 @@
      </ng-template>
    </tbody>
  </table>
-</div>

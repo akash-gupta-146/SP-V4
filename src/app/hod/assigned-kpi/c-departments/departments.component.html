@@ -1,55 +1,56 @@
-<div class="container-fluid">
-  <div class="panel" *ngIf="data" style="margin-top:50px;" id="first-section">
-    <div class="panel-heading">
-      <h4 class="panel-title ">
-        <a data-toggle="collapse" href="#edit-section">KPI DETAILS</a>
-      </h4>
-    </div>
+<!-- subheader -->
+<div class="subheader">
+  <div class="nav">
+      <button class="btn btn-link" type="button">
+          <i class="fas fa-arrow-left"></i>
+      </button>
+  </div>
+  <div class="title">
+      KPI DETAILS
+  </div>
+</div>
+<!-- end of subheader -->
+
+<!-- text-details box -->
+<div class="text-details">
+  <div class='container'>
+      <div class="row">
+          <div class="col-lg-12">
+              <b>STRATEGIC GOAL</b>
+              <p>
+                  {{data.goal}}
+              </p>
+          </div>
+          <div class="col-lg-12">
+              <b>INITIATIVE</b>
+              <p>
+                  {{data.initiative}}
+              </p>
+          </div>
+          <div class="col-lg-12">
+              <b>ACTIVITY</b>
+              <p>
+                  {{data.activity}}
+              </p>
+          </div>
+          <div class="col-lg-12">
+              <b>OPI</b>
+              <p>
+                  {{data.opi}}
+              </p>
+          </div>
+        </div>
+  </div>
+</div>
+<!-- end text-details box -->
+  <div class="panel" *ngIf="data" id="first-section">
+
     <div class="panel-body">
-      <div class="row">
-        <div class="col-lg-2">
-          <h5>
-            <strong>STRATEGIC GOAL</strong>
-          </h5>
-        </div>
-        <div class="col-lg-10">
-          <h5>{{data.goal}}</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-2">
-          <h5>
-            <strong>INITIATIVE</strong>
-          </h5>
-        </div>
-        <div class="col-lg-10">
-          <h5>{{data.initiative}}</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-2">
-          <h5>
-            <strong>ACTIVITY</strong>
-          </h5>
-        </div>
-        <div class="col-lg-10">
-          <h5>{{data.activity}}</h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-2">
-          <h5>
-            <strong>OPI</strong>
-          </h5>
-        </div>
-        <div class="col-lg-10">
-          <h5> {{data.opi}}</h5>
-        </div>
-      </div>
+
 
       <div class="row">
         <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let report of data.quartersAnnualReport;let rp=index;">
-          <div class="panel" style="border: 1px solid #0000001c;">
+          <div class="panel">
             <div class="panel-body quarter-block">
               <b class="quarter">{{report.quarter}}</b>
               <span class="status">Over all Status</span>
@@ -76,55 +77,77 @@
         </div>
       </div>
 
-      <div class="row mini">
-        <div class="col-lg-4">
-          <h5>
-            <strong>FREQUENCY</strong>
-          </h5>
-          <h5>{{data.frequency}}</h5>
-        </div>
-        <div class="col-lg-4">
-          <h5>
-            <strong>MEASURE UNIT</strong>
-          </h5>
-          <h5>{{data.measureUnit}}</h5>
-        </div>
-        <div class="col-lg-4">
-          <h5>
-            <strong>EVIDENCE FORM TYPE</strong>
-          </h5>
-          <h5> {{data.evidanceForm}}
-            <p *ngIf="!data.evidanceForm">None</p>
-          </h5>
+      <div class="container cards-area">
+        <div class="row m-3">
+          <div class="col-lg-4">
+            <div class="card m-10 p-3">
+              <i class="fas fa-chart-bar"></i>
+              <b>Frequency</b>
+              <p>{{data.frequency}}</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card m-10 p-3">
+                <i class="fas fa-balance-scale"></i>
+              <b>MEASURE UNIT</b>
+              <p>{{data.measureUnit}}</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card m-10 p-3">
+                <i class="fas fa-eye"></i>
+              <b>EVIDENCE FORM TYPE</b>
+              <p>{{data.evidanceForm}}</p>
+              <p *ngIf="!data.evidanceForm">None</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <br>
-      <div class="form-group">
-        <label class="col-sm-6 col-md-6 col-lg-3">Corresponding Departments : </label>
-        <div class="col-sm-6 col-md-6 col-lg-9">
-          <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="department">
+
+<!-- filter -->
+<div class="filter animate slideInUp">
+    <div class="d-flex">
+      <div class="icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="form-group dropdown-st">
+        <label class="control-label">Corresponding Departments</label>
+        <select id="year" name="year" class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="department">
             <option value="0">All Departments</option>
             <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
-          </select>
-        </div>
+        </select>
       </div>
-      <br>
-      <div id="accordion">
-        <fieldset class="the-fieldset panel" *ngFor="let dept of departmentInfo;let d=index;">
-          <legend class="the-legend" data-parent="#accordion" [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
+    </div>
+  </div>
+  <!-- end of filter     -->
 
-          <div [attr.id]="'demo' + dept.departmentId" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
-            <div style="position: absolute;top: -45px;right: 10px;">
-              <a class="btn btn-save" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">Quarters</a>
-              <ng-template #quarterView>
-                <a class="btn btn-save" (click)="getActionSteps(dept)" *ngIf="!dept.actionStepView">Action Steps</a>
-                <a class="btn btn-save" (click)="getAnnualTargetsByOpiDepartment(dept)" *ngIf="!dept.show; else currentBtn">All Quarters</a>
-              </ng-template>
-              <ng-template #currentBtn>
-                <a class="btn btn-save" (click)="getCurrentAnnualTargets(dept)">Current Quarter</a>
-              </ng-template>
-            </div>
+      <div class="container table-accordion" id="accordion">
+        <fieldset class="the-fieldset panel card" *ngFor="let dept of departmentInfo;let d=index;">
+          <div class="card-header" >
+              <div data-parent="#accordion" [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">{{d+1}}. {{dept.department}}</div>
+          </div>
+
+          <div [attr.id]="'demo' + dept.departmentId" class="collapse" [ngClass]="d?'':'in'">
+              <div class="d-flex flex-row-reverse innerbuttons">
+                <div>
+                    <button class="btn-sp btn-sp-small btn-primary" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">QUARTERS</button>
+                </div>
+                <div>
+                    <ng-template #quarterView>
+                        <button class="btn-sp btn-sp-small btn-primary" (click)="getActionSteps(dept)" *ngIf="!dept.actionStepView" >ACTION STEPS</button>
+                        <button class="btn btn-sp-small btn-primary" (click)="getAnnualTargetsByOpiDepartment(dept)" *ngIf="!dept.show; else currentBtn" >ALL QUARTERS</button>
+                      </ng-template>
+                </div>
+                <div>
+                    <ng-template #currentBtn>
+                        <button class="btn-sp btn-sp-small btn-primary" (click)="getCurrentAnnualTargets(dept)">CURRENT QUARTERS</button>
+                      </ng-template>
+                </div>
+                  
+
+                 
+              </div>
             <div *ngIf="!dept.actionStepView">
               <without-evidence-form [department]="dept" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)"> </without-evidence-form>
               <student-internship [department]="dept" [d]="d"  *ngIf="data.evidanceFormId==1" (changeSelected)="passQuarter($event)"></student-internship>
@@ -136,7 +159,7 @@
               <research-consultancy [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==7"></research-consultancy>
               <student-research [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==8"></student-research>
             </div>
-            <div class="row" *ngIf="dept.actionStepView" style="padding:15px;">
+            <div *ngIf="dept.actionStepView">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <div class="panel-title">
@@ -249,7 +272,6 @@
       </div>
     </div>
   </div>
-</div>
 
 <!-- Evidence Form-->
 <div class="modal fade" id="evidenceForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

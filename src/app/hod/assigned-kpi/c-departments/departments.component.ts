@@ -7,6 +7,7 @@ import * as _ from 'underscore';
 import { HodService } from '../../hod.service';
 import { LoaderService } from '../../../shared/loader.service';
 import { StorageService } from '../../../shared/storage.service';
+import {Location} from '@angular/common';
 declare let $: any;
 
 @Component({

@@ -67,7 +67,15 @@ $primary:var(--color-primary);
 /* end of animation */
 
 /* cards */
-
+.cards-area{
+  .card{
+    height:100%;
+    svg{
+      font-size: 35px;
+      color: #4285f4;
+    }
+  }
+}
 .card {
   background: white;
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 3px 3px -2px rgba(0, 0, 0, .12);
@@ -100,8 +108,6 @@ $primary:var(--color-primary);
     padding-left: 60px;
   }
   .card-header {
-    background: hotpink;
-    color: white;
     padding: 20px;
     h1,
     h2,
@@ -631,3 +637,45 @@ div[no-content] {
 }
 
 // end of flow-chart-dots
+
+
+// subheader
+.subheader{
+  background:var(--background-color);
+  display:flex;
+  align-items: center;
+  padding: 10px 0;
+    border-bottom: 1px solid lightgray;
+  .nav{
+    button{
+      padding: 10px 30px;
+      cursor:pointer;
+    }
+    svg{
+      font-size: 20px;
+    }
+  }
+  .title{
+    font-size:20px;
+  }
+}
+// end of subheader
+
+
+// details area
+.text-details{
+  background:white;
+  font-size:14px;
+}
+// end of details area
+
+// table-accordion
+
+.table-accordion{
+  .innerbuttons{
+    margin-top:-50px;
+    float:right;
+    margin-right:20px;
+  }
+}
+// end of table-accordion
