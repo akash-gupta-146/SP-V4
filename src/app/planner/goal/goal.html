@@ -184,6 +184,7 @@
                   </form>
                 </div>
               </div>
+<<<<<<< HEAD
 
             </th>
             <th>Disable</th>
@@ -196,6 +197,20 @@
           <tr *ngFor="let goal of goals;let i = index;">
             <td>{{goal.goal}}</td>
             <td>
+=======
+            </form>
+          </th>
+          <th style="text-align:center">Active</th>
+          <th style="text-align:center">Edit</th>
+          <th style="text-align:center">Delete</th>
+        </tr>
+      </thead>
+      <tbody class="body-background">
+        <tr *ngFor="let goal of goals;let i = index;" [style.background]="goal.disable?'#f3efef':'unset'">
+          <td style="vertical-align: middle;">{{goal.goal}}</td>
+          <td>
+            <label class="switch">
+>>>>>>> db7afdecae90ca12181b421d90eb881e15651d77
               <input type="checkbox" [checked]="goal.disable" (change)="disable($event,goal.goalId)">
             </td>
             <td>

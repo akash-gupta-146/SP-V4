@@ -46,6 +46,36 @@
           <h5> {{data.opi}}</h5>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let report of data.quartersAnnualReport;let rp=index;">
+          <div class="panel" style="border: 1px solid #0000001c;">
+            <div class="panel-body quarter-block">
+              <b class="quarter">{{report.quarter}}</b>
+              <span class="status">Over all Status</span>
+              <div class="row">
+                <div class="col-sm-6">
+                  <strong>Estimated Cost </strong>: {{report.estimatedCost}}
+                </div>
+                <div class="col-sm-6">
+                  <strong>Estimated Target </strong>: {{report.estimatedTargetLevel}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <strong>Current Cost </strong>:
+                  <span>{{report.currentCost}}</span>
+                </div>
+                <div class="col-sm-6">
+                  <strong>Achievement</strong>:
+                  <span>{{report.currentTargetLevel}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row mini">
         <div class="col-lg-4">
           <h5>

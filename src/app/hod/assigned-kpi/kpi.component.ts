@@ -29,7 +29,7 @@ export class KPIComponent extends Filters {
     private storage: StorageService) {
     super();
     this.role = this.storage.getData('user_roleInfo')[0].role;
-    this.getOpi();
+    // this.getOpi();
     this.getCycles();
     this.getFrequencies();
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
@@ -51,10 +51,12 @@ export class KPIComponent extends Filters {
       else
         this.cycles = response;
       this.cycles.forEach(element => {
-        if (element.defaultCycle)
+        if (element.defaultCycle){
           this.defaultCycle = element;
+          this.getOpiResultByQuarter(this.selectedQuarter);
+          }
       });
-    })
+    });
   }
 
   getOpi(): any {
@@ -133,5 +135,15 @@ export class KPIComponent extends Filters {
         this.utServ.goals.next(response);
         this.initFilters(response);
     });
+  }
+
+  reloadOpis(){
+    this.selectedYear = new Date().getFullYear();
+    this.selectedQuarter = "q1";
+    this.getOpiResultByQuarter(this.selectedQuarter);
+  }
+
+  isFuture(y:number){
+    return (y > new Date().getFullYear());
   }
 }

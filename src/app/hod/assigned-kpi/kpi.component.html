@@ -25,7 +25,7 @@
     <div class="form-group dropdown-st">
       <label class="control-label">Plan Year</label>
       <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" [(ngModel)]="selectedYear">
-        <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y">{{y}}</option>
+        <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y"  [disabled]="isFuture(y)">{{y}}</option>
       </select>
     </div>
   </div>
