@@ -9,7 +9,7 @@ declare let $: any;
 @Component({
   selector: 'hod',
   templateUrl: 'hod.component.html',
-  styleUrls: ['hod.component.css']
+  styleUrls: ['hod.component.scss']
 })
 export class HodComponent{
   userDetails: any = {};

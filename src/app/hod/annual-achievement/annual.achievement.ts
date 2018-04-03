@@ -4,7 +4,7 @@ import { HodService } from '../hod.service';
 @Component({
   selector: 'annual-achievement',
   templateUrl: './annual.achievement.html',
-  styleUrls: ['./annual.achievement.css', './../hod.component.css']
+  styleUrls: ['./annual.achievement.css', './../hod.component.scss']
 })
 export class AnnualAchievement {
   organisationInfo: any;

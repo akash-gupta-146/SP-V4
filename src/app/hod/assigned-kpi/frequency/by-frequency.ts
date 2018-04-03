@@ -5,7 +5,7 @@ import { StorageService } from '../../../shared/storage.service';
 @Component({
  selector:'by-frequency',
  templateUrl:'by-frequency.html',
- styleUrls: ['./../../hod.component.css']
+ styleUrls: ['./../../hod.component.scss']
 })
 export class ByFrequency implements AfterViewInit{
   goalsCopy: any[];

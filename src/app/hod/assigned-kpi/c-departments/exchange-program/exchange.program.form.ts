@@ -9,7 +9,7 @@ declare let $:any;
 @Component({
  selector:'exchange-program',
  templateUrl:'exchange.program.form.html',
- styleUrls: ['./../../../hod.component.css'],
+ styleUrls: ['./../../../hod.component.scss'],
 })
 export class ExchangeProgram{
 

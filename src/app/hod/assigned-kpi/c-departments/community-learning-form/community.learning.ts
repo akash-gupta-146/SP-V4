@@ -9,7 +9,7 @@ declare let $:any;
 @Component({
  selector: 'community-learning',
  templateUrl: './community.learning.html',
- styleUrls: ['./../../../hod.component.css'],
+ styleUrls: ['./../../../hod.component.scss'],
 })
 export class CommunityLearningForm {
  @Input() department: any;

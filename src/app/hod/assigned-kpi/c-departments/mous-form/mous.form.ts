@@ -9,7 +9,7 @@ declare let $: any;
 @Component({
  selector: 'mous-form',
  templateUrl: './mous.form.html',
- styleUrls: ['./../../../hod.component.css'],
+ styleUrls: ['./../../../hod.component.scss'],
 })
 export class MousForm {
  @Output() changeSelected: any = new EventEmitter();

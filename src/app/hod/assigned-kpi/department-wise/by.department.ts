@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
  selector:'action-step-by-department',
  templateUrl:'./by.department.html',
- styleUrls: ['./../../hod.component.css']
+ styleUrls: ['./../../hod.component.scss']
 })
 export class ByDepartment{
  role: any;

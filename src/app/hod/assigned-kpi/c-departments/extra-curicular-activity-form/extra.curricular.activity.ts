@@ -7,7 +7,7 @@ import { LoaderService } from '../../../../shared/loader.service';
 @Component({
  selector: 'extra-curricular-activity',
  templateUrl: 'extra.curricular.activity.html',
- styleUrls: ['./../../../hod.component.css'],
+ styleUrls: ['./../../../hod.component.scss'],
 })
 export class ExtraCurricularActivity {
 

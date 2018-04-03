@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'by-kpi',
   templateUrl: './by.kpi.component.html',
-  styleUrls: ['./../../hod.component.css']
+  styleUrls: ['./../../hod.component.scss']
 })
 export class ByKPIComponent {
   departments: any[];

@@ -12,7 +12,7 @@ declare let $: any;
 @Component({
   selector: 'c-dept',
   templateUrl: './departments.component.html',
-  styleUrls: ['./../../hod.component.css'],
+  styleUrls: ['./../../hod.component.scss'],
   //  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorDepartmentsComponent implements AfterViewInit {

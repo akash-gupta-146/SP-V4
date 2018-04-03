@@ -11,7 +11,7 @@ declare let $: any;
 @Component({
   selector: 'dept',
   templateUrl: './departments.component.html',
-  styleUrls: ['./../../hod.component.css']
+  styleUrls: ['./../../hod.component.scss']
 })
 export class DepartmentsComponent {
   selectedDepatrtmentId: any;

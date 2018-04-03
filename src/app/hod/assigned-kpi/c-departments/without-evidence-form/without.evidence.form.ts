@@ -6,7 +6,7 @@ import { HodService } from '../../../hod.service';
 @Component({
  selector: 'without-evidence-form',
  templateUrl: './without.evidence.form.html',
- styleUrls: ['./../../../hod.component.css'],
+ styleUrls: ['./../../../hod.component.scss'],
 })
 export class WithoutEvidenceForm {
  @Output() changeSelected: any = new EventEmitter();

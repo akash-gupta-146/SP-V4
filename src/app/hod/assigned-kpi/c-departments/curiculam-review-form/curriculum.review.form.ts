@@ -9,7 +9,7 @@ declare let $:any;
 @Component({
  selector: 'curriculum-review',
  templateUrl: 'curriculum.review.form.html',
- styleUrls: ['./../../../hod.component.css'],
+ styleUrls: ['./../../../hod.component.scss'],
 })
 export class CurriculumReviewForm {
  selectedQuarter: any;

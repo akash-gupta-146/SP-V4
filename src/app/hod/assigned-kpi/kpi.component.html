@@ -1,157 +1,209 @@
 <div class="filter-modal">
   <router-outlet></router-outlet>
 </div>
-<div class="container-fluid" style="padding-top:25px;">
-  <div class="bg-nav">
-    <div class="form-inline" style="margin-bottom: unset">
-      <button class="btn btn-save pull-right" (click)="getOpi();">
-        <span class="glyphicon glyphicon-refresh"></span>
-        Reload
-      </button>
-      <div class="form-group dropdown-st">
-        <label class="control-label">Strategic Plan</label>
-        <select id="cycle" name="cycle" class="form-control" (ngModelChange)="getOpiResult($event)" style="width:auto;height: auto;padding: 0px;"
-          [(ngModel)]="defaultCycle">
-          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
-        </select>
-      </div>
-      <div class="form-group dropdown-st" *ngIf="defaultCycle">
-        <label class="control-label">Plan Year</label>
-        <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" style="width:auto;height: auto;padding: 0px;"
-          [(ngModel)]="selectedYear">
-          <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y">{{y}}</option>
-        </select>
-      </div>
-      <div class="form-group dropdown-st" *ngIf="defaultCycle">
-        <label class="control-label">Quarter</label>
-        <select id="quarter" name="quarter" class="form-control" (ngModelChange)="getOpiResultByQuarter($event)" style="width:auto;height: auto;padding: 0px;"
-          [(ngModel)]="selectedQuarter">
-          <option value="q1">Q1</option>
-          <option value="q2">Q2</option>
-          <option value="q3">Q3</option>
-          <option value="q4">Q4</option>
-        </select>
-      </div>
+
+<!-- filter -->
+<div class="filter animate slideInUp" id="top">
+  <div class="d-flex ml-5" *ngIf="defaultCycle">
+    <div class="icon">
+      <i class="fab fa-delicious"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Quarter</label>
+      <select id="quarter" name="quarter" class="form-control" (ngModelChange)="getOpiResultByQuarter($event)" [(ngModel)]="selectedQuarter">
+        <option value="q1">Q1</option>
+        <option value="q2">Q2</option>
+        <option value="q3">Q3</option>
+        <option value="q4">Q4</option>
+      </select>
     </div>
   </div>
-  <div class="card table-card">
-    <div class="grid">
-      <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 17% 3% ">
-        <div class="item">
-          <span class="hide-text">GOAL</span>
-          <form action="" class="search-form">
-            <div class="form-group has-feedback" style="margin-bottom:10px;">
-              <label for="search" class="sr-only">Search</label>
-              <input type="text" class="form-control" name="search" id="search" (keyup)="searchGoal($event)" placeholder="GOAL">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+  <div class="d-flex ml-5" *ngIf="defaultCycle">
+    <div class="icon">
+      <i class="fas fa-calendar-alt"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Plan Year</label>
+      <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" [(ngModel)]="selectedYear">
+        <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y">{{y}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="d-flex ">
+    <div class="icon">
+      <i class="fas fa-calendar-check"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Strategic Plan</label>
+      <select id="cycle" name="cycle" class="form-control" (ngModelChange)="getOpiResult($event)" [(ngModel)]="defaultCycle">
+        <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+      </select>
+    </div>
+  </div>
+</div>
+<!-- end of filter -->
+
+<!-- table -->
+<div class="container-fluid mt-3 animate slideInDown">
+  <div class="card">
+    <div class="table-responsive">
+      <div class="grid">
+        <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 17% 3% ">
+          <div class="item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                Goal
+              </div>
+              <div class="ml-2 search-box">
+                <span>
+                  <i class="fas fa-search"></i>
+                </span>
+                <form>
+                  <input type="text" name="search" id="search" (keyup)="searchGoal($event)">
+                </form>
+              </div>
             </div>
-          </form>
-          <select class="form-control" (ngModelChange)="selectGoal($event);initiatives=$event.initiatives" ngModel>
-            <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal">{{goal.goal}}</option>
-          </select>
-        </div>
-        <div class="item">
-          <span class="hide-text">INITIATIVE</span>
-          <form action="" class="search-form">
-            <div class="form-group has-feedback" style="margin-bottom:10px;">
-              <label for="search" class="sr-only">Search</label>
-              <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)" placeholder="INITIATIVE">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-            </div>
-          </form>
-          <select class="form-control" (ngModelChange)="selectInitiative($event);activities=$event.activities" ngModel>
-            <option *ngFor="let initiative of initiatives;let i = index;" [ngValue]="initiative">{{initiative.initiative}}</option>
-          </select>
-        </div>
-        <div class="item">
-          <span class="hide-text">ACTIVITY</span>
-          <form action="" class="search-form">
-            <div class="form-group has-feedback" style="margin-bottom:10px;">
-              <label for="search" class="sr-only">Search</label>
-              <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)" placeholder="ACTIVITY">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-            </div>
-          </form>
-          <select class="form-control" (ngModelChange)="selectActivity($event);opis = $event.opis;" ngModel>
-            <option *ngFor="let activity of activities;let i = index;" [ngValue]="activity">{{activity.activity}}</option>
-          </select>
-        </div>
-        <div class="item">
-          <span class="hide-text">KPI</span>
-          <form action="" class="search-form">
-            <div class="form-group has-feedback" style="margin-bottom:10px;">
-              <label for="search" class="sr-only">Search</label>
-              <input type="text" class="form-control" name="search" id="search" (keyup)="searchOpi($event)" placeholder="KPI">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-            </div>
-          </form>
-          <select class="form-control" (ngModelChange)="selectKpi($event)" ngModel>
-            <option *ngFor="let opi of opis;let i = index;" [ngValue]="opi">{{opi.opi}}</option>
-          </select>
-        </div>
-        <div class="item">
-          <span class="hide-text">Kpi Details</span>
-        </div>
-        <div class="item">
-          <span class="hide-text">Departmentwise Status</span>
-        </div>
-        <div class="item">
-          <span class="hide-text">Edit</span>
-        </div>
-      </div>
-      <div class="grid-outer-body" style="grid-template-columns:16% 84%;" *ngFor="let goal of goals;let i = index;">
-        <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
-          {{goal.goal}}
-        </div>
-        <div class="grid-inner-body" style="grid-template-columns:19.05% 80.95%;" *ngFor="let initiate of goal.initiatives;let j=index;">
-          <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
-            {{initiate.initiative}}
+            <select class="custom-select custom-select-sm mt-3" (ngModelChange)="selectGoal($event);initiatives=$event.initiatives" ngModel>
+              <option value="" disabled selected>Select a goal...</option>
+              <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal">{{goal.goal}}</option>
+            </select>
           </div>
-          <div class="grid-inner-body" style="grid-template-columns:23.53% 76.47%;" *ngFor="let activit of initiate.activities;let k=index;">
-            <div class="item" [style.grid-row-end]="activit.opis.length + 1">{{activit.activity}}</div>
-            <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngFor="let msr of activit.opis;let l=index">
-              <div class="item">{{msr.opi}}</div>
-              <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;" [attr.id]="'accordion'+msr.opiId">
-                <div class="item">
-                  <p><strong>Frequency</strong> : {{msr.frequency}}</p>
-                  <p><strong>Evidence Form</strong> : {{msr.evidanceForm}}
-                    <span *ngIf="!msr.evidanceForm">None</span>
-                  <p>
-                  <p><strong>MeasureUnit</strong> : {{msr.measureUnit}}</p>
-                </div>
-                <div class="grid-inner-body" style="grid-template-columns:85% 15%;">
-                  <div class="item" style="padding:0px;">
-                    <div class="panel" style="position:relative">
-                      <div class="panel-heading" [style.background]="msr.successInfo.color">
-                        <h4 class="panel-title">
-                          <b>{{msr.successInfo.difference}}</b>
-                          <a data-toggle="collapse" [attr.data-parent]="'#accordion'+msr.opiId" [attr.href]="'#opi-dept'+msr.opiId">{{msr.successInfo.status}}</a>
-                        </h4>
-                      </div>
-                      <div [attr.id]="'opi-dept'+msr.opiId" class="panel-collapse collapse" style="position: absolute;z-index: 1;width:100%;" [style.border] = "'1px groove ' + msr.successInfo.color">
-                        <ul class="list-group" >
-                          <li class="list-group-item" *ngFor="let dept of msr.departmentInfo;let d = index" style="padding:5px;text-align:left;" [style.border-bottom]="d!=msr.departmentInfo.length-1?'1px solid':'unset'">
-                            <p style="margin-bottom: 5px;">{{dept.department}}</p>
-                            <div [style.background-color]="dept.quarterStatus.successInfo.color" style="padding: 5px;
-                            border-radius: 50%;height: 25px;min-width: 25px;width:auto;
-                            line-height: 1;text-align:center;float:left;" [style.color]="!dept.quarterStatus.successInfo.color">
-                              <b>{{dept.quarterStatus.successInfo.difference}}</b>
-                            </div>
-                            <div style="padding: 2px 0px 0px 30px;">
-                              <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" style="text-transform:uppercase">
-                                {{dept.quarterStatus.status}}
-                                <span style="text-transform: uppercase">({{dept.quarterStatus.role}})</span>
-                              </a>
-                            </div>
-                          </li>
-                        </ul>
+          <div class="item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                Initiative
+              </div>
+              <div class="ml-2 search-box">
+                <span>
+                  <i class="fas fa-search"></i>
+                </span>
+                <form>
+                  <input type="text" class="form-control" name="search" id="search" (keyup)="searchInitiative($event)">
+                </form>
+              </div>
+            </div>
+            <select class="custom-select custom-select-sm mt-3" (ngModelChange)="selectInitiative($event);activities=$event.activities"
+              ngModel>
+              <option value="" disabled selected>Select an initiative...</option>
+              <option *ngFor="let initiative of initiatives;let i = index;" [ngValue]="initiative">{{initiative.initiative}}</option>
+            </select>
+          </div>
+          <div class="item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                Activity
+              </div>
+              <div class="ml-2 search-box">
+                <span>
+                  <i class="fas fa-search"></i>
+                </span>
+                <form>
+                  <input type="text" class="form-control" name="search" id="search" (keyup)="searchActivity($event)">
+                </form>
+              </div>
+            </div>
+            <select class="custom-select custom-select-sm mt-3" (ngModelChange)="selectActivity($event);opis = $event.opis;" ngModel>
+              <option value="" disabled selected>Select an activity...</option>
+              <option *ngFor="let activity of activities;let i = index;" [ngValue]="activity">{{activity.activity}}</option>
+            </select>
+          </div>
+          <div class="item">
+
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                KPI
+              </div>
+              <div class="ml-2 search-box">
+                <span>
+                  <i class="fas fa-search"></i>
+                </span>
+                <form>
+                  <input type="text" class="form-control" name="search" id="search" (keyup)="searchOpi($event)">
+                </form>
+              </div>
+            </div>
+            <select class="custom-select custom-select-sm mt-3" (ngModelChange)="selectKpi($event)" ngModel>
+              <option value="" disabled selected>Select KPI...</option>
+              <option *ngFor="let opi of opis;let i = index;" [ngValue]="opi">{{opi.opi}}</option>
+            </select>
+          </div>
+          <div class="item">
+            <span class="hide-text">Kpi Details</span>
+          </div>
+          <div class="item">
+            <span class="hide-text">Departmentwise Status</span>
+          </div>
+          <div class="item">
+            <span class="hide-text">Edit</span>
+          </div>
+        </div>
+        <div class="grid-outer-body" style="grid-template-columns:16% 84%;" *ngFor="let goal of goals;let i = index;">
+          <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
+            {{goal.goal}}
+          </div>
+          <div class="grid-inner-body" style="grid-template-columns:19.05% 80.95%;" *ngFor="let initiate of goal.initiatives;let j=index;">
+            <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
+              {{initiate.initiative}}
+            </div>
+            <div class="grid-inner-body" style="grid-template-columns:23.53% 76.47%;" *ngFor="let activit of initiate.activities;let k=index;">
+              <div class="item" [style.grid-row-end]="activit.opis.length + 1">{{activit.activity}}</div>
+              <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngFor="let msr of activit.opis;let l=index">
+                <div class="item">{{msr.opi}}</div>
+                <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;" [attr.id]="'accordion'+msr.opiId">
+                  <div class="item">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between ">
+                        <div>Frequency:</div>
+                        <div class="text-right">{{msr.frequency}}
+                          <span *ngIf="!msr.evidanceForm">None</span>
+                        </div>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between ">
+                        <div>Evidence Form:</div>
+                        <div class="text-right">{{msr.evidanceForm}}</div>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between ">
+                        <div>MeasureUnit:</div>
+                        <div class="text-right">{{msr.measureUnit}}</div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="grid-inner-body" style="grid-template-columns:85% 15%;">
+                    <div class="item">
+                      <div class="dropdown-selector">
+                        <span class="highlight-box">
+                          <span [style.background]="msr.successInfo.color"></span>
+                        </span>
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            {{msr.successInfo.difference}}
+                          </div>
+                          <button class="btn-sp-small btn-primary btn-sm dropdown-toggle" data-toggle="collapse" [attr.data-parent]="'#accordion'+msr.opiId"
+                            [attr.href]="'#opi-dept'+msr.opiId">
+                            <a>{{msr.successInfo.status}}</a>
+                          </button>
+                        </div>
+                        <div *ngFor="let dept of msr.departmentInfo;let d = index" [style.border-bottom]="d!=msr.departmentInfo.length-1?'1px solid':'unset'"
+                          [attr.id]="'opi-dept'+msr.opiId" class="panel-collapse collapse box">
+                          <p>{{dept.department}}
+                            <span class="badge badge-primary">{{dept.quarterStatus.successInfo.difference}}</span>
+                          </p>
+                          <p></p>
+                          <a class="text-primary link primary-link float-right" data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;">
+                            {{dept.quarterStatus.status}} by {{dept.quarterStatus.role}}
+                          </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="grid-inner-body">
-                    <div class="item">
-                      <a [routerLink]="'./opis/' + msr.opiId" *ngIf="role!='coordinator'">Edit</a>
-                      <a [routerLink]="'./kpis/'+msr.opiId" *ngIf="role=='coordinator'">Edit</a>
+                    <div class="grid-inner-body">
+                      <div class="item">
+                        <a [routerLink]="'./opis/' + msr.opiId" *ngIf="role!='coordinator'">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a [routerLink]="'./kpis/'+msr.opiId" *ngIf="role=='coordinator'">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -160,39 +212,51 @@
           </div>
         </div>
       </div>
-      <div class="grid-outer-footer" *ngIf="!goals.length">
-        <div class="item">
-          No Data to Display .,.
-        </div>
+      <!-- No content -->
+      <div no-content *ngIf="!goals.length">
+        Data not available
       </div>
+      <!-- end of no content -->
     </div>
   </div>
 </div>
+<!-- end of table -->
 
-
-
+<!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg bar">
     <div class="modal-content" *ngIf="selectedDepartment">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">KPI : {{selectedMeasure.opi}}</h4>
+        <h5 class="modal-title">KPI : {{selectedMeasure.opi}}</h5>
       </div>
       <div class="modal-body">
-        <div customBox>
-          <div line [class]="selectedDepartment.quarterStatus[role]" *ngFor="let role of roles;">
-            <h4>{{role}}</h4>
-          </div>
-        </div>
-        <div id="statu-legend">
-          <ul>
-            <li class="white">None</li>
-            <li class="cyan">Locked</li>
-            <li class="green">Approved</li>
-            <li class="red">Rejected</li>
-          </ul>
-        </div>
+          <div class="flow-chart">
+              <ul>
+                <li [class]="selectedDepartment.quarterStatus[role]" *ngFor="let role of roles;">{{role}}</li>
+                <!-- <li class="active">Coordinator</li>
+                <li class="default">HOD</li>
+                <li class="inprogress">DVC</li>
+                <li class="completed">VC</li>
+                <li class="closed">Chanceller</li> -->
+              </ul>
+            </div>
+            <div class="indicator">
+                <ul>
+                  <li class="null">None</li>
+                  <li class="locked">Locked</li>
+                  <li class="approved">Approved</li>
+                  <li class="rejected">Rejected</li>
+                </ul>
+              </div>
       </div>
     </div>
   </div>
 </div>
+<!-- end of modal -->
+
+<!-- refresh button -->
+<div fab class="btn btn-primary" (click)="getOpi();">
+  <i class="fas fa-sync"></i>
+</div>
+<!-- end of refresh button -->

@@ -4,7 +4,7 @@ import { HodService } from '../hod.service';
 @Component({
  selector:'by-goal',
  templateUrl:'by.goal.html',
- styleUrls: ['./../hod.component.css']
+ styleUrls: ['./../hod.component.scss']
 })
 export class ByGoal{
  goalsCopy: any[];

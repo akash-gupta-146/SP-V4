@@ -8,7 +8,7 @@ declare let $: any;
 @Component({
  selector: 'student-internship',
  templateUrl: './student.internship.html',
- styleUrls: ['./../../../hod.component.css'],
+ styleUrls: ['./../../../hod.component.scss'],
 })
 export class StudentInternshipForm {
  @Input() department: any;

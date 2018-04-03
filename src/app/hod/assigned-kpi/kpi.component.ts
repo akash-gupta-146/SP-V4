@@ -9,7 +9,7 @@ declare let $: any;
 @Component({
   selector: 'assigned-kpi',
   templateUrl: './kpi.component.html',
-  styleUrls: ['./../hod.component.css']
+  styleUrls: ['./../hod.component.scss']
 })
 export class KPIComponent extends Filters {
   selectedQuarter: string = "q1";

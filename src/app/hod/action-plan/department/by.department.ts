@@ -9,7 +9,7 @@ declare let $:any;
 @Component({
  selector: 'by-department',
  templateUrl: './by.department.html',
- styleUrls: ['./../../hod.component.css']
+ styleUrls: ['./../../hod.component.scss']
 })
 export class ActionPlanByDepartment {
  selectedStep: any;

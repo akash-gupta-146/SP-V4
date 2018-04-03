@@ -9,7 +9,7 @@ declare let $: any;
 @Component({
  selector: 'action-plan',
  templateUrl: './action.plan.component.html',
- styleUrls: ['./../hod.component.css']
+ styleUrls: ['./../hod.component.scss']
 })
 export class ActionPlan {
  [x: string]: any;
