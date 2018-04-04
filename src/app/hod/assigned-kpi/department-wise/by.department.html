@@ -1,57 +1,37 @@
+<!-- subheader -->
+<div class="subheader">
+  <div class="nav">
+    <button class="btn btn-link" type="button" routerlink="../">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </div>
+  <div class="title">
+    Achievement by departments
+  </div>
+</div>
+<!-- end of subheader -->
 <!-- filter -->
-<div class="filter animate slideInUp" id="top">
-    <div class="d-flex ml-5" *ngIf="role=='hod'||role=='coordinator'; else heirarchy">
-      <div class="icon">
-        <i class="fas fa-calendar-check"></i>
-      </div>
-      <div class="form-group dropdown-st">
-        <label class="control-label">Departments</label>
-        <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="departmentModel" >
-            <option value="0">All Departments</option>
-            <option *ngFor="let dept of departments;let d = index;" [ngValue]="dept.departmentId">{{dept.department}}</option>
-        </select>  
-      </div>
-    </div>
-
-    <ng-template #heirarchy>
-        <div style="height:50vh;overflow-y: scroll;">
-          <b>Organisation Unit</b>
-          <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="department($event)"></tree-view>
-        </div>
-      </ng-template>
-  </div>
-
+<div class="filter animate slideInUp my-3" id="top">
   <button type="button" class="btn-sp btn-sp-small btn-primary" (click)="goBack()">Apply</button>
-  <!-- end of filter -->
 
-<!-- 
- <div class="panel panel-default content">
-  <div class="panel-heading">
-   <h4 class="panel-title">Selection Section
-     <a class="close" routerLink="../">&times;</a>
-   </h4>
-  </div>
-
-
-  <div class="panel-body">
-   <div class="form-group" *ngIf="role=='hod'||role=='coordinator'; else heirarchy">
-    <label class="col-lg-4">Departments</label>
-    <div class="col-lg-8">
-     <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="departmentModel" >
-      <option value="0">All Departments</option>
-      <option *ngFor="let dept of departments;let d = index;" [ngValue]="dept.departmentId">{{dept.department}}</option>
-     </select>     
+  <div class="d-flex mr-5" *ngIf="role=='hod'||role=='coordinator'; else heirarchy">
+    <div class="icon">
+      <i class="fas fa-calendar-check"></i>
     </div>
-   </div>
-   
-   <ng-template #heirarchy>
-     <div style="height:50vh;overflow-y: scroll;">
-       <b>Organisation Unit</b>
-       <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="department($event)"></tree-view>
-     </div>
-   </ng-template>
+    <div class="form-group dropdown-st" *ngIf="role=='hod'||role=='coordinator'; else heirarchy">
+      <label class="control-label">Departments</label>
+      <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="departmentModel">
+        <option value="0">All Departments</option>
+        <option *ngFor="let dept of departments;let d = index;" [ngValue]="dept.departmentId">{{dept.department}}</option>
+      </select>
+    </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-save" (click)="goBack()">Apply</button>
-  </div>
- </div> -->
+  <ng-template #heirarchy>
+    <div style="height:50vh;overflow-y: scroll;">
+      <b>Organisation Unit</b>
+      <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="department($event)"></tree-view>
+    </div>
+  </ng-template>
+</div>
+
+<!-- end of filter -->

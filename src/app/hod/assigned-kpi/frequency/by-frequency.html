@@ -1,4 +1,4 @@
-<div class="container filter">
+<!-- <div class="container filter">
   <div class="panel panel-default content">
    <div class="panel-heading">
     <div class="panel-title">Selection Section
@@ -33,4 +33,61 @@
     <button type="button" class="btn btn-save" (click)="goBack()">Apply</button>
    </div>
   </div>
- </div>
+ </div> -->
+
+<!-- subheader -->
+<div class="subheader">
+  <div class="nav">
+    <button class="btn btn-link" type="button" routerlink="../">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+  </div>
+  <div class="title">
+    Achievement by quarters
+  </div>
+</div>
+<!-- end of subheader -->
+
+<!-- filter -->
+<div class="filter animate slideInUp my-3">
+  <button type="button" class="btn-sp btn-sp-small btn-clear" routerLink="../">Hide</button>
+  <button type="button" class="btn-sp btn-sp-small btn-primary mr-2" (click)="goBack()">Apply</button>
+  <div class="d-flex mr-3">
+    <div class="icon">
+      <i class="fab fa-delicious"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Quarter</label>
+      <select class="form-control" id="quarter" [(ngModel)]="selectedQuarter">
+        <option *ngFor="let quarter of quarters;let i = index;" [ngValue]="quarter.id">{{quarter.quarter}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="d-flex mr-3">
+    <div class="icon">
+      <i class="fas fa-calendar-plus"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Year</label>
+      <select id="year" name="year" class="form-control" [(ngModel)]="year">
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+      </select>
+    </div>
+  </div>
+  <div class="d-flex mr-3">
+    <div class="icon">
+      <i class="fas fa-chart-bar"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Frequency</label>
+      <select class="form-control" id="frequency" (ngModelChange)="quarters = $event.quarters" [(ngModel)]="selectedFrequency">
+        <option *ngFor="let frequency of frequencies;let i = index;" [ngValue]="frequency">{{frequency.frequency}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<!-- end of filter     -->
