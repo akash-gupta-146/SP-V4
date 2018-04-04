@@ -1,93 +1,33 @@
-<div class="container-fluid">
-  <h2>Achievement By Goal</h2>
-
-  <!-- <table class="table table-bordered">
-   <caption>
-    <div class="form-group">
-      <h4 class="col-lg-2">Select Goal :</h4>
-      <div class="col-lg-10">
-        <select class="form-control" id="goal" (ngModelChange)="getKpiByGoal($event)" ngModel>
-          <option value="0" >All Goals</option>
-          <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal.goalId">{{goal.goal}}</option>
-         </select>
-       </div>
-     </div>
-   </caption>
-   <colgroup>
-    <col width="20%">
-    <col width="20%">
-    <col width="20%">
-    <col width="10%">
-    <col width="10%">
-    <col width="10%">
-    <col width="10%">
-   </colgroup>
-   <thead class="header-background">
-    <tr>
-     <th>Goal</th>
-     <th>Kpi</th>
-     <th>Department</th>
-     <th>Quarter</th>
-     <th>Target</th>
-     <th>Achieved</th>
-     <th>Status</th>
-    </tr>
-   </thead>
-   <tbody *ngFor="let goal of goals;let g = index;">
-    <tr>
-      <td [attr.rowspan]="goal.opis.length + 1">{{goal.goal}}</td>
-    </tr>
-    <ng-container *ngFor="let opi of goal.opis;">
-     <tr>
-      <td>{{opi.opi}}</td>
-      <td colspan="5" style="padding:0px;">
-       <table class="table table-bordered">
-        <colgroup>
-        <col width="33.33%">
-        <col width="16.66%">
-        <col width="16.66%">
-        <col width="16.66%">
-        <col width="16.66%">
-        </colgroup>
-        <ng-container *ngFor="let dept of opi.departmentInfo">
-         <tr>
-          <td [attr.rowspan]="dept.opiAnnualTargets[0].levels.length + 1">{{dept.department}}</td>
-         </tr>
-         <ng-container *ngFor="let level of dept.opiAnnualTargets[0].levels">
-          <tr>
-           <td>{{level.quarter}}</td>
-           <td>{{level.estimatedTargetLevel}}</td>
-           <td>{{level.currentTargetLevel}}</td>
-           <td>
-             <div [style.background-color]="dept.quarterStatus.successInfo.color" style="    padding: 5px;
-             border-radius: 50%;
-             height: 25px;
-             width: 25px;
-             line-height: 1;
-             text-align:center;float:left;"
-             [style.color]="!dept.quarterStatus.successInfo.color"> 
-               <b>{{dept.quarterStatus.successInfo.difference}}</b>
-             </div>
-            <div style="padding-left: 30px;">{{level.quarterStatus.successInfo.target}}</div>
-           </td>
-          </tr>
-         </ng-container>
-        </ng-container>
-       </table>
-      </td>
-     </tr>
-    </ng-container>
-   </tbody>
-  </table> -->
-  <div class="form-group">
-    <h4 class="col-lg-2">Select Goal :</h4>
-    <div class="col-lg-10">
-    <select class="form-control" id="goal" (ngModelChange)="getKpiByGoal($event)" ngModel>
-      <option value="0" >All Goals</option>
-      <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal.goalId">{{goal.goal}}</option>
-      </select>
+<!-- subheader -->
+<div class="subheader">
+    <div class="nav">
+        <button class="btn btn-link" type="button" routerlink="/">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </div>
+    <div class="title">
+        Achievement by goal
     </div>
   </div>
+  <!-- end of subheader -->
+
+  <!-- filter -->
+<div class="filter animate slideInUp">
+    <div class="d-flex">
+      <div class="icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="form-group dropdown-st">
+        <label class="control-label">Corresponding Departments</label>
+        <select class="form-control" id="goal" (ngModelChange)="getKpiByGoal($event)" ngModel>
+            <option value="0">All Departments</option>
+            <option *ngFor="let goal of goalsCopy;let i = index;" [ngValue]="goal.goalId">{{goal.goal}}</option>        </select>
+      </div>
+    </div>
+  </div>
+  <!-- end of filter     -->
+
+<div class="container-fluid">
   <div class="grid">
     <div class="grid-head" style="grid-template-columns:20% 20% 20% 10% 10% 10% 10%">
       <div class="item">Goal</div>
@@ -108,14 +48,10 @@
             <div class="item">{{level.quarter}}</div>
             <div class="item">{{level.estimatedTargetLevel}}</div>
             <div class="item">{{level.estimatedTargetLevel}}</div>
-            <div class="item">
-              <div [style.background-color]="dept.quarterStatus.successInfo.color" style="    padding: 5px;
-              border-radius: 50%;
-              height: 25px;
-              min-width: 25px;width:auto;
-              line-height: 1;
-              text-align:center;float:left;"
-              [style.color]="!dept.quarterStatus.successInfo.color"> 
+            <div class="item d-flex align-items-baseline justify-content-between mr-1">
+             <!-- for colored badges --> <!-- <div class='badge' [style.background-color]="dept.quarterStatus.successInfo.color" [style.color]="!dept.quarterStatus.successInfo.color"> -->
+                  <div class='badge badge-primary'>
+
                 <b>{{dept.quarterStatus.successInfo.difference}}</b>
               </div>
               <div style="padding-left: 30px;">{{level.quarterStatus.successInfo.target}}</div>
