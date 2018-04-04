@@ -641,10 +641,13 @@ div[no-content] {
 
 // subheader
 .subheader{
-  background:var(--background-color);
+  background:var(--color-body);
   display:flex;
   align-items: center;
   padding: 10px 0;
+  position: sticky;
+  top: 55px;
+  z-index: 1;
     border-bottom: 1px solid lightgray;
   .nav{
     button{
@@ -679,3 +682,78 @@ div[no-content] {
   }
 }
 // end of table-accordion
+
+
+// material form
+.material_form {
+  padding: 50px;
+  padding-bottom:0px;
+  .item {
+    position: relative;
+    margin-bottom: 50px;
+    input,
+    textarea {
+      width: 100%;
+      height: 30px;
+      border: 0px;
+      border-bottom: 1px solid lightgray;
+      background: transparent;
+      font-size: 16px;
+      &:focus {
+        outline: 0;
+      }
+    }
+    textarea {
+      height: 90px !important;
+    }
+    label {
+      position: absolute;
+      top: 0px;
+      font-size: 18px;
+      left: 15px;
+      cursor: text;
+      transition: .2s ease-out;
+      color: gray;
+    }
+  }
+  input:focus~label,
+  textarea:focus~label,
+  input:not(:placeholder-shown)~label,
+  textarea:not(:placeholder-shown)~label {
+    font-size: 12px !important;
+    top: -20px !important;
+    color: $primary !important;
+    font-weight: bold;
+  }
+  input:focus,
+  textarea:focus,
+  input:not(:placeholder-shown),
+  textarea:not(:placeholder-shown) {
+    border-bottom-color: $primary !important;
+    font-size: 16px !important;
+  }
+  ::placeholder {
+    color: transparent;
+  }
+  a {
+    padding: 10px 30px;
+    background: $primary;
+    color: white;
+    margin: 0 10px;
+    box-shadow: 0 3px 10px lightgray;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.4s;
+    float: right;
+    &:hover {
+      background: $primary;
+      box-shadow: 0 0px 15px darkgray;
+    }
+    &:active {
+      box-shadow: 0 5px 15px darkgray;
+    }
+  }
+}
+
+
+// end of material form

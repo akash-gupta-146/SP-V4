@@ -43,17 +43,11 @@
   </div>
 </div>
 <!-- end text-details box -->
-  <div class="panel" *ngIf="data" id="first-section">
-
-    <div class="panel-body">
-
-
+  <div *ngIf="data" id="first-section">
       <div class="row">
         <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let report of data.quartersAnnualReport;let rp=index;">
-          <div class="panel">
-            <div class="panel-body quarter-block">
-              <b class="quarter">{{report.quarter}}</b>
-              <span class="status">Over all Status</span>
+              <b>{{report.quarter}}</b>
+              <span >Over all Status</span>
               <div class="row">
                 <div class="col-sm-6">
                   <strong>Estimated Cost </strong>: {{report.estimatedCost}}
@@ -72,8 +66,6 @@
                   <span>{{report.currentTargetLevel}}</span>
                 </div>
               </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -122,31 +114,29 @@
   </div>
   <!-- end of filter     -->
 
-      <div class="container table-accordion" id="accordion">
+      <div class="container table-accordion mb-2" id="accordion">
         <fieldset class="the-fieldset panel card" *ngFor="let dept of departmentInfo;let d=index;">
           <div class="card-header" >
-              <div data-parent="#accordion" [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">{{d+1}}. {{dept.department}}</div>
+              <div data-parent="#accordion" [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">
+                {{d+1}}. {{dept.department}} <i class="fas fa-eye ml-2"></i>
+              </div>
           </div>
-
           <div [attr.id]="'demo' + dept.departmentId" class="collapse" [ngClass]="d?'':'in'">
               <div class="d-flex flex-row-reverse innerbuttons">
                 <div>
-                    <button class="btn-sp btn-sp-small btn-primary" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">QUARTERS</button>
+                    <button class="btn-sp btn-sp-small btn-primary" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">VIEW QUARTERS</button>
                 </div>
                 <div>
                     <ng-template #quarterView>
-                        <button class="btn-sp btn-sp-small btn-primary" (click)="getActionSteps(dept)" *ngIf="!dept.actionStepView" >ACTION STEPS</button>
-                        <button class="btn btn-sp-small btn-primary" (click)="getAnnualTargetsByOpiDepartment(dept)" *ngIf="!dept.show; else currentBtn" >ALL QUARTERS</button>
+                        <button class="btn-sp btn-sp-small btn-primary" (click)="getActionSteps(dept)" *ngIf="!dept.actionStepView" >VIEW ACTION STEPS</button>
+                        <button class="btn btn-sp-small btn-primary" (click)="getAnnualTargetsByOpiDepartment(dept)" *ngIf="!dept.show; else currentBtn" >VIEW ALL QUARTERS</button>
                       </ng-template>
                 </div>
                 <div>
                     <ng-template #currentBtn>
-                        <button class="btn-sp btn-sp-small btn-primary" (click)="getCurrentAnnualTargets(dept)">CURRENT QUARTERS</button>
+                        <button class="btn-sp btn-sp-small btn-primary" (click)="getCurrentAnnualTargets(dept)">VIEW CURRENT QUARTERS</button>
                       </ng-template>
                 </div>
-                  
-
-                 
               </div>
             <div *ngIf="!dept.actionStepView">
               <without-evidence-form [department]="dept" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)"> </without-evidence-form>
@@ -159,32 +149,35 @@
               <research-consultancy [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==7"></research-consultancy>
               <student-research [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==8"></student-research>
             </div>
-            <div *ngIf="dept.actionStepView">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <div class="panel-title">
-                    <span *ngIf="dept.isEdit&&dept.isNew">Edit</span>
+
+            <!-- Action Steps -->
+            <div *ngIf="dept.actionStepView" class="p-3">
+              <div class="card-header d-flex justify-content-between px-2 py-1 mb-2">
+                <div>
+                    <b><span *ngIf="dept.isEdit&&dept.isNew">Edit</span>
                     <span *ngIf="!dept.isEdit&&dept.isNew">Add</span>
-                    Action Step
-                    <button class="pull-right" (click)="addNewActionStep(dept)" *ngIf="!dept.isNew">
-                      <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                    <button class="pull-right" (click)="dept.isNew=!dept.isNew" *ngIf="dept.isNew">
-                      <span class="glyphicon glyphicon-arrow-left"></span>
-                    </button>
-                  </div>
+                    Action Steps
+                  </b>
                 </div>
-                <div class="panel-body" style="position:relative;">
-                  <table class="table table-bordered text-center" *ngIf="!dept.isNew">
+                <div>
+                    <button class="btn btn-link float-right" (click)="addNewActionStep(dept)" *ngIf="!dept.isNew">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                      <button class="btn btn-link float-right" (click)="dept.isNew=!dept.isNew" *ngIf="dept.isNew">
+                        <i class="fas fa-times"></i>
+                      </button>
+                </div>
+              </div>
+                  <table class="table table-striped table-hover" *ngIf="!dept.isNew">
                     <thead>
                       <tr>
-                        <th>*</th>
-                        <th class="text-center">Action</th>
-                        <th class="text-center">Deadline</th>
-                        <th class="text-center">Root Cause</th>
-                        <th class="text-center">Resources</th>
-                        <th class="text-center">Assigned Employees</th>
-                        <th class="text-center">Action</th>
+                        <th>#</th>
+                        <th>Action</th>
+                        <th>Deadline</th>
+                        <th>Root Cause</th>
+                        <th>Resources</th>
+                        <th>Assigned Employees</th>
+                        <th>Edit</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -195,82 +188,82 @@
                         <td>{{step.reason}}</td>
                         <td>{{step.resources}}</td>
                         <td>
-                          <ul style="list-style:none;padding:0px;margin:0px;">
-                            <li *ngFor="let emp of step.employeeAssigned;let i = index;">
+                          <ul class="list-group list-group-flush">
+                            <li  class="list-group-item justify-content-between bg-transparent" *ngFor="let emp of step.employeeAssigned;let i = index;">
                               {{emp.firstName + emp.lastName}}
-                              <i *ngIf="i!=step.employeeAssigned.length-1">,</i>
                             </li>
-                            <li class="divider"></li>
-                            <li>
-                              <button class="myButton btn-link" (click)="showList(step)">Assign</button>
-                            </li>
+                                <a class="text-primary link primary-link float-right" (click)="showList(step)">Assign</a>
                           </ul>
                         </td>
                         <td>
-                          <button class="btn-link" (click)="editActionStep(dept,step)">edit</button>
+                          <button class="btn btn-link" (click)="editActionStep(dept,step)">   
+                            <i class="fas fa-edit"></i>
+                          </button>
                         </td>
                       </tr>
                     </tbody>
-                    <tfoot *ngIf="!actionSteps.length">
-                      <tr>
-                        <th class="text-center" colspan="7">No Action Steps added yet</th>
-                      </tr>
-                    </tfoot>
                   </table>
-                  <form class="form-horizontal" [formGroup]="actionForm" *ngIf="dept.isNew">
-                    <div class="form-group">
-                      <label class="control-label col-sm-2">Description</label>
-                      <div class="col-sm-10">
-                        <textarea class="form-control" formControlName="description"></textarea>
+                        <!-- No content -->
+                        <div no-content  *ngIf="!actionSteps.length">
+                          No action steps available
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label col-sm-2">Reason</label>
-                      <div class="col-sm-10">
-                        <textarea class="form-control" formControlName="reason"></textarea>
+                    <!-- end of no content -->
+                  <form class="material_form" [formGroup]="actionForm" *ngIf="dept.isNew">
+                    <div class="row">
+                      <div class="col-lg-12 col-sm-12">
+                          <div class="item">
+                              <textarea  formControlName="description" placeholder="Add description here"></textarea>
+                              <label>Description</label>
+                            </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label col-sm-2">Resources</label>
-                      <div class="col-sm-10">
-                        <textarea class="form-control" formControlName="resources"></textarea>
+                      <div class="col-lg-12 col-sm-12"> 
+                    <div class="item">
+                        <textarea  formControlName="reason" placeholder="Add reason here"></textarea>
+                        <label>Reason</label>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="control-label col-sm-2">Deadline</label>
-                      <div class="col-sm-10">
-                        <input class="form-control" type="date" formControlName="deadline">
-                      </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="item">
+                                <textarea formControlName="resources" placeholder="Add resource here"></textarea>
+                                <label>Resources</label>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                              <div class="form-group">
+                                  <label>Deadline</label>
+                                    <input class="form-control" type="date" formControlName="deadline">
+                                </div>
+                          </div>
                     </div>
                   </form>
+                  <!-- ASSIGN EMP LIST -->
                   <div class="emp-list">
-                    <div style="position: absolute;left: -30px;">
-                      <button type="button" (click)="hideList()">
-                        <span class="glyphicon glyphicon-remove"></span>
-                      </button>
-                      <br>
-                      <button type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
-                        <span class="glyphicon glyphicon-ok"></span>
-                      </button>
-                    </div>
-                    <select multiple id="toggle-list" [(ngModel)]="employeeIds">
-                      <option *ngFor="let emp of employees;let i = index;" [ngValue]="emp" [selected]="emp.assigned" [disabled]="emp.assigned">{{emp.firstName + emp.lastName}}</option>
-                    </select>
+                  <div class="d-flex justify-content-center mx-5 px-5">
+                      <div>Assign employee</div>
+                      <select class="custom-select custom-select-sm" multiple id="toggle-list" [(ngModel)]="employeeIds">
+                          <option *ngFor="let emp of employees;let i = index;" [ngValue]="emp" [selected]="emp.assigned" [disabled]="emp.assigned">{{emp.firstName + emp.lastName}}</option>
+                      </select>
+                      <div>
+                          <button class="btn btn-link" type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
+                              <i class="fas fa-check-circle"></i>
+                          </button>
+                          <button class="btn btn-link" type="button" (click)="hideList()">
+                              <i class="fas fa-times-circle"></i>
+                          </button>
+                      </div>
                   </div>
+                  <div class='text-center '><small class="text-secondary"><b>Note: </b>Hold ctrl/cmd for multiple selection</small></div>
                 </div>
-                <div class="panel-footer" *ngIf="dept.isNew">
-                  <div class="form-group">
-                    <div class="col-sm-offset-2">
-                      <button type="button" class="btn btn-success" (click)="onSubmit(dept,actionSteps)" [disabled]="actionForm.invalid">Submit</button>
-                    </div>
-                  </div>
+                <!-- END OF ASSIGN EMP LIST -->
+                <div *ngIf="dept.isNew" class=' d-flex justify-content-center mt-2'>
+                    <button class="btn-sp btn-clear mx-1">Clear</button>
+                      <button class="btn-sp btn-primary mx-1" type="button" (click)="onSubmit(dept,actionSteps)" [disabled]="actionForm.invalid">Submit</button>
                 </div>
-              </div>
             </div>
+      <!-- end of action steps -->
           </div>
         </fieldset>
       </div>
-    </div>
   </div>
 
 <!-- Evidence Form-->
@@ -281,7 +274,7 @@
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Attach Evidence</h4>
+        <h5 class="modal-title" id="myModalLabel">Attach Evidence</h5>
       </div>
       <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(data.evidanceFormId)">
         <div class="modal-body">
@@ -299,10 +292,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-default">Submit</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn-sp btn-primary float-right">Submit</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+<!-- end of evidence form -->
