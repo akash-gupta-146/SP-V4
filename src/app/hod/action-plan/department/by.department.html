@@ -1,93 +1,106 @@
-<div class="container-fluid">
-  <h2>Action Step By Departments</h2>
-  <div class="panel-group" id="accordion">
-    <div class="panel panel-default" *ngFor="let data of actionSteps;let s = index;">
-      <div class="panel-heading">
-        <h4 class="panel-title">{{s+1}}. 
-          <a data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+s">
-           {{data.department}}
-          </a>
-        </h4>
-      </div>
+<!-- subheader -->
+<div class="subheader">
+    <div class="nav">
+      <button class="btn btn-link" type="button" routerlink="/">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+    </div>
+    <div class="title">
+      <span *ngIf="!my; else mystep;">Action Step by departments (KPI)</span>
+      <ng-template #mystep>
+        <h2>Span</h2>
+      </ng-template>
+    </div>
+  </div>
+  <!-- end of subheader -->
+
+  <!-- Accordion -->
+<div class="container">
+    <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 p-3">
+      <h6 class="mb-0">
+        <a data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+ s">
+          {{s+1}}. {{data.department}}
+          <i class="float-right fas fa-compress"></i>
+        </a>
+      </h6>
+      <!-- collapse panel for KPI -->
       <div [attr.id]="'collapse'+s" class="panel-collapse collapse" [ngClass]="s?'':'in'">
-        <div class="panel-body">
-          <div [attr.id]="'accordion'+s">
-            <fieldset class="the-fieldset panel" style="position: relative;" *ngFor="let opi of data.opiInfo;let d = index;">
-             <legend class="the-legend" [attr.data-parent]="'#accordion'+s" [attr.data-target]="'#demo' + opi.opiId" data-toggle="collapse">KPI({{d+1}}) {{opi.opi}}</legend>
-             <div [attr.id]="'demo' + opi.opiId" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
-               <div class="row">
-                 <div class="col-lg-2">
-                  <label>Strategic Goal</label>
-                 </div>
-                 <div class="col-lg-10">
-                  {{opi.goal}}
-                 </div>
+  
+        <!-- accordion  -->
+        <div [attr.id]="'accordion'+s" class="mt-2">
+          <fieldset *ngFor="let opi of data.opiInfo;let d = index;">
+            <div [attr.data-parent]="'#accordion'+s" [attr.data-target]="'#demo' + opi.opiId" data-toggle="collapse" class="text-primary card-header p-2">
+              {{d+1}}. {{opi.opi}}
+              <span class="float-right"><i class="fas fa-compress"></i></span>
+            </div>
+            <div [attr.id]="'demo' + opi.opiId" class="collapse" [ngClass]="d?'':'in'">
+            <!-- text-details box -->
+              <div class="text-details">
+                  <div class='container-fluid'>
+                    <div class="row">
+                      <div class="col-lg-4 col-sm-12">
+                        <b>Strategic Goal</b>
+                        <p>
+                            {{opi.goal}}
+                        </p>
+                      </div>
+                      <div class="col-lg-4 col-sm-12">
+                        <b>Initiative</b>
+                        <p>
+                            {{opi.initiative}}
+                        </p>
+                      </div>
+                      <div class="col-lg-4 col-sm-12">
+                        <b>Activity</b>
+                        <p>
+                            {{opi.activity}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="row">
-                 <div class="col-lg-2">
-                  <label>Initiative</label>
-                 </div>
-                 <div class="col-lg-10">
-                  {{opi.initiative}}
-                 </div>
-                </div>
-                <div class="row">
-                 <div class="col-lg-2">
-                  <label>Activity </label>
-                 </div>
-                 <div class="col-lg-10">
-                  {{opi.activity}}
-                 </div>
-                </div>
-              <div class="row" style="padding:15px;">
-               <div class="panel panel-default">
-                <div class="panel-heading">
-                 <div class="panel-title">
-                  Action Steps
-                 </div>
-                </div>
-                <div class="panel-body" style="position:relative;">
-                 <table class="table table-bordered text-center">
+          <!-- end of text-details box -->
+
+                <table class="table table-striped">
                   <thead>
-                   <tr>
-                    <th>*</th>
-                    <th class="text-center">Action</th>
-                    <th class="text-center">Deadline</th>
-                    <th class="text-center">Root Cause</th>
-                    <th class="text-center">Resources</th>
-                    <th class="text-center">Action</th>
-                   </tr>
+                    <tr>
+                      <th>*</th>
+                      <th>Description</th>
+                      <th>Deadline</th>
+                      <th>Root Cause</th>
+                      <th>Resources</th>
+                      <th>Action</th>
+                    </tr>
                   </thead>
                   <tbody>
-                   <tr *ngFor="let step of opi.stepInfo;let s = index;">
+                    <tr *ngFor="let step of opi.stepInfo;let s = index;">
                     <th>{{s+1}}</th>
                     <td>{{step.description}}</td>
                     <td>{{step.deadline}}</td>
                     <td>{{step.reason}}</td>
                     <td>{{step.resources}}</td>
-                    <td><button class="btn-link" (click)="editActionStep(step)" data-toggle="modal" data-target="#myModal">edit</button></td>
-                   </tr>
+                    <td>
+                        <button class="btn btn-link" (click)="editActionStep(step)" data-toggle="modal" data-target="#myModal">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                    </tr>
                   </tbody>
-                  <tfoot *ngIf="!opi.stepInfo.length">
-                   <tr>
-                    <th class="text-center" colspan="6">No Action Steps added yet</th>
-                   </tr>
-                  </tfoot>
-                 </table>
-                </div>
-               </div>
-              </div>
-             </div>
-            </fieldset>
-           </div>
+                </table>
+            </div>
+          </fieldset>
         </div>
+        <!-- accordian end -->
       </div>
+      <!-- end of collapse panel for KPI -->
     </div>
-    <div class="panel text-center" *ngIf="!(actionSteps&&actionSteps.length)">
-      <h4>No Action Steps Assigned yet</h4>
+    <!-- No content -->
+    <div no-content *ngIf="!(actionSteps&&actionSteps.length)">
+        No Action Steps Assigned yet
     </div>
+    <!-- end of no content -->
   </div>
-</div>
+  <!-- end of accordion -->
 
 
 <!-- Modal -->
@@ -98,38 +111,38 @@
     <div class="modal-content" *ngIf="selectedStep">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{selectedStep.description}}</h4>
+        <p class="modal-title">{{selectedStep.description}}</p>
       </div>
       <form class="form-horizontal" [formGroup]="actionForm" (submit)="onSubmit()">
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label col-sm-2">Description</label>
-            <div class="col-sm-10">
+            <div class="col-sm-12">
               <textarea class="form-control" formControlName="description"></textarea>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-2">Reason</label>
-            <div class="col-sm-10">
+            <div class="col-sm-12">
               <textarea class="form-control" formControlName="reason"></textarea>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-2">Resources</label>
-            <div class="col-sm-10">
+            <div class="col-sm-12">
               <textarea class="form-control" formControlName="resources"></textarea>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-2">Deadline</label>
-            <div class="col-sm-10">
+            <div class="col-sm-12">
               <input class="form-control" type="date" formControlName="deadline">
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Submit</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn-sp btn-primary">Submit</button>
+          <button type="button" class="btn-sp btn-clear">Clear</button>
         </div>
       </form>
 
