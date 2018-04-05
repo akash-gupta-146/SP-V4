@@ -83,7 +83,7 @@
           <div class="form-group">
             <label class="control-label col-sm-4">Current Cost:</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost">
+              <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost">
             </div>
           </div>
           <div class="form-group">
@@ -175,7 +175,8 @@
                       <li class="text-center" role="presentation" *ngIf="!learning.evidance.length">None</li>
                       <li role="presentation" class="divider" style="clear: both;"></li>
                       <li class="text-center" role="presentation">
-                        <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectLearning(learning)"> Upload</button>
+                        <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectLearning(learning)"> Upload</button> -->
+                        <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = learning" [disabled]="selectedQuarter.disable">Upload</button>
                       </li>
                     </ul>
                   </div>
@@ -202,3 +203,5 @@
     </div>
   </div>
 </div>
+
+<evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

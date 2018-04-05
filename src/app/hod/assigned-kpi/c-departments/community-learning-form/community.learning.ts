@@ -12,9 +12,13 @@ declare let $:any;
  styleUrls: ['./../../../hod.component.css'],
 })
 export class CommunityLearningForm {
+ formId: any;
  @Input() department: any;
  @Input() d: number;
  @Output() changeSelected: any = new EventEmitter();
+ @Input () set evidanceFormId(id:any){
+  this.formId = id;
+ }
  public communityLearningForm: FormGroup;
  public selectedQuarter:any;
  learningListView:boolean;

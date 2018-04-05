@@ -12,9 +12,13 @@ declare let $: any;
  styleUrls: ['./../../../hod.component.css'],
 })
 export class MousForm {
+ formId: any;
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
  @Input() d: number;
+ @Input () set evidanceFormId(id:any){
+  this.formId = id;
+ }
  constructor(public utServ: HodService, public loaderService: LoaderService) {
 
  }

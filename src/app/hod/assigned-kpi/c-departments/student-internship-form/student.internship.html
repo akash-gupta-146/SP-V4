@@ -28,89 +28,347 @@
        <ng-container>
          <tr [attr.id]="'row-collapse'+d+'d'+at+'q'+in" class="collapse collapse-off">
            <td colspan="6">
-             <table class="table table-bordered">
-               <caption align="top" *ngIf="lev.internshipDetails.length">
-                 <div class="input-group">
-                   <div class="input-group-addon bg-color">Current Cost</div>
-                   <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
-                   <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
-                     <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
-                       <i class="glyphicon glyphicon-pencil"></i>
-                     </button>
-                   </div>
+            <table class="table table-bordered" *ngIf="lev.evidanceFormId==1">
+              <caption align="top" *ngIf="lev.internshipDetails.length">
+                <div class="input-group">
+                  <div class="input-group-addon bg-color">Current Cost</div>
+                  <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
+                  <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                    <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                      <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </div>
 
-                   <ng-template #savebtn>
-                     <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
-                       <i class="glyphicon glyphicon-floppy-saved"></i>
-                     </button>
-                     <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
-                       <i class="glyphicon glyphicon-remove"></i>
-                     </button>
-                   </ng-template>
+                  <ng-template #savebtn>
+                    <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
+                      <i class="glyphicon glyphicon-floppy-saved"></i>
+                    </button>
+                    <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                      <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                  </ng-template>
 
-                   <div class="pull-right">
-                     <button type="button" class="btn btn-primary btn-save" (click)="lockQuarterResult(lev)" *ngIf="lev.internshipDetails.length"
-                       [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
-                   </div>
-                 </div>
-               </caption>
-               <thead>
-                 <tr>
-                   <th>Internship Detail</th>
-                   <th *ngIf="lev.internshipDetails.length">Evidence
-                     <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.internshipDetails[0];selectedQuarter=lev;"
-                       *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button>
-                   </th>
-                 </tr>
-               </thead>
-               <tbody *ngFor="let file of lev.internshipDetails;let f=index;">
-                 <tr>
-                   <td>
-                     <a [attr.href]="file.internshipFileUrl">File 1</a>
-                     <button type="button" class="close" (click)="deleteInternshipFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'"
-                       [disabled]="lev.disable">
-                       <span aria-hidden="true">&times;</span>
-                     </button>
-                   </td>
-                   <td>
-                     <ul style="list-style: none;padding: 0;">
-                       <li *ngFor="let ev of file.evidance;let e=index;">
-                         <a [attr.href]="ev.url">evidence {{e+1}}</a>
-                         <button type="button" class="close" (click)="deleteInternshipEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'" style="clear:both;">
-                           <span aria-hidden="true">&times;</span>
-                         </button>
-                       </li>
-                       <li *ngIf="!file.evidance.length;" style="color:red">No evidence added yet.</li>
-                     </ul>
-                   </td>
-                 </tr>
-               </tbody>
-               <tfoot *ngIf="!lev.internshipDetails.length">
-                 <tr>
-                   <td colspan="2">
-                     <div class="row">
-                       <div class="col-sm-6">
-                         <div class="form-group">
-                           <label>Current Cost :</label>
-                           <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable" style="width:25%">
-                         </div>
-                       </div>
-                       <div class="col-sm-6">
-                         <div class="form-group">
-                           <label for="exampleInputFile">Student Internship File :</label>
-                           <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                             aria-describedby="fileHelp" (change)="getInternshipFile(lev,$event)" [disabled]="lev.disable">
-                           <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
-                         </div>
-                       </div>
-                     </div>
-                     <div class="form-group">
-                       <button type="button" (click)="saveInternshipForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.internshipFile)">Save</button>
-                     </div>
-                   </td>
-                 </tr>
-               </tfoot>
-             </table>
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-save" (click)="lockQuarterResult(lev)" *ngIf="lev.internshipDetails.length"
+                      [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                  </div>
+                </div>
+              </caption>
+              <thead>
+                <tr>
+                  <th>Internship Detail</th>
+                  <th *ngIf="lev.internshipDetails.length">Evidence
+                    <!-- <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.internshipDetails[0];selectedQuarter=lev;"
+                      *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button> -->
+                    <button class="pull-right btn-save" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = lev.internshipDetails[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let file of lev.internshipDetails;let f=index;">
+                <tr>
+                  <td>
+                    <a [attr.href]="file.internshipFileUrl">File 1</a>
+                    <button type="button" class="close" (click)="deleteFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'"
+                      [disabled]="lev.disable">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+                  <td>
+                    <ul style="list-style: none;padding: 0;">
+                      <li *ngFor="let ev of file.evidance;let e=index;">
+                        <a [attr.href]="ev.url">evidence {{e+1}}</a>
+                        <button type="button" class="close" (click)="deleteEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'" style="clear:both;">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </li>
+                      <li *ngIf="!file.evidance.length;" style="color:red">No evidence added yet.</li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="!lev.internshipDetails.length">
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label>Current Cost :</label>
+                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable" style="width:25%">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="exampleInputFile">Student Internship File :</label>
+                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
+                          <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.internshipFile)">Save</button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="table table-bordered" *ngIf="lev.evidanceFormId==9">
+              <caption align="top" *ngIf="lev.professionalDevelopmentActivities.length">
+                <div class="input-group">
+                  <div class="input-group-addon bg-color">Current Cost</div>
+                  <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
+                  <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                    <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                      <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </div>
+            
+                  <ng-template #savebtn>
+                    <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
+                      <i class="glyphicon glyphicon-floppy-saved"></i>
+                    </button>
+                    <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                      <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                  </ng-template>
+            
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-save" (click)="lockQuarterResult(lev)" *ngIf="lev.professionalDevelopmentActivities.length"
+                      [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                  </div>
+                </div>
+              </caption>
+              <thead>
+                <tr>
+                  <th>Professional Development Activity</th>
+                  <th *ngIf="lev.professionalDevelopmentActivities.length">Evidence
+                    <!-- <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.professionalDevelopmentActivities[0];selectedQuarter=lev;"
+                      *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button> -->
+                    <button class="pull-right btn-save" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = lev.professionalDevelopmentActivities[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let file of lev.professionalDevelopmentActivities;let f=index;">
+                <tr>
+                  <td>
+                    <a [attr.href]="file.internshipFileUrl">File 1</a>
+                    <button type="button" class="close" (click)="deleteFile(lev.professionalDevelopmentActivities,file,f)" *ngIf="lev.status!='locked'"
+                      [disabled]="lev.disable">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+                  <td>
+                    <ul style="list-style: none;padding: 0;">
+                      <li *ngFor="let ev of file.evidance;let e=index;">
+                        <a [attr.href]="ev.url">evidence {{e+1}}</a>
+                        <button type="button" class="close" (click)="deleteEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'"
+                          style="clear:both;">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </li>
+                      <li *ngIf="!file.evidance.length;" style="color:red">No evidence added yet.</li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="!lev.professionalDevelopmentActivities.length">
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label>Current Cost :</label>
+                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable" style="width:25%">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="exampleInputFile">File :</label>
+                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
+                          <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="table table-bordered" *ngIf="lev.evidanceFormId==10">
+              <caption align="top" *ngIf="lev.facultyPublications.length">
+                <div class="input-group">
+                  <div class="input-group-addon bg-color">Current Cost</div>
+                  <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
+                  <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                    <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                      <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </div>
+            
+                  <ng-template #savebtn>
+                    <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
+                      <i class="glyphicon glyphicon-floppy-saved"></i>
+                    </button>
+                    <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                      <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                  </ng-template>
+            
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-save" (click)="lockQuarterResult(lev)" *ngIf="lev.facultyPublications.length"
+                      [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                  </div>
+                </div>
+              </caption>
+              <thead>
+                <tr>
+                  <th>Professional Development Activity</th>
+                  <th *ngIf="lev.facultyPublications.length">Evidence
+                    <!-- <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.facultyPublications[0];selectedQuarter=lev;"
+                                    *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button> -->
+                    <button class="pull-right btn-save" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
+                      (click)="selectedForm = lev.facultyPublications[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let file of lev.facultyPublications;let f=index;">
+                <tr>
+                  <td>
+                    <a [attr.href]="file.internshipFileUrl">File 1</a>
+                    <button type="button" class="close" (click)="deleteFile(lev.facultyPublications,file,f)" *ngIf="lev.status!='locked'"
+                      [disabled]="lev.disable">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+                  <td>
+                    <ul style="list-style: none;padding: 0;">
+                      <li *ngFor="let ev of file.evidance;let e=index;">
+                        <a [attr.href]="ev.url">evidence {{e+1}}</a>
+                        <button type="button" class="close" (click)="deleteEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'"
+                          style="clear:both;">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </li>
+                      <li *ngIf="!file.evidance.length;" style="color:red">No evidence added yet.</li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="!lev.facultyPublications.length">
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label>Current Cost :</label>
+                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable" style="width:25%">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="exampleInputFile">File :</label>
+                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
+                          <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+            <table class="table table-bordered" *ngIf="lev.evidanceFormId==11">
+              <caption align="top" *ngIf="lev.studentPublications.length">
+                <div class="input-group">
+                  <div class="input-group-addon bg-color">Current Cost</div>
+                  <input class="form-control" [(ngModel)]="lev.currentCost" style="width:25%" [disabled]="!lev.edit" autofocus>
+                  <div class="pull-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                    <button type="button" class="btn btn-link" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                      <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                  </div>
+            
+                  <ng-template #savebtn>
+                    <button type="button" class="btn btn-link" (click)="updateCurrentCost(lev);">
+                      <i class="glyphicon glyphicon-floppy-saved"></i>
+                    </button>
+                    <button type="button" class="btn btn-link" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                      <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                  </ng-template>
+            
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-save" (click)="lockQuarterResult(lev)" *ngIf="lev.studentPublications.length"
+                      [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                  </div>
+                </div>
+              </caption>
+              <thead>
+                <tr>
+                  <th>Professional Development Activity</th>
+                  <th *ngIf="lev.studentPublications.length">Evidence
+                    <!-- <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.studentPublications[0];selectedQuarter=lev;"
+                                    *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button> -->
+                    <button class="pull-right btn-save" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
+                      (click)="selectedForm = lev.studentPublications[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let file of lev.studentPublications;let f=index;">
+                <tr>
+                  <td>
+                    <a [attr.href]="file.internshipFileUrl">File 1</a>
+                    <button type="button" class="close" (click)="deleteFile(lev.studentPublications,file,f)" *ngIf="lev.status!='locked'"
+                      [disabled]="lev.disable">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+                  <td>
+                    <ul style="list-style: none;padding: 0;">
+                      <li *ngFor="let ev of file.evidance;let e=index;">
+                        <a [attr.href]="ev.url">evidence {{e+1}}</a>
+                        <button type="button" class="close" (click)="deleteEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'"
+                          style="clear:both;">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </li>
+                      <li *ngIf="!file.evidance.length;" style="color:red">No evidence added yet.</li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="!lev.studentPublications.length">
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label>Current Cost :</label>
+                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable" style="width:25%">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="exampleInputFile">File :</label>
+                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                            aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
+                          <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
            </td>
          </tr>
        </ng-container>
@@ -118,3 +376,5 @@
    </tbody>
  </table>
 </div>
+
+<evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" *ngIf="selectedQuarter"></evidence-form>

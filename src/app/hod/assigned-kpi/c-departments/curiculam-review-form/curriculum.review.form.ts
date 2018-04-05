@@ -12,11 +12,15 @@ declare let $:any;
  styleUrls: ['./../../../hod.component.css'],
 })
 export class CurriculumReviewForm {
+ formId: any;
  selectedQuarter: any;
 
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
  @Input() d: number;
+ @Input () set evidanceFormId(id:any){
+  this.formId = id;
+ }
  public curriculumReviewForm:FormGroup
  programListView:boolean;
 

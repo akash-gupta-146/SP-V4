@@ -13,12 +13,16 @@ declare let $:any;
 })
 export class ResearchConsultancy{
 
+ formId: any;
  selectedQuarter: any;
  programListView:boolean;
 
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
  @Input() d: number;
+ @Input () set evidanceFormId(id:any){
+  this.formId = id;
+ }
  public researchConsultancyForm:FormGroup
  constructor(private fb: FormBuilder,public utServ: HodService, public loaderService: LoaderService) {
   this.researchConsultancyForm = this.fb.group({

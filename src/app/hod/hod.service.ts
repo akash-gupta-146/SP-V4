@@ -148,35 +148,35 @@ public saveQuarterResult(data:any){
   .catch(this.handleError);
 }
 
-public saveQuarterWithInternship(quarterId:any,data:any){
+public saveQuarterWithInternship(url:string,quarterId:any,data:any){
   var options = new RequestOptions({
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem('access_token')
     })
   });
-  return this.htttp.post(this.baseUrl + "/quarter/"+quarterId+"/studentInternshipForm",data,options)
+  return this.htttp.post(this.baseUrl + "/level/"+quarterId+url,data,options)
   .map(this.extractData)
   .catch(this.handleError);
 }
 
 updateQuarterResult(quarterId:any,data:any){
-  return this.http.put(this.baseUrl + "/quarter/"+quarterId+ "/result" ,data)
+  return this.http.put(this.baseUrl + "/level/"+quarterId+ "/result" ,data)
   .map(this.extractData)
   .catch(this.handleError);
 }
 lockQuarterResult(quarterId:any,data:any){
-  return this.http.put(this.baseUrl + "/quarter/"+quarterId+"/lock",{})
+  return this.http.put(this.baseUrl + "/level/"+quarterId+"/lock",{})
   .map(this.extractData)
   .catch(this.handleError);
 }
 
-saveEvidence(data:any,quarterId:any){
+saveEvidence(url:string,data:any){
   var options = new RequestOptions({
     headers: new Headers({
       'Authorization': 'Bearer ' + localStorage.getItem('access_token')
     })
   });
-  return this.htttp.post(this.baseUrl + "/quarter/"+quarterId+"/evidance",data,options)
+  return this.htttp.post(this.baseUrl + url +"/evidance",data,options)
   .map(this.extractData)
   .catch(this.handleError);
 }
@@ -192,14 +192,14 @@ saveEvidenceForInternshipFile(data:any,id:any){
   .catch(this.handleError);
 }
 
-deleteInternshipFile(internshipFileId:any){
-  return this.http.delete(this.baseUrl + "/internship/"+ internshipFileId)
+deleteInternshipFile(url:string,internshipFileId:any){
+  return this.http.delete(this.baseUrl + url+ internshipFileId)
   .map(this.extractData)
   .catch(this.handleError)
 }
 
-deleteInternshipEvidence(evidenceId:any){
-  return this.http.delete(this.baseUrl + "/internship/evidance/"+evidenceId)
+deleteInternshipEvidence(url:string,evidenceId:any){
+  return this.http.delete(this.baseUrl + url + "/evidance/"+evidenceId)
   .map(this.extractData)
   .catch(this.handleError)
 }
@@ -234,7 +234,7 @@ deleteEvidence(evidenceId:any){
 }
 
 saveQuarterResultWithMou(quarterId:any,data:any){
-  return this.http.post(this.baseUrl + "/quarter/"+quarterId+"/mous",data)
+  return this.http.post(this.baseUrl + "/level/"+quarterId+"/mous",data)
   .map(this.extractData)
   .catch(this.handleError);
 }

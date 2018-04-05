@@ -11,6 +11,7 @@ import { ExchangeProgram } from './exchange-program/exchange.program.form';
 import { RouterModule } from '@angular/router';
 import { ResearchConsultancy } from './research-consultancy-form/research.consultancy';
 import { StudentResearch } from './student-research-form/student.research.form';
+import { EvidenceForm } from './evidence-form/evidence.form';
 
 @NgModule({
  imports:[SharedModule,RouterModule.forChild([
@@ -19,6 +20,6 @@ import { StudentResearch } from './student-research-form/student.research.form';
    component:CoordinatorDepartmentsComponent
   }
  ])],
- declarations:[CoordinatorDepartmentsComponent,CommunityLearningForm, StudentInternshipForm,MousForm,WithoutEvidenceForm,CurriculumReviewForm,ExtraCurricularActivity,ExchangeProgram,ResearchConsultancy,StudentResearch]
+ declarations:[CoordinatorDepartmentsComponent,CommunityLearningForm, StudentInternshipForm,MousForm,WithoutEvidenceForm,CurriculumReviewForm,ExtraCurricularActivity,ExchangeProgram,ResearchConsultancy,StudentResearch,EvidenceForm]
 })
 export class CoordinatorDepartmentsModule{}
