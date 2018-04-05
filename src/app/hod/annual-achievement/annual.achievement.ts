@@ -8,6 +8,7 @@ import { HodService } from '../hod.service';
 })
 export class AnnualAchievement {
   defaultCycle: any ={};
+  selectedYear:any = new Date().getFullYear();
   cycles: any;
   organisationInfo: any;
   goalsCopy: any[];

@@ -37,15 +37,14 @@
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
                   <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
                     <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
-                    <button type="button" class="close" (click)="deleteEvidence(evidences,ev,e)" [hidden]="lev.status=='locked'">
+                    <button type="button" class="close" (click)="deleteEvidence(lev.evidance,ev,e)" [hidden]="lev.status=='locked'">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </li>
                   <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
                   <li role="presentation" class="divider" style="clear: both;"></li>
                   <li class="text-center" role="presentation">
-                    <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" (click)="selectQuarter(lev)"
-                      [disabled]="lev.disable">Upload</button>
+                    <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedQuarter = lev" [disabled]="lev.disable">Upload</button>
                   </li>
                 </ul>
               </div>
@@ -78,3 +77,5 @@
     </div>
   </div>
 </div>
+
+<evidence-form [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId" *ngIf="selectedQuarter"></evidence-form>

@@ -11,12 +11,16 @@ import { LoaderService } from '../../../../shared/loader.service';
 })
 export class ExtraCurricularActivity {
 
+ formId: any;
  selectedQuarter: any;
  activityListView:boolean;
 
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
  @Input() d: number;
+ @Input () set evidanceFormId(id:any){
+  this.formId = id;
+ }
  public extraCurricularActivityForm: FormGroup
  constructor(private fb: FormBuilder, public utServ: HodService, public loaderService: LoaderService) {
   this.extraCurricularActivityForm = this.fb.group({

@@ -11,23 +11,28 @@ declare let $: any;
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class StudentInternshipForm {
+  formId: any;
+  url: string;
  @Input() department: any;
  @Input() d: number;
  @Output() changeSelected = new EventEmitter();
+ @Input () set evidanceFormId(id:any){
+  this.formId = id;
+ }
  constructor(public utServ: HodService, public loaderService: LoaderService) {
 
  }
 
- getInternshipFile(lev: any, event) {
+ getFile(lev: any, event) {
   console.log(event);
-  lev.internshipFile = event.target.files["0"];
+  lev.file = event.target.files["0"];
  }
 
- saveInternshipForm(lev: any) {
+ saveForm(lev: any) {
   var formData = new FormData();
-  formData.append('internshipFile', lev.internshipFile);
+  formData.append('file', lev.file);
   formData.append('currentCost', lev.currentCost);
-  this.utServ.saveQuarterWithInternship(lev.id, formData).subscribe((response: any) => {
+  this.utServ.saveQuarterWithInternship(this.url, lev.id, formData).subscribe((response: any) => {
    lev.internshipDetails = response.internshipDetails;
    this.changeSelected.emit(lev);
   })
@@ -49,9 +54,9 @@ export class StudentInternshipForm {
   });
 }
 
- deleteInternshipFile(files: any[], file: any, index: any) {
+ deleteFile(files: any[], file: any, index: any) {
   alertify.confirm("Are you sure you want to delete this file", (response: any) => {
-   this.utServ.deleteInternshipFile(file.id).subscribe((response: any) => {
+   this.utServ.deleteInternshipFile(this.url, file.id).subscribe((response: any) => {
     files.splice(index, 1);
    }, (error: any) => {
     alertify.error("Something went wrong ..");
@@ -59,9 +64,9 @@ export class StudentInternshipForm {
   }).setHeader("Confirmation");
  }
 
- deleteInternshipEvidence(evidences: any[], evidence: any, index: any) {
+ deleteEvidence(evidences: any[], evidence: any, index: any) {
   alertify.confirm("Are you sure you want to delete this evidence", (response: any) => {
-   this.utServ.deleteInternshipEvidence(evidence.id).subscribe((response: any) => {
+   this.utServ.deleteInternshipEvidence(this.url,evidence.id).subscribe((response: any) => {
     evidences.splice(index, 1);
     alertify.success("Success");
    }, (error: any) => {
@@ -85,12 +90,28 @@ export class StudentInternshipForm {
   }).setHeader("Confirmation");
 }
 
- collapseOff(element: any, level: any) {
-  this.changeSelected.emit(level);
-  if ($(element).hasClass('in')) {
-   return;
+  collapseOff(element: any, level: any) {
+    switch (level.evidanceFormId) {
+      case 1:
+        this.url = "/internship";
+        break;
+      case 9:
+        this.url = "/professional-development-activity";
+        break;
+      case 10:
+        this.url = "/faculty-publication";
+        break;
+      case 11:
+        this.url = "/student-publication";
+        break;
+      default:
+        break;
+    }
+    this.changeSelected.emit(level);
+    if ($(element).hasClass('in')) {
+      return;
+    }
+    $(element).addClass('in');
+    $(".collapse-off").removeClass('in');
   }
-  $(element).addClass('in');
-  $(".collapse-off").removeClass('in');
- }
 }

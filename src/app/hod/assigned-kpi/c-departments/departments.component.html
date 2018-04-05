@@ -139,15 +139,15 @@
                 </div>
               </div>
             <div *ngIf="!dept.actionStepView">
-              <without-evidence-form [department]="dept" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)"> </without-evidence-form>
-              <student-internship [department]="dept" [d]="d"  *ngIf="data.evidanceFormId==1" (changeSelected)="passQuarter($event)"></student-internship>
-              <mous-form [department]="dept" [d]="d" *ngIf="data.evidanceFormId==2" (changeSelected)="passQuarter($event)"></mous-form>
-              <community-learning [department]="dept" [d]="d" *ngIf="data.evidanceFormId==5" (changeSelected)="passQuarter($event)"></community-learning>
-              <curriculum-review [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==6"></curriculum-review>
-              <exchange-program [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==4"></exchange-program>
-              <extra-curricular-activity [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==3"> </extra-curricular-activity>
-              <research-consultancy [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==7"></research-consultancy>
-              <student-research [department]="dept" [d]="d" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==8"></student-research>
+              <without-evidence-form [department]="dept" [evidanceFormId]="data.evidanceFormId" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)"> </without-evidence-form>
+              <student-internship [department]="dept" [d]="d"  [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==1||data.evidanceFormId==9||data.evidanceFormId==10||data.evidanceFormId==11" (changeSelected)="passQuarter($event)"></student-internship>
+              <mous-form [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==2" (changeSelected)="passQuarter($event)"></mous-form>
+              <community-learning [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==5" (changeSelected)="passQuarter($event)"></community-learning>
+              <curriculum-review [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==6"></curriculum-review>
+              <exchange-program [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==4"></exchange-program>
+              <extra-curricular-activity [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==3"> </extra-curricular-activity>
+              <research-consultancy [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==7"></research-consultancy>
+              <student-research [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==8"></student-research>
             </div>
 
             <!-- Action Steps -->

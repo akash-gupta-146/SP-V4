@@ -9,12 +9,16 @@ import { HodService } from '../../../hod.service';
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class WithoutEvidenceForm {
+ formId: any;
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
  @Input() d: number;
+ @Input () set evidanceFormId(id:any){
+  this.formId = id;
+ }
 
  constructor(public utServ: HodService, public loaderService: LoaderService) {
-
+  console.log("asdf",this.evidanceFormId);
  }
 
  isUpdating: boolean = false;
