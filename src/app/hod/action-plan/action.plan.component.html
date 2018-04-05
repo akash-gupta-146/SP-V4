@@ -1,17 +1,31 @@
+<!-- subheader -->
+<div class="subheader">
+    <div class="nav">
+      <button class="btn btn-link" type="button" routerlink="/">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+    </div>
+    <div class="title">
+        <span *ngIf="!my; else mystep;">All Action Steps</span>
+        <ng-template #mystep>
+            <h2>Span</h2>
+          </ng-template>
+    </div>
+  </div>
+  <!-- end of subheader -->
 <div class="container-fluid">
-  <h2 *ngIf="!my; else mystep;">All Action Steps</h2>
+  <!-- <h2 *ngIf="!my; else mystep;">All Action Steps</h2>
   <ng-template #mystep>
     <h2>My Action Steps</h2>
-  </ng-template>
-  <div class="panel-group" id="accordion">
-    <div class="panel panel-default" *ngFor="let data of actionSteps;let s = index;">
-      <div class="panel-heading">
+  </ng-template> -->
+  <div id="accordion">
+    <div *ngFor="let data of actionSteps;let s = index;">
         <h4 class="panel-title">{{s+1}}. KPI :
           <a data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+ s">{{data.opi}}</a>
         </h4>
-      </div>
       <div [attr.id]="'collapse'+ s" class="panel-collapse collapse" [ngClass]="!s?'in':''">
-        <div class="panel-body">
+
+        <div>
           <div class="row">
             <div class="col-lg-2">
               <label>Strategic Goal</label>
@@ -37,28 +51,28 @@
             </div>
           </div>
           <div [attr.id]="'accordion'+s">
-            <fieldset class="the-fieldset panel" *ngFor="let dept of data.departmentInfo;let d = index;">
-              <legend class="the-legend" [attr.data-parent]="'#accordion'+s" [attr.data-target]="'#demo' + s + d" data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
-              <div [attr.id]="'demo' + s + d" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
-                <div class="row" style="padding:15px;">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <div class="panel-title">
+            <fieldset  *ngFor="let dept of data.departmentInfo;let d = index;">
+              <legend [attr.data-parent]="'#accordion'+s" [attr.data-target]="'#demo' + s + d" data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
+              <div [attr.id]="'demo' + s + d" class="collapse" [ngClass]="d?'':'in'">
+                <div class="row">
+                  <div>
+                    <div>
+                      <div>
                         Action Steps
                       </div>
                     </div>
-                    <div class="panel-body" style="position:relative;">
-                      <table class="table table-bordered text-center">
+                    <div>
+                      <table class="table table-striped">
                         <thead>
                           <tr>
                             <th>*</th>
-                            <th class="text-center">Action</th>
-                            <th class="text-center">Root Cause</th>
-                            <th class="text-center">Resources</th>
-                            <th class="text-center">Deadline</th>
-                            <th class="text-center" *ngIf="!my">Assigned To</th>
-                            <th class="text-center" *ngIf="!my">Edit</th>
-                            <th class="text-center" *ngIf="my">Fill</th>
+                            <th>Action</th>
+                            <th>Root Cause</th>
+                            <th>Resources</th>
+                            <th>Deadline</th>
+                            <th *ngIf="!my">Assigned</th>
+                            <th *ngIf="!my">Edit</th>
+                            <th *ngIf="my">Fill</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -69,19 +83,15 @@
                             <td>{{step.resources}}</td>
                             <td>{{step.deadline}}</td>
                             <td *ngIf="!my">
-                              <ul style="list-style:none;padding:0px;margin:0px;">
-                                <li *ngFor="let emp of step.employeeAssigned;let i = index;">
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-transparent" *ngFor="let emp of step.employeeAssigned;let i = index;">
                                   {{emp.firstName + emp.lastName}}
-                                  <i *ngIf="i!=step.employeeAssigned.length-1">,</i>
                                 </li>
-                                <li class="divider"></li>
-                                <li>
-                                  <button class="myButton btn-link" (click)="showList(step)">Assign</button>
-                                </li>
+                                <a class="text-primary link primary-link float-right" (click)="showList(step)">Assign</a>
                               </ul>
                             </td>
                             <td *ngIf="!my">
-                              <button class="btn-link" (click)="editActionStep(step)" data-toggle="modal" data-target="#myModal">edit</button>
+                              <button class="btn btn-link" (click)="editActionStep(step)" data-toggle="modal" data-target="#myModal"> <i class="fas fa-edit"></i></button>
                             </td>
                             <td *ngIf="my">
                                 <button type="button" class="btn btn-link" data-toggle="modal" data-target="#postActionModal" (click)="selectedStep=step" *ngIf="step.statusLogs&&!step.statusLogs.length">Set Status</button>
@@ -89,26 +99,33 @@
                             </td>
                           </tr>
                         </tbody>
-                        <tfoot *ngIf="!dept.stepInfo.length">
-                          <tr>
-                            <th class="text-center" colspan="7">No Action Steps added yet</th>
-                          </tr>
-                        </tfoot>
+                            <!-- No content -->
+                          <div no-content *ngIf="!dept.stepInfo.length">
+                              Data not available
+                            </div>
+                            <!-- end of no content -->
                       </table>
-                      <div class="emp-list">
-                        <div style="position: absolute;left: -30px;">
-                          <button type="button" (click)="hideList()">
-                            <span class="glyphicon glyphicon-remove"></span>
-                          </button>
-                          <br>
-                          <button type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
-                            <span class="glyphicon glyphicon-ok"></span>
-                          </button>
-                        </div>
-                        <select multiple id="toggle-list" [(ngModel)]="employeeIds">
-                          <option *ngFor="let emp of employees;let i = index;" [ngValue]="emp" [selected]="emp.assigned" [disabled]="emp.assigned">{{emp.firstName + emp.lastName}}</option>
-                        </select>
+
+                  <!-- ASSIGN EMP LIST -->
+                  <div class="emp-list">
+                      <div class="d-flex justify-content-center mx-5 px-5">
+                          <div>Assign employee</div>
+                          <select class="custom-select custom-select-sm" multiple id="toggle-list" [(ngModel)]="employeeIds">
+                              <option *ngFor="let emp of employees;let i = index;" [ngValue]="emp" [selected]="emp.assigned" [disabled]="emp.assigned">{{emp.firstName + emp.lastName}}</option>
+                          </select>
+                          <div>
+                              <button class="btn btn-link" type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
+                                  <i class="fas fa-check-circle"></i>
+                              </button>
+                              <button class="btn btn-link" type="button" (click)="hideList()">
+                                  <i class="fas fa-times-circle"></i>
+                              </button>
+                          </div>
                       </div>
+                      <div class='text-center '><small class="text-secondary"><b>Note: </b>Hold ctrl/cmd for multiple selection</small></div>
+                    </div>
+                    <!-- END OF ASSIGN EMP LIST -->
+
                     </div>
                   </div>
                 </div>
@@ -119,6 +136,16 @@
       </div>
     </div>
     <div class="panel text-center">
+      <!-- No content -->
+      <div no-content *ngIf="my&& !actionSteps.length">
+          No Action Steps Assigned To You
+        </div>
+        <!-- end of no content -->
+         <!-- No content -->
+      <div no-content *ngIf="!my&& !actionSteps.length">
+          No Action Steps are linked
+        </div>
+        <!-- end of no content -->
       <h4 *ngIf="my&& !actionSteps.length">No Action Steps Assigned To You</h4>
       <h4 *ngIf="!my&& !actionSteps.length">No Action Steps are linked</h4>      
     </div>
