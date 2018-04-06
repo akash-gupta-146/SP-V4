@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import * as alertify from 'alertifyjs';
+import * as _ from 'underscore';
 import { LoaderService } from '../../../../shared/loader.service';
 
 declare let $:any;
@@ -13,6 +14,9 @@ declare let $:any;
 })
 export class StudentResearch{
 
+ selectedProgram: any;
+ url: string;
+ isUpdating: boolean;
  formId: any;
  selectedQuarter: any;
  programListView:boolean;
@@ -40,11 +44,22 @@ export class StudentResearch{
 
  submitForm(){
   console.log(this.studentResearchForm.value);
-  this.utServ.postQuarterWithStudentResearch(this.selectedQuarter.id,this.studentResearchForm.value).subscribe((response:any)=>{
-   this.selectedQuarter.studentResearches.push(response.studentResearches[0]);
-   this.selectedQuarter.currentCost += response.currentCost;
-   $("#myModal"+this.d).modal('hide');
-  })
+  if(!this.isUpdating)
+   this.utServ.postQuarterWithStudentResearch(this.selectedQuarter.id,this.studentResearchForm.value).subscribe((response:any)=>{
+    this.selectedQuarter.studentResearches.push(response.studentResearches[0]);
+    this.selectedQuarter.currentCost += response.currentCost;
+    $("#myModal"+this.d).modal('hide');
+   });
+   else{
+    alertify.confirm("Do You want to update it?", (ok: any) => {
+     this.utServ.updateForm(this.url, this.studentResearchForm.value).subscribe((response: any) => {
+      console.log(response);
+      _.extend(this.selectedProgram,this.studentResearchForm.value);
+     }, (error: any) => {
+      console.log(error);
+     });
+    });
+   }
  }
 
  selectQuarter(level: any) {
@@ -94,11 +109,14 @@ export class StudentResearch{
  }
 
  edit(program:any){
+  this.isUpdating = true;
+  this.selectedProgram = program;
+  this.url = "/student-research/"+ program.studentResearchId;
   this.studentResearchForm.patchValue(program);
   this.programListView = false;
  }
 
- resetForm(){
+ resetForm(){ this.isUpdating = false;
   this.studentResearchForm.reset();
  }
 

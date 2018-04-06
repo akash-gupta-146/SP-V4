@@ -58,7 +58,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
         <h4 class="modal-title">Extra Curricular Activity</h4>
       </div>
       <form class="form-horizontal" [formGroup]="extraCurricularActivityForm" (submit)="submitForm()" *ngIf="!activityListView">
@@ -202,7 +202,7 @@
           <button type="button" class="btn btn-default" (click)="activityListView = false;resetForm()">
             <span class="glyphicon glyphicon-plus"></span> Add
           </button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import * as alertify from 'alertifyjs';
+import * as _ from 'underscore';
 import { LoaderService } from '../../../../shared/loader.service';
 
 declare let $:any;
@@ -12,6 +13,9 @@ declare let $:any;
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class CurriculumReviewForm {
+ selectedProgram: any;
+ url: string;
+ isUpdating: boolean;
  formId: any;
  selectedQuarter: any;
 
@@ -36,11 +40,23 @@ export class CurriculumReviewForm {
 
  submitForm(){
   console.log(this.curriculumReviewForm.value);
-  this.utServ.postQuarterWithCurriculumReview(this.selectedQuarter.id,this.curriculumReviewForm.value).subscribe((response:any)=>{
-   this.selectedQuarter.curriculamReview.push(response.curriculamReview[0]);
-   this.selectedQuarter.currentCost += response.currentCost;
-   $("#myModal"+this.d).modal('hide');
-  })
+  if(!this.isUpdating)  
+   this.utServ.postQuarterWithCurriculumReview(this.selectedQuarter.id,this.curriculumReviewForm.value).subscribe((response:any)=>{
+    this.selectedQuarter.curriculamReview.push(response.curriculamReview[0]);
+    this.selectedQuarter.currentCost += response.currentCost;
+    $("#myModal"+this.d).modal('hide');
+   });
+  else {
+   alertify.confirm("Do You want to update it?", (ok: any) => {
+    this.utServ.updateForm(this.url, this.curriculumReviewForm.value).subscribe((response: any) => {
+     console.log(response);
+     _.extend(this.selectedProgram,this.curriculumReviewForm.value);
+     this.programListView = true;
+    }, (error: any) => {
+     console.log(error);
+    });
+   });
+  } 
  }
 
  selectQuarter(level: any) {
@@ -90,11 +106,14 @@ export class CurriculumReviewForm {
  }
 
  edit(program:any){
+  this.selectedProgram = program;
+  this.isUpdating = true;
+  this.url = "/curriculum-review/"+ program.curriculamReviewId;  
   this.curriculumReviewForm.patchValue(program);
   this.programListView = false;
  }
 
- resetForm(){
+ resetForm(){ this.isUpdating = false;
   this.curriculumReviewForm.reset();
  }
 

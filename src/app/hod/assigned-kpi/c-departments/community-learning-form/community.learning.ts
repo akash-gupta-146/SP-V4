@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import { LoaderService } from '../../../../shared/loader.service';
 import * as alertify from 'alertifyjs';
-
+import * as _ from 'underscore';
 declare let $:any;
 
 @Component({
@@ -12,6 +12,8 @@ declare let $:any;
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class CommunityLearningForm {
+ selectedLearning: any;
+ url: any;
  formId: any;
  @Input() department: any;
  @Input() d: number;
@@ -19,9 +21,10 @@ export class CommunityLearningForm {
  @Input () set evidanceFormId(id:any){
   this.formId = id;
  }
- public communityLearningForm: FormGroup;
- public selectedQuarter:any;
+ communityLearningForm: FormGroup;
+ selectedQuarter:any;
  learningListView:boolean;
+ isUpdating:boolean = false;
  constructor(private fb: FormBuilder,public utServ: HodService, public loaderService: LoaderService) {
   this.communityLearningForm = this.fb.group({
    "currentCost": ['',[Validators.required]],
@@ -38,11 +41,23 @@ export class CommunityLearningForm {
 
  submitForm(){
   console.log(this.communityLearningForm.value);
-  this.utServ.postQuarterWithCommunityLearning(this.selectedQuarter.id,this.communityLearningForm.value).subscribe((response:any)=>{
-   this.selectedQuarter.communityLearnings.push(response.communityLearnings[0]);
-   this.selectedQuarter.currentCost += response.currentCost;
-   $("#myModal"+this.d).modal('hide');
-  })
+  if(!this.isUpdating)
+   this.utServ.postQuarterWithCommunityLearning(this.selectedQuarter.id,this.communityLearningForm.value).subscribe((response:any)=>{
+    this.selectedQuarter.communityLearnings.push(response.communityLearnings[0]);
+    this.selectedQuarter.currentCost += response.currentCost;
+    $("#myModal"+this.d).modal('hide');
+   });
+  else {
+   alertify.confirm("Do You want to update it?", (ok: any) => {
+    this.utServ.updateForm(this.url, this.communityLearningForm.value).subscribe((response: any) => {
+     console.log(response);
+     _.extend(this.selectedLearning,this.communityLearningForm.value);
+     this.learningListView = true;
+    }, (error: any) => {
+     console.log(error);
+    });
+   });
+  }   
  }
 
  selectQuarter(level: any) {
@@ -91,11 +106,14 @@ export class CommunityLearningForm {
  }
 
  edit(learning:any){
+  this.selectedLearning = learning;
+  this.isUpdating = true;
   this.communityLearningForm.patchValue(learning);
   this.learningListView = false;
+  this.url = "/community-learning/"+ learning.communityLearningId;
  }
 
- resetForm(){
+ resetForm(){ this.isUpdating = false;
   this.communityLearningForm.reset();
  }
 
