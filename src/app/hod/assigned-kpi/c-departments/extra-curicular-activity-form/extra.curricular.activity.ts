@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import * as alertify from 'alertifyjs';
+import * as _ from 'underscore';
 import { LoaderService } from '../../../../shared/loader.service';
 
 @Component({
@@ -11,6 +12,9 @@ import { LoaderService } from '../../../../shared/loader.service';
 })
 export class ExtraCurricularActivity {
 
+ selectedProgram: any;
+ url: string;
+ isUpdating: boolean;
  formId: any;
  selectedQuarter: any;
  activityListView:boolean;
@@ -37,9 +41,21 @@ export class ExtraCurricularActivity {
 
  submitForm() {
   console.log(this.extraCurricularActivityForm.value);
+  if(!this.isUpdating)
   this.utServ.postQuarterWithExtraCurricularActivity(this.selectedQuarter.id, this.extraCurricularActivityForm.value).subscribe((response: any) => {
    console.log(response);
-  })
+  });
+  else {
+   alertify.confirm("Do You want to update it?", (ok: any) => {
+    this.utServ.updateForm(this.url, this.extraCurricularActivityForm.value).subscribe((response: any) => {
+     console.log(response);
+     _.extend(this.selectedProgram,this.extraCurricularActivityForm.value);
+     this.activityListView = true;
+    }, (error: any) => {
+     console.log(error);
+    });
+   });
+  }
  }
 
  selectQuarter(level: any) {
@@ -89,11 +105,14 @@ export class ExtraCurricularActivity {
  }
 
  edit(program:any){
+  this.isUpdating = true;
+  this.selectedProgram = program;
+  this.url = "/extra-curricular-activity/"+ program.extraCurricularActivityId;
   this.extraCurricularActivityForm.patchValue(program);
   this.activityListView = false;
  }
 
- resetForm(){
+ resetForm(){ this.isUpdating = false;
   this.extraCurricularActivityForm.reset();
  }
 

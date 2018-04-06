@@ -491,6 +491,12 @@ public deleteEvidenceofStudentResearch(id:any){
   .catch(this.handleError);
 }
 
+public updateForm(url:string,data:any){
+  return this.http.put(this.baseUrl + url,data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
  private extractData(res: Response) {
   if (res.status === 204) { return res; }
   let body = res.json();
