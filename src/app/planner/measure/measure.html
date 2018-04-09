@@ -564,18 +564,16 @@
 
   <!-- Modal -->
   <div class="modal fade" id="filterModal" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
 
       <!-- Modal content-->
       <div class="modal-content">
+          <div class="modal-header">
+              <h5>Organisation Unit</h5>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
         <div class="modal-body">
-          <div class="row" style="margin:0px;">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <div style="height:50vh;overflow-y: scroll;">
-            <b>Organisation Unit</b>
             <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="filterDepartment($event)"></tree-view>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-sp btn-primary" (click)="applyFilter()">Apply</button>

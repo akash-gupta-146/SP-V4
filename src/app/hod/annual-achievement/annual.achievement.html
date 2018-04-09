@@ -103,24 +103,6 @@
   <!-- end of filter -->
 
 <div class="container-fluid">
-  <!-- <div class="bg-nav">
-    <div class="form-inline" style="margin-bottom: unset">
-      <div class="form-group dropdown-st">
-        <label class="control-label">Strategic Plan</label>
-        <select id="cycle" name="cycle" class="form-control" (ngModelChange)="getOpiResult($event)" style="width:auto;height: auto;padding: 0px;"
-          [(ngModel)]="defaultCycle">
-          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
-        </select>
-      </div>
-      <div class="form-group dropdown-st" *ngIf="defaultCycle">
-        <label class="control-label">Plan Year</label>
-        <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" style="width:auto;height: auto;padding: 0px;"
-          [(ngModel)]="selectedYear">
-          <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y" [disabled]="isFuture(y)">{{y}}</option>
-        </select>
-      </div>
-    </div>
-  </div> -->
   <div class="panel panel-default" *ngFor="let goal of goals;let i = index;">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -180,6 +162,91 @@
                       data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
 
                     <div [attr.id]="'demo' + dept.departmentId + i + j + k + l" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
+                     
+                               <!-- Quarter Boxes -->
+          <div *ngIf="!data.evidanceFormId">
+              <div class="px-3" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+                <div class="d-flex justify-content-between card-header py-2 mt-2">
+                  <div>
+                    <b>Year:</b> {{tdl.year}}
+                  </div>
+                  <div>
+                    <b>Evidence Form:</b>{{opi.evidanceForm}}
+                    <span *ngIf="!opi.evidanceForm">: None</span>
+                  </div>
+                  <div class="text-right">
+                    <b>BASE LINE :</b>{{dept.baseline}}
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center" >
+                  <div class="d-flex flex-column card-box p-1 m-2" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
+                    <div class="d-flex justify-content-between mt-2 mx-2">
+                        <div>
+                          <small>Quater</small>
+                            <div class="text-uppercase">{{lev.quarter}}</div> 
+                        </div>
+                        <div  class="text-right">
+                          <small>Status (role)</small>
+                            <div class="text-capitalize">{{lev.status}} <br>({{lev.role}})</div>
+                        </div>
+                      </div>
+  
+                    <div class="d-flex justify-content-between mt-2 mx-2">
+                        <div>
+                          <small>Estimated Cost </small>
+                            <div>{{tdl.estimatedCost}}</div> 
+                        </div>
+                        <div class="text-right">
+                            <small>Target </small>
+                              <div> {{lev.estimatedTargetLevel}}</div> 
+                          </div>
+                      </div>
+  
+                      <div class="d-flex justify-content-between mt-2 mx-2">
+                          <div>
+                            <small>End Date </small>
+                              <div>{{lev.endDate + tdl.year}}</div> 
+                          </div>
+                          <div>
+                              <div *ngIf="!data.evidanceFormId">
+                                  <div class="dropdown" *ngIf="lev.evidance&&lev.evidance.length">
+                                    <div>
+                                        <small>Evidence </small>
+                                    </div>
+                                    <a class="btn link dropdown-toggle" id="menu1" data-toggle="dropdown" style="padding: 0px;">files
+                                      <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu">
+                                      <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                                        <a class="btn btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">evidance {{e+1}}</a>
+                                      </li>
+                                      <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+  
+                        <div class="d-flex justify-content-between  mt-2 mx-2">
+                            <div>
+                                <small>Current Cost </small>
+                                  <div>{{lev.currentCost}}</div> 
+                            </div>
+                            <div class="text-right">
+                              <small>
+                                  Achievement
+                              </small>
+                              <div>{{lev.currentTargetLevel}}</div>
+                              </div>
+                          </div>
+                  </div>
+              </div>
+              </div>
+            </div>
+            <!-- end of quarter boxes -->
+                     
+                     
+<!--                      
                       <div class="panel panel-default" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
                         <div class="panel-heading">
                           Year : {{tdl.year}}
@@ -240,7 +307,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </fieldset>
                 </div>

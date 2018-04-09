@@ -1,54 +1,78 @@
-<div class="panel panel-default" *ngFor="let tdl of department.opiAnnualTargets;let at=index;">
-  <div class="panel-heading">
-    Year : {{tdl.year}}
-  </div>
-  <div class="panel-body row">
-    <div class="col-lg-12" style="margin-bottom:5px;">
-      <strong>BASE LINE : </strong> {{department.baseline}}
+<!-- Quarter Boxes -->
+<div>
+  <div class="px-3" *ngFor="let tdl of department.opiAnnualTargets;let at=index;">
+    <div class="d-flex justify-content-between card-header py-2 mt-2">
+      <div>
+        <b>Year:</b> {{tdl.year}}
+      </div>
+      <div class="text-right">
+        <b>BASE LINE :</b>{{department.baseline}}
+      </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let lev of tdl.levels;let in=index;">
-      <div class="panel" style="border: 1px solid #0000001c;">
-        <div class="panel-body quarter-block">
-          <b class="quarter">{{lev.quarter}}</b>
-          <span class="status" [style.background-color]="lev.successInfo.color">{{lev.status}} - {{lev.role}}</span>
-          <div class="row">
-            <div class="col-sm-6">
-              <strong>BASE LINE : </strong> {{lev.baseline}}
-            </div>
+    <div class="d-flex justify-content-center">
+      <div class="d-flex flex-column card-box p-1 m-2" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
+        <div class="d-flex justify-content-between mt-2 mx-2">
+          <div>
+            <small>Quater</small>
+            <div class="text-uppercase">{{lev.quarter}}</div>
           </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
-            </div>
-            <div class="col-sm-6">
-              <strong>Target </strong>: {{lev.estimatedTargetLevel}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <strong>End Date </strong>: {{lev.endDate + tdl.year}}
-            </div>
-            <div class="col-sm-6" *ngIf="lev.currentCost">
-              <strong>Current Cost</strong>: {{lev.currentCost}}
-            </div>
-          </div>
-          <div class="row" *ngIf="lev.status!='unsubmitted'">
-            <div class="col-sm-12">
-              <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);programListView = true;">
-                <strong>Number of Rresearch Consultancy Project</strong>
-              </a> : {{lev.studentResearches.length}}
-            </div>
+          <div class="text-right">
+            <small>Status (role)</small>
+            <div class="text-capitalize">{{lev.status}}
+              <br>({{lev.role}})</div>
           </div>
         </div>
-        <div class="panel-footer text-center" *ngIf="!lev.disable">
-          <button type="button" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">Fill</button>
-          <button *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
+        <div class="d-flex justify-content-between mt-2 mx-2">
+          <div>
+            <small>Baseline</small>
+            <div>{{lev.baseline}}</div>
+          </div>
+          <div class="text-right">
+            <small>Estimated Cost </small>
+            <div>{{tdl.estimatedCost}}</div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-2 mx-2">
+          <div>
+            <small>Target </small>
+            <div> {{lev.estimatedTargetLevel}}</div>
+          </div>
+          <div class="text-right">
+            <small>End Date </small>
+            <div>{{lev.endDate + tdl.year}}</div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between  mt-2 mx-2">
+          <div>
+            <div *ngIf="lev.status!='unsubmitted'">
+              <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);programListView = true;">
+                <!-- <small>Number of Research Consultancy Project</small> -->
+                <small>RCP
+                  <i class="fas fa-eye"></i>
+                </small>
+              </a>
+              <div>{{lev.studentResearches.length}}</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <small>Current Cost </small>
+            <div>{{lev.currentCost}}</div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3" *ngIf="!lev.disable">
+          <button class="btn btn-link" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
+            <i class="fas fa-sign-in-alt"></i> Fill
+          </button>
+          <button class="btn btn-link" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
+            [disabled]="lev.disable">
+            <i class="fas fa-lock"></i> Lock
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
+<!-- end of quarter boxes -->
 
 
 <!-- Modal -->
@@ -62,79 +86,61 @@
         <h4 class="modal-title">Student Research Form</h4>
       </div>
       <form class="form-horizontal" [formGroup]="studentResearchForm" (submit)="submitForm()" *ngIf="!programListView">
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="control-label col-sm-4">Event Title:</label>
-            <div class="col-sm-8">
+        <div class="modal-body row">
+          <div class="form-group col-lg-6 col-sm-12">
+            <label class="control-label">Event Title:</label>
               <input type="text" class="form-control" placeholder="Enter Event Title" formControlName="eventTitle">
-            </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Event Type:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-lg-6 col-sm-12">
+            <label class="control-label">Event Type:</label>
               <select class="form-control" formControlName="eventType">
                 <option value="course">course</option>
                 <option value="workshop">workshop</option>
                 <option value="seminar">seminar</option>
                 <option value="confrence">confrence</option>
               </select>
-            </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Current Cost:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-lg-6 col-sm-12">
+            <label class="control-label">Current Cost:</label>
               <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost">
-            </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Organised By:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-lg-6 col-sm-12">
+            <label class="control-label">Organised By:</label>
               <input type="text" class="form-control" formControlName="organizedBy">
-            </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Start Date:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-lg-6 col-sm-12">
+              <label class="control-label">Scope:</label>
+                <select class="form-control" formControlName="scopeId">
+                  <option value="1">Local</option>
+                  <option value="2">Emirates</option>
+                  <option value="3">UAE</option>
+                  <option value="4">GCC</option>
+                  <option value="5">International</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-6 col-sm-12">
+              <label class="control-label">Number of Student Attended From Our College:</label>
+                <input type="number" class="form-control" formControlName="totalStudentAttendedFromOurCollege">
+            </div>
+          <div class="form-group col-lg-4 col-sm-12">
+            <label class="control-label">Start Date:</label>
               <input type="date" class="form-control" formControlName="startAt">
-            </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">End Date:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-lg-4 col-sm-12">
+            <label class="control-label">End Date:</label>
               <input type="date" class="form-control" formControlName="endAt">
-            </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Location:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-lg-4 col-sm-12">
+            <label class="control-label">Location:</label>
               <input type="text" class="form-control" formControlName="location">
-            </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Scope:</label>
-            <div class="col-sm-8">
-              <select class="form-control" formControlName="scopeId">
-                <option value="1">Local</option>
-                <option value="2">Emirates</option>
-                <option value="3">UAE</option>
-                <option value="4">GCC</option>
-                <option value="5">International</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Number of Student Attended From Our College:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control" formControlName="totalStudentAttendedFromOurCollege">
-            </div>
-          </div>
+
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="programListView = true;">
-            <span class="glyphicon glyphicon-arrow-left"></span> Back
+          <button type="button" class="btn-sp btn-clear" (click)="programListView = true;">
+            Back
           </button>
-          <button type="submit" class="btn btn-default" [disabled]="studentResearchForm.invalid"> Submit</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn-sp btn-primary" [disabled]="studentResearchForm.invalid"> Submit</button>
         </div>
       </form>
       <div *ngIf="programListView">
@@ -150,7 +156,7 @@
             </caption>
             <thead>
               <tr>
-                <th style="vertical-align:middle;">*</th>
+                <th style="vertical-align:middle;">#</th>
                 <th style="vertical-align:middle;">Event</th>
                 <th style="vertical-align:middle;">Event Type</th>
                 <th style="vertical-align:middle;">Start Date</th>
@@ -196,14 +202,12 @@
                     </ul>
                   </div>
                 </td>
-                <span class="option">
-                  <button (click)="edit(research)">
-                    <span class="glyphicon glyphicon-pencil"></span>
+                  <button (click)="edit(research)" class="btn btn-link">
+                      <i class="fas fa-edit"></i>
                   </button>
-                  <button (click)="delete(research,selectedQuarter.studentResearches)">
-                    <span class="glyphicon glyphicon-trash"></span>
+                  <button class="btn btn-link" (click)="delete(research,selectedQuarter.studentResearches)">
+                      <i class="fas fa-trash"></i>
                   </button>
-                </span>
               </tr>
             </tbody>
           </table>
@@ -212,7 +216,7 @@
           <button type="button" class="btn btn-default" (click)="programListView = false;resetForm()">
             <span class="glyphicon glyphicon-plus"></span> Add
           </button>
-          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="isUpdating=false">Close</button>
+          <button type="button" class="btn btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>
     </div>

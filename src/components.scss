@@ -123,6 +123,9 @@ $primary:var(--color-primary);
     padding: 30px;
     margin-left: -1px;
     margin-top: -1px;
+    small{
+      color:gray;
+    }
     h6 {
       color: var(--color-primary);
     }
@@ -345,6 +348,7 @@ button[disabled] {
     .modal-header {
       padding: 0px;
       color: $primary;
+      flex-direction: row;
     }
     .modal-footer {
       padding: 0px;
@@ -754,6 +758,4 @@ div[no-content] {
     }
   }
 }
-
-
 // end of material form
