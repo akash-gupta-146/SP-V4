@@ -1,6 +1,6 @@
 /* navigation loader*/
 
-.loading-outer-overlay{
+/* .loading-outer-overlay{
  height: 100vh;
  width: 100vw;
  display: list-item;
@@ -13,4 +13,32 @@
  left: 50% !important;
  -webkit-transform: translate(-50%,-50%);
  transform: translate(-50%,-50%);
+} */
+
+
+@keyframes yugma-loading{
+	from{
+    	left:-10%;
+    }
+    to{
+    	left:100%;
+    }
+}
+div[yugma-loader]{
+	width:100%;
+    height:5px;
+    background:black;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index: 9999;
+}
+div[yugma-loader] div[color-area]{
+	width:300px;
+    height:5px;
+    background:orange;
+    position:fixed;
+    top:0;
+    animation:yugma-loading ease-in-out 1s;
+    animation-iteration-count: infinite;
 }

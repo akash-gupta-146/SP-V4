@@ -16,19 +16,9 @@ import { StorageService } from './shared/storage.service';
   selector: 'my-app',
   template: `
   <router-outlet>
-  <div class="loading-outer-overlay" *ngIf="transactionLoader">
-    <div class="loading-overlay-sm">
-      <div loader-box>
-        <div class="loader-small"></div>
-        <h1>{{loadingStatus}}</h1>
-      </div>
-    </div>
-  </div>
-  <div class="loading-outer-overlay" *ngIf="showLoader">
-  <div class="center" style="background:rgba(1,1,1,0.8)">
-  <div class="spinner"></div>
+<div yugma-loader  *ngIf="transactionLoader || showLoader">
+	<div color-area></div>
 </div>
-  </div>
   </router-outlet>
   `,
   styleUrls: ['./app.component.css']
