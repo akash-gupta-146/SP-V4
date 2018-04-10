@@ -83,7 +83,8 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
-      } else {   
+      } else {  
+        this.goals = response;         
         if(id){
           this.goals = this.goals.filter((element:any)=>{
             element.initiatives = element.initiatives.filter((initiative:any)=>{
@@ -91,8 +92,6 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
             });
             return (element.initiatives.length)?true:false;
           })
-        }else{
-          this.goals = response;
         }   
         this.goalsCopy = this.goals;
         this.initFilters(this.goals);
