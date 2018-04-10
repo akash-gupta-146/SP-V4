@@ -95,7 +95,7 @@ export class PlanComponent {
       event.target.checked = !event.target.checked;
     }else
     alertify.confirm("Are you sure you want to do this?", () => {
-      if (event.target.checked)
+      if (!event.target.checked)
         this.orgService.disableCycle(c.cycleId).subscribe((response: any) => {
           alertify.success('You inactive the cycle.');
           this.getCycles();

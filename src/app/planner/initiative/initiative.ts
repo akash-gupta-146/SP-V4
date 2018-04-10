@@ -182,7 +182,7 @@ export class InitiativeComponent extends Filters implements OnInit{
   }
 
   disable(event: any, initiativeId: any) {
-    if (event.target.checked)
+    if (!event.target.checked)
       alertify.confirm("Do you Really want to Inactive this Initiative??", () => {
         this.orgService.disableInitiative(initiativeId).subscribe((response: any) => {
           alertify.success("You disabled the Initiative..");
