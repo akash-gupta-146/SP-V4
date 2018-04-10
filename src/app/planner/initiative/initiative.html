@@ -219,7 +219,8 @@
       <table class="table table-hover mb-0">
         <colgroup>
           <col style="width:30%">
-          <col style="width:40%">
+          <col style="width:30%">
+          <col style="width:10%">
           <col style="width:10%">
           <col style="width:10%">
           <col style="width:10%">
@@ -259,15 +260,17 @@
             <th class="text-center">Active</th>
             <th class="text-center">Edit</th>
             <th class="text-center">Delete</th>
+            <th>Activities</th>            
           </tr>
         </thead>
         <tbody *ngIf="goals.length">
           <tr *ngFor="let goal of goals;let i = index;">
             <td>{{goal.goal}}</td>
-            <td colspan="4" class="p-0" style="border:none;" #element [style.height]="get(element)">
+            <td colspan="5" class="p-0" style="border:none;" #element [style.height]="get(element)">
               <table class="table table-hover table-striped text-center mb-0">
                 <colgroup>
-                  <col style="width:40%">
+                  <col style="width:30%">
+                  <col style="width:10%">
                   <col style="width:10%">
                   <col style="width:10%">
                   <col style="width:10%">
@@ -287,6 +290,11 @@
                     <button class="btn btn-link" type="button" data-toggle="tooltip" data-placement="auto" title="Delete" (click)="deleteInitiative(initiate.initiativeId,goal.initiatives,j)"
                       [disabled]="goal.disable||initiate.disable" [ngClass]="goal.disable||initiate.disable?'icon-mark':'icon-mark2'">
                       <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-link" type="button" [routerLink]="['../../activities',{initiativeId:initiate.initiativeId,cycleId:defaultCycle.cycleId}]" [disabled]="goal.disable">
+                      <i class="fas fa-eye"></i>
                     </button>
                   </td>
                 </tr>

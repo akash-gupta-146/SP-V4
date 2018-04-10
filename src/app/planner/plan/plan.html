@@ -105,7 +105,7 @@
             </button>
           </td>
           <td>
-            <button class="btn btn-link" type="button" [disabled]="c.disable">
+            <button class="btn btn-link" type="button"  [routerLink]="['../../strategic-goal',{cycleId:c.cycleId}]" [disabled]="c.disable">
              <i class="fas fa-eye"></i>
             </button>
           </td>

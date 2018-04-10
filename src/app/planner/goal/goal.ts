@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { UniversityService } from "../../shared/UTI.service";
 import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
@@ -6,6 +6,7 @@ import { Filters } from "../../shared/filters";
 
 import * as alertify from 'alertifyjs';
 import { LoaderService } from '../../shared/loader.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare let $: any;
 
@@ -14,7 +15,7 @@ declare let $: any;
   templateUrl: './goal.html',
   styleUrls: ['./goal.css', './../planner.component.css']
 })
-export class GoalComponent extends Filters implements AfterViewInit {
+export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   public goalForm: FormGroup;
   public isUpdating: boolean = false;
   // public goals:any[]=[];
@@ -26,8 +27,12 @@ export class GoalComponent extends Filters implements AfterViewInit {
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder,
     public commonService: StorageService,
-    private loaderService: LoaderService) {
+    private loaderService: LoaderService,
+    private route: ActivatedRoute,) {
     super();
+  }
+
+  ngOnInit(){
     this.getCycles(false);
     this.goalForm = this.initObjectiveForm();
   }
@@ -44,10 +49,17 @@ export class GoalComponent extends Filters implements AfterViewInit {
         this.cycles = [];
       } else {
         this.cycles = response;
-        this.cycles.forEach(element => {
-          if (element.defaultCycle)
-            this.defaultCycle = element;
-        });
+        const id = +this.route.snapshot.paramMap.get('cycleId');
+        if(id)
+          this.cycles.forEach(element => {
+            if (element.cycleId === id)
+              this.defaultCycle = element;
+          });
+        else
+          this.cycles.forEach(element => {
+            if (element.defaultCycle)
+              this.defaultCycle = element;
+          });
         this.getGoals();
       }
     });
@@ -56,6 +68,7 @@ export class GoalComponent extends Filters implements AfterViewInit {
   defaultCycle: any = {};
   getGoals() {
     this.orgService.getObjectivesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
+      this.loaderService.display(false);
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
@@ -63,7 +76,6 @@ export class GoalComponent extends Filters implements AfterViewInit {
         this.goals = response;
         this.goalsCopy = response;
       }
-      this.loaderService.display(false);
     }, (error: any) => {
       this.loaderService.display(false);
     })

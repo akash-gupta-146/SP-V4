@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UniversityService } from "../../shared/UTI.service";
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
 import { Filters } from "../../shared/filters";
 import * as alertify from 'alertifyjs';
 import { LoaderService } from '../../shared/loader.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 declare let $: any;
@@ -14,10 +15,8 @@ declare let $: any;
   templateUrl: './initiative.html',
   styleUrls: ['./initiative.css', './../planner.component.css']
 })
-export class InitiativeComponent extends Filters {
+export class InitiativeComponent extends Filters implements OnInit{
   public cycles: any[] = [];
-  // public goals:any[]=[];
-  // public goalsCopy:any[]=[];
   public objectives: any[] = [];
   public initiativeForm: FormGroup;
   public isUpdating: boolean = false;
@@ -25,9 +24,12 @@ export class InitiativeComponent extends Filters {
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder,
     public commonService: StorageService,
-    private loaderService: LoaderService) {
-    super();
+    private loaderService: LoaderService,
+    private route:ActivatedRoute) {
+    super();   
+  }
 
+  ngOnInit(){
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.initiativeForm = this.initForm();
@@ -39,10 +41,18 @@ export class InitiativeComponent extends Filters {
         this.cycles = [];
       } else {
         this.cycles = response;
-        this.cycles.forEach(element => {
-          if (element.defaultCycle)
-            this.defaultCycle = element;
-        });
+        const cycleId = +this.route.snapshot.paramMap.get('cycleId');
+        if(cycleId)
+          this.cycles.forEach(element => {
+            if (element.cycleId === cycleId)
+              this.defaultCycle = element;
+          });          
+        else{
+          this.cycles.forEach(element => {
+            if (element.defaultCycle)
+              this.defaultCycle = element;
+          });
+        }
         if (!flag)
           this.getInitiative();
       }
@@ -60,15 +70,21 @@ export class InitiativeComponent extends Filters {
 
   defaultCycle: any = {};
   getInitiative() {
-    console.log(this.defaultCycle);
+    const id = +this.route.snapshot.paramMap.get('goalId');
     this.orgService.getInitiativesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
       } else {
-        this.goals = response;
-        this.goalsCopy = response;
-        this.initFilters(response);
+        if(id){
+          this.goals = response.filter((element:any)=>{
+            return (element.goalId === id);
+          });
+        }
+        else 
+          this.goals = response;
+        this.goalsCopy = this.goals;
+        this.initFilters(this.goals);
       }
       this.loaderService.display(false);
     }, (error: any) => {

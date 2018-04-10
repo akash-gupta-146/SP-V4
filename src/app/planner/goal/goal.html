@@ -209,7 +209,7 @@
               </button>
             </td>
             <td>
-              <button class="btn btn-link" type="button" [disabled]="goal.disable">
+              <button class="btn btn-link" type="button" [routerLink]="['../../initiatives',{goalId:goal.goalId,cycleId:defaultCycle.cycleId}]" [disabled]="goal.disable">
                 <i class="fas fa-eye"></i>
               </button>
             </td>
