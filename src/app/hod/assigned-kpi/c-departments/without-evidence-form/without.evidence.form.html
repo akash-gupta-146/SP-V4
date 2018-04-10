@@ -10,16 +10,18 @@
         </div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="d-flex flex-column card-box small-box p-1 m-2" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
+        <div class="d-flex flex-column card-box small-box p-1 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
           <div class="d-flex justify-content-between mt-2 mx-2">
             <div>
-              <small>Quater</small>
+              <small>Quarter</small>
               <div class="text-uppercase">{{lev.quarter}}</div>
             </div>
             <div class="text-right">
-              <small>Status (role)</small>
-              <div class="text-capitalize">{{lev.status}}
-                <br>({{lev.role}})</div>
+              <small>Status (role) </small>
+              <div class="text-capitalize">
+                  <span class="highlight-dot animate flash infinite speed-4" [style.background]="lev.successInfo.color"></span>
+                  {{lev.status}}
+                <br>by {{lev.role}}</div>
             </div>
           </div>
           <div class="d-flex justify-content-between mt-2 mx-2">
@@ -42,8 +44,18 @@
               <div>{{lev.endDate + tdl.year}}</div>
             </div>
           </div>
+          <div class="d-flex justify-content-between mt-2 mx-2">
+              <div *ngIf="lev.status!='unsubmitted'|| lev.disable">
+                <small>Current cost</small>
+                <div>{{lev.currentCost}}</div>
+              </div>
+              <div class="text-right" *ngIf="lev.status!='unsubmitted'|| lev.disable">
+                <small>Achievement</small>
+                <div>{{lev.currentTargetLevel}}</div>
+              </div>
+            </div>
           <div class="d-flex justify-content-between align-items-center mt-2 mx-2 dropdown"  *ngIf="lev.status!='unsubmited'">
-                  <div class="text-primary">Evidence</div>
+                  <h6 class="text-primary">Evidence</h6>
                   <a class="btn btn-link dropdown-toggle" id="menu1" data-toggle="dropdown">Files
                     <span class="caret"></span>
                   </a>
@@ -61,33 +73,23 @@
                     </li>
                   </ul>
           </div>
-          <div class="d-flex justify-content-between  mt-2 mx-2">
-            <div>
-              <small>Current Cost </small>
-              <div>              
-                <input type="number" [(ngModel)]="lev.currentCost" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
-                <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentCost}}</span>
-              </div>
-            </div>
+          <div class="d-flex justify-content-between mt-2 mx-2" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+              <h6 class="text-primary">Current cost</h6>
+                <input type="number" [(ngModel)]="lev.currentCost" style="width:65px">
           </div>
-          <div class="d-flex justify-content-between  mt-2 mx-2">
-            <div>
-              <small>Achievement</small>
-              <div>
-                  <input type="number" [(ngModel)]="lev.currentTargetLevel" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
-                  <span *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentTargetLevel}}</span>
-              </div>
-            </div>
+          <div class="d-flex justify-content-between  mt-2 mx-2" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+              <h6 class="text-primary">Achievement</h6>
+              <input type="number" [(ngModel)]="lev.currentTargetLevel" style="width:65px">
           </div>
-          <div class="d-flex justify-content-center mt-3" *ngIf="!lev.disable">
-              <button class="btn btn-link" *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)" (click)="saveQuarterResult(lev)"
+          <div class="d-flex justify-content-end mt-3" *ngIf="!lev.disable">
+              <button class="btn-sp btn-primary btn-sp-small" *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)" (click)="saveQuarterResult(lev)"
               [disabled]="lev.disable"> Save</button>
   
-            <button class="btn btn-link" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
+            <button class="btn-sp btn-primary btn-sp-small" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
               [disabled]="lev.disable">Edit</button>
   
-            <button class="btn btn-link" *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
-            <button class="btn btn-link" *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
+            <button class="btn-sp btn-clear btn-sp-small ml-1" *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
+            <button class="btn-sp btn-primary btn-sp-small" *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
           </div>
         </div>
       </div>

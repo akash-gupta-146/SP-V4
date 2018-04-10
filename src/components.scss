@@ -1,9 +1,53 @@
-$primary:var(--color-primary);
+/* Variables */
+$primary: #049ae5;
+$danger: var(--color-danger);
+$second-back: #fafafa;
+:root{
+  --color-primary : $primary;
+  --color-text    : #b9bcfb;
+  --color-body    : #f2f2f2;
+  --color0        : white;
+  --color1        : #d6c7e8;
+  --color2        : rgb(248, 242, 255);
+  --color3        : #36a3f7;
+  --color4        : #716aca;
+  --color5        : #34bfa3;
+  --color5Text    : white;
+  --color4Text    : white;
+  --color3Text    : white;
+  --button-color1 : #3b548c;
+  --button-color2 : #F44336;
+  --button-color3 : #4CAF50;
+  --small-font    : 10px;
+  --medium-font   : 12px;
+  --large-font    : 14px;
+  --extralg-font  : 16px;
+
+
+  --color-danger: #F44336;
+  --color-header: #77909b;
+}
+
+/* end of variables  */
 /* animations */
 
 .animate {
   animation-duration: 0.3s;
   animation-timing-function: ease;
+}
+
+.infinite{
+  animation-iteration-count: infinite;
+}
+
+.speed-4{
+  animation-duration: 4s !important;
+}
+.speed-p7{
+  animation-duration: 0.7s !important;
+}
+.delay-1{
+  animation-delay: 1s;
 }
 
 @keyframes slideInUp {
@@ -64,6 +108,136 @@ $primary:var(--color-primary);
   animation-name: moveXAxis;
 }
 
+@keyframes flash {
+  from, 50%, to {
+    opacity: 1;
+  }
+
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+.flash {
+  animation-name: flash;
+}
+
+@keyframes flipInX {
+  from {
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+
+  40% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    animation-timing-function: ease-in;
+  }
+
+  60% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+
+  80% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+  }
+
+  to {
+    transform: perspective(400px);
+  }
+}
+
+.flipInX {
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  animation-name: flipInX;
+}
+
+@keyframes bounceIn {
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    transform: scale3d(.9, .9, .9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    transform: scale3d(.97, .97, .97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.bounceIn {
+  animation-name: bounceIn;
+}
+
+@keyframes bounceInDown {
+  from, 60%, 75%, 90%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0);
+  }
+
+  75% {
+    transform: translate3d(0, -10px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, 5px, 0);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+.bounceInDown {
+  animation-name: bounceInDown;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fadeInDown {
+  animation-name: fadeInDown;
+}
 /* end of animation */
 
 /* cards */
@@ -196,6 +370,7 @@ $primary:var(--color-primary);
 
 .btn-sp:focus {
   outline: 0 !important;
+  box-shadow: 0px 2px 5px gray;
 }
 
 .btn-plain {
@@ -208,18 +383,18 @@ $primary:var(--color-primary);
   box-shadow: 0px 2px 5px gray;
 }
 
-.btn-default {
+.btn-default,.btn-primary {
   background: var(--color-primary) !important;
   color: white !important;
 }
 
-.btn-default:hover {
-  background: var(--color-primary) !important;
+.btn-default:hover, .btn-primary:hover, {
+  background: darken($primary,5) !important;
   color: white !important;
 }
 
-.btn-default:active {
-  background: var(--color-primary) !important;
+.btn-default:active , .btn-primary:active, {
+  background: darken($primary,10) !important;
   color: white !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.47);
 }
@@ -409,6 +584,17 @@ button[disabled] {
     border: 2px solid white;
     box-shadow: 0 0 3px;
   }
+}
+
+.highlight-dot{
+  position:absolute;
+  width:10px;
+  height:10px;
+  border-radius: 50%;
+  border:1px solid white;
+  margin-left: -15px;
+  margin-top: 4px;
+  box-shadow:0 0 5px rgba(0,0,0,0.4);
 }
 
 // end of highlight

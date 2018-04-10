@@ -12,7 +12,7 @@
 <!-- end of subheader -->
 
 <!-- text-details box -->
-<div class="text-details">
+<div class="text-details  animate bounceInDown">
   <div class='container'>
       <div class="row">
           <div class="col-lg-12">
@@ -44,7 +44,7 @@
 </div>
 <!-- end text-details box -->
   <div *ngIf="data" id="first-section">
-      <div class="row">
+      <div class="row animate fedeInDown" >
         <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let report of data.quartersAnnualReport;let rp=index;">
               <b>{{report.quarter}}</b>
               <span >Over all Status</span>
@@ -72,21 +72,21 @@
       <div class="container cards-area">
         <div class="row m-3">
           <div class="col-lg-4">
-            <div class="card m-10 p-3">
+            <div class="card m-10 p-3 animate bounceInDown">
               <i class="fas fa-chart-bar"></i>
               <b>Frequency</b>
               <p>{{data.frequency}}</p>
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="card m-10 p-3">
+            <div class="card m-10 p-3 animate bounceInDown">
                 <i class="fas fa-balance-scale"></i>
               <b>MEASURE UNIT</b>
               <p>{{data.measureUnit}}</p>
             </div>
           </div>
           <div class="col-lg-4">
-            <div class="card m-10 p-3">
+            <div class="card m-10 p-3 animate bounceInDown">
                 <i class="fas fa-eye"></i>
               <b>EVIDENCE FORM TYPE</b>
               <p>{{data.evidanceForm}}</p>

@@ -1,37 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'components.scss';
 
-/* Variables */
-:root{
-  --color-primary : #049ae5;
-  --color-text    : #b9bcfb;
-  --color-body    : #f2f2f2;
-  --color0        : white;
-  --color1        : #d6c7e8;
-  --color2        : rgb(248, 242, 255);
-  --color3        : #36a3f7;
-  --color4        : #716aca;
-  --color5        : #34bfa3;
-  --color5Text    : white;
-  --color4Text    : white;
-  --color3Text    : white;
-  --button-color1 : #3b548c;
-  --button-color2 : #F44336;
-  --button-color3 : #4CAF50;
-  --small-font    : 10px;
-  --medium-font   : 12px;
-  --large-font    : 14px;
-  --extralg-font  : 16px;
-
-
-  --color-danger: #F44336;
-  --color-header: #77909b;
-}
-$primary: #4285f4;
-$danger: var(--color-danger);
-$second-back: #fafafa;
-/* end of variables  */
-
 
 /*loader css  */
 
@@ -442,6 +411,12 @@ tree-view{
 
 // end of tree view
 
-$theme-colors: (
-  "primary": red
-);
+//overriding bootstrap color
+.text-primary{
+  color:$primary !important;
+}
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
+  outline: 0 !important;
+  box-shadow: 0px 2px 5px gray;
+}
+//end of overriding bootstrap color
