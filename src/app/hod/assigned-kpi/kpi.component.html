@@ -155,12 +155,13 @@
                       <li class="list-group-item d-flex justify-content-between ">
                         <div>Frequency:</div>
                         <div class="text-right">{{msr.frequency}}
-                          <span *ngIf="!msr.evidanceForm">None</span>
+                          
                         </div>
                       </li>
                       <li class="list-group-item d-flex justify-content-between ">
                         <div>Evidence Form:</div>
                         <div class="text-right">{{msr.evidanceForm}}</div>
+                        <div class="text-right" *ngIf="!msr.evidanceForm">None</div>
                       </li>
                       <li class="list-group-item d-flex justify-content-between ">
                         <div>MeasureUnit:</div>
