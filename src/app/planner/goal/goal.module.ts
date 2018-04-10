@@ -6,7 +6,8 @@ import { SharedModule } from "../../shared/shared.module";
 @NgModule({
 	imports: [SharedModule, RouterModule.forChild([{
 		path: '', component: GoalComponent
-	}])],
+	}
+])],
 	providers: [],
 	declarations: [GoalComponent]
 })
