@@ -473,7 +473,8 @@ button[disabled] {
     font-size: 12px;
     color: gray;
     padding: 10px !important;
-    height: 0px !important;
+    padding-top:5px !important;
+    height: 30px !important;
     width: auto;
     cursor: pointer;
     &:focus-within {
