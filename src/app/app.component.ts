@@ -16,7 +16,10 @@ import { StorageService } from './shared/storage.service';
   selector: 'my-app',
   template: `
   <router-outlet>
-<div yugma-loader  *ngIf="transactionLoader || showLoader">
+  <div yugma-loader  *ngIf="showLoader">
+	<div color-area></div>
+</div>
+<div yugma-loader  *ngIf="transactionLoader">
 	<div color-area></div>
 </div>
   </router-outlet>

@@ -137,6 +137,13 @@ $primary:var(--color-primary);
       padding-top: 20px;
     }
   }
+  .small-box{
+    font-size:12px;
+    border-color:$primary;
+    small{
+      color:$primary;
+    }
+  }
 }
 
 /* end of cards */
@@ -571,15 +578,6 @@ div[no-content] {
         border: 2px solid white;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
         animation: insert-dots 0.7s ease-in-out;
-      }
-      &:after{
-          position:absolute;
-          content: "›";
-          color:$primary;
-          position: absolute;
-            top: -79px;
-            font-size: 80px;
-            font-weight: 250;
       }
     }
   }

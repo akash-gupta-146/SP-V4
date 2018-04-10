@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'components.scss';
+
 /* Variables */
 :root{
-  --color-primary : #4285f4;
+  --color-primary : #049ae5;
   --color-text    : #b9bcfb;
   --color-body    : #f2f2f2;
   --color0        : white;
@@ -440,3 +441,7 @@ tree-view{
 }
 
 // end of tree view
+
+$theme-colors: (
+  "primary": red
+);
