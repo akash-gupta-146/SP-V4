@@ -96,11 +96,11 @@ export class MousForm {
 
  collapseOff(element: any, level: any) {
   this.changeSelected.emit(level);
-  if ($(element).hasClass('in')) {
+  if ($(element).hasClass('show')) {
    return;
   }
-  $(element).addClass('in');
-  $(".collapse-off").removeClass('in');
+  $(element).addClass('show');
+  $(".collapse-off").removeClass('show');
  }
  Q:any={};
  selectedQuarter:any={};

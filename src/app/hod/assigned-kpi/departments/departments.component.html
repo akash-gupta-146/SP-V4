@@ -100,12 +100,12 @@
   <div class="container-fluid table-accordion mb-2" id="accordion">
     <fieldset class="the-fieldset panel card mb-2" *ngFor="let dept of departmentInfo;let d=index;">
       <div class="card-header">
-        <div data-parent="#accordion" [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">
+        <div [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">
           {{d+1}}. {{dept.department}}
           <i class="fas fa-eye ml-2"></i>
         </div>
       </div>
-      <div [attr.id]="'demo' + dept.departmentId" class="collapse" [ngClass]="d?'':'in'">
+      <div [attr.id]="'demo' + dept.departmentId" class="collapse" data-parent="#accordion" [ngClass]="d?'':'show'">
         <div class="d-flex flex-row-reverse innerbuttons">
           <div>
             <button class="btn-sp btn-sp-small btn-primary" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">VIEW QUARTERS</button>

@@ -268,10 +268,10 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
   }
 
   collapseOff(element: any) {
-    if ($(element).hasClass('in')) {
+    if ($(element).hasClass('show')) {
       return;
     }
-    $(element).addClass('in');
-    $(".collapse-off").removeClass('in');
+    $(element).addClass('show');
+    $(".collapse-off").removeClass('show');
   }
 }

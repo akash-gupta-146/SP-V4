@@ -161,7 +161,7 @@
                     <legend class="the-legend" [attr.data-parent]="'#accordion'+ i + j + k + l" [attr.data-target]="'#demo' + dept.departmentId+ i + j + k + l"
                       data-toggle="collapse">{{d+1}}. {{dept.department}}</legend>
 
-                    <div [attr.id]="'demo' + dept.departmentId + i + j + k + l" class="collapse" [ngClass]="d?'':'in'" style="position: relative;">
+                    <div [attr.id]="'demo' + dept.departmentId + i + j + k + l" class="collapse" [ngClass]="d?'':'show'" style="position: relative;">
                      
                                <!-- Quarter Boxes -->
           <div *ngIf="!data.evidanceFormId">
