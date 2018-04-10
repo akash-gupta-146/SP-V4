@@ -189,17 +189,17 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   removeAssignedDept(selectedMeasure: any, index: any) {
-    const assignedDepartments: any[] = selectedMeasure.assignedDepartments;
+    const departmentInfo: any[] = selectedMeasure.departmentInfo;
     if (confirm("Do you realy want to unassign department??"))
-      this.orgService.deleteAssignedDepartment(selectedMeasure.assignedDepartments[index].id).subscribe((response: any) => {
-        assignedDepartments.splice(index, 1);
+      this.orgService.deleteAssignedDepartment(selectedMeasure.departmentInfo[index].id).subscribe((response: any) => {
+        departmentInfo.splice(index, 1);
       })
   }
 
   updateOpiTarget(selectedMeasure: any, index: any) {
     if (confirm("Do you realy want to update targets??"))
       this.orgService.updateTarget(selectedMeasure.opiId, [this.editDepartmentForm.value]).subscribe((response: any) => {
-        selectedMeasure.assignedDepartments[index] = response[0];
+        selectedMeasure.departmentInfo[index] = response[0];
       });
   }
 
@@ -217,13 +217,13 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       element.initiatives = element.initiatives.filter((initiative:any)=>{
         initiative.activities = initiative.activities.filter((activity:any)=>{
           activity.opis = activity.opis.filter((opi:any)=>{
-            opi.assignedDepartments = opi.assignedDepartments.filter(dept => {
+            opi.departmentInfo = opi.departmentInfo.filter(dept => {
               if(this.selectedDepartmentIds.indexOf(dept.departmentId) != -1){
                 this.reloadBtn = true;
                 return true;
               }
             });
-            return opi.assignedDepartments.length;
+            return opi.departmentInfo.length;
           });
           return activity.opis.length;
         });
@@ -276,13 +276,13 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     }
   }
 
-  checkAssignDept(assignedDepartments: any[]) {
+  checkAssignDept(departmentInfo: any[]) {
     setTimeout(function(){ $('#myModal').modal('show') }, 500);
     $('#detailModal').modal('hide');    
     this.selectedDepartmentIds = [];
     this.selectedDepartments = [];
     this.departments = JSON.parse(JSON.stringify(this.departmentsCopy));
-    assignedDepartments.forEach(outerElement => {
+    departmentInfo.forEach(outerElement => {
       this.departments.forEach(innerElement => {
         this.searchDepartment(innerElement, outerElement);
       });
@@ -338,7 +338,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     const departmentsArray: any[] = this.departmentForm.controls["departmentsArray"].value;
     alertify.confirm("Do you really want to assign this OPI", () => {
       this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe((response: any) => {
-        this.selectedMeasure.assignedDepartments = this.selectedMeasure.assignedDepartments.concat(response);
+        this.selectedMeasure.departmentInfo = this.selectedMeasure.departmentInfo.concat(response);
         alertify.notify("Successfully assigned");
         $('#detailModal').modal('show');
         $('#myModal').modal('hide');

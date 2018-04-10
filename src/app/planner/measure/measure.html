@@ -284,7 +284,7 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between ">
                       <div>Cost:</div>
-                      <div class="text-right">10000</div>
+                      <div class="text-right">{{msr.currentCost}}</div>
                     </li>
                     <li class="list-group-item d-flex justify-content-between ">
                       <div>Direction:</div>
@@ -297,12 +297,12 @@
                 <div class="grid-inner-body" style="grid-template-columns:80% 20%;">
                   <div class="item">
                     <ul class="list-group list-group-flush">
-                      <li class="list-group-item" *ngFor="let dept of msr.assignedDepartments;let d = index">{{dept.department}}</li>
-                      <li class="list-group-item" *ngIf="msr.assignedDepartments.length">
+                      <li class="list-group-item" *ngFor="let dept of msr.departmentInfo;let d = index">{{dept.department}}</li>
+                      <li class="list-group-item" *ngIf="msr.departmentInfo.length">
                         <a class="text-primary link primary-link float-right" data-toggle="modal" data-target="#detailModal" (click)="selectedMeasure=msr;">View more</a>
                       </li>
-                      <li class="list-group-item" *ngIf="!msr.assignedDepartments.length">
-                        <button class="btn link mx-auto d-block" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.assignedDepartments);"
+                      <li class="list-group-item" *ngIf="!msr.departmentInfo.length">
+                        <button class="btn link mx-auto d-block" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.departmentInfo);"
                           [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable">
                           <a class="text-primary link primary-link float-right pull-right">Add</a>
                         </button>
@@ -355,7 +355,7 @@
             <div class="col-sm-12">
               <div class="department-hierarchy">
                 <b>Organisation Unit</b>
-                <tree-view id="termSheetPopup" [treeData]="departments" [assignedDepartment]="selectedMeasure.assignedDepartments" (onSelected)="department($event)"></tree-view>
+                <tree-view id="termSheetPopup" [treeData]="departments" [assignedDepartment]="selectedMeasure.departmentInfo" (onSelected)="department($event)"></tree-view>
               </div>
             </div>
           </div>
@@ -447,7 +447,7 @@
               <b>Assigned Departments</b>
             </div>
             <div>
-              <button class="btn btn-link" (click)="next=false;prev=true;checkAssignDept(selectedMeasure.assignedDepartments);">
+              <button class="btn btn-link" (click)="next=false;prev=true;checkAssignDept(selectedMeasure.departmentInfo);">
                 <i class="fas fa-filter"></i>
               </button>
             </div>
@@ -460,7 +460,7 @@
               None Selected
             </div>
             <!-- end of no content -->
-            <div class="modal-box" *ngFor="let dept of selectedMeasure.assignedDepartments;let arr=index;">
+            <div class="modal-box" *ngFor="let dept of selectedMeasure.departmentInfo;let arr=index;">
 
               <div class="quaters" *ngIf="!dept.edit">
                 <div class="d-flex justify-content-between">

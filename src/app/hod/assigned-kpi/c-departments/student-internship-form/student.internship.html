@@ -102,13 +102,13 @@
                          <div class="form-group">
                            <label for="exampleInputFile">Student Internship File :</label>
                            <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                             aria-describedby="fileHelp" (change)="getInternshipFile(lev,$event)" [disabled]="lev.disable">
+                             aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
                            <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
                          </div>
                        </div>
                      </div>
                      <div class="form-group">
-                       <button type="button" (click)="saveInternshipForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.internshipFile)">Save</button>
+                       <button class="btn-sp btn-primary" (click)="saveInternshipForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
                      </div>
                    </td>
                  </tr>
@@ -230,8 +230,6 @@
                 <tr>
                   <th>Professional Development Activity</th>
                   <th *ngIf="lev.facultyPublications.length">Evidence
-                    <!-- <button class="pull-right btn-save" data-toggle="modal" data-target="#evidenceForm" (click)="selectedInternshipFile = lev.facultyPublications[0];selectedQuarter=lev;"
-                                                  *ngIf="lev.status!='locked'" [disabled]="lev.disable">Add</button> -->
                     <button class="pull-right btn-save" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
                       (click)="selectedForm = lev.facultyPublications[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
                   </th>
