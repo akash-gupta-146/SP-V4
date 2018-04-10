@@ -169,32 +169,41 @@
                     </ul>
                   </div>
                   <div class="grid-inner-body" style="grid-template-columns:85% 15%;">
-                    <div class="item">
-                      <div class="dropdown-selector">
-                        <span class="highlight-box">
-                          <span [style.background]="msr.successInfo.color"></span>
-                        </span>
-                        <div class="d-flex justify-content-between">
-                          <div>
-                            {{msr.successInfo.difference}}
-                          </div>
-                          <button class="btn-sp-small btn-primary btn-sm dropdown-toggle" data-toggle="collapse" [attr.data-parent]="'#accordion'+msr.opiId"
-                            [attr.href]="'#opi-dept'+msr.opiId">
-                            <a>{{msr.successInfo.status}}</a>
-                          </button>
+                    <!-- Departmentwise status -->
+                    <div class="item d-flex flex-column text-center justify-content-around">
+                        <div>
+                          Success Difference:
                         </div>
-                        <div *ngFor="let dept of msr.departmentInfo;let d = index" [style.border-bottom]="d!=msr.departmentInfo.length-1?'1px solid':'unset'"
-                          [attr.id]="'opi-dept'+msr.opiId" class="panel-collapse collapse box">
-                          <p>{{dept.department}}
-                            <span class="badge badge-primary">{{dept.quarterStatus.successInfo.difference}}</span>
-                          </p>
-                          <p></p>
-                          <a class="text-primary link primary-link float-right" data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;">
-                            {{dept.quarterStatus.status}} by {{dept.quarterStatus.role}}
-                          </a>
+                        <div>
+                            <h3 class="badge p-2" [style.background]="msr.successInfo.color">{{msr.successInfo.difference}}</h3>
                         </div>
-                      </div>
+                        <div  style="line-height: 12px;"> 
+                            <p>
+                                <a class="text-uppercase text-primary link primary-link" data-toggle="collapse" [attr.href]="'#opi-dept'+msr.opiId" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    <small class="text-center text-uppercase"><b>{{msr.successInfo.status}}</b></small>
+                                </a>
+                            </p>
+                            <div class="collapse" [attr.id]="'opi-dept'+msr.opiId">
+                                <div class="card-box p-1 d-flex flex-column text-center justify-content-around mb-1" *ngFor="let dept of msr.departmentInfo;let d = index">
+                                    <div>
+                                        <div>
+                                          <small class="text-center text-uppercase"><b>{{dept.department}}</b></small>
+                                          <div>
+                                             <small>Success Difference:</small> <h3 class="badge" [style.background]="dept.quarterStatus.successInfo.color">{{dept.quarterStatus.successInfo.difference}}</h3>
+                                          </div>
+                                        </div>
+                                        <div class="text-center">
+                                          <small>
+                                              <a data-toggle="modal" data-target="#myModal" (click)="selectedDepartment=dept;selectedMeasure=msr;" class="p-0 text-capitalize text-primary link primary-link" >{{dept.quarterStatus.status}} by {{dept.quarterStatus.role}}</a>
+                                          </small>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!-- end of departmentwise status -->
+
                     <div class="grid-inner-body">
                       <div class="item">
                         <a [routerLink]="'./opis/' + msr.opiId" *ngIf="role!='coordinator'">
@@ -227,8 +236,8 @@
   <div class="modal-dialog modal-lg bar">
     <div class="modal-content" *ngIf="selectedDepartment">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h5 class="modal-title">KPI : {{selectedMeasure.opi}}</h5>
+          <h5 class="modal-title">KPI : {{selectedMeasure.opi}}</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
           <div class="flow-chart">
