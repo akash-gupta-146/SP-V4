@@ -153,7 +153,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   }
 
   disable(event: any, goalId: any) {
-    if (event.target.checked)
+    if (!event.target.checked)
       alertify.confirm("Do you Really want to Inactive this Goal??", () => {
         this.orgService.disableGoal(goalId).subscribe((response: any) => {
           alertify.success("You disabled the Goal..");

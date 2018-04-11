@@ -551,10 +551,10 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   disable(event: any, opiId: any) {
-    if (event.target.checked)
-      alertify.confirm("Do you Really want to disable this KPI??", () => {
+    if (!event.target.checked)
+      alertify.confirm("Do you Really want to inactive this KPI??", () => {
         this.orgService.disableKPI(opiId).subscribe((response: any) => {
-          alertify.success("You disabled the KPI..");
+          alertify.success("Inactivated the KPI..");
           this.getMeasure();
         }, () => {
           event.target.checked = !event.target.checked;
@@ -565,9 +565,9 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you Really want to enable this KPI??", () => {
+      alertify.confirm("Do you Really want to activate this KPI??", () => {
         this.orgService.enableKPI(opiId).subscribe((response: any) => {
-          alertify.success("You enabled the KPI..");
+          alertify.success("Activated the KPI..");
           this.getMeasure();
         }, () => {
           event.target.checked = !event.target.checked;

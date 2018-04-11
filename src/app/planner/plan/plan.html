@@ -89,7 +89,7 @@
           <td>{{c.endYear}}</td>
           <td [class.highlight]="c.defaultCycle"><span>{{c.description}}</span></td>
           <td>
-              <input type="checkbox" [checked]="c.disable" (change)="changeStatus($event,c)">
+              <input type="checkbox" [checked]="!c.disable" (change)="changeStatus($event,c)">
           </td>
           <td>
               <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)">

@@ -15,16 +15,16 @@
 <!-- end of subheader -->
 
 <!-- Accordion -->
-<div class="container-fluid">
+<div class="container-fluid" id="accordion">
   <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 p-3">
     <h6 class="mb-0">
-      <a data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+ s">
+      <a data-toggle="collapse" [attr.href]="'#collapse'+ s">
         {{s+1}}. {{data.opi}}
         <i class="float-right fas fa-compress"></i>
       </a>
     </h6>
     <!-- collapse panel for KPI -->
-    <div [attr.id]="'collapse'+ s" class="panel-collapse collapse" [ngClass]="!s?'in':''">
+    <div [attr.id]="'collapse'+ s" class="panel-collapse collapse" data-parent="#accordion" [ngClass]="!s?'show':''">
 
       <!-- text-details box -->
       <div class="text-details">
@@ -56,11 +56,11 @@
       <!-- accordion  -->
       <div [attr.id]="'accordion'+s">
         <fieldset *ngFor="let dept of data.departmentInfo;let d = index;">
-          <div [attr.data-parent]="'#accordion'+s" [attr.data-target]="'#demo' + s + d" data-toggle="collapse" class="text-primary card-header p-2">
+          <div [attr.data-target]="'#demo' + s + d" data-toggle="collapse" class="text-primary card-header p-2">
             {{d+1}}. {{dept.department}}
             <span class="float-right">Expand Action Steps  <i class="fas fa-compress"></i></span>
           </div>
-          <div [attr.id]="'demo' + s + d" class="collapse" [ngClass]="d?'':'in'">
+          <div [attr.id]="'demo' + s + d" class="collapse" [attr.data-parent]="'#accordion'+s" [ngClass]="d?'':'show'">
               <table class="table table-striped">
                 <thead>
                   <tr>

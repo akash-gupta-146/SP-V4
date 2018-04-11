@@ -196,7 +196,7 @@
           <tr *ngFor="let goal of goals;let i = index;">
             <td>{{goal.goal}}</td>
             <td>
-              <input type="checkbox" [checked]="goal.disable" (change)="disable($event,goal.goalId)">
+              <input type="checkbox" [checked]="!goal.disable" (change)="disable($event,goal.goalId)">
             </td>
             <td>
               <button class="btn btn-link" type="button" scrollTo href="#add-initiative" (click)="updateGoal(goal)" [disabled]="goal.disable">

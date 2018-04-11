@@ -1,12 +1,12 @@
 <!-- subheader -->
 <div class="subheader">
   <div class="nav">
-      <button class="btn btn-link" type="button" routerlink="/">
-          <i class="fas fa-arrow-left"></i>
-      </button>
+    <button class="btn btn-link" type="button" routerlink="/">
+      <i class="fas fa-arrow-left"></i>
+    </button>
   </div>
   <div class="title">
-      KPI DETAILS
+    KPI DETAILS
   </div>
 </div>
 <!-- end of subheader -->
@@ -14,91 +14,91 @@
 <!-- text-details box -->
 <div class="text-details  animate bounceInDown">
   <div class='container'>
-      <div class="row">
-          <div class="col-lg-12">
-              <b>STRATEGIC GOAL</b>
-              <p>
-                  {{data.goal}}
-              </p>
-          </div>
-          <div class="col-lg-12">
-              <b>INITIATIVE</b>
-              <p>
-                  {{data.initiative}}
-              </p>
-          </div>
-          <div class="col-lg-12">
-              <b>ACTIVITY</b>
-              <p>
-                  {{data.activity}}
-              </p>
-          </div>
-          <div class="col-lg-12">
-              <b>OPI</b>
-              <p>
-                  {{data.opi}}
-              </p>
-          </div>
-        </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <b>STRATEGIC GOAL</b>
+        <p>
+          {{data.goal}}
+        </p>
+      </div>
+      <div class="col-lg-12">
+        <b>INITIATIVE</b>
+        <p>
+          {{data.initiative}}
+        </p>
+      </div>
+      <div class="col-lg-12">
+        <b>ACTIVITY</b>
+        <p>
+          {{data.activity}}
+        </p>
+      </div>
+      <div class="col-lg-12">
+        <b>OPI</b>
+        <p>
+          {{data.opi}}
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 <!-- end text-details box -->
-  <div *ngIf="data" id="first-section">
-      <div class="row animate fedeInDown" >
-        <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let report of data.quartersAnnualReport;let rp=index;">
-              <b>{{report.quarter}}</b>
-              <span >Over all Status</span>
-              <div class="row">
-                <div class="col-sm-6">
-                  <strong>Estimated Cost </strong>: {{report.estimatedCost}}
-                </div>
-                <div class="col-sm-6">
-                  <strong>Estimated Target </strong>: {{report.estimatedTargetLevel}}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <strong>Current Cost </strong>:
-                  <span>{{report.currentCost}}</span>
-                </div>
-                <div class="col-sm-6">
-                  <strong>Achievement</strong>:
-                  <span>{{report.currentTargetLevel}}</span>
-                </div>
-              </div>
+<div *ngIf="data" id="first-section">
+  <div class="row animate fedeInDown">
+    <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let report of data.quartersAnnualReport;let rp=index;">
+      <b>{{report.quarter}}</b>
+      <span>Over all Status</span>
+      <div class="row">
+        <div class="col-sm-6">
+          <strong>Estimated Cost </strong>: {{report.estimatedCost}}
+        </div>
+        <div class="col-sm-6">
+          <strong>Estimated Target </strong>: {{report.estimatedTargetLevel}}
         </div>
       </div>
-
-      <div class="container cards-area">
-        <div class="row m-3">
-          <div class="col-lg-4">
-            <div class="card m-10 p-3 animate bounceInDown">
-              <i class="fas fa-chart-bar"></i>
-              <b>Frequency</b>
-              <p>{{data.frequency}}</p>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card m-10 p-3 animate bounceInDown">
-                <i class="fas fa-balance-scale"></i>
-              <b>MEASURE UNIT</b>
-              <p>{{data.measureUnit}}</p>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card m-10 p-3 animate bounceInDown">
-                <i class="fas fa-eye"></i>
-              <b>EVIDENCE FORM TYPE</b>
-              <p>{{data.evidanceForm}}</p>
-              <p *ngIf="!data.evidanceForm">None</p>
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <strong>Current Cost </strong>:
+          <span>{{report.currentCost}}</span>
+        </div>
+        <div class="col-sm-6">
+          <strong>Achievement</strong>:
+          <span>{{report.currentTargetLevel}}</span>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="container cards-area">
+    <div class="row m-3">
+      <div class="col-lg-4">
+        <div class="card m-10 p-3 animate bounceInDown">
+          <i class="fas fa-chart-bar"></i>
+          <b>Frequency</b>
+          <p>{{data.frequency}}</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card m-10 p-3">
+          <i class="fas fa-balance-scale"></i>
+          <b>MEASURE UNIT</b>
+          <p>{{data.measureUnit}}</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card m-10 p-3">
+          <i class="fas fa-eye"></i>
+          <b>EVIDENCE FORM TYPE</b>
+          <p>{{data.evidanceForm}}</p>
+          <p *ngIf="!data.evidanceForm">None</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-<!-- filter -->
-<div class="filter animate slideInUp">
+  <!-- filter -->
+  <div class="filter animate slideInUp">
     <div class="d-flex">
       <div class="icon">
         <i class="fas fa-calendar-alt"></i>
@@ -106,165 +106,177 @@
       <div class="form-group dropdown-st">
         <label class="control-label">Corresponding Departments</label>
         <select id="year" name="year" class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="department">
-            <option value="0">All Departments</option>
-            <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
+          <option value="0">All Departments</option>
+          <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
         </select>
       </div>
     </div>
   </div>
   <!-- end of filter     -->
 
-      <div class="container table-accordion mb-2" id="accordion">
-        <fieldset class="the-fieldset panel card" *ngFor="let dept of departmentInfo;let d=index;">
-          <div class="card-header" >
-              <div data-parent="#accordion" [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">
-                {{d+1}}. {{dept.department}} <i class="fas fa-eye ml-2"></i>
-              </div>
-          </div>
-          <div [attr.id]="'demo' + dept.departmentId" class="collapse" [ngClass]="d?'':'in'">
-              <div class="d-flex flex-row-reverse innerbuttons">
-                <div>
-                    <button class="btn-sp btn-sp-small btn-primary" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">VIEW QUARTERS</button>
-                </div>
-                <div>
-                    <ng-template #quarterView>
-                        <button class="btn-sp btn-sp-small btn-primary" (click)="getActionSteps(dept)" *ngIf="!dept.actionStepView" >VIEW ACTION STEPS</button>
-                        <button class="btn btn-sp-small btn-primary" (click)="getAnnualTargetsByOpiDepartment(dept)" *ngIf="!dept.show; else currentBtn" >VIEW ALL QUARTERS</button>
-                      </ng-template>
-                </div>
-                <div>
-                    <ng-template #currentBtn>
-                        <button class="btn-sp btn-sp-small btn-primary" (click)="getCurrentAnnualTargets(dept)">VIEW CURRENT QUARTERS</button>
-                      </ng-template>
-                </div>
-              </div>
-            <div *ngIf="!dept.actionStepView">
-              <without-evidence-form [department]="dept" [evidanceFormId]="data.evidanceFormId" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)"> </without-evidence-form>
-              <student-internship [department]="dept" [d]="d"  [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==1||data.evidanceFormId==9||data.evidanceFormId==10||data.evidanceFormId==11" (changeSelected)="passQuarter($event)"></student-internship>
-              <mous-form [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==2" (changeSelected)="passQuarter($event)"></mous-form>
-              <community-learning [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==5" (changeSelected)="passQuarter($event)"></community-learning>
-              <curriculum-review [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==6"></curriculum-review>
-              <exchange-program [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==4"></exchange-program>
-              <extra-curricular-activity [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==3"> </extra-curricular-activity>
-              <research-consultancy [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==7"></research-consultancy>
-              <student-research [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)" *ngIf="data.evidanceFormId==8"></student-research>
-            </div>
-
-            <!-- Action Steps -->
-            <div *ngIf="dept.actionStepView" class="p-3">
-              <div class="card-header d-flex justify-content-between px-2 py-1 mb-2">
-                <div>
-                    <b><span *ngIf="dept.isEdit&&dept.isNew">Edit</span>
-                    <span *ngIf="!dept.isEdit&&dept.isNew">Add</span>
-                    Action Steps
-                  </b>
-                </div>
-                <div>
-                    <button class="btn btn-link float-right" (click)="addNewActionStep(dept)" *ngIf="!dept.isNew">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                      <button class="btn btn-link float-right" (click)="dept.isNew=!dept.isNew" *ngIf="dept.isNew">
-                        <i class="fas fa-times"></i>
-                      </button>
-                </div>
-              </div>
-                  <table class="table table-striped table-hover" *ngIf="!dept.isNew">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Action</th>
-                        <th>Deadline</th>
-                        <th>Root Cause</th>
-                        <th>Resources</th>
-                        <th>Assigned Employees</th>
-                        <th>Edit</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let step of actionSteps;let s = index;">
-                        <th>{{s+1}}</th>
-                        <td>{{step.description}}</td>
-                        <td>{{step.deadline}}</td>
-                        <td>{{step.reason}}</td>
-                        <td>{{step.resources}}</td>
-                        <td>
-                          <ul class="list-group list-group-flush">
-                            <li  class="list-group-item justify-content-between bg-transparent" *ngFor="let emp of step.employeeAssigned;let i = index;">
-                              {{emp.firstName + emp.lastName}}
-                            </li>
-                                <a class="text-primary link primary-link float-right" (click)="showList(step)">Assign</a>
-                          </ul>
-                        </td>
-                        <td>
-                          <button class="btn btn-link" (click)="editActionStep(dept,step)">   
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                        <!-- No content -->
-                        <div no-content  *ngIf="!actionSteps.length">
-                          No action steps available
-                      </div>
-                    <!-- end of no content -->
-                  <form class="material_form" [formGroup]="actionForm" *ngIf="dept.isNew">
-                    <div class="row">
-                      <div class="col-lg-12 col-sm-12">
-                          <div class="item">
-                              <textarea  formControlName="description" placeholder="Add description here"></textarea>
-                              <label>Description</label>
-                            </div>
-                      </div>
-                      <div class="col-lg-12 col-sm-12"> 
-                    <div class="item">
-                        <textarea  formControlName="reason" placeholder="Add reason here"></textarea>
-                        <label>Reason</label>
-                      </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12">
-                            <div class="item">
-                                <textarea formControlName="resources" placeholder="Add resource here"></textarea>
-                                <label>Resources</label>
-                            </div>
-                          </div>
-                          <div class="col-lg-6 col-sm-12">
-                              <div class="form-group">
-                                  <label>Deadline</label>
-                                    <input class="form-control" type="date" formControlName="deadline">
-                                </div>
-                          </div>
-                    </div>
-                  </form>
-                  <!-- ASSIGN EMP LIST -->
-                  <div class="emp-list">
-                  <div class="d-flex justify-content-center mx-5 px-5">
-                      <div>Assign employee</div>
-                      <select class="custom-select custom-select-sm" multiple id="toggle-list" [(ngModel)]="employeeIds">
-                          <option *ngFor="let emp of employees;let i = index;" [ngValue]="emp" [selected]="emp.assigned" [disabled]="emp.assigned">{{emp.firstName + emp.lastName}}</option>
-                      </select>
-                      <div>
-                          <button class="btn btn-link" type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
-                              <i class="fas fa-check-circle"></i>
-                          </button>
-                          <button class="btn btn-link" type="button" (click)="hideList()">
-                              <i class="fas fa-times-circle"></i>
-                          </button>
-                      </div>
-                  </div>
-                  <div class='text-center '><small class="text-secondary"><b>Note: </b>Hold ctrl/cmd for multiple selection</small></div>
-                </div>
-                <!-- END OF ASSIGN EMP LIST -->
-                <div *ngIf="dept.isNew" class=' d-flex justify-content-center mt-2'>
-                    <button class="btn-sp btn-clear mx-1">Clear</button>
-                      <button class="btn-sp btn-primary mx-1" type="button" (click)="onSubmit(dept,actionSteps)" [disabled]="actionForm.invalid">Submit</button>
-                </div>
-            </div>
-      <!-- end of action steps -->
-          </div>
-        </fieldset>
+  <div class="container table-accordion mb-2" id="accordion">
+    <fieldset class="the-fieldset panel card" *ngFor="let dept of departmentInfo;let d=index;">
+      <div class="card-header">
+        <div [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">
+          {{d+1}}. {{dept.department}}
+          <i class="fas fa-eye ml-2"></i>
+        </div>
       </div>
+      <div [attr.id]="'demo' + dept.departmentId" class="collapse" data-parent="#accordion" [ngClass]="d?'':'show'">
+        <div class="d-flex flex-row-reverse innerbuttons">
+          <div>
+            <button class="btn-sp btn-sp-small btn-primary" (click)="dept.actionStepView = false;" *ngIf="dept.actionStepView; else quarterView">VIEW QUARTERS</button>
+          </div>
+          <div>
+            <ng-template #quarterView>
+              <button class="btn-sp btn-sp-small btn-primary" (click)="getActionSteps(dept)" *ngIf="!dept.actionStepView">VIEW ACTION STEPS</button>
+              <button class="btn btn-sp-small btn-primary" (click)="getAnnualTargetsByOpiDepartment(dept)" *ngIf="!dept.show; else currentBtn">VIEW ALL QUARTERS</button>
+            </ng-template>
+          </div>
+          <div>
+            <ng-template #currentBtn>
+              <button class="btn-sp btn-sp-small btn-primary" (click)="getCurrentAnnualTargets(dept)">VIEW CURRENT QUARTERS</button>
+            </ng-template>
+          </div>
+        </div>
+        <div *ngIf="!dept.actionStepView">
+          <without-evidence-form [department]="dept" [evidanceFormId]="data.evidanceFormId" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)">
+          </without-evidence-form>
+          <student-internship [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==1||data.evidanceFormId==9||data.evidanceFormId==10||data.evidanceFormId==11"
+            (changeSelected)="passQuarter($event)"></student-internship>
+          <mous-form [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==2" (changeSelected)="passQuarter($event)"></mous-form>
+          <community-learning [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==5" (changeSelected)="passQuarter($event)"></community-learning>
+          <curriculum-review [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
+            *ngIf="data.evidanceFormId==6"></curriculum-review>
+          <exchange-program [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
+            *ngIf="data.evidanceFormId==4"></exchange-program>
+          <extra-curricular-activity [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
+            *ngIf="data.evidanceFormId==3"> </extra-curricular-activity>
+          <research-consultancy [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
+            *ngIf="data.evidanceFormId==7"></research-consultancy>
+          <student-research [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
+            *ngIf="data.evidanceFormId==8"></student-research>
+        </div>
+
+        <!-- Action Steps -->
+        <div *ngIf="dept.actionStepView" class="p-3">
+          <div class="card-header d-flex justify-content-between px-2 py-1 mb-2">
+            <div>
+              <b>
+                <span *ngIf="dept.isEdit&&dept.isNew">Edit</span>
+                <span *ngIf="!dept.isEdit&&dept.isNew">Add</span>
+                Action Steps
+              </b>
+            </div>
+            <div>
+              <button class="btn btn-link float-right" (click)="addNewActionStep(dept)" *ngIf="!dept.isNew">
+                <i class="fas fa-plus"></i>
+              </button>
+              <button class="btn btn-link float-right" (click)="dept.isNew=!dept.isNew" *ngIf="dept.isNew">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <table class="table table-striped table-hover" *ngIf="!dept.isNew">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Action</th>
+                <th>Deadline</th>
+                <th>Root Cause</th>
+                <th>Resources</th>
+                <th>Assigned Employees</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let step of actionSteps;let s = index;">
+                <th>{{s+1}}</th>
+                <td>{{step.description}}</td>
+                <td>{{step.deadline}}</td>
+                <td>{{step.reason}}</td>
+                <td>{{step.resources}}</td>
+                <td>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item justify-content-between bg-transparent" *ngFor="let emp of step.employeeAssigned;let i = index;">
+                      {{emp.firstName + emp.lastName}}
+                    </li>
+                    <a class="text-primary link primary-link float-right" (click)="showList(step)">Assign</a>
+                  </ul>
+                </td>
+                <td>
+                  <button class="btn btn-link" (click)="editActionStep(dept,step)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- No content -->
+          <div no-content *ngIf="!actionSteps.length">
+            No action steps available
+          </div>
+          <!-- end of no content -->
+          <form class="material_form" [formGroup]="actionForm" *ngIf="dept.isNew">
+            <div class="row">
+              <div class="col-lg-12 col-sm-12">
+                <div class="item">
+                  <textarea formControlName="description" placeholder="Add description here"></textarea>
+                  <label>Description</label>
+                </div>
+              </div>
+              <div class="col-lg-12 col-sm-12">
+                <div class="item">
+                  <textarea formControlName="reason" placeholder="Add reason here"></textarea>
+                  <label>Reason</label>
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12">
+                <div class="item">
+                  <textarea formControlName="resources" placeholder="Add resource here"></textarea>
+                  <label>Resources</label>
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-12">
+                <div class="form-group">
+                  <label>Deadline</label>
+                  <input class="form-control" type="date" formControlName="deadline">
+                </div>
+              </div>
+            </div>
+          </form>
+          <!-- ASSIGN EMP LIST -->
+          <div class="emp-list">
+            <div class="d-flex justify-content-center mx-5 px-5">
+              <div>Assign employee</div>
+              <select class="custom-select custom-select-sm" multiple id="toggle-list" [(ngModel)]="employeeIds">
+                <option *ngFor="let emp of employees;let i = index;" [ngValue]="emp" [selected]="emp.assigned" [disabled]="emp.assigned">{{emp.firstName + emp.lastName}}</option>
+              </select>
+              <div>
+                <button class="btn btn-link" type="button" [disabled]="!employeeIds" (click)="assignEmployee()">
+                  <i class="fas fa-check-circle"></i>
+                </button>
+                <button class="btn btn-link" type="button" (click)="hideList()">
+                  <i class="fas fa-times-circle"></i>
+                </button>
+              </div>
+            </div>
+            <div class='text-center '>
+              <small class="text-secondary">
+                <b>Note: </b>Hold ctrl/cmd for multiple selection</small>
+            </div>
+          </div>
+          <!-- END OF ASSIGN EMP LIST -->
+          <div *ngIf="dept.isNew" class=' d-flex justify-content-center mt-2'>
+            <button class="btn-sp btn-clear mx-1">Clear</button>
+            <button class="btn-sp btn-primary mx-1" type="button" (click)="onSubmit(dept,actionSteps)" [disabled]="actionForm.invalid">Submit</button>
+          </div>
+        </div>
+        <!-- end of action steps -->
+      </div>
+    </fieldset>
   </div>
+</div>
 
 <!-- Evidence Form-->
 <div class="modal fade" id="evidenceForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
