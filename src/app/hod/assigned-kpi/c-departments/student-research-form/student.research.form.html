@@ -13,7 +13,7 @@
       <div class="d-flex flex-column card-box small-box p-1 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
         <div class="d-flex justify-content-between mt-2 mx-2">
           <div>
-            <small>Quater</small>
+            <small>Quarter</small>
             <div class="text-uppercase">{{lev.quarter}}</div>
           </div>
           <div class="text-right">
@@ -21,7 +21,9 @@
             <div class="text-capitalize">
                 <span class="highlight-dot animate flash infinite speed-4" [style.background]="lev.successInfo.color"></span>
                 {{lev.status}}
-              <br>({{lev.role}})</div>
+              <br>
+              by {{lev.role}}
+            </div>
           </div>
         </div>
         <div class="d-flex justify-content-between mt-2 mx-2">

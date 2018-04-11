@@ -10,10 +10,10 @@
         </div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="d-flex flex-column card-box small-box p-1 m-2" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
+        <div class="d-flex flex-column card-box small-box p-1 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
           <div class="d-flex justify-content-between mt-2 mx-2">
             <div>
-              <small>Quater</small>
+              <small>Quarter</small>
               <div class="text-uppercase">{{lev.quarter}}</div>
             </div>
             <div class="text-right">
@@ -60,10 +60,10 @@
             </div>
           </div>
           <div class="d-flex justify-content-center mt-3" *ngIf="!lev.disable">
-            <button class="btn btn-link" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
+            <button class="btn-sp btn-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
               <i class="fas fa-sign-in-alt"></i> Fill
             </button>
-            <button class="btn btn-link" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
+            <button class="btn-sp btn-primary" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
               [disabled]="lev.disable">
               <i class="fas fa-lock"></i> Lock
             </button>
