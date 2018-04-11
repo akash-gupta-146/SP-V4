@@ -168,7 +168,7 @@
   <div class="card">
     <div class="table-responsive">
       <table class="table table-striped table-hover">
-        <thead>
+        <thead *ngIf="goalsCopy.length">
           <tr>
             <th>
               <div class="d-flex justify-content-between align-items-center">
@@ -192,7 +192,7 @@
             <th>Initiatives</th>
           </tr>
         </thead>
-        <tbody *ngIf="goalsCopy.length">
+        <tbody *ngIf="goals.length">
           <tr *ngFor="let goal of goals;let i = index;">
             <td>{{goal.goal}}</td>
             <td>
@@ -217,7 +217,7 @@
         </tbody>
       </table>
       <!-- No content -->
-      <div no-content *ngIf="!goals.length">
+      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
         Data not available
       </div>
       <!-- end of no content -->

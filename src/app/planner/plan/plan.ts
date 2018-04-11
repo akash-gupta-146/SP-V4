@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
 import { UniversityService } from "../../shared/UTI.service";
@@ -12,7 +12,7 @@ declare let $: any;
   templateUrl: './plan.html',
   styleUrls: ['./../planner.component.css']
 })
-export class PlanComponent {
+export class PlanComponent implements OnInit {
   selectedCycle: any;
   isUpdating: boolean;
   title: string = "Strategic Plan";
@@ -20,6 +20,10 @@ export class PlanComponent {
   cycles: any[] = [];
   status: any[] = [];
   constructor(public ss: StorageService, public orgService: UniversityService, private loaderService: LoaderService) {
+    
+  }
+
+  ngOnInit(){
     this.loaderService.display(true);
     this.cycleForm = this.initForm();
     this.getCycles();
