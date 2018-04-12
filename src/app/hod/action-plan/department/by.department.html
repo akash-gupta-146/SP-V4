@@ -18,8 +18,8 @@
 <div class="container" id="accordion">
     <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 p-3">
       <h6 class="mb-0">
-        <a data-toggle="collapse" [attr.href]="'#collapse'+ s">
-          {{s+1}}. {{data.department}}
+        <a data-toggle="collapse" class="btn btn-link d-flex justify-content-between" [attr.href]="'#collapse'+ s">
+          <span>{{s+1}}. {{data.department}}</span>
           <i class="float-right fas fa-compress"></i>
         </a>
       </h6>
@@ -110,8 +110,8 @@
     <!-- Modal content-->
     <div class="modal-content" *ngIf="selectedStep">
       <div class="modal-header">
+          <p class="modal-title">{{selectedStep.description}}</p>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <p class="modal-title">{{selectedStep.description}}</p>
       </div>
       <form class="form-horizontal" [formGroup]="actionForm" (submit)="onSubmit()">
         <div class="modal-body">

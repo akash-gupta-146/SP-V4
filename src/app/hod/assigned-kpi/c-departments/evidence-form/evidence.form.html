@@ -3,10 +3,10 @@
   <div class="modal-dialog ">
     <div class="modal-content">
       <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Attach Evidence</h4>
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Attach Evidence</h4>
       </div>
       <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(formId)">
         <div class="modal-body">
