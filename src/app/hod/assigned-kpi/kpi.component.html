@@ -44,7 +44,7 @@
 <!-- end of filter -->
 
 <!-- table -->
-<div class="container-fluid mt-3 animate slideInDown">
+<div class="container-fluid mt-3 animate slideInDown" *ngIf="goals.length">
   <div class="card">
     <div class="table-responsive">
       <div class="grid">
@@ -222,15 +222,15 @@
           </div>
         </div>
       </div>
-      <!-- No content -->
-      <div no-content *ngIf="!goals.length">
-        Data not available
-      </div>
-      <!-- end of no content -->
     </div>
   </div>
 </div>
 <!-- end of table -->
+      <!-- No content -->
+      <div no-content *ngIf="!goals.length">
+          Data not available
+        </div>
+      <!-- end of no content -->
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
