@@ -651,6 +651,7 @@ button[disabled] {
   margin: 5px 50px;
   display: flex;
   flex-flow: row-reverse;
+  flex-wrap: wrap;
   .icon {
     margin: 0 10px 0 0;
     font-size: 25px;

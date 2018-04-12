@@ -16,18 +16,19 @@
 
 <!-- Accordion -->
 <div class="container-fluid" id="accordion">
-  <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 p-3">
-    <h6 class="mb-0">
+  <div *ngIf="actionSteps">
+  <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 animate slideInDown">
+    <div class="card-header p-2">
       <a data-toggle="collapse" class="btn btn-link d-flex justify-content-between" [attr.href]="'#collapse'+ s">
-        <sapn>{{s+1}}. {{data.opi}}</sapn>
+        <span>{{s+1}}. {{data.opi}}</span>
         <i class="float-right fas fa-compress"></i>
       </a>
-    </h6>
+    </div>
     <!-- collapse panel for KPI -->
-    <div [attr.id]="'collapse'+ s" class="panel-collapse collapse" data-parent="#accordion" [ngClass]="!s?'show':''">
+    <div [attr.id]="'collapse'+ s" class="panel-collapse collapse p-3" data-parent="#accordion" [ngClass]="!s?'show':''">
 
       <!-- text-details box -->
-      <div class="text-details">
+      <div class="text-details my-2">
         <div class='container'>
           <div class="row">
             <div class="col-lg-4 col-sm-12">
@@ -137,6 +138,7 @@
     </div>
     <!-- end of collapse panel for KPI -->
   </div>
+</div>
   <!-- No content -->
   <div no-content *ngIf="my&& !actionSteps.length">
     No Action Steps Assigned To You

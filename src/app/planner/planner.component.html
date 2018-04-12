@@ -1,42 +1,45 @@
-<div class="background">
-</div>
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <a class="navbar-brand" href="#">NxtLife</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li routerLinkActive="active">
-        <a class="nav-link" routerLink="./">Home
-          <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li routerLinkActive="active">
-        <a class="nav-link" routerLink="./strategic-plan">Planner</a>
-      </li>
-    </ul>
-    <ul class="my-2 my-lg-0 navbar-nav">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-capitalize" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
-          {{userDetails.firstName}}
-        </a>
-        <div class="dropdown-menu user-menu animate openBox pt-2" aria-labelledby="navbarDropdown">
-          <div class="d-inline-flex">
-            <div class="image">
-              <img class="mx-auto d-block" src="http://wuw9h26ve432tts12no0xx1b.wpengine.netdna-cdn.com/wp-content/uploads/2016/06/Samwinesfeature.jpg">
-            </div>
-            <div class="data">
-              <h6>
-                <strong class="text-capitalize">{{userDetails.firstName}} {{userDetails.lastName}}</strong>
-              </h6>
-              <p>({{userDetails.roleInfo[0].role}})</p>
-              <div class="mail">
-                <i class="fas fa-envelope"></i>
-                <div>{{userDetails.email}}</div>
+<div class="background"></div>
+<nav class="navbar navbar-expand-lg navbar-dark py-0">
+    <a class="navbar-brand" href="#">NxtLife</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li routerLinkActive="active" (click)=" hideBreadcrumb()">
+          <a class="nav-link" routerLink="./">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li  routerLinkActive="active">
+          <a class="nav-link" routerLink="./strategic-plan" (click)=" showBreadcrumb()">Planner</a>
+        </li>
+      </ul>
+      <ul class="my-2 my-lg-0 navbar-nav">
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-capitalize" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{userDetails.firstName}}
+              </a>
+              <div class="dropdown-menu user-menu animate openBox pt-2" aria-labelledby="navbarDropdown">
+                  <div class="d-inline-flex">
+                <div class="image">
+                    <img class="mx-auto d-block" src="http://wuw9h26ve432tts12no0xx1b.wpengine.netdna-cdn.com/wp-content/uploads/2016/06/Samwinesfeature.jpg">
+                  </div>
+                  <div class="data">
+                    <h6>
+                        <strong class="text-capitalize">{{userDetails.firstName}} {{userDetails.lastName}}</strong>
+                    </h6>
+                    <p>({{userDetails.roleInfo[0].role}})</p>
+                    <div class="mail">
+                      <i class="fas fa-envelope"></i> 
+                      <div>{{userDetails.email}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-footer p-3">
+                  <button class="btn-sp btn-sp-small" style="visibility:hidden">Account</button>
+                  <button class="btn-sp btn-sp-small btn-trans btn-active-danger" routerLink="/login" (click)="logout()">Sign out</button>
+                </div>
               </div>
 
             </div>

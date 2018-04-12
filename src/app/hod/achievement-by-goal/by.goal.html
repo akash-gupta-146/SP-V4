@@ -28,7 +28,8 @@
 </div>
 <!-- end of filter     -->
 
-<div class="container-fluid">
+
+<div class="container-fluid animate slideInDown" *ngIf="goals">
   <div class="grid">
     <div class="grid-head" style="grid-template-columns:20% 20% 20% 10% 10% 10% 10%">
       <div class="item">Goal</div>
@@ -40,15 +41,27 @@
       <div class="item">Status</div>
     </div>
     <div class="grid-outer-body" style="grid-template-columns: 20% 80%" *ngFor="let goal of goals;let g = index;">
-      <div class="item" [style.grid-row-end]="goal.opis.length + 1">{{goal.goal}}</div>
+      <div class="item" [style.grid-row-end]="goal.opis.length + 1">
+        {{goal.goal}}
+      </div>
       <div class="grid-inner-body" style="grid-template-columns: 25% 75%" *ngFor="let opi of goal.opis;">
-        <div class="item" [style.grid-row-end]="opi.departmentInfo.length + 1">{{opi.opi}}</div>
+        <div class="item" [style.grid-row-end]="opi.departmentInfo.length + 1">
+          {{opi.opi}}
+        </div>
         <div class="grid-inner-body" style="grid-template-columns: 33.33% 66.66%" *ngFor="let dept of opi.departmentInfo">
-          <div class="item" [style.grid-row-end]="dept.opiAnnualTargets[0].levels + 1">{{dept.department}}</div>
+          <div class="item" [style.grid-row-end]="dept.opiAnnualTargets[0].levels + 1">
+            {{dept.department}}
+          </div>
           <div class="grid-inner-body" style="grid-template-columns: 25% 25% 25% 25%;" *ngFor="let level of dept.opiAnnualTargets[0].levels">
-            <div class="item">{{level.quarter}}</div>
-            <div class="item">{{level.estimatedTargetLevel}}</div>
-            <div class="item">{{level.estimatedTargetLevel}}</div>
+            <div class="item">
+              {{level.quarter}}
+            </div>
+            <div class="item">
+              {{level.estimatedTargetLevel}}
+            </div>
+            <div class="item">
+              {{level.estimatedTargetLevel}}
+            </div>
             <div class="item d-flex align-items-baseline justify-content-between mr-1">
               <div>{{level.quarterStatus.successInfo.target}}</div>
               <div class='badge text-white' [style.background]="dept.quarterStatus.successInfo.color" [class.text-black]="dept.quarterStatus.successInfo.color == '#FFEB3B'">
@@ -60,3 +73,4 @@
       </div>
     </div>
   </div>
+</div>

@@ -12,7 +12,7 @@
 <!-- end of subheader -->
 
 <!-- text-details box -->
-<div class="text-details  animate bounceInDown">
+<div class="text-details animate slideInDown">
   <div class='container'>
     <div class="row">
       <div class="col-lg-12">
@@ -79,14 +79,14 @@
         </div>
       </div>
       <div class="col-lg-4">
-        <div class="card m-10 p-3">
+        <div class="card m-10 p-3 animate bounceInDown">
           <i class="fas fa-balance-scale"></i>
           <b>MEASURE UNIT</b>
           <p>{{data.measureUnit}}</p>
         </div>
       </div>
       <div class="col-lg-4">
-        <div class="card m-10 p-3">
+        <div class="card m-10 p-3 animate bounceInDown">
           <i class="fas fa-eye"></i>
           <b>EVIDENCE FORM TYPE</b>
           <p>{{data.evidanceForm}}</p>
@@ -115,7 +115,7 @@
   <!-- end of filter     -->
 
   <div class="container table-accordion mb-2" id="accordion">
-    <fieldset class="the-fieldset panel card" *ngFor="let dept of departmentInfo;let d=index;">
+    <fieldset class="the-fieldset panel card animate slideInDown" *ngFor="let dept of departmentInfo;let d=index;">
       <div class="card-header">
         <div [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">
           {{d+1}}. {{dept.department}}

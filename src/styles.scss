@@ -197,6 +197,12 @@ body{
   margin-top:20px;
 }
 
+.navbar-expand-lg{
+  .active{
+    border-bottom: 2px solid white;
+  }
+}
+
 .breadcrumb .active a{
   color:var(--color-primary);
   font-weight: bold;

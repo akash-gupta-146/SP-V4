@@ -173,7 +173,7 @@
 
 <div class="container-fluid">
 
-  <div class="card table-card">
+  <div class="card table-card animate slideInDown" *ngIf="goals.length&&!loaderService.status.value">
     <button class="btn btn-link float-right" (click)="getOpi()" *ngIf="reloadBtn">
         <i class="fas fa-sync"></i>
     </button>
@@ -334,13 +334,12 @@
         </div>
       </div>
     </div>
-    <!-- No content -->
-    <div no-content *ngIf="!goals.length&&!loaderService.status.value">
+  </div>
+  <!-- No content -->
+  <div no-content *ngIf="!goals.length&&!loaderService.status.value">
       Data not available
     </div>
     <!-- end of no content -->
-  </div>
-
   <!-- Modal -->
   <div class="modal fade modal-add" id="myModal" role="dialog">
     <div class="modal-dialog modal-xl">
@@ -580,7 +579,6 @@
   <!-- Modal -->
   <div class="modal fade" id="filterModal" role="dialog">
     <div class="modal-dialog modal-lg">
-
       <!-- Modal content-->
       <div class="modal-content">
           <div class="modal-header">
@@ -595,7 +593,6 @@
           <button type="button" class="btn-sp btn-dull" data-dismiss="modal">Close</button>
         </div>
       </div>
-
     </div>
   </div>
 
