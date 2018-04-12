@@ -228,7 +228,7 @@
 <!-- end of data fidder -->
 
 <!-- table -->
-<div class="container-fluid mt-3 animate slideInDown">
+<div class="container-fluid mt-3 animate slideInDown" *ngIf="goals.length&&!loaderService.status.value">
   <div class="card">
     <div class="table-responsive">
       <table class="table table-hover mb-0">
@@ -318,15 +318,15 @@
           </tr>
         </tbody>
       </table>
-      <!-- No content -->
-      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
-        Data not available
-      </div>
-      <!-- end of no content -->
     </div>
   </div>
 </div>
 <!-- end of table -->
+      <!-- No content -->
+      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
+          Data not available
+        </div>
+        <!-- end of no content -->
 
 <!-- add new -->
 <div fab class="btn btn-primary" id="add-btn" (click)="addNewInitiative()">

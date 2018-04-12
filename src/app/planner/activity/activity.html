@@ -80,7 +80,7 @@
 <!-- end of data fidder -->
 
 <!-- table -->
-<div class="container-fluid mt-3 animate slideInDown">
+<div class="container-fluid mt-3 animate slideInDown" *ngIf="goals.length&&!loaderService.status.value">
   <div class="card">
     <div class="table-responsive">
       <div class="grid">
@@ -167,15 +167,15 @@
           </div>
         </div>
       </div>
-      <!-- No content -->
-      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
-        Data not available
-      </div>
-      <!-- end of no content -->
     </div>
   </div>
 </div>
 <!-- end of table -->
+      <!-- No content -->
+      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
+          Data not available
+        </div>
+        <!-- end of no content -->
 
 
 <!-- add new -->
