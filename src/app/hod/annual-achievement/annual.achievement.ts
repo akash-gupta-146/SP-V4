@@ -20,7 +20,8 @@ export class AnnualAchievement {
       this.cycles.forEach(element => {
         if (element.defaultCycle){
           this.defaultCycle = element;
-          this.getOpiResult(element);
+          // this.getOpiResult(element);
+          this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
           }
       });
     });
