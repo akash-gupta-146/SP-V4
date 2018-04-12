@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../shared/storage.service';
 import { UniversityService } from "../shared/UTI.service";
 import { Router } from "@angular/router";
@@ -12,7 +12,7 @@ declare let $: any;
 	templateUrl: './planner.component.html',
 	styleUrls: ['./planner.component.css']
 })
-export class PlannerComponent {
+export class PlannerComponent implements OnInit{
 	userDetails: any;
 	breadcrumb:boolean = false;
 	constructor(public stogareService: StorageService,
@@ -24,14 +24,14 @@ export class PlannerComponent {
 		});
 	}
 
+	ngOnInit(){
+		this.stogareService.breadcrumb.asObservable().subscribe((val: boolean) => {
+			this.breadcrumb = val;
+	});
+	}
+
 	logout() {
 		localStorage.clear();
-	}
-	showBreadcrumb(){
-			this.breadcrumb = true;
-	}
-	hideBreadcrumb(){
-		this.breadcrumb = false;
 	}
 
 }	

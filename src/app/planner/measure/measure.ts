@@ -43,12 +43,13 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder, public commonService: StorageService, private loaderService: LoaderService) {
     super();
-    this.measureForm = this.setMeasure();
-    this.loaderService.display(true);
-    this.getCycleWithChildren(false);
   }
 
   ngOnInit() {
+    this.commonService.breadcrumb.next(true);
+    this.measureForm = this.setMeasure();
+    this.loaderService.display(true);
+    this.getCycleWithChildren(false);
     this.getQuarter();
     this.getFrequencies();
     this.getDepartments();
