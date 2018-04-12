@@ -196,6 +196,11 @@ body{
 .container nav{
   margin-top:20px;
 }
+nav{
+  .active{
+    border-bottom: 2px solid white;
+  }
+}
 
 .breadcrumb .active a{
   color:var(--color-primary);
