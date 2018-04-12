@@ -159,6 +159,21 @@
 
 
 
+<!-- filter -->
+<div class="filter animate slideInUp">
+  <div class="d-flex">
+    <div class="icon">
+      <i class="fas fa-calendar-alt"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Current Strategic Plan</label>
+      <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getInitiative($event)">
+        <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+      </select>
+    </div>
+  </div>
+</div>
+<!-- end of filter     -->
 
 <!-- data fidder -->
 <div class="container card data-fidder animate slideInDown" style="display:none" id="add-initiative">
@@ -180,7 +195,7 @@
               <label class="control-label" for="year">Strategic Plan :</label>
               <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)"
                 disabled>
-                <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
+                <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
               </select>
             </div>
             <div class="form-group">
@@ -304,7 +319,7 @@
         </tbody>
       </table>
       <!-- No content -->
-      <div no-content *ngIf="!goals.length">
+      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
         Data not available
       </div>
       <!-- end of no content -->

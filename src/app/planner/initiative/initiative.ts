@@ -54,7 +54,7 @@ export class InitiativeComponent extends Filters implements OnInit{
           });
         }
         if (!flag)
-          this.getInitiative();
+          this.getInitiative(this.defaultCycle);
       }
     })
   }
@@ -69,9 +69,9 @@ export class InitiativeComponent extends Filters implements OnInit{
   }
 
   defaultCycle: any = {};
-  getInitiative() {
+  getInitiative(defaultCycle) {
     const id = +this.route.snapshot.paramMap.get('goalId');
-    this.orgService.getInitiativesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
+    this.orgService.getInitiativesByCycleId(defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
@@ -104,7 +104,7 @@ export class InitiativeComponent extends Filters implements OnInit{
     delete this.initiativeForm.value["cycleId"];
     if (!this.isUpdating)
       this.orgService.addInitiative(this.initiativeForm.value).subscribe((res: any) => {
-        this.getInitiative();
+        this.getInitiative(this.defaultCycle);
         $("#add-initiative").hide();
         alertify.notify("You have successfully added a new Initiative.");
         $('#add-btn').show();
@@ -117,7 +117,7 @@ export class InitiativeComponent extends Filters implements OnInit{
         this.orgService.updateInitiative(this.selectedInitiative.initiativeId, this.initiativeForm.value).subscribe((res: any) => {
           $("#add-initiative").hide();
           $('#add-btn').show();
-          this.getInitiative();
+          this.getInitiative(this.defaultCycle);
           alertify.notify("You have successfully updated Initiative.");
           // $('#initiativeModal').modal('show');
           this.isUpdating = false;
@@ -131,7 +131,7 @@ export class InitiativeComponent extends Filters implements OnInit{
       this.orgService.deleteInitiative(initiativeId).subscribe((res: any) => {
         console.log(res);
         initiatives.splice(index, 1);
-        this.getInitiative();
+        this.getInitiative(this.defaultCycle);
       }, (error: any) => {
         alertify.alert("Something went wrong..");
       });
@@ -186,7 +186,7 @@ export class InitiativeComponent extends Filters implements OnInit{
       alertify.confirm("Do you Really want to Inactive this Initiative??", () => {
         this.orgService.disableInitiative(initiativeId).subscribe((response: any) => {
           alertify.success("You disabled the Initiative..");
-          this.getInitiative();
+          this.getInitiative(this.defaultCycle);
         }, () => {
           event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
@@ -199,7 +199,7 @@ export class InitiativeComponent extends Filters implements OnInit{
       alertify.confirm("Do you Really want to Active this Initiative??", () => {
         this.orgService.enableInitiative(initiativeId).subscribe((response: any) => {
           alertify.success("You enabled the Initiative..");
-          this.getInitiative();
+          this.getInitiative(this.defaultCycle);
         }, () => {
           event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")

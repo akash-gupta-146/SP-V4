@@ -44,6 +44,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
   getCycles(disable:boolean) {
     this.loaderService.display(true);
+    
     this.orgService.getCycleWithChildren(disable).subscribe((response: any) => {
       if (response.status == 204) {
         this.cycles = [];
