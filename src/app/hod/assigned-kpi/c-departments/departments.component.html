@@ -269,7 +269,7 @@
           <!-- END OF ASSIGN EMP LIST -->
           <div *ngIf="dept.isNew" class=' d-flex justify-content-center mt-2'>
             <button class="btn-sp btn-clear mx-1">Clear</button>
-            <button class="btn-sp btn-primary mx-1" type="button" (click)="onSubmit(dept,actionSteps)" [disabled]="actionForm.invalid">Submit</button>
+            <button class="btn-sp btn-primary mx-1" type="button" (click)="onSubmit(dept,actionSteps)" [disabled]="actionForm.invalid">Save</button>
           </div>
         </div>
         <!-- end of action steps -->
@@ -283,10 +283,10 @@
   <div class="modal-dialog ">
     <div class="modal-content" *ngIf="data">
       <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Attach Evidence</h5>
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h5 class="modal-title" id="myModalLabel">Attach Evidence</h5>
       </div>
       <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(data.evidanceFormId)">
         <div class="modal-body">

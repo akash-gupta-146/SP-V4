@@ -134,8 +134,8 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
+          <h4 class="modal-title">Extra Curricular Activity</h4>
         <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
-        <h4 class="modal-title">Extra Curricular Activity</h4>
       </div>
       <form class="form-horizontal" [formGroup]="extraCurricularActivityForm" (submit)="submitForm()" *ngIf="!activityListView">
         <div class="modal-body">

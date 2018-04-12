@@ -102,7 +102,7 @@
       <div class="card-header">
         <div [attr.data-target]="'#demo' + dept.departmentId" data-toggle="collapse">
           {{d+1}}. {{dept.department}}
-          <i class="fas fa-eye ml-2"></i>
+          <i class="fas fa-eye ml-2 text-primary"></i>
         </div>
       </div>
       <div [attr.id]="'demo' + dept.departmentId" class="collapse" data-parent="#accordion" [ngClass]="d?'':'show'">
@@ -240,7 +240,7 @@
                   <td>{{lev.currentTargetLevel}}</td>
                   <td>{{lev.endDate + tdl.year}}</td>
                   <td>
-                    <span class="badge" [style.background]="lev.successInfo.color">{{lev.successInfo.difference}}</span>
+                    <span class="badge text-white" [style.background]="lev.successInfo.color" [style.text-black]="lev.successInfo.color=='#FFEB3B'">{{lev.successInfo.difference}}</span>
                     <i class="far fa-check-circle float-right" *ngIf="lev.successInfo.target=='complete';else incomplete"></i>
                     <ng-template #incomplete>
                       <i class="far fa-times-circle float-right"></i>
@@ -467,8 +467,8 @@
   <div class="modal-dialog">
     <div class="modal-content" *ngIf="selectedLevel">
       <div class="modal-header">
+          <p class="modal-title">{{data.opi}}</p>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <p class="modal-title">{{data.opi}}</p>
       </div>
       <div class="modal-body">
 
@@ -499,8 +499,8 @@
   <div class="modal-dialog modal-lg bar">
     <div class="modal-content" *ngIf="selectedMeasure">
       <div class="modal-header">
+          <h4 class="modal-title">Current Status of KPI</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Current Status of KPI</h4>
       </div>
       <div class="modal-body">
         <div customBox>
@@ -526,8 +526,8 @@
   <div class="modal-dialog">
     <div class="modal-content" *ngIf="data">
       <div class="modal-header">
+          <h4 class="modal-title">Assigned Departments</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Assigned Departments</h4>
       </div>
       <div class="modal-body">
         <div class="department-hierarchy">
@@ -544,8 +544,8 @@
   <div class="modal-dialog">
     <div class="modal-content" *ngIf="selectedStep">
       <div class="modal-header">
+          <p class="modal-title">Action : {{selectedStep.description}}</p>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <p class="modal-title">Action : {{selectedStep.description}}</p>
       </div>
       <div class="modal-body">
 

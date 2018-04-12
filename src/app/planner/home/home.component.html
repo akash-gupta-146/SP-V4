@@ -101,13 +101,13 @@
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">
+                Add New Value
+              </h5>
           <button type="button" class="close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
             <span class="sr-only">Close</span>
           </button>
-          <h5 class="modal-title" id="myModalLabel">
-            Add New Value
-          </h5>
         </div>
         <!-- Modal Body -->
         <form [formGroup]="valueForm" (submit)="onValueSubmit()">
@@ -140,13 +140,13 @@
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header color4">
+            <h4 class="modal-title" id="myModalLabel" style="text-transform:capitalize;">
+                {{missionVision}}
+              </h4>
           <button type="button" class="close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
             <span class="sr-only">Close</span>
           </button>
-          <h4 class="modal-title" id="myModalLabel" style="text-transform:capitalize;">
-            {{missionVision}}
-          </h4>
         </div>
         <!-- Modal Body -->
         <form [formGroup]="missionVisionForm" (submit)="onMissionVisionSubmit()">

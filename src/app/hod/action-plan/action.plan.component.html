@@ -18,8 +18,8 @@
 <div class="container-fluid" id="accordion">
   <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 p-3">
     <h6 class="mb-0">
-      <a data-toggle="collapse" [attr.href]="'#collapse'+ s">
-        {{s+1}}. {{data.opi}}
+      <a data-toggle="collapse" class="btn btn-link d-flex justify-content-between" [attr.href]="'#collapse'+ s">
+        <sapn>{{s+1}}. {{data.opi}}</sapn>
         <i class="float-right fas fa-compress"></i>
       </a>
     </h6>
@@ -58,7 +58,7 @@
         <fieldset *ngFor="let dept of data.departmentInfo;let d = index;">
           <div [attr.data-target]="'#demo' + s + d" data-toggle="collapse" class="text-primary card-header p-2">
             {{d+1}}. {{dept.department}}
-            <span class="float-right">Expand Action Steps  <i class="fas fa-compress"></i></span>
+            <span class="float-right"><i class="fas fa-compress"></i></span>
           </div>
           <div [attr.id]="'demo' + s + d" class="collapse" [attr.data-parent]="'#accordion'+s" [ngClass]="d?'':'show'">
               <table class="table table-striped">
@@ -160,8 +160,8 @@
     <!-- Modal content-->
     <div class="modal-content" *ngIf="selectedStep">
       <div class="modal-header">
+          <p class="modal-title">{{selectedStep.description}}</p>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-
       </div>
       <form class="form-horizontal" [formGroup]="actionForm" (submit)="onSubmit()">
         <div class="modal-body">
@@ -206,8 +206,8 @@
   <div class="modal-dialog">
     <div class="modal-content" *ngIf="selectedStep">
       <div class="modal-header">
+          <h4 class="modal-title">{{selectedStep.description}}</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">{{selectedStep.description}}</h4>
       </div>
       <form [formGroup]="statusForm" (submit)="onStatusSubmit()">
         <div class="modal-body">

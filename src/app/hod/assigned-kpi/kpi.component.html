@@ -176,7 +176,7 @@
                           Success Difference:
                         </div>
                         <div>
-                            <h3 class="badge p-2 text-white" [style.background]="msr.successInfo.color">{{msr.successInfo.difference}}</h3>
+                            <h3 class="badge p-2 text-white" [style.background]="msr.successInfo.color" [class.text-black]="msr.successInfo.color == '#FFEB3B'">{{msr.successInfo.difference}}</h3>
                         </div>
                         <div  style="line-height: 12px;"> 
                             <p>
@@ -207,12 +207,12 @@
 
                     <div class="grid-inner-body">
                       <div class="item">
-                        <a [routerLink]="'./opis/' + msr.opiId" *ngIf="role!='coordinator'">
+                        <button class="btn btn-link" [routerLink]="'./opis/' + msr.opiId" *ngIf="role!='coordinator'">
                           <i class="fas fa-edit"></i>
-                        </a>
-                        <a [routerLink]="'./kpis/'+msr.opiId" *ngIf="role=='coordinator'">
+                        </button>
+                        <button class="btn btn-link" [routerLink]="'./kpis/'+msr.opiId" *ngIf="role=='coordinator'">
                           <i class="fas fa-edit"></i>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
