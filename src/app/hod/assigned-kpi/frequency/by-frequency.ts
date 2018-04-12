@@ -37,7 +37,7 @@ export class ByFrequency implements AfterViewInit{
   this.utServ.getKpiByQuarter(this.selectedQuarter,this.year).subscribe((response:any)=>{
     this.utServ.goals.asObservable().subscribe((val:any[])=>{
      this.utServ.goals.next(response);
-     this.router.navigateByUrl(this.role + "/home");
+    //  this.router.navigateByUrl(this.role + "/home");
      });
    });
  }

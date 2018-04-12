@@ -66,7 +66,7 @@ export class ByKPIComponent {
       return (element.goalId == this.selectedGoal.goalId);
     });
     this.utServ.goals.next(this.goals);
-    this.router.navigateByUrl(this.role + "/home");
+    // this.router.navigateByUrl(this.role + "/home");
   }
 
 }

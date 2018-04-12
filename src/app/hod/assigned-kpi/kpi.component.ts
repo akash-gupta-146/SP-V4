@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Filters } from '../../shared/filters';
 import { HodService } from '../hod.service';
 import { StorageService } from '../../shared/storage.service';
@@ -11,7 +11,7 @@ declare let $: any;
   templateUrl: './kpi.component.html',
   styleUrls: ['./../hod.component.scss']
 })
-export class KPIComponent extends Filters {
+export class KPIComponent extends Filters implements OnInit{
   selectedQuarter: string = "q1";
   defaultCycle: any;
   cycles: any[];
@@ -27,7 +27,10 @@ export class KPIComponent extends Filters {
   selectedYear: any = new Date().getFullYear();
   constructor(private utServ: HodService,
     private storage: StorageService) {
-    super();
+    super();    
+  }
+
+  ngOnInit(){
     this.role = this.storage.getData('user_roleInfo')[0].role;
     // this.getOpi();
     this.getCycles();
@@ -131,9 +134,9 @@ export class KPIComponent extends Filters {
   getOpiResultByQuarter(quarter: any) {
     this.utServ.getOpiResultByQuarter(this.defaultCycle.cycleId,this.selectedYear,quarter).subscribe((response:any)=>{
       this.goals = response;
-        this.goalsCopy = JSON.parse(JSON.stringify(response));
-        this.utServ.goals.next(response);
-        this.initFilters(response);
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
+      this.utServ.goals.next(response);
+      this.initFilters(response);
     });
   }
 
