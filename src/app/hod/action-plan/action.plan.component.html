@@ -8,7 +8,7 @@
   <div class="title">
     <span *ngIf="!my; else mystep;">Action Plans (KPI)</span>
     <ng-template #mystep>
-      <h2>Span</h2>
+      <h2>Assigned Action Plans</h2>
     </ng-template>
   </div>
 </div>
@@ -17,51 +17,53 @@
 <!-- Accordion -->
 <div class="container-fluid" id="accordion">
   <div *ngIf="actionSteps">
-  <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 animate slideInDown">
-    <div class="card-header p-2">
-      <a data-toggle="collapse" class="btn btn-link d-flex justify-content-between" [attr.href]="'#collapse'+ s">
-        <span>{{s+1}}. {{data.opi}}</span>
-        <i class="float-right fas fa-compress"></i>
-      </a>
-    </div>
-    <!-- collapse panel for KPI -->
-    <div [attr.id]="'collapse'+ s" class="panel-collapse collapse p-3" data-parent="#accordion" [ngClass]="!s?'show':''">
+    <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 animate slideInDown">
+      <div class="card-header p-2">
+        <a data-toggle="collapse" class="btn btn-link d-flex justify-content-between" [attr.href]="'#collapse'+ s">
+          <span>{{s+1}}. {{data.opi}}</span>
+          <i class="float-right fas fa-compress"></i>
+        </a>
+      </div>
+      <!-- collapse panel for KPI -->
+      <div [attr.id]="'collapse'+ s" class="panel-collapse collapse p-3" data-parent="#accordion" [ngClass]="!s?'show':''">
 
-      <!-- text-details box -->
-      <div class="text-details my-2">
-        <div class='container'>
-          <div class="row">
-            <div class="col-lg-4 col-sm-12">
-              <b>Strategic Goal</b>
-              <p>
-                {{data.goal}}
-              </p>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-              <b>Initiative</b>
-              <p>
-                {{data.initiative}}
-              </p>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-              <b>Activity</b>
-              <p>
-                {{data.activity}}
-              </p>
+        <!-- text-details box -->
+        <div class="text-details my-2">
+          <div class='container'>
+            <div class="row">
+              <div class="col-lg-4 col-sm-12">
+                <b>Strategic Goal</b>
+                <p>
+                  {{data.goal}}
+                </p>
+              </div>
+              <div class="col-lg-4 col-sm-12">
+                <b>Initiative</b>
+                <p>
+                  {{data.initiative}}
+                </p>
+              </div>
+              <div class="col-lg-4 col-sm-12">
+                <b>Activity</b>
+                <p>
+                  {{data.activity}}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- end of text-details box -->
+        <!-- end of text-details box -->
 
-      <!-- accordion  -->
-      <div [attr.id]="'accordion'+s">
-        <fieldset *ngFor="let dept of data.departmentInfo;let d = index;">
-          <div [attr.data-target]="'#demo' + s + d" data-toggle="collapse" class="text-primary card-header p-2">
-            {{d+1}}. {{dept.department}}
-            <span class="float-right"><i class="fas fa-compress"></i></span>
-          </div>
-          <div [attr.id]="'demo' + s + d" class="collapse" [attr.data-parent]="'#accordion'+s" [ngClass]="d?'':'show'">
+        <!-- accordion  -->
+        <div [attr.id]="'accordion'+s">
+          <fieldset *ngFor="let dept of data.departmentInfo;let d = index;">
+            <div [attr.data-target]="'#demo' + s + d" data-toggle="collapse" class="text-primary card-header p-2">
+              {{d+1}}. {{dept.department}}
+              <span class="float-right">
+                <i class="fas fa-compress"></i>
+              </span>
+            </div>
+            <div [attr.id]="'demo' + s + d" class="collapse" [attr.data-parent]="'#accordion'+s" [ngClass]="d?'':'show'">
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -131,21 +133,21 @@
                 </div>
               </div>
               <!-- END OF ASSIGN EMP LIST -->
-          </div>
-        </fieldset>
+            </div>
+          </fieldset>
+        </div>
+        <!-- accordian end -->
       </div>
-      <!-- accordian end -->
+      <!-- end of collapse panel for KPI -->
     </div>
-    <!-- end of collapse panel for KPI -->
   </div>
-</div>
   <!-- No content -->
-  <div no-content *ngIf="my&& !actionSteps.length">
+  <div no-content *ngIf="my&& !actionSteps.length&&!loaderService.status.value">
     No Action Steps Assigned To You
   </div>
   <!-- end of no content -->
   <!-- No content -->
-  <div no-content *ngIf="!my&& !actionSteps.length">
+  <div no-content *ngIf="!my&& !actionSteps.length&&!loaderService.status.value">
     No Action Steps are linked
   </div>
   <!-- end of no content -->
@@ -162,7 +164,7 @@
     <!-- Modal content-->
     <div class="modal-content" *ngIf="selectedStep">
       <div class="modal-header">
-          <p class="modal-title">{{selectedStep.description}}</p>
+        <p class="modal-title">{{selectedStep.description}}</p>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <form class="form-horizontal" [formGroup]="actionForm" (submit)="onSubmit()">
@@ -208,7 +210,7 @@
   <div class="modal-dialog">
     <div class="modal-content" *ngIf="selectedStep">
       <div class="modal-header">
-          <h4 class="modal-title">{{selectedStep.description}}</h4>
+        <h4 class="modal-title">{{selectedStep.description}}</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <form [formGroup]="statusForm" (submit)="onStatusSubmit()">

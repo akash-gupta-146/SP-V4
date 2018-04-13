@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HodService } from '../hod.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
+import { LoaderService } from '../../shared/loader.service';
 declare let $: any;
 
 @Component({
@@ -11,7 +12,7 @@ declare let $: any;
  templateUrl: './action.plan.component.html',
  styleUrls: ['./../hod.component.scss']
 })
-export class ActionPlan {
+export class ActionPlan implements OnInit{
  [x: string]: any;
  my: boolean = false;
  selectedStep: any;
@@ -19,7 +20,13 @@ export class ActionPlan {
  statusForm: FormGroup;
  actionSteps: any[] = [];
  employeeIds: any[] = [];
- constructor(public utServ: HodService, public fb: FormBuilder, public router: Router) {
+ constructor(public utServ: HodService, 
+             public fb: FormBuilder, 
+             public router: Router,
+             public loaderService:LoaderService) {
+ }
+
+ ngOnInit(){
   this.actionForm = this.fb.group({
    "reason": ["", Validators.required],
    "description": ["", Validators.required],
@@ -43,13 +50,14 @@ export class ActionPlan {
    url = "/my-action-step";
   else
    url="/action-step";
-
+  this.loaderService.display(true);
   this.utServ.getActionStep(url).subscribe((response: any) => {
    if (response.status === 204) {
     this.actionSteps = [];
    } else {
     this.actionSteps = response;
    }
+   this.loaderService.display(false);
   })
  }
 
