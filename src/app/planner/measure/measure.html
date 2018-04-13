@@ -513,16 +513,16 @@
                 <li *ngFor="let dept of selectedMeasure.departmentInfo;let arr=index;" class="modal-box my-3">
                   <div *ngIf="!dept.edit">
                       <div class="d-flex justify-content-end">
-                            <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit">
+                            <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top" title="Edit">
                               <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit">
+                            <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Save">
                               <i class="fas fa-save"></i>
                             </button>
-                            <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit">
+                            <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Delete">
                               <i class="fas fa-trash-alt"></i>
                             </button>
-                            <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit">
+                            <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Cancel">
                               <i class="fas fa-undo"></i>
                             </button>
                         </div>
@@ -565,16 +565,16 @@
                   
                   <fieldset [formGroup]="editDepartmentForm" *ngIf="dept.edit">
                       <div class="d-flex justify-content-end">
-                            <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit">
+                            <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top" title="Edit">
                               <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit">
+                            <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Save">
                               <i class="fas fa-save"></i>
                             </button>
-                            <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit">
+                            <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Remove">
                               <i class="fas fa-trash-alt"></i>
                             </button>
-                            <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit">
+                            <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Cancel">
                               <i class="fas fa-undo"></i>
                             </button>
                         </div>
@@ -583,7 +583,7 @@
                             <b>{{dept.department}}</b>
                           </div>
                           <div>
-                            <b>BaseLine:</b>  <input type="number" class="animate bounceIn" autofocus formControlName="baseline" id="exampleInputAmount">
+                            <b>BaseLine:</b>  <input type="number" class="animate bounceIn px-3" autofocus formControlName="baseline" id="exampleInputAmount">
                           </div>
                         </div>
                         <ng-container formArrayName="opiAnnualTargets">
