@@ -31,7 +31,7 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-
+    this.commonService.breadcrumb.next(false);
   }
 
   public fetchOrganizationInfo() {

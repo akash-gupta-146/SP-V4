@@ -24,6 +24,7 @@ export class PlanComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.ss.breadcrumb.next(true);
     this.loaderService.display(true);
     this.cycleForm = this.initForm();
     this.getCycles();
