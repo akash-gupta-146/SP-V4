@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as alertify from 'alertifyjs';
 import {
   Router,
@@ -26,12 +26,12 @@ import { StorageService } from './shared/storage.service';
   `,
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   // Sets initial value to true to show loading spinner on first load
   // loading;
-  showLoader: boolean;
-  transactionLoader: boolean;
-  loadingStatus: string;
+  public showLoader: boolean;
+  public transactionLoader: boolean;
+  public loadingStatus: string;
 
   constructor(private router: Router, private loaderService: LoaderService,private storage:StorageService) {
     // router.events.subscribe((event: RouterEvent) => {

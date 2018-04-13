@@ -227,7 +227,7 @@
 </div>
 <!-- end of table -->
       <!-- No content -->
-      <div no-content *ngIf="!goals.length">
+      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
           Data not available
         </div>
       <!-- end of no content -->

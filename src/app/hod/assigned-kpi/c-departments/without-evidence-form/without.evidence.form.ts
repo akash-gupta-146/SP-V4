@@ -18,7 +18,6 @@ export class WithoutEvidenceForm {
  }
 
  constructor(public utServ: HodService, public loaderService: LoaderService) {
-  console.log("asdf",this.evidanceFormId);
  }
 
  isUpdating: boolean = false;

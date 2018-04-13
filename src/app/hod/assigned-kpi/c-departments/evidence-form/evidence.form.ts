@@ -74,14 +74,20 @@ export class EvidenceForm{
    formData.append('description', this.evidencForm.value['description']);
    formData.append('file', this.file);
    this.utServ.saveEvidence(this.url,formData).subscribe((res: any) => {
-    // if (!this.selectedQuarter.evidance)
-    //   this.selectedQuarter.evidance = [];
-    // this.selectedQuarter.evidance.push(res);
+    if(this.selectedQuarter){
+      if (!this.selectedQuarter.evidance)
+        this.selectedQuarter.evidance = [];
+      this.selectedQuarter.evidance.push(res);
+    }else{
+      if (!this.selectedForm.evidance)
+        this.selectedForm.evidance = [];
+      this.selectedForm.evidance.push(res);
+    }
     alertify.success("Evidence Uploaded ..");
-    $('#evidenceForm'+this.evidanceFormId).modal('hide');
+    $('#evidenceForm'+this.formId).modal('hide');
   }, (error: any) => {
     alertify.error("Something went wrong");
-    $('#evidenceForm'+this.evidanceFormId).modal('hide');
+    $('#evidenceForm'+this.formId).modal('hide');
   });
  }
 }

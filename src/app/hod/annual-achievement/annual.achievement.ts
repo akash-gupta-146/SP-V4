@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HodService } from '../hod.service';
-
+import { LoaderService } from '../../shared/loader.service';
+import * as alertify from 'alertifyjs';
 @Component({
   selector: 'annual-achievement',
   templateUrl: './annual.achievement.html',
   styleUrls: ['./annual.achievement.css', './../hod.component.scss']
 })
-export class AnnualAchievement {
+export class AnnualAchievement implements OnInit{
   defaultCycle: any ={};
   selectedYear:any = new Date().getFullYear();
   cycles: any;
   organisationInfo: any;
   goalsCopy: any[];
   goals: any[];
-  constructor(private utServ: HodService) {
+  constructor(private utServ: HodService,
+              private loaderSErvice:LoaderService) {
+  }
+
+  ngOnInit(){
+    this.loaderSErvice.display(true)
     this.utServ.fetchOrganizationInfo().subscribe((response) => {
       this.organisationInfo = response;
       this.cycles = response.cycles;
@@ -72,6 +78,10 @@ export class AnnualAchievement {
       } else {
         this.goals = response;
       }
+      this.loaderSErvice.display(false);
+    },(error:any)=>{
+      
+      this.loaderSErvice.display(false);      
     });
   }
   isFuture(y:number){

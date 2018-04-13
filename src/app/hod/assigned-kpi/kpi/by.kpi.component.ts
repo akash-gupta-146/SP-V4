@@ -3,6 +3,7 @@ import { HodService } from '../../hod.service';
 import { Router } from '@angular/router';
 import { StorageService } from '../../../shared/storage.service';
 import { Location } from '@angular/common';
+import { LoaderService } from '../../../shared/loader.service';
 
 @Component({
   selector: 'by-kpi',
@@ -22,7 +23,11 @@ export class ByKPIComponent {
   selectedActivity:any;
   selectedKpi:any;
 
-  constructor(private utServ: HodService, public router: Router, private storage: StorageService, public _location: Location) {
+  constructor(private utServ: HodService, 
+              public router: Router, 
+              private storage: StorageService, 
+              public _location: Location,
+              private loaderService:LoaderService) {
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     if (!(this.role == 'coordinator' || this.role == 'hod')) {
       this.departments = this.storage.getData('user_roleInfo');
@@ -50,6 +55,7 @@ export class ByKPIComponent {
   }
 
   goBack() {
+    this.loaderService.display(true);
     this.goals = this.goalsCopy.filter((element:any)=>{
       if(this.selectedInitiative)
       element.initiatives = element.initiatives.filter((initiative:any)=>{
@@ -66,6 +72,7 @@ export class ByKPIComponent {
       return (element.goalId == this.selectedGoal.goalId);
     });
     this.utServ.goals.next(this.goals);
+    this.loaderService.display(false);
     // this.router.navigateByUrl(this.role + "/home");
   }
 

@@ -4,6 +4,7 @@ import { HodService } from '../hod.service';
 import { StorageService } from '../../shared/storage.service';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
+import { LoaderService } from '../../shared/loader.service';
 declare let $: any;
 
 @Component({
@@ -26,7 +27,8 @@ export class KPIComponent extends Filters implements OnInit{
   quarters: any[];
   selectedYear: any = new Date().getFullYear();
   constructor(private utServ: HodService,
-    private storage: StorageService) {
+    private storage: StorageService,
+    private loaderService: LoaderService) {
     super();    
   }
 
@@ -48,6 +50,7 @@ export class KPIComponent extends Filters implements OnInit{
   }
 
   getCycles() {
+    this.loaderService.display(true);
     this.utServ.getCycles().subscribe((response: any) => {
       if (response.status === 204)
         this.cycles = [];
@@ -136,7 +139,11 @@ export class KPIComponent extends Filters implements OnInit{
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
       this.utServ.goals.next(response);
+      this.loaderService.status.next(false);            
       this.initFilters(response);
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong..");
     });
   }
 
