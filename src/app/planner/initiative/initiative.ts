@@ -183,7 +183,7 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   disable(event: any, initiativeId: any) {
     if (!event.target.checked)
-      alertify.confirm("Do you Really want to Inactive this Initiative??", () => {
+      alertify.confirm("Are you sure you want to deactivate selected initiative ?", () => {
         this.orgService.disableInitiative(initiativeId).subscribe((response: any) => {
           alertify.success("You disabled the Initiative..");
           this.getInitiative(this.defaultCycle);
@@ -196,7 +196,7 @@ export class InitiativeComponent extends Filters implements OnInit{
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you Really want to Active this Initiative??", () => {
+      alertify.confirm("Are you sure you want to Active this Initiative ?", () => {
         this.orgService.enableInitiative(initiativeId).subscribe((response: any) => {
           alertify.success("You enabled the Initiative..");
           this.getInitiative(this.defaultCycle);

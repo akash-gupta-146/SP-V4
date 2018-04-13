@@ -190,14 +190,14 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   removeAssignedDept(selectedMeasure: any, index: any) {
     const departmentInfo: any[] = selectedMeasure.departmentInfo;
-    if (confirm("Do you realy want to unassign department??"))
+    if (confirm("Do you realy want to unassign department ?"))
       this.orgService.deleteAssignedDepartment(selectedMeasure.departmentInfo[index].id).subscribe((response: any) => {
         departmentInfo.splice(index, 1);
       })
   }
 
   updateOpiTarget(selectedMeasure: any, index: any) {
-    if (confirm("Do you realy want to update targets??"))
+    if (confirm("Do you realy want to update targets ?"))
       this.orgService.updateTarget(selectedMeasure.opiId, [this.editDepartmentForm.value]).subscribe((response: any) => {
         selectedMeasure.departmentInfo[index] = response[0];
       });
@@ -336,7 +336,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   assign() {
     const departmentsArray: any[] = this.departmentForm.controls["departmentsArray"].value;
-    alertify.confirm("Do you really want to assign this OPI", () => {
+    alertify.confirm("Are you sure you want to assign this OPI", () => {
       this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe((response: any) => {
         this.selectedMeasure.departmentInfo = this.selectedMeasure.departmentInfo.concat(response);
         alertify.notify("Successfully assigned");
@@ -552,7 +552,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   disable(event: any, opiId: any) {
     if (!event.target.checked)
-      alertify.confirm("Do you Really want to inactive this KPI??", () => {
+      alertify.confirm("Are you sure you want to deactivate selected KPI ?", () => {
         this.orgService.disableKPI(opiId).subscribe((response: any) => {
           alertify.success("Inactivated the KPI..");
           this.getMeasure();
@@ -565,7 +565,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you Really want to activate this KPI??", () => {
+      alertify.confirm("Are you sure you want to activate this KPI ?", () => {
         this.orgService.enableKPI(opiId).subscribe((response: any) => {
           alertify.success("Activated the KPI..");
           this.getMeasure();

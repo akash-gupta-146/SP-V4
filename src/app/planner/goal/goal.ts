@@ -106,7 +106,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     }
 
     if (this.isUpdating) {
-      alertify.confirm("Are you sure you want to Update this Goal?", () => {
+      alertify.confirm("Are you sure you want to update current Goal ?", () => {
         this.orgService.updateObjective(this.selectedObjective.goalId, this.goalForm.value).subscribe((res: any) => {
           // $('#objectModal').modal('show');
           alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
@@ -155,7 +155,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
   disable(event: any, goalId: any) {
     if (!event.target.checked)
-      alertify.confirm("Do you Really want to Inactive this Goal??", () => {
+      alertify.confirm("Are you sure you want to deactivate selected goal ?", () => {
         this.orgService.disableGoal(goalId).subscribe((response: any) => {
           alertify.success("You disabled the Goal..");
           this.getGoals();
@@ -168,13 +168,13 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you Really want to Active this Goal??", () => {
+      alertify.confirm("Are you sure you want to active current goal ?", () => {
         this.orgService.enableGoal(goalId).subscribe((response: any) => {
           alertify.success("You enabled the Goal..");
           this.getGoals();
         }, () => {
           event.target.checked = !event.target.checked;
-          alertify.error("Something went wrong..")
+          alertify.error("Something went wrong!")
         })
       }, () => {
         event.target.checked = !event.target.checked;
