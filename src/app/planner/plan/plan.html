@@ -71,7 +71,7 @@
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-          <th class="align-middle">Plan Year</th>
+          <th class="align-middle">Title</th>
           <th class="align-middle">From Year</th>
           <th>End Year</th>
           <th class="align-middle">Description</th>
@@ -84,10 +84,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let c of cycles;let y = index;" [class.active]="c.defaultCycle" >
-          <td>{{c.planYear}}</td>
+          <td>{{c.title}}</td>
           <td>{{c.startYear}}</td>
           <td>{{c.endYear}}</td>
-          <td [class.highlight]="c.defaultCycle"><span>{{c.description}}</span></td>
+          <td><span>{{c.description}}</span></td>
           <td>
               <input type="checkbox" [checked]="!c.disable" (change)="changeStatus($event,c)">
           </td>

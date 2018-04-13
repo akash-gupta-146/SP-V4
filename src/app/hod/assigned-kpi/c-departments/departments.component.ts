@@ -179,7 +179,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
   selectedAction: any = {};
   setActionFeedback(data: any) {
     if (data.feedback == 'true')
-      alertify.confirm("Do you realy want to Approve this??", () => {
+      alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approveActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
           console.log(reponse);
           alertify.notify("Approved");
@@ -191,7 +191,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
         });
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you realy want to Reject this??", () => {
+      alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.rejectActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
           console.log(reponse);
           alertify.notify("Rejected");
@@ -207,7 +207,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
       stepIds: []
     };
     object.stepIds.push(step.stepId);
-    alertify.confirm("Do You Really Want To Link It?", () => {
+    alertify.confirm("Are you sure you Want To Link It?", () => {
       this.utServ.LinkActionStepToKPI(assignedDepartmentId, object).subscribe((response: any) => {
         step.linked = true;
         alertify.success("Linked");

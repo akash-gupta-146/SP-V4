@@ -210,7 +210,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
 
   disable(event: any, activityId: any) {
     if (!event.target.checked)
-      alertify.confirm("Do you Really want to inactivate this Activity??", () => {
+      alertify.confirm("Are you sure you want to inactivate this Activity ?", () => {
         this.orgService.disableActivity(activityId).subscribe((response: any) => {
           alertify.success("Inactivated the Activity..");
           this.getActivities(this.defaultCycle);
@@ -223,7 +223,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you Really want to activate this Activity??", () => {
+      alertify.confirm("Are you sure you want to activate this Activity ?", () => {
         this.orgService.enableActivity(activityId).subscribe((response: any) => {
           alertify.success("activated the Activity..");
           this.getActivities(this.defaultCycle);

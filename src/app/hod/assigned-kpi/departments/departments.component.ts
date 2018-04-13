@@ -167,7 +167,7 @@ export class DepartmentsComponent {
   selectedAction: any = {};
   setActionFeedback(data: any) {
     if (data.feedback == 'true')
-      alertify.confirm("Do you realy want to Approve this??", () => {
+      alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approveActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
           alertify.notify("Approved");
           $("#feedbackModal").modal('hide');
@@ -177,7 +177,7 @@ export class DepartmentsComponent {
         });
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you realy want to Reject this??", () => {
+      alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.rejectActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
           alertify.notify("Rejected");
         }, (error: any) => {
@@ -191,7 +191,7 @@ export class DepartmentsComponent {
       stepIds: []
     };
     object.stepIds.push(step.stepId);
-    alertify.confirm("Do You Really Want To Link It?", () => {
+    alertify.confirm("Are you sure you Want To Link It?", () => {
       this.utServ.LinkActionStepToKPI(assignedDepartmentId, object).subscribe((response: any) => {
         step.linked = true;
         alertify.success("Linked");
@@ -254,7 +254,7 @@ export class DepartmentsComponent {
   setQuarterFeedback(data: any) {
     console.log(data.feedback);
     if (data.feedback == 'true')
-      alertify.confirm("Do you realy want to Approve this??", () => {
+      alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Approved'
           alertify.notify("Audit has been Approved");
@@ -265,7 +265,7 @@ export class DepartmentsComponent {
         });
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you realy want to Reject this??", () => {
+      alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Rejected'
           alertify.notify("Audit has been Rejected");

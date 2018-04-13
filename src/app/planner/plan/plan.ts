@@ -96,20 +96,20 @@ export class PlanComponent implements OnInit {
 
   changeStatus(event: any, c: any) {
     if(c.defaultCycle){
-      alertify.alert("You can not Disable a Default Cycle.");
+      alertify.alert("Default plan cannot be deactivated");
       event.target.checked = !event.target.checked;
     }else
     alertify.confirm("Are you sure you want to do this?", () => {
       if (!event.target.checked)
         this.orgService.disableCycle(c.cycleId).subscribe((response: any) => {
-          alertify.success('You inactive the cycle.');
+          alertify.success('Cycle deactivated.');
           this.getCycles();
         }, (error: any) => {
           alertify.error("Something went wrong");
         });
       else
         this.orgService.enableCycle(c.cycleId).subscribe((response: any) => {
-          alertify.success('You active the cycle.');
+          alertify.success('Plan activated.');
           this.getCycles();
         }, (error: any) => {
           alertify.error("Something went wrong");
@@ -121,27 +121,27 @@ export class PlanComponent implements OnInit {
 
   deleteCycle(cycleId: any) {
     
-    alertify.confirm("Do you Really want to Delete this Cycle?", () => {
+    alertify.confirm("Are you sure you want to Delete this plan ?", () => {
       this.orgService.deleteCycle(cycleId).subscribe((response: any) => {
         this.getCycles();
       }, (error: any) => {
-        alertify.alert("You Can not Delete this Cycle??");
+        alertify.alert("You Can not Delete this plan ?");
       })
-    }).setHeader('Delete Cycle')
+    }).setHeader('Delete plan')
   }
 
   defaultCycle(event: any, cycleId: any) {
     if (!event.target.checked) {
-      alertify.alert("This cycle is alredy defualt").setHeader("Alert Message")
+      alertify.alert("Atleast one plan should be selected as default").setHeader("Alert Message")
       event.target.checked = !event.target.checked;
     } else {
-      alertify.confirm("Do you Really want to make it Default Cycle??", () => {
+      alertify.confirm("Are you sure you want to make current plan as default plan ?", () => {
         this.orgService.defaultCycle(cycleId).subscribe((response: any) => {
           this.getCycles();
-          alertify.success("Cycle has been made default..")
+          alertify.success("Cycle has been marked as default")
         }, (error: any) => {
           event.target.checked = !event.target.checked;
-          alertify.error("Something went wrong..")
+          alertify.error("Something went wrong!")
         })
       }, () => {
         event.target.checked = !event.target.checked;

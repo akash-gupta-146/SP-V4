@@ -113,7 +113,7 @@ export class KPIComponent extends Filters implements OnInit{
 
   setQuarterFeedback(data: any) {
     if (data.feedback == 'true')
-      alertify.confirm("Do you realy want to Approve this??", () => {
+      alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
           alertify.notify("Audit has been Approved");
           $("#feedbackModal").modal('hide');
@@ -123,7 +123,7 @@ export class KPIComponent extends Filters implements OnInit{
         });
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you realy want to Reject this??", () => {
+      alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
 
           alertify.notify("Audit has been Rejected");
