@@ -242,15 +242,14 @@
                     <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown"><small>Files</small> {{learning.evidance.length}}
                       <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                      <li role="presentation" *ngFor="let ev of learning.evidance;let e = index;">
-                        <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu" class="d-flex justify-content-between p-1">
+                      <li role="presentation" *ngFor="let ev of learning.evidance;let e = index;" >
+                        <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">evidance {{e+1}}</a>
                         <button type="button" class="close" (click)="deleteEvidence(ev,learning.evidance)" [hidden]="selectedQuarter.status=='locked'">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </li>
                       <li class="text-center" role="presentation" *ngIf="!learning.evidance.length">None</li>
-                      <li role="presentation" class="divider" style="clear: both;"></li>
                       <li class="text-center" role="presentation">
                         <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectLearning(learning)"> Upload</button> -->
                         <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = learning" [disabled]="selectedQuarter.disable">Upload</button>

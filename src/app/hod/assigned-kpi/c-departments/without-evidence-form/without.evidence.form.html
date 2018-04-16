@@ -85,11 +85,11 @@
               <button class="btn-sp btn-primary btn-sp-small" *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)" (click)="saveQuarterResult(lev)"
               [disabled]="lev.disable"> Save</button>
   
-            <button class="btn-sp btn-primary btn-sp-small" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
+            <button class="btn-sp btn-primary btn-sp-small ml-1" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
               [disabled]="lev.disable">Edit</button>
   
             <button class="btn-sp btn-clear btn-sp-small ml-1" *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
-            <button class="btn-sp btn-primary btn-sp-small" *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
+            <button class="btn-sp btn-primary btn-sp-small ml-1" *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
           </div>
         </div>
       </div>

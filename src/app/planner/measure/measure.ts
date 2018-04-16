@@ -464,7 +464,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
           msg += "\n" + key + " = " + formChanges[key] + ",";
         }
       });
-      alertify.confirm("Are you sure you want to update this OPI", () => {
+      alertify.confirm("Are you sure you want to update current KPI", () => {
         delete this.measureForm.value["activityId"];
         this.orgService.updateMeasure(this.selectedMeasure.opiId, formChanges).subscribe((response: any) => {
           this.measureForm = this.setMeasure();

@@ -82,6 +82,7 @@ export class PlanComponent implements OnInit {
     else {
       var data = {};
       data['description'] = this.cycleForm.value["description"];
+      data['title'] = this.cycleForm.value["title"];
       data['endYear'] = this.cycleForm.value["endYear"];
       this.orgService.updateCycle(this.selectedCycle.cycleId, data).subscribe((response: any) => {
         alertify.success('You updated Strategic plan.');
