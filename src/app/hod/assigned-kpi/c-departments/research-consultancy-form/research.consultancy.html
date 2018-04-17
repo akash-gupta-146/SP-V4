@@ -10,14 +10,13 @@
         </div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="d-flex flex-column card-box small-box p-1 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
-          <div class="d-flex justify-content-between mt-2 mx-2">
-            <div>
-              <small>Quarter</small>
+        <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;" [style.border-color]="lev.successInfo.color">
+          <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">            <div>
+              <!-- <small>Quarter</small> -->
               <div class="text-uppercase">{{lev.quarter}}</div>
             </div>
             <div class="text-right">
-              <small>Status (role)</small>
+              <!-- <small>Status (role)</small> -->
               <div class="text-capitalize">{{lev.status}}
                 <br>({{lev.role}})</div>
             </div>
@@ -60,10 +59,10 @@
             </div>
           </div>
           <div class="d-flex justify-content-center mt-3" *ngIf="!lev.disable">
-            <button class="btn-sp btn-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
+            <button class="btn-link link primary-link text-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
               <i class="fas fa-sign-in-alt"></i> Fill
             </button>
-            <button class="btn-sp btn-primary" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
+            <button class="btn-link link primary-link text-primary" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
               [disabled]="lev.disable">
               <i class="fas fa-lock"></i> Lock
             </button>
@@ -86,7 +85,7 @@
       <div class="panel" style="border: 1px solid #0000001c;">
         <div class="panel-body quarter-block">
           <b class="quarter">{{lev.quarter}}</b>
-          <span class="status" [style.background-color]="lev.successInfo.color">{{lev.status}} - {{lev.role}}</span>
+          <span class="status" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">{{lev.status}} - {{lev.role}}</span>
           <div class="row">
             <div class="col-sm-6">
               <strong>BASE LINE : </strong> {{lev.baseline}}
@@ -261,7 +260,7 @@
                       <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                      <li role="presentation" *ngFor="let ev of project.evidance;let e = index;">
+                      <li role="presentation" *ngFor="let ev of project.evidance;let e = index;" class="d-flex justify-content-between">
                         <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
                         <button type="button" class="close" (click)="deleteEvidence(ev,project.evidance)" [hidden]="selectedQuarter.status=='locked'">
                           <span aria-hidden="true">&times;</span>
@@ -279,7 +278,7 @@
                 </td>
                 <span class="option">
                   <button (click)="edit(project)">
-                    <span class="glyphicon glyphicon-pencil"></span>
+                      <i class="fas fa-edit"></i>
                   </button>
                   <button (click)="delete(project,selectedQuarter.researchConsultancies)">
                     <span class="glyphicon glyphicon-trash"></span>
@@ -290,10 +289,10 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="programListView = false;resetForm()">
-            <span class="glyphicon glyphicon-plus"></span> Add
+          <button type="button" class="btn-sp btn-primary" (click)="programListView = false;resetForm()">
+            Add
           </button>
-          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="isUpdating=false">Close</button>
+          <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>
     </div>

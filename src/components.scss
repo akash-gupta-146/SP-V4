@@ -3,7 +3,7 @@ $primary: #049ae5;
 $danger: var(--color-danger);
 $second-back: #fafafa;
 :root{
-  --color-primary : $primary;
+  --color-primary : #049ae5;
   --color-text    : #b9bcfb;
   --color-body    : #f2f2f2;
   --color0        : white;
@@ -316,10 +316,10 @@ $second-back: #fafafa;
     }
   }
   .small-box{
-    font-size:12px;
-    border-color:$primary;
+    font-size:13px;
+    // border-color:$primary;
     small{
-      color:$primary;
+      // color:$primary;
     }
   }
 }
@@ -839,7 +839,7 @@ div[no-content] {
   align-items: center;
   padding: 10px 0;
   position: sticky;
-  top: 55px;
+  top: 42px;
   z-index: 1;
     border-bottom: 1px solid lightgray;
   .nav{

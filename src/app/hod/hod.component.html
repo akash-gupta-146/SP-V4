@@ -48,9 +48,9 @@
             </div>
             <div class="data">
               <h6>
-                <strong class="text-capitalize">{{userDetails.firstName}} {{userDetails.lastName}}</strong>
+                <strong class="text-capitalize">{{userDetails.firstName}} {{userDetails.lastName}}</strong><small class="m-0"> ({{userDetails.roleInfo[0].role}})</small>
               </h6>
-              <p>({{userDetails.roleInfo[0].role}})</p>
+              <small>{{userDetails.roleInfo[0].department}}</small>
               <div class="mail">
                 <i class="fas fa-envelope"></i>
                 <div>{{userDetails.email}}</div>

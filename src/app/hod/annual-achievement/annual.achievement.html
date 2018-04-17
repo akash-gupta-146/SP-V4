@@ -113,22 +113,23 @@
           <i class="fas fa-angle-double-right"></i> Activity {{i+1}}.{{j+1}}.{{k+1}}.</b> {{activity.activity}}
         <div class="p-2" *ngFor="let opi of activity.opis;let l=index">
           <b>
-            <i class="fas fa-angle-double-right"></i>
-            <i class="fas fa-angle-right"></i>
+              <i class="fas fa-angle-right"></i>
+              <i class="fas fa-angle-right" style="margin-left: -4px;"></i>
+            <i class="fas fa-angle-right" style="margin-left: -6px;"></i>
             KPI {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}.
           </b>{{opi.opi}}
           <!-- Quarter Boxes -->
           <div >
             <div class="d-flex justify-content-center">
-              <div class="px-3" *ngFor="let report of opi.quartersAnnualReport;let rp=index;" style="width:25%;">
-                <div class="d-flex flex-column card-box small-box p-1 m-2 speed-p7 animate bounceIn">
-                  <div class="d-flex justify-content-between mt-2 mx-2">
+              <!-- <div *ngFor="let report of opi.quartersAnnualReport;let rp=index;" >  -->
+                <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" *ngFor="let report of opi.quartersAnnualReport;let rp=index;" style="width:25%" [style.border-color]="report.successInfo.color">
+                    <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background-color]="report.successInfo.color" [class.text-black]="report.successInfo.color == '#FFEB3B'">
                     <div>
-                      <small>Quarter</small>
+                      <!-- <small>Quarter</small> -->
                       <div class="text-uppercase">{{report.quarter}}</div>
                     </div>
                     <div class="text-right">
-                      <small>Status</small>
+                      <!-- <small>Status</small> -->
                       <div class="text-capitalize">
                         Over all Status
                       </div>
@@ -155,7 +156,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
           <!-- end of quarter boxes -->
@@ -186,16 +187,16 @@
                       </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                      <div class="d-flex flex-column card-box small-box p-1 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;">
-                        <div class="d-flex justify-content-between mt-2 mx-2">
+                      <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;" [style.border-color]="lev.successInfo.color">
+                        <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">
                           <div>
-                            <small>Quarter</small>
+                            <!-- <small>Quarter</small> -->
                             <div class="text-uppercase">{{lev.quarter}}</div>
                           </div>
                           <div class="text-right">
-                            <small>Status (role) </small>
+                            <!-- <small>Status (role) </small> -->
                             <div class="text-capitalize">
-                              <span class="highlight-dot animate flash infinite speed-4" [style.background]="lev.successInfo.color"></span>
+                              
                               {{lev.status}}
                               <br>by {{lev.role}}</div>
                           </div>
@@ -222,12 +223,13 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center mt-2 mx-2 dropdown" *ngIf="lev.evidance&&lev.evidance.length">
                           <h6 class="text-primary">Evidence</h6>
-                          <a class="btn btn-link dropdown-toggle" id="menu1" data-toggle="dropdown">Files
-                            <span class="caret"></span>
-                          </a>
+                         <h6 class="float-right"> <a class="link primary-link text-primary dropdown-toggle" id="menu1" data-toggle="dropdown">Files
+                            <span class="caret"></span> </a>
+                          </h6>
+                         
                           <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                            <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
-                              <a class="btn btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidance {{e+1}}</a>
+                            <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
+                              <a class="btn-link link primary-link text-primary" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidance {{e+1}}</a>
                             </li>
                             <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
                           </ul>
