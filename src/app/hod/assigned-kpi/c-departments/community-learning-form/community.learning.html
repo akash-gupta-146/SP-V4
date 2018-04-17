@@ -74,58 +74,6 @@
             </div>
             <!-- end of quarter boxes -->
 
-            
-<!-- <div class="panel panel-default" *ngFor="let tdl of department.opiAnnualTargets;let at=index;">
-  <div class="panel-heading">
-    Year : {{tdl.year}}
-  </div>
-  <div class="panel-body row">
-    <div class="col-lg-12" style="margin-bottom:5px;">
-      <strong>BASE LINE : </strong> {{department.baseline}}
-    </div>
-    <div class="col-sm-6 col-md-6 col-lg-3" *ngFor="let lev of tdl.levels;let in=index;">
-      <div class="panel" style="border: 1px solid #0000001c;">
-        <div class="panel-body quarter-block">
-          <b class="quarter">{{lev.quarter}}</b>
-          <span class="status" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">{{lev.status}} - {{lev.role}}</span>
-          <div class="row">
-              <div class="col-sm-6">
-                  <strong>BASE LINE : </strong> {{lev.baseline}}
-              </div>
-            </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <strong>Estimated Cost </strong>: {{tdl.estimatedCost}}
-            </div>
-            <div class="col-sm-6">
-              <strong>Target </strong>: {{lev.estimatedTargetLevel}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <strong>End Date </strong>: {{lev.endDate + tdl.year}}
-            </div>
-            <div class="col-sm-6" *ngIf="lev.currentCost">
-              <strong>Current Cost</strong>: {{lev.currentCost}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);learningListView = true;">
-                <strong>Number of Community Learning Programs</strong>
-              </a> : {{lev.communityLearnings.length}}
-            </div>
-          </div>
-        </div>
-        <div class="panel-footer text-center" *ngIf="!lev.disable">
-          <button type="button" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">Fill</button>
-          <button *ngIf="lev.communityLearnings.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 
 
 <!-- Modal -->
