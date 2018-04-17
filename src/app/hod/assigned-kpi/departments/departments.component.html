@@ -136,7 +136,7 @@
               </div>
               <div class="d-flex justify-content-center" >
                 <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;" [style.border-color]="lev.successInfo.color">
-                  <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background-color]="lev.successInfo.color">                      <div>
+                  <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">                      <div>
                         <!-- <small>Quarter</small> -->
                           <div class="text-uppercase">{{lev.quarter}}</div> 
                       </div>
@@ -172,7 +172,7 @@
                                     <span class="caret"></span>
                                   </a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                                    <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                                    <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
                                       <a class="btn btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">evidance {{e+1}}</a>
                                     </li>
                                     <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
@@ -239,7 +239,7 @@
                   <td>{{lev.currentTargetLevel}}</td>
                   <td>{{lev.endDate + tdl.year}}</td>
                   <td>
-                    <span class="badge text-white" [style.background]="lev.successInfo.color" [style.text-black]="lev.successInfo.color=='#FFEB3B'">{{lev.successInfo.difference}}</span>
+                    <span class="badge text-white" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'" [style.text-black]="lev.successInfo.color=='#FFEB3B'">{{lev.successInfo.difference}}</span>
                     <i class="far fa-check-circle float-right" *ngIf="lev.successInfo.target=='complete';else incomplete"></i>
                     <ng-template #incomplete>
                       <i class="far fa-times-circle float-right"></i>
@@ -257,7 +257,7 @@
                         <span class="caret"></span>
                       </a>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="right: 0;left:unset;">
-                        <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                        <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
                           <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">evidance {{e+1}}</a>
                         </li>
                       </ul>

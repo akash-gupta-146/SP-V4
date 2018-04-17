@@ -52,7 +52,7 @@
           </ng-template>
        
 
-           <button class="btn-sp btn-sp-small btn-primary" (click)="lockQuarterResult(lev)" *ngIf="lev.mouDetails.length" [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock </button>
+           <button class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.mouDetails.length" [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock </button>
          
         </div>
          </div>
@@ -102,17 +102,17 @@
              <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-             <li role="presentation" *ngFor="let ev of detail.evidance;let e = index;" class="card-box p-1 m-1 d-flex flex-row justify-content-between">
-              <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">evidance {{e+1}}</a>
-              <button class="btn btn-link text-primary p-0" (click)="deleteEvidence(detail.evidance,ev,e)" [hidden]="detail.status=='locked'">
+             <li role="presentation" *ngFor="let ev of detail.evidance;let e = index;" class="px-2 d-flex justify-content-between">
+              <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidence {{e+1}}</a>
+              <button class="btn btn-link p-0" (click)="deleteEvidence(detail.evidance,ev,e)" [hidden]="detail.status=='locked'">
                   <small><i class="fas fa-trash"></i></small>
               </button>
              </li>
              <li class="text-center" role="presentation" *ngIf="!detail.evidance.length">None</li>
              <li role="presentation" class="divider"></li>
-             <li role="presentation">
+             <li role="presentation" class=" border-top">
               <!-- <button (click)="selectMou(detail,lev);" data-toggle="modal" data-target="#evidenceForm">Upload</button> -->
-              <button class="btn btn-link text-center float-right" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedQuarter = lev;selectedForm = detail" [disabled]="lev.disable"><i class="fas fa-upload"></i> Upload</button>
+              <button class="btn btn-link m-auto" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedQuarter = lev;selectedForm = detail" [disabled]="lev.disable"><i class="fas fa-upload"></i> Upload</button>
              </li>
             </ul>
            </div>

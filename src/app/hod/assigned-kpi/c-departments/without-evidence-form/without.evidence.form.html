@@ -11,7 +11,7 @@
       </div>
       <div class="d-flex justify-content-center">
         <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;" [style.border-color]="lev.successInfo.color">
-          <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background-color]="lev.successInfo.color">            <div>
+          <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">            <div>
               <!-- <small>Quarter</small> -->
               <div class="text-uppercase">{{lev.quarter}}</div>
             </div>
@@ -53,24 +53,31 @@
                 <div>{{lev.currentTargetLevel}}</div>
               </div>
             </div>
-          <div class="d-flex justify-content-between align-items-center mt-2 mx-2 dropdown"  *ngIf="lev.status!='unsubmited'">
-                  <h6 class="text-primary">Evidence</h6>
-                  <a class="btn btn-link dropdown-toggle" id="menu1" data-toggle="dropdown">Files
-                    <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                    <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
-                      <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">Evidance {{e+1}}</a>
-                      <button type="button" class="close" (click)="deleteEvidence(lev.evidance,ev,e)" [hidden]="lev.status=='locked'">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </li>
-                    <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
-                    <li role="presentation" class="divider" style="clear: both;"></li>
-                    <li class="text-center" role="presentation">
-                      <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedQuarter = lev" [disabled]="lev.disable">Upload</button>
-                    </li>
-                  </ul>
+          <div class="d-flex justify-content-between mt-2 mx-2"  *ngIf="lev.status!='unsubmited'">
+            <div *ngIf="lev.status!='unsubmited'" class="dropdown">
+              <div>
+                  <small>Evidence</small>
+              </div>
+              <a class="text-primary dropdown-toggle" id="menu1" data-toggle="dropdown">File
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
+                  <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">Evidance {{e+1}}</a>
+                  <button type="button" class="close" (click)="deleteEvidence(lev.evidance,ev,e)" [hidden]="lev.status=='locked'">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </li>
+                <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
+                <li role="presentation" class="divider" style="clear: both;"></li>
+                <li class="text-center" role="presentation">
+                  <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedQuarter = lev" [disabled]="lev.disable">Upload</button>
+                </li>
+              </ul>
+            </div>      
+            <div>
+
+            </div>
           </div>
           <div class="d-flex justify-content-between mt-2 mx-2" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
               <h6 class="text-primary">Current cost</h6>
@@ -110,7 +117,7 @@
       <div class="panel" style="border: 1px solid #0000001c;">
         <div class="panel-body quarter-block">
           <b class="quarter">{{lev.quarter}}</b>
-          <span class="status" [style.background-color]="lev.successInfo.color">{{lev.status}} - {{lev.role}}</span>
+          <span class="status" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">{{lev.status}} - {{lev.role}}</span>
           <div class="row">
             <div class="col-sm-6">
                 <strong>BASE LINE : </strong> {{lev.baseline}}
@@ -135,7 +142,7 @@
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                  <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;">
+                  <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
                     <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
                     <button type="button" class="close" (click)="deleteEvidence(lev.evidance,ev,e)" [hidden]="lev.status=='locked'">
                       <span aria-hidden="true">&times;</span>
