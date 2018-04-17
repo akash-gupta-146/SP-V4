@@ -273,22 +273,24 @@
               <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;">
                 <div class="item">
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between ">
-                      <div>Frequency:</div>
+                    <li class="d-flex justify-content-between ">
+                      <div><i class="fas fa-chart-line text-secondary"></i></div>
                       <div class="text-right">{{msr.frequency}}</div>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between ">
-                      <div>MeasureUnit:</div>
+                    <li class="d-flex justify-content-between ">
+                      <div><i class="fas fas fa-balance-scale text-secondary"></i></div>
                       <div class="text-right">{{msr.measureUnit}}</div>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between ">
-                      <div>Cost:</div>
+                    <li class="d-flex justify-content-between ">
+                      <div><i class="far fa-money-bill-alt text-secondary"></i></div>
                       <div class="text-right">{{msr.currentCost}}</div>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between ">
-                      <div>Direction:</div>
+                    <li class="d-flex justify-content-between ">
+                      <div><i class="fas fa-compass text-secondary"></i></div>
                       <div>
-                        <i class="text-primary" [ngClass]="msr.direction ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down'"></i>
+                          <i class="text-primary" [ngClass]="msr.direction ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down'"></i>
+                        <span *ngIf="msr.direction"> Ascending </span>
+                        <span *ngIf="!msr.direction"> Descending </span>
                       </div>
                     </li>
                   </ul>
