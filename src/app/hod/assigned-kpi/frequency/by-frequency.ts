@@ -3,6 +3,7 @@ import { HodService } from '../../hod.service';
 import { Router } from '@angular/router';
 import { StorageService } from '../../../shared/storage.service';
 import { LoaderService } from '../../../shared/loader.service';
+import { Location } from '@angular/common';
 @Component({
  selector:'by-frequency',
  templateUrl:'by-frequency.html',
@@ -20,6 +21,7 @@ export class ByFrequency implements AfterViewInit{
  constructor( public utServ:HodService,
               public router:Router,
               private storage: StorageService,
+              public location: Location,
               private loaderService:LoaderService){  
  }
 

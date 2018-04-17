@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import { HodService } from '../hod.service';
+import { Location } from '@angular/common';
 
 @Component({
  selector:'by-goal',
@@ -10,8 +11,8 @@ export class ByGoal{
  goalsCopy: any[];
  goals: any[];
  opis:any[]=[];
- constructor(private utServ: HodService){
-  this.getGoals()
+ constructor(private utServ: HodService,private location: Location){
+  this.getGoals();
  }
 
  getGoals(): any {

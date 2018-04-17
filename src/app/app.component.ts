@@ -19,9 +19,6 @@ import { StorageService } from './shared/storage.service';
   <div yugma-loader  *ngIf="showLoader">
     <div color-area></div>
   </div>
-  <div yugma-loader  *ngIf="transactionLoader">
-    <div color-area></div>
-  </div>
   </router-outlet>
   `,
   styleUrls: ['./app.component.css']

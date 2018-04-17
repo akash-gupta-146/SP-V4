@@ -3,6 +3,7 @@ import { HodService } from '../../hod.service';
 import { StorageService } from '../../../shared/storage.service';
 import { Router } from '@angular/router';
 import { LoaderService } from '../../../shared/loader.service';
+import { Location } from '@angular/common';
 import * as alertify from 'alertifyjs';
 @Component({
   selector: 'action-step-by-department',
@@ -16,6 +17,7 @@ export class ByDepartment {
   constructor(public utServ: HodService, 
               private storage: StorageService, 
               private router: Router,
+              public location: Location,
               private loaderService:LoaderService) {
     this.role = this.storage.getData('user_roleInfo')[0].role;
     this.getDepartments();

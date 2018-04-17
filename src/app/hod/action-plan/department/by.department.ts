@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../../shared/storage.service';
 import { HodService } from '../../hod.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Location } from '@angular/common';
 import * as alertify from 'alertifyjs';
 import { LoaderService } from '../../../shared/loader.service';
 
@@ -21,7 +22,8 @@ export class ActionPlanByDepartment implements OnInit{
  constructor(private storage: StorageService, 
   private utServ: HodService, 
   private fb: FormBuilder,
-  private loaderService:LoaderService) {
+  private loaderService:LoaderService,
+  private location: Location) {
 
  }
 

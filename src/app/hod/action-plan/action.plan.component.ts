@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HodService } from '../hod.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
 import { LoaderService } from '../../shared/loader.service';
@@ -23,7 +24,8 @@ export class ActionPlan implements OnInit{
  constructor(public utServ: HodService, 
              public fb: FormBuilder, 
              public router: Router,
-             public loaderService:LoaderService) {
+             public loaderService:LoaderService,
+             public location: Location) {
  }
 
  ngOnInit(){

@@ -25,8 +25,8 @@ export class ByKPIComponent {
 
   constructor(private utServ: HodService, 
               public router: Router, 
-              private storage: StorageService, 
-              public _location: Location,
+              private storage: StorageService,
+              private location: Location,
               private loaderService:LoaderService) {
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     if (!(this.role == 'coordinator' || this.role == 'hod')) {
