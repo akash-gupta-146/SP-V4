@@ -58,7 +58,7 @@
               <div>{{lev.currentCost}}</div>
             </div>
           </div>
-          <div class="d-flex justify-content-center mt-3" *ngIf="!lev.disable">
+          <div class="d-flex justify-content-center m-1" *ngIf="!lev.disable">
             <button class="btn-link link primary-link text-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
               <i class="fas fa-sign-in-alt"></i> Fill
             </button>
@@ -86,74 +86,74 @@
       </div>
       <form class="form-horizontal" [formGroup]="researchConsultancyForm" (submit)="submitForm()" *ngIf="!programListView">
         <div class="modal-body">
-          <div class="form-group">
-            <label class="control-label col-sm-4">Project Title:</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Enter Project Title" formControlName="projectTitle">
-            </div>
+          <div class="row">
+          <div class="form-group col-lg-12">
+            <label class="control-label">Project Title:</label>
+            
+              <input type="text" class="form-control"  formControlName="projectTitle">
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Description:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-lg-12 col-sm-12">
+            <label class="control-label">Description:</label>
+            
               <textarea class="form-control" formControlName="description" rows="2"></textarea>
-            </div>
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Current Cost:</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost">
-            </div>
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Current Cost</label>
+            
+              <input type="number" class="form-control" formControlName="currentCost">
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Start Date:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Start Date</label>
+            
               <input type="date" class="form-control" formControlName="startDate">
-            </div>
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Estimated Time:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Estimated Time</label>
+            
               <input type="text" class="form-control" formControlName="estimatedTime">
-            </div>
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Externals Partner:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Externals Partner</label>
+            
               <input type="text" class="form-control" formControlName="externalPartners">
-            </div>
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Fund From External Partners:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Fund From External Partners:</label>
+            
               <input type="number" class="form-control" formControlName="fundFromExternalPartners">
-            </div>
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Fund From University:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Fund From University</label>
+            
               <input type="number" class="form-control" formControlName="fundFromUniversity">
-            </div>
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Number of Researchers Involved:</label>
-            <div class="col-sm-8">
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Number of Researchers Involved</label>
+            
               <input type="number" class="form-control" formControlName="totalResearchersInvolved">
-            </div>
+            
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-4">Number of Faculty Involved: </label>
-            <div class="col-sm-8">
+          <div class="form-group col-sm-12 col-lg-4">
+            <label class="control-label">Number of Faculty Involved </label>
+            
               <input type="number" class="form-control" formControlName="totalFacultyInvolved">
-            </div>
+            
           </div>
-          <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-8">
+          <div class="form-groupcol-lg-12 col-sm-12">
               <div class="checkbox">
                 <label>
                   <input type="checkbox" name="remember" formControlName="interDisciplinaryProject"> Inter Disciplinary Project</label>
               </div>
-            </div>
           </div>
+        </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" (click)="programListView = true;">
@@ -165,15 +165,14 @@
       </form>
       <div *ngIf="programListView">
         <div class="modal-body">
+            <div>
+                  Exchange Programs
+                <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
+                    <i class="fas fa-plus-circle"></i> Add New
+                </button>
+              </div>
+              <div class="table-responsive">
           <table class="table table-bordered table-card" style="position: relative;">
-            <caption>
-              <strong>
-                <u>Exchange Programs</u>
-              </strong>
-              <button class="pull-right">
-                <span class="glyphicon glyphicon-plus"></span>
-              </button>
-            </caption>
             <thead>
               <tr>
                 <th style="vertical-align:middle;">*</th>
@@ -187,6 +186,7 @@
                 <th style="vertical-align:middle;">No. of Researchers Involved</th>
                 <th style="vertical-align:middle;">No. of Faculty Involved</th>
                 <th style="vertical-align: middle">Evidence</th>
+                <th style="vertical-align: middle">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -217,29 +217,25 @@
                       <li class="text-center" role="presentation" *ngIf="!project.evidance.length">None</li>
                       <li role="presentation" class="divider" style="clear: both;"></li>
                       <li class="text-center" role="presentation">
-                        <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm"
-                          [disabled]="selectedQuarter.disable" (click)="selectProgram(project)"> Upload</button> -->
                         <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = project" [disabled]="selectedQuarter.disable">Upload</button>    
                       </li>
                     </ul>
                   </div>
                 </td>
-                <span class="option">
-                  <button (click)="edit(project)">
+                <td>
+                  <button (click)="edit(project)" class="btn btn-link">
                       <i class="fas fa-edit"></i>
                   </button>
-                  <button (click)="delete(project,selectedQuarter.researchConsultancies)">
-                    <span class="glyphicon glyphicon-trash"></span>
+                  <button (click)="delete(project,selectedQuarter.researchConsultancies)" class="btn btn-link">
+                      <i class="fas fa-trash"></i>
                   </button>
-                </span>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn-sp btn-primary" (click)="programListView = false;resetForm()">
-            Add
-          </button>
           <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>
