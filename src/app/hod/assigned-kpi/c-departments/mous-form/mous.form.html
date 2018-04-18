@@ -145,31 +145,22 @@
          </tr>
         </tfoot>
        </table>
-       <div class="row" *ngIf="!lev.mouDetails.length">
-        <div class="col-sm-3">
-         <div class="input-group">
-          <div class="input-group-addon bg-color">Current Cost</div>
-          <input type="text" class="form-control" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
+
+       <div class="d-flex justify-content-between align-items-center" *ngIf="!lev.mouDetails.length">
+         <div class="px-3">
+          Current Cost<input type="text" class="form-control" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
          </div>
-        </div>
-        <div class="col-sm-3">
-         <div class="input-group">
-          <div class="input-group-addon bg-color">Mou type</div>
-          <input type="text" class="form-control" [(ngModel)]="lev.mouType" [disabled]="lev.disable">
+         <div class="px-3">
+          MOU Type <input type="text" class="form-control" [(ngModel)]="lev.mouType" [disabled]="lev.disable" placeholder="add MOU">
          </div>
-        </div>
-        <div class="col-sm-3">
-         <div class="input-group">
-          <div class="input-group-addon bg-color">Organization</div>
-          <input type="text" class="form-control" [(ngModel)]="lev.organization" [disabled]="lev.disable">
+         <div class="px-3">
+          Organization<input type="text" class="form-control" [(ngModel)]="lev.organization" [disabled]="lev.disable" placeholder="add organization">
          </div>
-        </div>
-        <div class="col-sm-3">
-         <div class="form-group">
-          <button class="btn pull-right btn-save" type="button" (click)="saveQuarterResultWithMou(lev)" [disabled]="lev.disable"> Save</button>
+         <div>
+          <button class="btn-sp btn-primary btn-sp-small" (click)="saveQuarterResultWithMou(lev)" [disabled]="lev.disable">Save</button>
          </div>
-        </div>
        </div>
+
       </td>
      </tr>
     </ng-container>
