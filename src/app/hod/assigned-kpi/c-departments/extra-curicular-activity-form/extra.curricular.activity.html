@@ -59,12 +59,11 @@
             <div>{{lev.currentCost}}</div>
           </div>
         </div>
-        <div class="d-flex justify-content-center mt-3" *ngIf="!lev.disable">
+        <div class="d-flex justify-content-center m-1" *ngIf="!lev.disable">
           <button class="btn-link link primary-link text-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
             <i class="fas fa-sign-in-alt"></i> Fill
           </button>
-          <button class="btn-link link primary-link text-primary" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
-            [disabled]="lev.disable">
+          <button class="btn-link link primary-link text-primary" *ngIf="lev.extraCurricularActivities.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">
             <i class="fas fa-lock"></i> Lock
           </button>
         </div>
