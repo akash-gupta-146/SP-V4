@@ -164,6 +164,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="measureForm.invalid">
           Save
         </button>
+        <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
       </div>
     </form>
   </div>
@@ -476,6 +477,7 @@
             <button type="submit" class="btn-sp btn-primary mr-1" *ngIf="next" (click)="assign()" [disabled]="departmentForm.controls.departmentsArray.invalid">
                 Save
             </button>
+            <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </div>
     </div>
@@ -633,6 +635,9 @@
 
 
 
+            </div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
             </div>
           </div>
         </div>
