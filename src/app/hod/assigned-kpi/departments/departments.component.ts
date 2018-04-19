@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
 import { HodService } from '../../hod.service';
@@ -13,7 +14,7 @@ declare let $: any;
   templateUrl: './departments.component.html',
   styleUrls: ['./../../hod.component.scss']
 })
-export class DepartmentsComponent {
+export class DepartmentsComponent implements OnInit{
   selectedDepatrtmentId: any;
   employees: any;
   employeesCopy: any;
@@ -28,8 +29,14 @@ export class DepartmentsComponent {
   actionForm: FormGroup;
   selectedLevel: any;
   selectedMeasure: any;
-  constructor(public route: ActivatedRoute, public utServ: HodService, private storage: StorageService, public fb: FormBuilder) {
-    console.log("asdfds");
+  constructor(private route: ActivatedRoute, 
+              private utServ: HodService, 
+              private storage: StorageService, 
+              private fb: FormBuilder,
+              private location: Location) {
+  }
+
+  ngOnInit(){
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     this.route.params.subscribe((params: any) => {
       this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {

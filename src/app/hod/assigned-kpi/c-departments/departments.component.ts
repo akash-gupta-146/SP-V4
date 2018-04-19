@@ -31,9 +31,12 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
   departmentsCopy: any[] = [];
   evidencForm: FormGroup;
   evidences: any[] = [];
-  constructor(public route: ActivatedRoute, public utServ: HodService,
-    public storage: StorageService, public loaderService: LoaderService,
-    public fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, 
+              private utServ: HodService,
+              private storage: StorageService, 
+              private loaderService: LoaderService,
+              private fb: FormBuilder,
+              private location:Location) {
     console.log(this.id);
     if (this.id) {
 

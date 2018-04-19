@@ -1,85 +1,96 @@
-
- <table id="accordion" class="table  table-bordered table-edit">
-   <thead>
-     <tr>
-       <th>Year</th>
-       <th>Estimated Cost</th>
-       <th>Quarter</th>
-       <th>Estimated Target Level</th>
-       <th>End Date</th>
-       <th>More</th>
-     </tr>
-   </thead>
-   <tbody *ngFor="let tdl of department.opiAnnualTargets;let at=index;">
-     <tr>
-       <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.year}}</td>
-       <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.estimatedCost}}</td>
-     </tr>
-     <ng-template let-lev ngFor [ngForOf]="tdl.levels" let-in="index">
-       <tr>
-         <td>{{lev.quarter}}</td>
-         <td>{{lev.estimatedTargetLevel}}</td>
-         <td>{{lev.endDate + tdl.year}}</td>
-         <td>
-           <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#row-collapse'+d+'d'+at+'q'+in" (click)="collapseOff('#row-collapse'+d+'d'+at+'q'+in,lev)"
-             style="cursor:pointer;">
-             <i class="fas fa-eye"></i>
-            </button>
-         </td>
-       </tr>
-       <ng-container>
-         <tr [attr.id]="'row-collapse'+d+'d'+at+'q'+in" class="collapse collapse-off">
-           <td colspan="6">
-            <table class="table table-bordered"  *ngIf="lev.evidanceFormId==1">
+<table id="accordion" class="table  table-bordered table-edit">
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Estimated Cost</th>
+      <th>Quarter</th>
+      <th>Estimated Target Level</th>
+      <th>End Date</th>
+      <th>More</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let tdl of department.opiAnnualTargets;let at=index;">
+    <tr>
+      <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.year}}</td>
+      <td [attr.rowspan]="tdl.levels.length + 5" style="vertical-align: middle;">{{tdl.estimatedCost}}</td>
+    </tr>
+    <ng-template let-lev ngFor [ngForOf]="tdl.levels" let-in="index">
+      <tr>
+        <td>{{lev.quarter}}</td>
+        <td>{{lev.estimatedTargetLevel}}</td>
+        <td>{{lev.endDate + tdl.year}}</td>
+        <td>
+          <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#row-collapse'+d+'d'+at+'q'+in" (click)="collapseOff('#row-collapse'+d+'d'+at+'q'+in,lev)"
+            style="cursor:pointer;">
+            <i class="fas fa-eye"></i>
+          </button>
+        </td>
+      </tr>
+      <ng-container>
+        <tr [attr.id]="'row-collapse'+d+'d'+at+'q'+in" class="collapse collapse-off">
+          <td colspan="6">
+            <table class="table table-bordered" *ngIf="lev.evidanceFormId==1">
               <caption align="top" *ngIf="lev.internshipDetails.length">
                 <div class="d-flex justify-content-end align-items-center">
-                    <div>
-                      Current Cost
-                    </div>
-                    <div class="mx-2">
-                        <input class="form-control mx-2" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
-                    </div>
-                    <div class="mx-2">
-                        <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
-                            <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
-                                Edit
-                            </button>
-                          </div>
-                          <ng-template #savebtn>
-                            <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
-                               Save
-                            </button>
-                            <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
-                                Cancel
-                            </button>
-                          </ng-template>
-                          <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.internshipDetails.length"
-                          [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
-                    </div>
+                  <div>
+                    Internship Records
                   </div>
+                  <div class="mx-2">
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#internshipModal" (click)="selectedQuarter=lev;listView=true;">view</button>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                  <div>
+                    Current Cost
+                  </div>
+                  <div class="mx-2">
+                    <input class="form-control mx-2" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
+                  </div>
+                  <div class="mx-2">
+                    <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                        Edit
+                      </button>
+                    </div>
+                    <ng-template #savebtn>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
+                        Save
+                      </button>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                        Cancel
+                      </button>
+                    </ng-template>
+                    <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.internshipDetails.length"
+                      [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                  </div>
+                </div>
               </caption>
               <thead>
                 <tr>
                   <th>Internship Detail</th>
                   <th *ngIf="lev.internshipDetails.length">Evidence
-                      <button class="float-right btn btn-primary" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = lev.internshipDetails[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                    <button class="float-right btn btn-primary" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal"
+                      [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = lev.internshipDetails[0];selectedQuarter=lev;"
+                      [disabled]="lev.disable">Add</button>
                   </th>
                 </tr>
               </thead>
               <tbody *ngFor="let file of lev.internshipDetails;let f=index;">
                 <tr>
                   <td>
-                    <a [attr.href]="file.internshipFileUrl" class="text-primary link primary-link"><i class="fas fa-file"></i>  File 1</a>
-                    <button type="button" class="close" (click)="deleteInternshipFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'"
-                      [disabled]="lev.disable">
+                    <a [attr.href]="file.internshipFileUrl" class="text-primary link primary-link">
+                      <i class="fas fa-file"></i> File 1</a>
+                    <button type="button" class="close" (click)="deleteFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </td>
                   <td>
                     <ul style="list-style: none;padding: 0;">
                       <li *ngFor="let ev of file.evidance;let e=index;" class="d-flex justify-content-between">
-                        <a [attr.href]="ev.url" class="text-primary link primary-link"><i class="fas fa-hand-paper"></i> Evidence {{e+1}}</a>
-                        <button type="button" class="close" (click)="deleteInternshipEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'" style="clear:both;">
+                        <a [attr.href]="ev.url" class="text-primary link primary-link">
+                          <i class="fas fa-hand-paper"></i> Evidence {{e+1}}</a>
+                        <button type="button" class="close" (click)="deleteEvidence(file.evidance,ev,e)" [disabled]="lev.disable" *ngIf="lev.status!='locked'"
+                          style="clear:both;">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </li>
@@ -93,17 +104,17 @@
                   <td colspan="2">
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
-                          Current Cost
-                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
+                        Current Cost
+                        <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
                       </div>
                       <div class="mx-2">
-                          Student Internship File 
-                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        Student Internship File
+                        <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                           aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
                         <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
                       </div>
                       <div>
-                          <button class="btn-sp btn-primary btn-sp-small" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
+                        <button class="btn-sp btn-primary btn-sp-small" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
                       </div>
                     </div>
                   </td>
@@ -114,31 +125,39 @@
               <caption align="top" *ngIf="lev.professionalDevelopmentActivities.length">
                 <div class="d-flex justify-content-end align-items-center">
                   <div>
-                      Current Cost
+                    Professional Development Activity Records
                   </div>
                   <div class="mx-2">
-                      <input class="form-control" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#professionalDevelopmentActivitiesModal" (click)="selectedQuarter=lev;listView=true;">view</button>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                  <div>
+                    Current Cost
+                  </div>
+                  <div class="mx-2">
+                    <input class="form-control" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
                   </div>
                   <div>
-                      <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
-                          <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
-                              Edit
-                          </button>
-                        </div>
-                  
-                        <ng-template #savebtn>
-                          <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
-                            Save
-                          </button>
-                          <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
-                            Cancel
-                          </button>
-                        </ng-template>
-                  
-                        <div class="float-right">
-                          <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.professionalDevelopmentActivities.length"
-                            [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
-                        </div>
+                    <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                        Edit
+                      </button>
+                    </div>
+
+                    <ng-template #savebtn>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
+                        Save
+                      </button>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                        Cancel
+                      </button>
+                    </ng-template>
+
+                    <div class="float-right">
+                      <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.professionalDevelopmentActivities.length"
+                        [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                    </div>
                   </div>
                 </div>
               </caption>
@@ -146,9 +165,9 @@
                 <tr>
                   <th>Professional Development Activity</th>
                   <th *ngIf="lev.professionalDevelopmentActivities.length">Evidence
-                 
-                    <button class="btn-sp btn-sp-small btn-clear float-right" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
-                      (click)="selectedForm = lev.professionalDevelopmentActivities[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                    <button class="btn-sp btn-sp-small btn-clear float-right" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal"
+                      [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = lev.professionalDevelopmentActivities[0];selectedQuarter=lev;"
+                      [disabled]="lev.disable">Add</button>
                   </th>
                 </tr>
               </thead>
@@ -180,17 +199,17 @@
                   <td colspan="2">
                     <div class="d-flex justify-content-end">
                       <div>
-                          Current Cost 
-                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
+                        Current Cost
+                        <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
                       </div>
                       <div>
-                          File
-                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        File
+                        <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                           aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
                         <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
                       </div>
                       <div>
-                          <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
+                        <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
                       </div>
                     </div>
                   </td>
@@ -199,42 +218,51 @@
             </table>
             <table class="table table-bordered" *ngIf="lev.evidanceFormId==10">
               <caption align="top" *ngIf="lev.facultyPublications.length">
-                  <div class="d-flex justify-content-end align-items-center">
-                    <div>
-                        Current Cost
+                <div class="d-flex justify-content-end align-items-center">
+                  <div>
+                    Faculty Publication Records
+                  </div>
+                  <div class="mx-2">
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#facultyPublicationModal" (click)="selectedQuarter=lev;listView=true;">view</button>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                  <div>
+                    Current Cost
+                  </div>
+                  <div class="mx-2">
+                    <input class="form-control" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
+                  </div>
+                  <div>
+                    <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                        Edit
+                      </button>
                     </div>
-                    <div class="mx-2">
-                        <input class="form-control" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
-                      </div>
-                      <div>
-                          <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
-                              <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
-                                  Edit
-                              </button>
-                            </div>
-          
-                            <ng-template #savebtn>
-                              <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
-                                Save
-                              </button>
-                              <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
-                               Cancel
-                              </button>
-                            </ng-template>
-                      
-                            <div class="float-right">
-                              <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.facultyPublications.length"
-                                [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
-                            </div>
-                        </div>
+
+                    <ng-template #savebtn>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
+                        Save
+                      </button>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                        Cancel
+                      </button>
+                    </ng-template>
+
+                    <div class="float-right">
+                      <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.facultyPublications.length"
+                        [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                    </div>
+                  </div>
                 </div>
               </caption>
               <thead>
                 <tr>
                   <th>Professional Development Activity</th>
                   <th *ngIf="lev.facultyPublications.length">Evidence
-                    <button class="btn-sp btn-sp-small btn-clear float-right" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
-                      (click)="selectedForm = lev.facultyPublications[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                    <button class="btn-sp btn-sp-small btn-clear float-right" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal"
+                      [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = lev.facultyPublications[0];selectedQuarter=lev;"
+                      [disabled]="lev.disable">Add</button>
                   </th>
                 </tr>
               </thead>
@@ -243,7 +271,7 @@
                   <td>
                     <a [attr.href]="file.internshipFileUrl">File 1</a>
                     <button type="button" class="close" (click)="deleteFile(lev.facultyPublications,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable">
-                        <i class="fas fa-trash"></i>
+                      <i class="fas fa-trash"></i>
                     </button>
                   </td>
                   <td>
@@ -265,17 +293,17 @@
                   <td colspan="2">
                     <div class="d-flex justify-content-end">
                       <div>
-                          Current Cost
-                          <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
+                        Current Cost
+                        <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
                       </div>
                       <div>
                         File
                         <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                        aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
-                      <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
+                          aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
+                        <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
                       </div>
                       <div>
-                          <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
+                        <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
                       </div>
                     </div>
                   </td>
@@ -284,33 +312,41 @@
             </table>
             <table class="table table-bordered" *ngIf="lev.evidanceFormId==11">
               <caption align="top" *ngIf="lev.studentPublications.length">
-                <div class="d-block justify-content-end align-items-center">
+                <div class="d-flex justify-content-end align-items-center">
                   <div>
-                      Current Cost
+                    Student Publication Records
                   </div>
                   <div class="mx-2">
-                      <input class="form-control" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#studentPublicationModal" (click)="selectedQuarter=lev;listView=true;">view</button>
+                  </div>
+                </div>
+                <div class="d-block justify-content-end align-items-center">
+                  <div>
+                    Current Cost
+                  </div>
+                  <div class="mx-2">
+                    <input class="form-control" [(ngModel)]="lev.currentCost" [disabled]="!lev.edit" autofocus>
                   </div>
                   <div>
-                      <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
-                          <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
-                              EDIT
-                          </button>
-                        </div>
-                  
-                        <ng-template #savebtn>
-                          <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
-                            Save
-                          </button>
-                          <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
-                            Cancel
-                          </button>
-                        </ng-template>
-                  
-                        <div class="float-right">
-                          <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.studentPublications.length"
-                            [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
-                        </div>
+                    <div class="float-left" *ngIf="!lev.edit;else savebtn" [hidden]="lev.disable">
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit=true;lev.currentCostCopy=lev.currentCost;">
+                        EDIT
+                      </button>
+                    </div>
+
+                    <ng-template #savebtn>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="updateCurrentCost(lev);">
+                        Save
+                      </button>
+                      <button type="button" class="btn-sp btn-primary btn-sp-small mr-1" (click)="lev.edit = false;lev.currentCost=lev.currentCostCopy;">
+                        Cancel
+                      </button>
+                    </ng-template>
+
+                    <div class="float-right">
+                      <button type="button" class="btn-sp btn-primary btn-sp-small" (click)="lockQuarterResult(lev)" *ngIf="lev.studentPublications.length"
+                        [disabled]="lev.status=='locked'" [disabled]="lev.disable">Lock</button>
+                    </div>
                   </div>
                 </div>
               </caption>
@@ -318,8 +354,9 @@
                 <tr>
                   <th>Professional Development Activity</th>
                   <th *ngIf="lev.studentPublications.length">Evidence
-                    <button class="btn-sp btn-sp-small btn-clear float-right" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
-                      (click)="selectedForm = lev.studentPublications[0];selectedQuarter=lev;" [disabled]="lev.disable">Add</button>
+                    <button class="btn-sp btn-sp-small btn-clear float-right" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal"
+                      [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = lev.studentPublications[0];selectedQuarter=lev;"
+                      [disabled]="lev.disable">Add</button>
                   </th>
                 </tr>
               </thead>
@@ -328,7 +365,7 @@
                   <td>
                     <a [attr.href]="file.internshipFileUrl">File 1</a>
                     <button type="button" class="close" (click)="deleteFile(lev.studentPublications,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable">
-                        <i class="fas fa-trash"></i>
+                      <i class="fas fa-trash"></i>
                     </button>
                   </td>
                   <td>
@@ -350,28 +387,419 @@
                   <td colspan="2">
                     <div class="d-flex justify-content-between">
                       <div>
-                          Current Cost  <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
+                        Current Cost
+                        <input class="form-control" type="number" [(ngModel)]="lev.currentCost" [disabled]="lev.disable">
                       </div>
                       <div>
-                          File
-                          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        File
+                        <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                           aria-describedby="fileHelp" (change)="getFile(lev,$event)" [disabled]="lev.disable">
                         <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
                       </div>
                       <div>
-                          <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
+                        <button type="button" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)">Save</button>
                       </div>
                     </div>
                   </td>
                 </tr>
               </tfoot>
             </table>
-           </td>
-         </tr>
-       </ng-container>
-     </ng-template>
-   </tbody>
- </table>
-
+          </td>
+        </tr>
+      </ng-container>
+    </ng-template>
+  </tbody>
+</table>
 
 <evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+
+<div class="modal fade" id="internshipModal" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width: 900px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Student Internship Records</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <form class="form-horizontal" [formGroup]="recordForm" (submit)="updateInternshipRecord()" *ngIf="!listView">
+        <div class="modal-body row">
+          <div class="form-group col-lg-6">
+            <label class="control-label">Student:</label>
+            <input class="form-control" type="text" formControlName="studentName">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">College:</label>
+            <input class="form-control" type="text" formControlName="college">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Department:</label>
+            <input class="form-control" type="text" formControlName="department">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">External Supervisor:</label>
+            <input class="form-control" type="text" formControlName="externalSupervisor">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">External Supervisor Email:</label>
+            <input class="form-control" type="email" formControlName="externalSupervisorEmail">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">External Supervisor Mobile:</label>
+            <input class="form-control" type="tel" formControlName="externalSupervisorMobile">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Internal Supervisor:</label>
+            <input class="form-control" type="text" formControlName="internalSupervisor">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Internship Domail:</label>
+            <input class="form-control" type="text" formControlName="internshipDomain">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Organization:</label>
+            <input class="form-control" type="text" formControlName="organization">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Organization Address:</label>
+            <input class="form-control" type="text" formControlName="organizationAddress">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Organization Address Type:</label>
+            <input class="form-control" type="text" formControlName="organizationAddressType">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="listView = true;">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+          </button>
+          <button type="submit" class="btn btn-default" [disabled]="recordForm.invalid">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+      <div *ngIf="listView">
+        <div class="modal-body">
+          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+            <table class="table table-bordered table-card">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Student</th>
+                  <th>Collage</th>
+                  <th>Department</th>
+                  <th>Organisation</th>
+                  <th>External Supervisor</th>
+                  <th>Internal Supervisor</th>
+                  <th>Internship Domain</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedQuarter.internshipRecord;let r = index;">
+                  <td>{{r+1}}</td>
+                  <td>{{record.studentName}}</td>
+                  <td>{{record.college}}</td>
+                  <td>{{record.department}}</td>
+                  <td>{{record.organization}}</td>
+                  <td>{{record.externalSupervisor}}</td>
+                  <td>{{record.internalSupervisor}}</td>
+                  <td>{{record.internshipDomain}}</td>
+                  <td>
+                    <button class="btn btn-link" type="button" [disabled]="selectedQuarter.disable" (click)="editInternshipRecord(record);">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal fade" id="studentPublicationModal" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width: 900px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Student Publication Records</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <form class="form-horizontal" [formGroup]="studentPublicationForm" (submit)="updateStudentPublicationRecord()" *ngIf="!listView">
+        <div class="modal-body row">
+          <div class="form-group col-lg-6">
+            <label class="control-label">Student:</label>
+            <input class="form-control" type="text" formControlName="studentName">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">publicationTitle:</label>
+            <input class="form-control" type="text" formControlName="publicationTitle">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">publicationDate:</label>
+            <input class="form-control" type="text" formControlName="publicationDate">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">journalTitle:</label>
+            <input class="form-control" type="text" formControlName="journalTitle">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">journalType:</label>
+            <select class="form-control" formControlName="journalTypeId">
+              <option value="1">Local</option>
+              <option value="2">Emirates</option>
+              <option value="3">UAE</option>
+              <option value="4">GCC</option>
+              <option value="5">International</option>
+            </select>
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Degree Level:</label>
+            <input class="form-control" type="text" formControlName="degreeLevel">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="listView = true;">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+          </button>
+          <button type="submit" class="btn btn-default" [disabled]="studentPublicationForm.invalid">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+      <div *ngIf="listView">
+        <div class="modal-body">
+          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+            <table class="table table-bordered table-card">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Student</th>
+                  <th>Publication Title</th>
+                  <th>Publication Date</th>
+                  <th>Journal Title</th>
+                  <th>Journal Type</th>
+                  <th>Degree Level</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedQuarter.studentPublicationRecord;let r = index;">
+                  <td>{{r+1}}</td>
+                  <td>{{record.studentName}}</td>
+                  <td>{{record.publicationTitle}}</td>
+                  <td>{{record.publicationDate}}</td>
+                  <td>{{record.journalTitle}}</td>
+                  <td>{{record.journalType}}</td>
+                  <td>{{record.degreeLevel}}</td>
+                  <td>
+                    <button class="btn btn-link" type="button" [disabled]="selectedQuarter.disable" (click)="editStudentPublicationRecord(record);">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal fade" id="facultyPublicationModal" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width: 900px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Faculty Publication Records</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <form class="form-horizontal" [formGroup]="facultyPublicationForm" (submit)="updateFacultyPublicationRecord()" *ngIf="!listView">
+        <div class="modal-body row">
+          <div class="form-group col-lg-6">
+            <label class="control-label">Faculty:</label>
+            <input class="form-control" type="text" formControlName="faculty">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Faculty Rank:</label>
+            <input class="form-control" type="text" formControlName="facultyRank">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">publicationTitle:</label>
+            <input class="form-control" type="text" formControlName="publicationTitle">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">publicationDate:</label>
+            <input class="form-control" type="text" formControlName="publicationDate">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">journalTitle:</label>
+            <input class="form-control" type="text" formControlName="journalTitle">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">journalType:</label>
+            <select class="form-control" formControlName="journalTypeId">
+              <option value="1">Local</option>
+              <option value="2">Emirates</option>
+              <option value="3">UAE</option>
+              <option value="4">GCC</option>
+              <option value="5">International</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="listView = true;">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+          </button>
+          <button type="submit" class="btn btn-default" [disabled]="facultyPublicationForm.invalid">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+      <div *ngIf="listView">
+        <div class="modal-body">
+          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+            <table class="table table-bordered table-card">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Faculty</th>
+                  <th>facultyRank</th>
+                  <th>Publication Title</th>
+                  <th>Publication Date</th>
+                  <th>Journal Title</th>
+                  <th>Journal Type</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedQuarter.facultyPublicationRecord;let r = index;">
+                  <td>{{r+1}}</td>
+                  <td>{{record.faculty}}</td>
+                  <td>{{record.facultyRank}}</td>
+                  <td>{{record.publicationTitle}}</td>
+                  <td>{{record.publicationDate}}</td>
+                  <td>{{record.journalTitle}}</td>
+                  <td>{{record.journalType}}</td>
+                  <td>
+                    <button class="btn btn-link" type="button" [disabled]="selectedQuarter.disable" (click)="editFacultyPublicationRecord(record);">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal fade" id="professionalDevelopmentActivitiesModal" role="dialog">
+  <div class="modal-dialog modal-lg" style="max-width: 900px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Professional Development Activities Records</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <form class="form-horizontal" [formGroup]="professionalDevelopmentActivitiesForm" (submit)="updateProfessionalDevelopmentActivityRecord()"
+        *ngIf="!listView">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Title:</label>
+            <input class="form-control" type="text" formControlName="title">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Type:</label>
+            <select class="form-control" formControlName="type">
+              <option value="course">Course</option>
+              <option value="workshop">Workshop</option>
+              <option value="seminar">Seminar</option>
+              <option value="conference">Conference</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Faculty:</label>
+            <input class="form-control" type="text" formControlName="faculty">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Scope:</label>
+            <select class="form-control" formControlName="scopeId">
+              <option value="1">Local</option>
+              <option value="2">Emirates</option>
+              <option value="3">UAE</option>
+              <option value="4">GCC</option>
+              <option value="5">International</option>
+            </select>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" formControlName="national">National
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="listView = true;">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+          </button>
+          <button type="submit" class="btn btn-default" [disabled]="professionalDevelopmentActivitiesForm.invalid">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+      <div *ngIf="listView">
+        <div class="modal-body">
+          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+            <table class="table table-bordered table-card">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Faculty</th>
+                  <th>Title</th>
+                  <th>Scope</th>
+                  <th>National</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedQuarter.professionalDevelopmentActivityRecord;let r = index;">
+                  <td>{{r+1}}</td>
+                  <td>{{record.faculty}}</td>
+                  <td>{{record.title}}</td>
+                  <td>{{record.scope}}</td>
+                  <td>{{record.national}}</td>
+                  <td>
+                    <button class="btn btn-link" type="button" [disabled]="selectedQuarter.disable" (click)="editProfessionalDevelopmentActivitiesRecord(record);">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -159,11 +159,30 @@ public saveQuarterWithInternship(url:string,quarterId:any,data:any){
   .catch(this.handleError);
 }
 
+public editInternshipRecord(recordId:number,data:any){
+  return this.http.put(this.baseUrl + "/internship/record/"+recordId,data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public editStudentPublicationRecord(recordId:number,data:any){
+  return this.http.put(this.baseUrl + "/student-publication/record/"+recordId,data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public editProfessionalDevelopmentActivitiesRecord(recordId:number,data:any){
+  return this.http.put(this.baseUrl + "/professional-development-activity/record/"+recordId,data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 updateQuarterResult(quarterId:any,data:any){
   return this.http.put(this.baseUrl + "/level/"+quarterId+ "/result" ,data)
   .map(this.extractData)
   .catch(this.handleError);
 }
+
 lockQuarterResult(quarterId:any,data:any){
   return this.http.put(this.baseUrl + "/level/"+quarterId+"/lock",{})
   .map(this.extractData)
