@@ -67,14 +67,14 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>*</th>
-                    <th>Action</th>
-                    <th>Root Cause</th>
-                    <th>Resources</th>
-                    <th>Deadline</th>
-                    <th *ngIf="!my">Assigned</th>
-                    <th *ngIf="!my">Edit</th>
-                    <th *ngIf="my">Fill</th>
+                    <th width="5%">*</th>
+                    <th width="25%">Action</th>
+                    <th width="20%">Root Cause</th>
+                    <th width="20%">Resources</th>
+                    <th width="10%">Deadline</th>
+                    <th width="15%"  *ngIf="!my">Assigned</th>
+                    <th width="5%" *ngIf="!my">Edit</th>
+                    <th width="5%" *ngIf="my">Fill</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -87,7 +87,9 @@
                     <td *ngIf="!my">
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item bg-transparent" *ngFor="let emp of step.employeeAssigned;let i = index;">
-                          {{emp.firstName + emp.lastName}}
+                          <span>
+                              {{emp.firstName}}  {{ emp.lastName}}
+                            </span>
                         </li>
                         <a class="text-primary link primary-link float-right" (click)="showList(step)" data-toggle="modal" data-target="#assignModal">Assign</a>
                       </ul>
@@ -171,6 +173,7 @@
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn-sp btn-primary">Submit</button>
+          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </form>
 
@@ -241,6 +244,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-sp btn-primary" [disabled]="!employeeIds" (click)="assignEmployee()"  data-dismiss="modal">Save</button>
+          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </div>
     </div>

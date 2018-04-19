@@ -464,7 +464,7 @@ export class UniversityService {
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
       if (error.status === 0) {
-        errMsg = `${error.status} - "Something is wrong.."`;
+        errMsg = `${error.status} - "Something went wrong!"`;
       }
     } else {
       errMsg = error.message ? error.message : error.toString();

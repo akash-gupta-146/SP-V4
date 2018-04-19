@@ -144,19 +144,19 @@
             Back
           </button>
           <button type="submit" class="btn-sp btn-primary" [disabled]="studentResearchForm.invalid"> Submit</button>
+          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </form>
       <div *ngIf="programListView">
         <div class="modal-body">
-          <table class="table table-bordered table-card" style="position: relative;">
-            <caption>
-              <strong>
-                <u>Student Researches</u>
-              </strong>
-              <button class="pull-right">
-                <span class="glyphicon glyphicon-plus"></span>
-              </button>
-            </caption>
+          <div>
+          Student Researches
+                <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
+                    <i class="fas fa-plus-circle"></i> Add
+                </button>
+              </div>
+              <div class="table-responsive">
+          <table class="table table-striped table-hoverable" style="position: relative;">
             <thead>
               <tr>
                 <th style="vertical-align:middle;">#</th>
@@ -169,6 +169,7 @@
                 <th style="vertical-align:middle;">No. of Student Attended From Our College</th>
                 <th style="vertical-align:middle;">Scope</th>
                 <th style="vertical-align: middle">Evidence</th>
+                <th style="vertical-align: middle">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -184,9 +185,7 @@
                 <td>{{research.scope}}</td>
                 <td>
                   <div class="dropdown">
-                    <strong>Evidence </strong>:
                     <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown"><small>Files</small> {{research.evidance.length}}
-                      <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
                       <li role="presentation" *ngFor="let ev of research.evidance;let e = index;" class="d-flex justify-content-between">
@@ -205,20 +204,20 @@
                     </ul>
                   </div>
                 </td>
-                  <button (click)="edit(research)" class="btn btn-link">
-                      <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn btn-link" (click)="delete(research,selectedQuarter.studentResearches)">
-                      <i class="fas fa-trash"></i>
-                  </button>
+                <td>
+                    <button (click)="edit(research)" class="btn btn-link">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-link" (click)="delete(research,selectedQuarter.studentResearches)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
               </tr>
             </tbody>
           </table>
         </div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn-sp btn-primary" (click)="programListView = false;resetForm()">
-            Add
-          </button>
           <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>

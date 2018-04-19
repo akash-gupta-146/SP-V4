@@ -5,7 +5,7 @@
       <i class="fas fa-arrow-left"></i>
     </button>
   </div>
-  <div class="title">
+  <div class="title" *ngIf="data">
     Assigned KPI : {{data.opi}}
   </div>
 </div>
@@ -165,10 +165,11 @@
                         <div>
                             <div *ngIf="!data.evidanceFormId">
                                 <div class="dropdown" *ngIf="lev.status!='unsubmited'">
-                                  <div>
+                                  <div class="float-right">
                                       <small>Evidence </small>
                                   </div>
-                                  <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown"><small>Files</small>
+                                  <br>
+                                  <a class="text-primary link primary-link dropdown-toggle float-right pr-0" id="menu1" data-toggle="dropdown"><small>Files</small>
                                     <span class="caret"></span>
                                   </a>
                                   <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
@@ -463,7 +464,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-sp btn-primary" (click)="setQuarterFeedback(selectedLevel)">Submit</button>
-        
+        <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
       </div>
     </div>
 
@@ -501,7 +502,7 @@
   <div class="modal-dialog">
     <div class="modal-content" *ngIf="data">
       <div class="modal-header">
-          <h4 class="modal-title">Assigned Departments</h4>
+          <h5 class="modal-title">Assigned Departments</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -509,6 +510,9 @@
           <b>Organisation Unit</b>
           <tree-view id="termSheetPopup" [treeData]="departments" [assignedDepartment]="data.departmentInfo" (onSelected)="department($event)"></tree-view>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sp btn-clear" data-dismiss="modal">CLose</button>
       </div>
     </div>
   </div>
@@ -539,7 +543,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-sp btn-primary" (click)="setActionFeedback(selectedStep)">Submit</button>
+        <button type="button" class="btn-sp btn-primary" (click)="setActionFeedback(selectedStep)">Save</button>
+        <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
       </div>
     </div>
 
@@ -572,6 +577,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-sp btn-primary" [disabled]="!employeeIds" (click)="assignEmployee()" data-dismiss="modal">Save</button>
+          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </div>
     </div>
