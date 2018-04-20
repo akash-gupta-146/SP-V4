@@ -288,6 +288,10 @@ body{
           color:black;
         }
       }
+      .modal-body{
+        max-height: 75vh;
+        overflow-y: scroll;
+      }
       .modal-footer{
         border-top:0px;
       }
