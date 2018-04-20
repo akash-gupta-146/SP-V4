@@ -459,5 +459,9 @@ tree-view{
 .badge-primary{
   background:$primary;
 }
+.dropdown-item.active, .dropdown-item:active{
+  background: $primary;
+  color:white !important;
+}
 //end of overriding bootstrap color
 
