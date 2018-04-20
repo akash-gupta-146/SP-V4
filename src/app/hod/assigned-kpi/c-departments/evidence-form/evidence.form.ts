@@ -17,7 +17,7 @@ export class EvidenceForm{
   this.formId = id;
   switch (id) {
    case 1:
-    this.url = "/internship/" + this.selectedForm.id;
+    this.url = "/level/" + this.selectedQuarter.id;
     break;
    case 2:
     this.url = "/mous/"+ this.selectedForm.id;
@@ -40,15 +40,15 @@ export class EvidenceForm{
    case 8:
     this.url = "/student-research/"+ this.selectedForm.studentResearchId;
     break;
-   case 9:
-    this.url = "/professional-development-activity/"+this.selectedForm.id;
-    break;
-   case 10:
-    this.url = "/faculty-publication/"+this.selectedForm.id;
-    break;
-   case 11:
-    this.url = "/student-publication/"+this.selectedForm.id;
-    break;
+  //  case 9:
+  //   this.url = "/professional-development-activity/"+this.selectedForm.id;
+  //   break;
+  //  case 10:
+  //   this.url = "/faculty-publication/"+this.selectedForm.id;
+  //   break;
+  //  case 11:
+  //   this.url = "/student-publication/"+this.selectedForm.id;
+  //   break;
    default:
     this.url = "/level/" + this.selectedQuarter.id;
     break;

@@ -14,6 +14,7 @@ declare let $: any;
 export class StudentInternshipForm implements OnInit {
   facultyPublicationForm: FormGroup;
   professionalDevelopmentActivitiesForm: FormGroup;
+  selectedQuarter:any={};
   selectedRecord: any;
   formId: any;
   url: string;
@@ -25,6 +26,22 @@ export class StudentInternshipForm implements OnInit {
   @Output() changeSelected = new EventEmitter();
   @Input() set evidanceFormId(id: any) {
     this.formId = id;
+    switch (id) {
+      case 1:
+        this.url = "/internship/";
+        break;
+      case 9:
+        this.url = "/professional-development-activity/";
+        break;
+      case 10:
+        this.url = "/faculty-publication/";
+        break;
+      case 11:
+        this.url = "/student-publication/";
+        break;
+      default:
+        break;
+    }
   }
   constructor(public utServ: HodService,
     public loaderService: LoaderService,
@@ -95,7 +112,7 @@ export class StudentInternshipForm implements OnInit {
           lev.internshipDetails.push(response.internshipDetails[0]);
           break;
       }
-
+      lev.status = "inprogress";
       this.changeSelected.emit(lev);
     })
   }
@@ -107,11 +124,9 @@ export class StudentInternshipForm implements OnInit {
     this.loaderService.setLoadingStatus("Updating");
     this.loaderService.setTransactionLoader(true);
     this.utServ.updateQuarterResultCurrentCost(lev.id, object).subscribe((response: any) => {
-      lev.edit = false;
-      setTimeout(() => {
-        this.loaderService.setTransactionLoader(false);
-        alertify.success("Updated");
-      }, 1000);
+      alertify.success("Updated");
+      lev.isUpdating = false;
+      lev.status = "inprogress";
       console.log(response);
     });
   }
@@ -128,7 +143,7 @@ export class StudentInternshipForm implements OnInit {
 
   deleteEvidence(evidences: any[], evidence: any, index: any) {
     alertify.confirm("Are you sure you want to delete this evidence", (response: any) => {
-      this.utServ.deleteInternshipEvidence(this.url, evidence.id).subscribe((response: any) => {
+      this.utServ.deleteInternshipEvidence("", evidence.id).subscribe((response: any) => {
         evidences.splice(index, 1);
         alertify.success("Success");
       }, (error: any) => {
@@ -216,7 +231,16 @@ export class StudentInternshipForm implements OnInit {
     });
   }
 
-
+  uploadFile(lev:any){
+    console.log(lev.file,lev.replace);
+    var formData = new FormData();
+    formData.append('file', lev.file);
+    this.utServ.UploadFormsFile(this.url,lev.id,formData,lev.replace).subscribe((response:any)=>{
+      console.log(response);
+    },(error:any)=>{
+      console.log(error);
+    })
+  }
   collapseOff(element: any, level: any) {
     switch (level.evidanceFormId) {
       case 1:

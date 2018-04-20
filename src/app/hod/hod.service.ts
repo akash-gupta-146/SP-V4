@@ -159,6 +159,17 @@ public saveQuarterWithInternship(url:string,quarterId:any,data:any){
   .catch(this.handleError);
 }
 
+public UploadFormsFile(url:string,quarterId:any,data:any,replace:boolean){
+  var options = new RequestOptions({
+    headers: new Headers({
+      'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    })
+  });
+  return this.htttp.post(this.baseUrl + "/level/"+quarterId+url+"?replace="+replace,data,options)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 public editInternshipRecord(recordId:number,data:any){
   return this.http.put(this.baseUrl + "/internship/record/"+recordId,data)
   .map(this.extractData)
@@ -259,7 +270,7 @@ saveQuarterResultWithMou(quarterId:any,data:any){
 }
 
 updateQuarterResultCurrentCost(quarterId:any,data:any){
-  return this.http.put(this.baseUrl + "/quarter/"+quarterId+"/result",data)
+  return this.http.put(this.baseUrl + "/level/"+quarterId+"/result",data)
   .map(this.extractData)
   .catch(this.handleError);
 }

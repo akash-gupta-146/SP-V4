@@ -469,3 +469,14 @@ tree-view{
 }
 //end of overriding bootstrap color
 
+// overriding bootstrap-custom styles
+.custom-file-label::after{
+  border-left:0px;
+  border-radius:10px;
+  font-size:12px;
+  padding: 10px 14px;
+  &:hover{
+    background: #dcdcdc;
+  }
+}
+// end of BootStrap-custom styles
