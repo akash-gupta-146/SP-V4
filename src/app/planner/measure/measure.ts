@@ -555,7 +555,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     if (!event.target.checked)
       alertify.confirm("Are you sure you want to deactivate selected KPI ?", () => {
         this.orgService.disableKPI(opiId).subscribe((response: any) => {
-          alertify.success("Inactivated the KPI..");
+          alertify.success("Inactivated selected KPI");
           this.getMeasure();
         }, () => {
           event.target.checked = !event.target.checked;

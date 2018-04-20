@@ -238,7 +238,7 @@
           <h5 class="modal-title">KPI : {{selectedMeasure.opi}}</h5>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modal-box mx-3">
           <div class="flow-chart">
               <ul>
                 <li [class]="selectedDepartment.quarterStatus[role]" *ngFor="let role of roles;">{{role}}</li>

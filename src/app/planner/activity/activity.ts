@@ -145,7 +145,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           $("#add-activity").hide();
           $('#add-btn').show();
           this.getActivities(this.defaultCycle);
-          alertify.notify("Updated successfully .,.");
+          alertify.notify("Updated successfully!");
           this.isUpdating = false;
           this.activityForm = this.setActivity();
         });
@@ -157,7 +157,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     alertify.confirm("Are you sure you want to delete this Activity?", () => {
       this.orgService.deleteActivity(activityId).subscribe((res: any) => {
         activities.splice(index, 1);
-        alertify.notify("Deleted successfully .,.");
+        alertify.notify("Deleted successfully!");
       });
     }).setHeader("Confirmation");
   }
