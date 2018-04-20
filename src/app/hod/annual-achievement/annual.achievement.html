@@ -100,6 +100,7 @@
 </div>
 <!-- end of mission vision and values -->
 
+<!-- Annual acievement goals->Initiatives->Activity->KPI -->
 <div class="container">
   <div class="card complete-view mt-2 animate bounceInDown" *ngFor="let goal of goals;let i = index;">
     <div class="card-header">
@@ -227,7 +228,7 @@
                             <span class="caret"></span> </a>
                           </h6>
                          
-                          <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="menu" aria-labelledby="menu1" style="right: 0;left:unset;font-size:12px;">
                             <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
                               <a class="btn-link link primary-link text-primary" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidance {{e+1}}</a>
                             </li>
@@ -248,3 +249,4 @@
     </div>
   </div>
 </div>
+<!-- //End of Annual acievement goals->Initiatives->Activity->KPI -->
