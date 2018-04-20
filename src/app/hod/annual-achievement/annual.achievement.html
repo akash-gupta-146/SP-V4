@@ -100,7 +100,10 @@
 </div>
 <!-- end of mission vision and values -->
 
-<!-- Annual acievement goals->Initiatives->Activity->KPI -->
+<!-- Annual Achievements -->
+<div class="container-fluid d-flex justify-centent-between">
+
+<!-- goals->Initiatives->Activity->KPI -->
 <div class="container">
   <div class="card complete-view mt-2 animate bounceInDown" *ngFor="let goal of goals;let i = index;">
     <div class="card-header">
@@ -250,3 +253,36 @@
   </div>
 </div>
 <!-- //End of Annual acievement goals->Initiatives->Activity->KPI -->
+
+<!-- Reference List -->
+<div referenceList>
+    <ul class="goals">
+      <li *ngFor="let goal of goals;let i = index;">
+          <b>Goal {{i+1}}.</b>
+          <p> {{goal.goal}}</p>
+        <ul class="initiative">
+          <li *ngFor="let initiative of goal.initiatives;let j=index;">
+            <b>Initiative {{i+1}}.{{j+1}}.</b>
+            <p>{{initiative.initiative}}</p>
+            <ul class="activity">
+              <li *ngFor="let activity of initiative.activities;let k=index;">
+                <b>Activity {{i+1}}.{{j+1}}.{{k+1}}.</b>
+                <p>{{activity.activity}}</p>
+                <ul class="kpi">
+                    <li *ngFor="let opi of activity.opis;let l=index">
+                      <b>KPI {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}.</b>
+                      <p>{{opi.opi}}</p>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!-- end of reference list -->
+
+</div>
+<!-- end of Annual Achievements -->
+

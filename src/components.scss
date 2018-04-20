@@ -950,3 +950,61 @@ div[no-content] {
   }
 }
 // end of material form
+
+
+// reference list
+  div[referenceList]{
+    position: sticky;
+    top: 60px;
+    width:15%;
+    font-size:12px;
+      color:gray;
+      max-height: 85vh;
+      overflow-y: scroll;
+      padding-left:10px;
+      cursor: pointer;
+      ul{
+        list-style: none;
+        padding-left:10px;
+      }
+      li{
+        &:hover{
+          >b,>p{
+            color:$primary;
+          }
+          &:before{
+            position:absolute;
+            content:'';
+            left:7px;
+            top:initial;
+            border-radius: 50%;
+            width:7px;
+            height:7px;
+            background:lightgray;
+          }
+        }
+        p{
+          margin-bottom: 5px;
+        }
+      }
+      .goals{
+        border-left: 1px solid lightgray;
+      }
+      .active{
+        >b, >p{
+          color:$primary;
+          font-weight: bold;
+        }
+        &:before{
+          position:absolute;
+          content:'';
+          left:5px;
+          top:initial;
+          border-radius: 50%;
+          width:10px;
+          height:10px;
+          background:$primary;
+        }
+      }
+  }
+// end of reference list
