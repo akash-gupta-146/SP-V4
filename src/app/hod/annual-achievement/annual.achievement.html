@@ -109,13 +109,13 @@
     <div class="card-header">
       <b>Goal {{i+1}}.</b> {{goal.goal}}
     </div>
-    <div class="p-2" *ngFor="let initiative of goal.initiatives;let j=index;">
+    <div class="p-2" *ngFor="let initiative of goal.initiatives;let j=index;" [attr.id]="'s'+i+1+'.'+j+1+'.'">
       <b>
         <i class="fas fa-angle-right"></i> Initiative {{i+1}}.{{j+1}}.</b> {{initiative.initiative}}
-      <div class="p-2" *ngFor="let activity of initiative.activities;let k=index;">
+      <div class="p-2" *ngFor="let activity of initiative.activities;let k=index;" [attr.id]="'s'+i+1+'.'+j+1+'.'+k+1">
         <b>
           <i class="fas fa-angle-double-right"></i> Activity {{i+1}}.{{j+1}}.{{k+1}}.</b> {{activity.activity}}
-        <div class="p-2" *ngFor="let opi of activity.opis;let l=index">
+        <div class="p-2" *ngFor="let opi of activity.opis;let l=index" [attr.id]="'s'+i+1+'.'+j+1+'.'+k+1+'.'+l+1">
           <b>
               <i class="fas fa-angle-right"></i>
               <i class="fas fa-angle-right" style="margin-left: -4px;"></i>
@@ -258,20 +258,28 @@
 <div referenceList>
     <ul class="goals">
       <li *ngFor="let goal of goals;let i = index;">
+        <span>
           <b>Goal {{i+1}}.</b>
           <p> {{goal.goal}}</p>
+        </span>
         <ul class="initiative">
           <li *ngFor="let initiative of goal.initiatives;let j=index;">
+              <span scrollTo [attr.href]="'#s'+i+1+'.'+j+1+'.'">
             <b>Initiative {{i+1}}.{{j+1}}.</b>
             <p>{{initiative.initiative}}</p>
+          </span>
             <ul class="activity">
               <li *ngFor="let activity of initiative.activities;let k=index;">
+                  <span scrollTo [attr.href]="'#s'+i+1+'.'+j+1+'.'+k+1">
                 <b>Activity {{i+1}}.{{j+1}}.{{k+1}}.</b>
                 <p>{{activity.activity}}</p>
+              </span>
                 <ul class="kpi">
                     <li *ngFor="let opi of activity.opis;let l=index">
+                        <span scrollTo [attr.href]="'#s'+i+1+'.'+j+1+'.'+k+1+'.'+l+1">
                       <b>KPI {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}.</b>
                       <p>{{opi.opi}}</p>
+                    </span>
                     </li>
                   </ul>
               </li>
