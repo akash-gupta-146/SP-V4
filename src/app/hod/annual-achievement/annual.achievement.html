@@ -106,16 +106,16 @@
 <!-- goals->Initiatives->Activity->KPI -->
 <div class="container">
   <div class="card complete-view mt-2 animate bounceInDown" *ngFor="let goal of goals;let i = index;">
-    <div class="card-header">
+    <div class="card-header" [attr.id]="'s'+i+1+'-'">
       <b>Goal {{i+1}}.</b> {{goal.goal}}
     </div>
-    <div class="p-2" *ngFor="let initiative of goal.initiatives;let j=index;" [attr.id]="i+1+'.'+j+1+'.'">
+    <div class="p-2" *ngFor="let initiative of goal.initiatives;let j=index;" [attr.id]="'s'+i+1+'-'+j+1+'-'">
       <b>
         <i class="fas fa-angle-right"></i> Initiative {{i+1}}.{{j+1}}.</b> {{initiative.initiative}}
-      <div class="p-2" *ngFor="let activity of initiative.activities;let k=index;" [attr.id]="i+1+'.'+'j'">
+      <div class="p-2" *ngFor="let activity of initiative.activities;let k=index;" [attr.id]="'s'+i+1+'-'+j+1+'-'+k+1+'-'">
         <b>
           <i class="fas fa-angle-double-right"></i> Activity {{i+1}}.{{j+1}}.{{k+1}}.</b> {{activity.activity}}
-        <div class="p-2" *ngFor="let opi of activity.opis;let l=index">
+        <div class="p-2" *ngFor="let opi of activity.opis;let l=index" [attr.id]="'s'+i+1+'-'+j+1+'-'+k+1+'-'+l+1+'-'">
           <b>
               <i class="fas fa-angle-right"></i>
               <i class="fas fa-angle-right" style="margin-left: -4px;"></i>
@@ -258,20 +258,28 @@
 <div referenceList>
     <ul class="goals">
       <li *ngFor="let goal of goals;let i = index;">
-          <b>Goal {{i+1}}.</b>
+          <a scrollTo [attr.href]="'#s'+i+1+'-'">
+        <b>Goal {{i+1}}.</b>
           <p> {{goal.goal}}</p>
+          </a>
         <ul class="initiative">
           <li *ngFor="let initiative of goal.initiatives;let j=index;">
+              <a scrollTo [attr.href]="'#s'+i+1+'-'+j+1+'-'">
             <b>Initiative {{i+1}}.{{j+1}}.</b>
             <p>{{initiative.initiative}}</p>
+              </a>
             <ul class="activity">
               <li *ngFor="let activity of initiative.activities;let k=index;">
+                  <a scrollTo [attr.href]="'#s'+i+1+'-'+j+1+'-'+k+1+'-'">
                 <b>Activity {{i+1}}.{{j+1}}.{{k+1}}.</b>
                 <p>{{activity.activity}}</p>
+                  </a>
                 <ul class="kpi">
                     <li *ngFor="let opi of activity.opis;let l=index">
+                        <a scrollTo [attr.href]="'#s'+i+1+'-'+j+1+'-'+k+1+'-'+l+1+'-'">
                       <b>KPI {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}.</b>
                       <p>{{opi.opi}}</p>
+                        </a>
                     </li>
                   </ul>
               </li>

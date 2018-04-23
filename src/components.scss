@@ -967,9 +967,11 @@ div[no-content] {
         list-style: none;
         padding-left:10px;
       }
-      li{
+      li, li a{
+        color:inherit;
         &:hover{
-          >b,>p{
+          text-decoration:none;
+         >a b,>a p{
             color:$primary;
           }
           &:before{
@@ -980,7 +982,7 @@ div[no-content] {
             border-radius: 50%;
             width:7px;
             height:7px;
-            background:lightgray;
+            background:$primary;
           }
         }
         p{

@@ -317,7 +317,7 @@
                   <th>External Supervisor</th>
                   <th>Internal Supervisor</th>
                   <th>Internship Domain</th>
-                  <th></th>
+                  <th>Edit</th>
                 </tr>
               </thead>
               <tbody>
@@ -337,13 +337,15 @@
                   </td>
                 </tr>
               </tbody>
-              <tfoot *ngIf="!selectedQuarter.internshipRecord.length">
-                <tr>
-                  <th class="text-center" colspan="9">-- No Record --</th>
-                </tr>
+              <tfoot>
               </tfoot>
             </table>
           </div>
+        <!-- No content -->
+          <div no-content  *ngIf="!selectedQuarter.internshipRecord.length">
+              Data not available
+          </div>
+        <!-- end of no content -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
