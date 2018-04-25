@@ -474,7 +474,8 @@ tree-view{
   border-left:0px;
   border-radius:10px;
   font-size:12px;
-  padding: 10px 14px;
+  padding: 4px 14px;
+  height:-webkit-fill-available;
   &:hover{
     background: #dcdcdc;
   }

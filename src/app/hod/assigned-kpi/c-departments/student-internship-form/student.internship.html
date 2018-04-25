@@ -212,9 +212,9 @@
             <div class="custom-file">
                 <input type="file" class="custom-file-input"  id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               aria-describedby="fileHelp" (change)="lev.file = $event.target.files[0];" [disabled]="lev.disable"> 
-                <h6 class="custom-file-label text-primary border-0 pl-1" for="exampleInputFile">
+                <small class="custom-file-label border-0 pl-1" for="exampleInputFile">
                   Internship File
-                </h6>
+                </small>
                 <div class="invalid-feedback">Accept only .xls, .csv or excel sheets</div>
               </div>
               <small id="fileHelp" class="form-text text-muted text-center">

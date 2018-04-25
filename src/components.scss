@@ -314,14 +314,16 @@ $second-back: #fafafa;
       padding-bottom: 40px;
       padding-top: 20px;
     }
-  }
-  .small-box{
-    font-size:13px;
-    // border-color:$primary;
-    small{
-      // color:$primary;
+    .link{
+      border:0px;
+      text-decoration: none;
     }
   }
+  // .small-box{
+  //   font-size:13px;
+  //   small{
+  //   }
+  // }
 }
 
 /* end of cards */
