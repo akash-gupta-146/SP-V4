@@ -4,6 +4,7 @@ import * as alertify from 'alertifyjs';
 import { HodService } from '../../../hod.service';
 import { LoaderService } from '../../../../shared/loader.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { StorageService } from '../../../../shared/storage.service';
 declare let $: any;
 
 @Component({
@@ -12,6 +13,7 @@ declare let $: any;
   styleUrls: ['./../../../hod.component.scss'],
 })
 export class StudentInternshipForm implements OnInit {
+  role: any;
   facultyPublicationForm: FormGroup;
   professionalDevelopmentActivitiesForm: FormGroup;
   selectedQuarter:any={};
@@ -44,12 +46,14 @@ export class StudentInternshipForm implements OnInit {
     }
   }
   constructor(public utServ: HodService,
-    public loaderService: LoaderService,
-    public fb: FormBuilder) {
+              public loaderService: LoaderService,
+              public fb: FormBuilder,
+              public storage:StorageService) {
 
   }
 
   ngOnInit() {
+    this.role = this.storage.getData('userDetails').roleInfo[0].role;
     this.recordForm = this.fb.group({
       college: ['', Validators.required],
       department: ['', Validators.required],
@@ -241,6 +245,11 @@ export class StudentInternshipForm implements OnInit {
       console.log(error);
     })
   }
+
+  selectLevel(lev:any){
+  this.changeSelected.emit(lev);
+  }
+
   collapseOff(element: any, level: any) {
     switch (level.evidanceFormId) {
       case 1:

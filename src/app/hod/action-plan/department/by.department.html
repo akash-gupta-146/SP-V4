@@ -30,13 +30,13 @@
       <!-- accordion  -->
       <div [attr.id]="'accordion'+s" class="mt-2">
         <fieldset *ngFor="let opi of data.opiInfo;let d = index;">
-          <div [attr.data-target]="'#demo' + opi.opiId" data-toggle="collapse" class="text-primary card-header p-2">
+          <div [attr.data-target]="'#demo' + s + opi.opiId" data-toggle="collapse" class="text-primary card-header p-2">
             {{d+1}}. {{opi.opi}}
             <span class="float-right">
               <i class="fas fa-compress"></i>
             </span>
           </div>
-          <div [attr.id]="'demo' + opi.opiId" class="collapse" [attr.data-parent]="'#accordion'+s" [ngClass]="d?'':'show'">
+          <div [attr.id]="'demo' + s + opi.opiId" class="collapse" [attr.data-parent]="'#accordion'+s" [ngClass]="d?'':'show'">
             <!-- text-details box -->
             <div class="text-details">
               <div class='container-fluid'>

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as alertify from 'alertifyjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -16,16 +16,19 @@ declare let $: any;
   styleUrls: ['./../../hod.component.scss'],
   //  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoordinatorDepartmentsComponent implements AfterViewInit {
+export class CoordinatorDepartmentsComponent implements OnInit {
+  departmentHeirarchyCopy: any;
+  role: any;
   @Input() id: any;
   isEdit: boolean;
   selectedDepatrtmentId: any;
+  selectedLevel:any = {};
   employeesCopy: any;
   employees: any[] = [];
   actionSteps: any[] = [];
   actionForm: FormGroup;
   data: any={};
-  department: any = 0;
+  departmentModel: any = 0;
   departments: any[] = [];
   departmentInfo: any[] = []
   departmentsCopy: any[] = [];
@@ -37,11 +40,16 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
               private loaderService: LoaderService,
               private fb: FormBuilder,
               private location:Location) {
-    console.log(this.id);
-    if (this.id) {
 
+  }
+
+  ngOnInit(){
+    this.role = this.storage.getData('userDetails').roleInfo[0].role;
+    if (this.id) {
+      console.log("asdf");
       this.utServ.getDepartmentByOpiId(this.id).subscribe((response: any) => {
         this.data = response[0];
+        this.checkAssignDept(response[0].departmentInfo);
         this.departmentInfo = response[0].departmentInfo;
         this.departmentsCopy = response[0].departmentInfo;
       });
@@ -49,6 +57,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
       this.route.params.subscribe((params: any) => {
         this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
           this.data = response[0];
+          this.checkAssignDept(response[0].departmentInfo);
           this.departmentInfo = response[0].departmentInfo;
           this.departmentsCopy = response[0].departmentInfo;
         });
@@ -62,6 +71,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
       files: new FormControl('', [Validators.required])
     });
     this.getEmployees();
+    this.getDepartments();
     this.actionForm = this.fb.group({
       "reason": ["", Validators.required],
       "description": ["", Validators.required],
@@ -71,8 +81,48 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  department(event: any) {
+    if (event.my) {
+      this.departmentsCopy.forEach((element: any, index: any) => {
+        if (element.departmentId == event.departmentId)
+          this.departmentInfo.push(element);
+      });
+    } else {
+      this.departmentInfo = this.departmentInfo.filter((val) => val.departmentId !== event.departmentId);
+    }
+  }
 
+  getDepartments() {
+    this.utServ.getDepartments().subscribe((res: any) => {
+      this.departments = res;
+      this.departmentHeirarchyCopy = res;
+    })
+  }
+
+  checkAssignDept(assignedDepartments: any[]) {
+    this.departments = JSON.parse(JSON.stringify(this.departmentHeirarchyCopy));
+    assignedDepartments.forEach(outerElement => {
+      this.departments.forEach(innerElement => {
+        this.searchDepartment(innerElement, outerElement);
+      });
+    });
+  }
+
+  searchDepartment(department: any, assigneddepartment: any) {
+    if (!department) {
+      return;
+    } else {
+      if (department.departmentId == assigneddepartment.departmentId) {
+        department.my = true;
+        department.disabled = !department.my;
+      } else {
+        department.disabled = !department.my;
+      }
+      if (department.reporteeDepartments && department.reporteeDepartments.length)
+        department.reporteeDepartments.forEach((element: any) => {
+          this.searchDepartment(element, assigneddepartment);
+        });
+    }
   }
 
 
@@ -129,13 +179,12 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
   public selectedInternshipFile: any;
   selectedForm: any;
   passQuarter(event) {
-    console.log(event);
-    this.selectedQuarter = event;
-    if (event.internshipDetails)
-      this.selectedInternshipFile = event.internshipDetails[0];
-    if (event.selectedForm)
-      this.selectedForm = event.selectedForm;
-    console.log(event.selectedForm);
+    this.selectedLevel = event;
+    // if (event.internshipDetails)
+    //   this.selectedInternshipFile = event.internshipDetails[0];
+    // if (event.selectedForm)
+    //   this.selectedForm = event.selectedForm;
+    // console.log(event.selectedForm);
   }
 
   getActionSteps(dept: any) {
@@ -230,7 +279,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
     })
   }
 
-  assignEmployee() {
+  assignEmployee(e:any) {    
     alertify.confirm("Are  you sure to assign this action step?", (response: any) => {
       var ids = [];
       this.employeeIds.forEach(element => {
@@ -250,11 +299,13 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
         $('.emp-list').hide({ direction: "left" });
       });
     }).setHeader("Confirmation");
+    event.stopPropagation();
   }
 
   selectedStep: any;
   employeeIds: any[] = [];
   showList(selectedStep: any) {
+    this.employeeIds = [];
     this.selectedStep = selectedStep;
     this.employees = selectedStep.otherEmployees;
     $('.emp-list').show({ direction: "left" });
@@ -276,5 +327,32 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
     }
     $(element).addClass('show');
     $(".collapse-off").removeClass('show');
+  }
+
+  setQuarterFeedback(data: any) {
+    console.log(data.feedback);
+    if (data.feedback == 'true')
+      alertify.confirm("Do you realy want to Approve this ?", () => {
+        this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
+          data.status = 'Approved'
+          alertify.notify("Audit has been Approved");
+          $("#feedbackModal").modal('hide');
+        }, (error: any) => {
+          alertify.notify("Something went wrong");
+          $("#feedbackModal").modal('hide');
+        });
+      }).setHeader("Confirmation");
+    else
+      alertify.confirm("Do you realy want to Reject this ?", () => {
+        this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
+          data.status = 'Rejected'
+          alertify.notify("Audit has been Rejected");
+          $("#feedbackModal").modal('hide');
+        }, (error: any) => {
+          alertify.notify("Something went wrong");
+          $("#feedbackModal").modal('hide');
+        });
+      }).setHeader("Confirmation");
+
   }
 }

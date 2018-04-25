@@ -97,18 +97,31 @@
   </div>
 
 
+
   <!-- filter -->
   <div class="filter animate slideInUp">
     <div class="d-flex">
       <div class="icon">
         <i class="fas fa-calendar-alt"></i>
       </div>
-      <div class="form-group dropdown-st">
+      <!-- <div class="form-group dropdown-st">
         <label class="control-label">Corresponding Departments</label>
         <select id="year" name="year" class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="department">
           <option value="0">All Departments</option>
           <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
         </select>
+      </div> -->
+      <div class="form-group dropdown-st">
+        <label class="control-label">Corresponding Departments</label>
+        <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="departmentModel" *ngIf="(role=='hod'||role=='coordinator'); else heirarchy">
+          <option value="0">All Departments</option>
+          <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
+        </select>
+        <ng-template #heirarchy>
+          <a class="text-primary link text-small pt-0 text-center" data-toggle="modal" data-target="#departmentModal">
+            <small>Departments</small>
+          </a>
+        </ng-template>
       </div>
     </div>
   </div>
@@ -213,7 +226,7 @@
             </tbody>
           </table>
           <!-- No content -->
-          <div no-content *ngIf="!actionSteps.length">
+          <div no-content *ngIf="!actionSteps.length&&!dept.isNew">
             No action steps available
           </div>
           <!-- end of no content -->
@@ -255,42 +268,6 @@
   </div>
 </div>
 
-<!-- Evidence Form-->
-<div class="modal fade" id="evidenceForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog ">
-    <div class="modal-content" *ngIf="data">
-      <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Attach Evidence</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(data.evidanceFormId)">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" formControlName="title" />
-          </div>
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputFile">Attachment</label>
-            <input type="file" class="form-control-file" id="exampleInputFile" formControlName="files" (change)="getFile($event)" aria-describedby="fileHelp">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn-sp btn-primary float-right">Submit</button>
-          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- end of evidence form -->
-
-
 <!-- ASSIGN EMP MODAL -->
 <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -315,10 +292,63 @@
                 <!-- END OF ASSIGN EMP LIST -->
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-sp btn-primary" [disabled]="!employeeIds" (click)="assignEmployee()" data-dismiss="modal">Save</button>
+          <button type="button" class="btn-sp btn-primary" [disabled]="!employeeIds.length" (click)="assignEmployee($event)" data-dismiss="modal">Save</button>
           <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </div>
     </div>
   </div>
   <!-- END ASSIGN EMP MODAL -->
+
+
+  <div class="modal fade" id="feedbackModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="modal-title">Feedback of Achievement</p>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+  
+          <div class="form-group">
+            <label for="optradio">Feedback :</label>
+            <label class="radio-inline">
+              <input type="radio" class="mr-1" name="optradio" [(ngModel)]="selectedLevel.feedback" value="true">Approve
+            </label>
+            <label class="radio-inline">
+              <input type="radio" class="mr-1" name="optradio" [(ngModel)]="selectedLevel.feedback" value="false">Reject
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="comment">Comment :</label>
+            <textarea class="form-control" id="comment" name="comment" [(ngModel)]="selectedLevel.comment"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-sp btn-primary" (click)="setQuarterFeedback(selectedLevel)">Submit</button>
+          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+  <div class="modal left fade" id="departmentModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content" *ngIf="data">
+        <div class="modal-header">
+            <h5 class="modal-title">Assigned Departments</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="department-hierarchy">
+            <b>Organisation Unit</b>
+            <tree-view id="termSheetPopup" [treeData]="departments" [assignedDepartment]="data.departmentInfo" (onSelected)="department($event)"></tree-view>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-sp btn-clear" data-dismiss="modal">CLose</button>
+        </div>
+      </div>
+    </div>
+  </div>

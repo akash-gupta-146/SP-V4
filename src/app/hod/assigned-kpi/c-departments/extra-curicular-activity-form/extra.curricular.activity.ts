@@ -1,17 +1,19 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
 import { LoaderService } from '../../../../shared/loader.service';
+import { StorageService } from '../../../../shared/storage.service';
 
 @Component({
  selector: 'extra-curricular-activity',
  templateUrl: 'extra.curricular.activity.html',
  styleUrls: ['./../../../hod.component.scss'],
 })
-export class ExtraCurricularActivity {
+export class ExtraCurricularActivity implements OnInit{
 
+ role: any;
  selectedProgram: any;
  url: string;
  isUpdating: boolean;
@@ -26,7 +28,15 @@ export class ExtraCurricularActivity {
   this.formId = id;
  }
  public extraCurricularActivityForm: FormGroup
- constructor(private fb: FormBuilder, public utServ: HodService, public loaderService: LoaderService) {
+ constructor(private fb: FormBuilder, 
+             public utServ: HodService, 
+             public loaderService: LoaderService,
+             public storage:StorageService) {
+
+ }
+
+ ngOnInit(){
+  this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.extraCurricularActivityForm = this.fb.group({
    title: ['', [Validators.required]],
    currentCost: ['', [Validators.required]],
@@ -36,7 +46,7 @@ export class ExtraCurricularActivity {
    scopeId: ['', [Validators.required]],
    totalInsideParticipants: ['', [Validators.required]],
    totalOutsideParticipants: ['', [Validators.required]],
-  })
+  });
  }
 
  submitForm() {

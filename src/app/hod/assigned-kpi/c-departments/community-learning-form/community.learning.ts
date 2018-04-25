@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import { LoaderService } from '../../../../shared/loader.service';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
+import { StorageService } from '../../../../shared/storage.service';
 declare let $:any;
 
 @Component({
@@ -11,7 +12,8 @@ declare let $:any;
  templateUrl: './community.learning.html',
  styleUrls: ['./../../../hod.component.scss'],
 })
-export class CommunityLearningForm {
+export class CommunityLearningForm implements OnInit{
+ role: any;
  selectedLearning: any;
  url: any;
  formId: any;
@@ -25,7 +27,15 @@ export class CommunityLearningForm {
  selectedQuarter:any;
  learningListView:boolean;
  isUpdating:boolean = false;
- constructor(private fb: FormBuilder,public utServ: HodService, public loaderService: LoaderService) {
+ constructor(private fb: FormBuilder,
+             public utServ: HodService, 
+             public loaderService: LoaderService,
+             public storage:StorageService) {
+  
+ }
+
+ ngOnInit(){
+  this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.communityLearningForm = this.fb.group({
    "currentCost": ['',[Validators.required]],
    "title": ['',[Validators.required]],

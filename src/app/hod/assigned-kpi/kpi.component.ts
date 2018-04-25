@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Filters } from '../../shared/filters';
 import { HodService } from '../hod.service';
 import { StorageService } from '../../shared/storage.service';
@@ -12,7 +12,7 @@ declare let $: any;
   templateUrl: './kpi.component.html',
   styleUrls: ['./../hod.component.scss']
 })
-export class KPIComponent extends Filters implements OnInit{
+export class KPIComponent extends Filters implements OnInit,OnDestroy{
   selectedQuarter: string = "q1";
   defaultCycle: any;
   cycles: any[];
@@ -29,7 +29,8 @@ export class KPIComponent extends Filters implements OnInit{
   constructor(private utServ: HodService,
     private storage: StorageService,
     private loaderService: LoaderService) {
-    super();    
+    super(); 
+    this.loaderService.display(true);   
   }
 
   ngOnInit(){
@@ -155,5 +156,9 @@ export class KPIComponent extends Filters implements OnInit{
 
   isFuture(y:number){
     return (y > new Date().getFullYear());
+  }
+
+  ngOnDestroy(){
+    this.loaderService.display(false);
   }
 }
