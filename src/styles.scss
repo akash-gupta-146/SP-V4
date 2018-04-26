@@ -215,12 +215,18 @@ body{
   line-height:15px;
 }
 
+// Dropdown
+.navbar-nav .show{
+  transform:scale(1) !important;
+}
 .user-menu{
+  display:block !important;
+  transform:scale(0);
+  transform-origin:top right;
     right: 10px;
     left: initial;
     padding:0px;
-    transition: transform .2s,visibility .2s;
-    transform: translateY(0);
+    transition: transform .3s ease;
     box-shadow: 0 7px 27px rgba(0, 0, 0, 0.48);
     .image{
       width:40%;
@@ -258,6 +264,7 @@ body{
       justify-content: space-between;
     }
 }
+// end of dropdown
 
 .modal{
   .modal-dialog, .data-fidder{
@@ -280,6 +287,10 @@ body{
         &:hover{
           color:black;
         }
+      }
+      .modal-body{
+        max-height: 75vh;
+        overflow-y: scroll;
       }
       .modal-footer{
         border-top:0px;
@@ -452,5 +463,24 @@ tree-view{
 .badge-primary{
   background:$primary;
 }
+.dropdown-item.active, .dropdown-item:active{
+  background: $primary;
+  color:white !important;
+}
 //end of overriding bootstrap color
 
+// overriding bootstrap-custom styles
+.custom-file-label::after{
+  border-left:0px;
+  border-radius:10px;
+  font-size:12px;
+  padding: 4px 14px;
+  height:-webkit-fill-available;
+  &:hover{
+    background: #dcdcdc;
+  }
+}
+.table thead th {
+  vertical-align: middle;
+}
+// end of BootStrap-custom styles

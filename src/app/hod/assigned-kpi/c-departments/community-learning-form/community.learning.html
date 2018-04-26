@@ -199,7 +199,7 @@
                       <li class="list-group-item" role="presentation" *ngIf="!learning.evidance.length">None</li>
                       <li class="list-group-item" role="presentation">
                         <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectLearning(learning)"> Upload</button> -->
-                        <button class="btn-sp btn-sp-small btn-primary" *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
+                        <button class="btn-sp btn-sp-small btn-primary" *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
                           (click)="selectedForm = learning" [disabled]="selectedQuarter.disable">Upload</button>
                       </li>
                     </ul>
@@ -231,4 +231,4 @@
   </div>
 </div>
 
-<evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

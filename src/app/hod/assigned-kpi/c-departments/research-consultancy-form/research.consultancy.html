@@ -221,7 +221,7 @@
                       <li class="text-center" role="presentation" *ngIf="!project.evidance.length">None</li>
                       <li role="presentation" class="divider" style="clear: both;"></li>
                       <li class="text-center" role="presentation">
-                        <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = project" [disabled]="selectedQuarter.disable">Upload</button>    
+                        <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId" (click)="selectedForm = project" [disabled]="selectedQuarter.disable">Upload</button>    
                       </li>
                     </ul>
                   </div>
@@ -247,4 +247,4 @@
   </div>
 </div>
 
-<evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

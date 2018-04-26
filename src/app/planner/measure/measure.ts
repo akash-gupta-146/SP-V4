@@ -337,7 +337,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   assign() {
     const departmentsArray: any[] = this.departmentForm.controls["departmentsArray"].value;
-    alertify.confirm("Are you sure you want to assign this OPI", () => {
+    alertify.confirm("Are you sure you want to assign selected department(s) to KPI", () => {
       this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe((response: any) => {
         this.selectedMeasure.departmentInfo = this.selectedMeasure.departmentInfo.concat(response);
         alertify.notify("Successfully assigned");
@@ -553,9 +553,9 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   disable(event: any, opiId: any) {
     if (!event.target.checked)
-      alertify.confirm("Are you sure you want to deactivate selected KPI ?", () => {
+      alertify.confirm("Are you sure you want to unassign selected Department ?", () => {
         this.orgService.disableKPI(opiId).subscribe((response: any) => {
-          alertify.success("Inactivated the KPI..");
+          alertify.success("Deactivated selected KPI");
           this.getMeasure();
         }, () => {
           event.target.checked = !event.target.checked;

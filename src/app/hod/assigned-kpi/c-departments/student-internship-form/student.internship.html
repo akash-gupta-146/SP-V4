@@ -87,9 +87,12 @@
               <div> {{lev.studentPublicationRecord.length}}</div>
             </div>
           </div>
-          <div class="text-right" *ngIf="lev.status!='unsubmitted'|| lev.disable">
+          <div class="text-right">
             <small>Current Cost </small>
-            <div>{{lev.currentCost}}</div>
+            <div>
+                <input type="number" class="w-50" [(ngModel)]="lev.currentCost" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+            </div>
+            <div *ngIf="lev.status!='unsubmitted'|| lev.disable">{{lev.currentCost}}</div>
           </div>
         </div>
         <div class="d-flex justify-content-between mt-2 mx-2" *ngIf="lev.status!='unsubmited'">
@@ -109,7 +112,7 @@
               <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
               <li role="presentation" class="dropdown-divider" style="clear: both;"></li>
               <li class="text-center" role="presentation">
-                <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
+                <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
                   (click)="selectedQuarter = lev" [disabled]="lev.disable">Upload</button>
               </li>
             </ul>
@@ -199,17 +202,25 @@
             </ul>
           </div>
         </div>
-        <div class="d-flex justify-content-between mt-2 mx-2" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
-          <h6 class="text-primary">Current cost</h6>
-          <input type="number" [(ngModel)]="lev.currentCost" style="width:65px">
+        <!-- <div class=" mt-2 mx-2" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+          <small class="text-primary">Current cost</small>
+          <br>
+          <input type="number" [(ngModel)]="lev.currentCost" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
+        </div> -->
+
+        <div *ngIf="lev.status=='unsubmitted'&&!lev.disable&&!lev.isUpdating" class="m-1">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input"  id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              aria-describedby="fileHelp" (change)="lev.file = $event.target.files[0];" [disabled]="lev.disable"> 
+                <small class="custom-file-label border-0 pl-1" for="exampleInputFile">
+                  Internship File
+                </small>
+                <div class="invalid-feedback">Accept only .xls, .csv or excel sheets</div>
+              </div>
+              <small id="fileHelp" class="form-text text-muted text-center">
+                  Accept only .xls, .csv or excel sheets</small>
         </div>
-        <div class="d-flex justify-content-between mt-2 mx-2" *ngIf="lev.status=='unsubmitted'&&!lev.disable&&!lev.isUpdating">
-          <h6 class="text-primary">Internship File</h6>
-          <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-            aria-describedby="fileHelp" (change)="lev.file = $event.target.files[0];" [disabled]="lev.disable">
-          <small id="fileHelp" class="form-text text-muted">
-            <br>Accept only .xls, .csv or excel sheets</small>
-        </div>
+
         <div class="d-flex justify-content-end mt-3" *ngIf="!lev.disable">
           <button class="btn-link link primary-link text-primary" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)"
             *ngIf="lev.status=='unsubmitted'&&!lev.isUpdating">Save</button>
@@ -237,7 +248,7 @@
 </div>
 <!-- end of quarter boxes -->
 
-<evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" [selectedQuarter]="selectedQuarter" *ngIf="selectedQuarter"></evidence-form>
+<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" [selectedQuarter]="selectedQuarter" *ngIf="selectedQuarter"></evidence-form>
 
 <div class="modal fade" [attr.id]="'internshipModal'+department.departmentId" *ngIf="selectedQuarter">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
@@ -262,7 +273,7 @@
                   <th>External Supervisor</th>
                   <th>Internal Supervisor</th>
                   <th>Internship Domain</th>
-                  <th></th>
+                  <th>Edit</th>
                 </tr>
               </thead>
               <tbody>
@@ -282,13 +293,15 @@
                   </td>
                 </tr>
               </tbody>
-              <tfoot *ngIf="!selectedQuarter.internshipRecord.length">
-                <tr>
-                  <th class="text-center" colspan="9">-- No Record --</th>
-                </tr>
+              <tfoot>
               </tfoot>
             </table>
           </div>
+        <!-- No content -->
+          <div no-content  *ngIf="!selectedQuarter.internshipRecord.length">
+              Data not available
+          </div>
+        <!-- end of no content -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

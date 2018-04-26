@@ -32,9 +32,8 @@
   </div>
   <!-- end of filter -->
 </div>
-
 <!-- mission vision and values -->
-<div class="container mt-3" *ngIf="organisationInfo">
+<div class="container-fluid mt-3" *ngIf="organisationInfo">
   <!-- Seperate Buttons for Mission Vision and Values
     <a class="btn btn-primary btn-sp" data-toggle="collapse" href="#mission" role="button" aria-expanded="false" aria-controls="mission">Mission</a>
     <button class="btn btn-primary btn-sp" type="button" data-toggle="collapse" data-target="#vision" aria-expanded="false" aria-controls="vision">Vision</button>
@@ -100,18 +99,22 @@
 </div>
 <!-- end of mission vision and values -->
 
+<!-- Annual Achievements -->
+<div class="container-fluid d-flex justify-centent-between">
+
+<!-- goals->Initiatives->Activity->KPI -->
 <div class="container">
   <div class="card complete-view mt-2 animate bounceInDown" *ngFor="let goal of goals;let i = index;">
-    <div class="card-header">
+    <div class="card-header" [attr.id]="'s'+i+1+'-'">
       <b>Goal {{i+1}}.</b> {{goal.goal}}
     </div>
-    <div class="p-2" *ngFor="let initiative of goal.initiatives;let j=index;">
+    <div class="p-2" *ngFor="let initiative of goal.initiatives;let j=index;" [attr.id]="'s'+i+1+'-'+j+1+'-'">
       <b>
         <i class="fas fa-angle-right"></i> Initiative {{i+1}}.{{j+1}}.</b> {{initiative.initiative}}
-      <div class="p-2" *ngFor="let activity of initiative.activities;let k=index;">
+      <div class="p-2" *ngFor="let activity of initiative.activities;let k=index;" [attr.id]="'s'+i+1+'-'+j+1+'-'+k+1+'-'">
         <b>
           <i class="fas fa-angle-double-right"></i> Activity {{i+1}}.{{j+1}}.{{k+1}}.</b> {{activity.activity}}
-        <div class="p-2" *ngFor="let opi of activity.opis;let l=index">
+        <div class="p-2" *ngFor="let opi of activity.opis;let l=index" [attr.id]="'s'+i+1+'-'+j+1+'-'+k+1+'-'+l+1+'-'">
           <b>
               <i class="fas fa-angle-right"></i>
               <i class="fas fa-angle-right" style="margin-left: -4px;"></i>
@@ -227,7 +230,7 @@
                             <span class="caret"></span> </a>
                           </h6>
                          
-                          <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                          <ul class="dropdown-menu" role="menu" aria-labelledby="menu" aria-labelledby="menu1" style="right: 0;left:unset;font-size:12px;">
                             <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
                               <a class="btn-link link primary-link text-primary" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidance {{e+1}}</a>
                             </li>
@@ -248,3 +251,45 @@
     </div>
   </div>
 </div>
+<!-- //End of Annual acievement goals->Initiatives->Activity->KPI -->
+
+<!-- Reference List -->
+<div referenceList>
+    <ul class="goals">
+      <li *ngFor="let goal of goals;let i = index;">
+          <a scrollTo [attr.href]="'#s'+i+1+'-'">
+        <b>Goal {{i+1}}.</b>
+          <p> {{goal.goal}}</p>
+          </a>
+        <ul class="initiative">
+          <li *ngFor="let initiative of goal.initiatives;let j=index;">
+              <a scrollTo [attr.href]="'#s'+i+1+'-'+j+1+'-'">
+            <b>Initiative {{i+1}}.{{j+1}}.</b>
+            <p>{{initiative.initiative}}</p>
+              </a>
+            <ul class="activity">
+              <li *ngFor="let activity of initiative.activities;let k=index;">
+                  <a scrollTo [attr.href]="'#s'+i+1+'-'+j+1+'-'+k+1+'-'">
+                <b>Activity {{i+1}}.{{j+1}}.{{k+1}}.</b>
+                <p>{{activity.activity}}</p>
+                  </a>
+                <ul class="kpi">
+                    <li *ngFor="let opi of activity.opis;let l=index">
+                        <a scrollTo [attr.href]="'#s'+i+1+'-'+j+1+'-'+k+1+'-'+l+1+'-'">
+                      <b>KPI {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}.</b>
+                      <p>{{opi.opi}}</p>
+                        </a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!-- end of reference list -->
+
+</div>
+<!-- end of Annual Achievements -->
+

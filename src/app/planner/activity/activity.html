@@ -70,7 +70,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="activityForm.invalid">
           Save
         </button>
-        <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
+        <button data-dismiss="modal" class="btn-sp btn-clear"  (click)="closeForm();">Close</button>
       </div>
     </form>
   </div>
@@ -173,7 +173,7 @@
       <div no-content *ngIf="!goals.length&&!loaderService.status.value">
           Data not available
         </div>
-        <!-- end of no content -->
+      <!-- end of no content -->
 
 
 <!-- add new -->
