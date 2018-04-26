@@ -164,7 +164,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="measureForm.invalid">
           Save
         </button>
-        <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
+        <button data-dismiss="modal" class="btn-sp btn-clear" (click)="closeForm()">Close</button>
       </div>
     </form>
   </div>
@@ -642,7 +642,7 @@
 
             </div>
             <div class="modal-footer">
-              <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
+              <button data-dismiss="modal" class="btn-sp btn-clear"  (click)="reset()">Close</button>
             </div>
           </div>
         </div>
