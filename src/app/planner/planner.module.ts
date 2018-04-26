@@ -27,7 +27,8 @@ import { SharedModule } from "../shared/shared.module";
 				{ path: 'initiatives', loadChildren:'app/planner/initiative/initiative.module#InitiativeModule'},
 				{ path: 'activities', loadChildren: 'app/planner/activity/activity.module#ActivityModule' },
 				{ path: 'kpis', loadChildren: 'app/planner/measure/measure.module#MeasureModule' },
-				{ path: 'spi', loadChildren: 'app/planner/spi/spi.module#SPIModule' }
+				{ path: 'spi', loadChildren: 'app/planner/spi/spi.module#SPIModule' },
+				{ path: 'result', loadChildren: 'app/planner/results/result.module#ResultModule'}
 			]
 		},
 

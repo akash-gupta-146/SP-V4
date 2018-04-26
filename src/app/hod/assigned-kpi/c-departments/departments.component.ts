@@ -101,6 +101,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
 
   checkAssignDept(assignedDepartments: any[]) {
     this.departments = JSON.parse(JSON.stringify(this.departmentHeirarchyCopy));
+    if(assignedDepartments.length)
     assignedDepartments.forEach(outerElement => {
       this.departments.forEach(innerElement => {
         this.searchDepartment(innerElement, outerElement);

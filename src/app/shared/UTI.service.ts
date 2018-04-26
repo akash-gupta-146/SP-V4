@@ -445,7 +445,7 @@ export class UniversityService {
   }
 
   public getOpiResultByYear(cycleId:any,year:any){
-    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year,this.parent)
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false",this.parent)
     .map(this.extractData)
     .catch(this.handleError);
   }

@@ -30,7 +30,7 @@
   <div class="small-fidder">
     <div class="modal-header">
       <h5 *ngIf="!isUpdating;else editKpi">
-        Edit KPI
+        Add KPI
       </h5>
       <ng-template #editKpi>
         <h5>Edit KPI</h5>
@@ -164,7 +164,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="measureForm.invalid">
           Save
         </button>
-        <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
+        <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
       </div>
     </form>
   </div>

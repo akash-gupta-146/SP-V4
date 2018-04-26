@@ -231,12 +231,15 @@
       </div>
     </div>
   </div>
+
+
+  
 </div>
 <!-- end of quarter boxes -->
 
 <evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" [selectedQuarter]="selectedQuarter" *ngIf="selectedQuarter"></evidence-form>
 
-<div class="modal fade" id="internshipModal" role="dialog" *ngIf="selectedQuarter.internshipRecord">
+<div class="modal fade" id="internshipModal" *ngIf="selectedQuarter">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
@@ -244,65 +247,10 @@
       <div class="modal-header">
         <h4 class="modal-title">Student Internship Records</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <form class="form-horizontal" [formGroup]="recordForm" (submit)="updateInternshipRecord()" *ngIf="!listView">
-        <div class="modal-body row">
-          <div class="form-group col-lg-6">
-            <label class="control-label">Student:</label>
-            <input class="form-control" type="text" formControlName="studentName">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">College:</label>
-            <input class="form-control" type="text" formControlName="college">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">Department:</label>
-            <input class="form-control" type="text" formControlName="department">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">External Supervisor:</label>
-            <input class="form-control" type="text" formControlName="externalSupervisor">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">External Supervisor Email:</label>
-            <input class="form-control" type="email" formControlName="externalSupervisorEmail">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">External Supervisor Mobile:</label>
-            <input class="form-control" type="tel" formControlName="externalSupervisorMobile">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">Internal Supervisor:</label>
-            <input class="form-control" type="text" formControlName="internalSupervisor">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">Internship Domail:</label>
-            <input class="form-control" type="text" formControlName="internshipDomain">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">Organization:</label>
-            <input class="form-control" type="text" formControlName="organization">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">Organization Address:</label>
-            <input class="form-control" type="text" formControlName="organizationAddress">
-          </div>
-          <div class="form-group col-lg-6">
-            <label class="control-label">Organization Address Type:</label>
-            <input class="form-control" type="text" formControlName="organizationAddressType">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="listView = true;">
-            <span class="glyphicon glyphicon-arrow-left"></span> Back
-          </button>
-          <button type="submit" class="btn btn-default" [disabled]="recordForm.invalid">Submit</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </form>
+      </div>      
       <div *ngIf="listView">
         <div class="modal-body">
-          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+          <div class="table-responsive-sm">
             <table class="table table-bordered table-card">
               <thead>
                 <tr>
@@ -346,12 +294,67 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
+      <form class="form-horizontal" [formGroup]="recordForm" (submit)="updateInternshipRecord()" *ngIf="!listView">
+          <div class="modal-body row">
+            <div class="form-group col-lg-6">
+              <label class="control-label">Student:</label>
+              <input class="form-control" type="text" formControlName="studentName">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">College:</label>
+              <input class="form-control" type="text" formControlName="college">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Department:</label>
+              <input class="form-control" type="text" formControlName="department">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">External Supervisor:</label>
+              <input class="form-control" type="text" formControlName="externalSupervisor">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">External Supervisor Email:</label>
+              <input class="form-control" type="email" formControlName="externalSupervisorEmail">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">External Supervisor Mobile:</label>
+              <input class="form-control" type="tel" formControlName="externalSupervisorMobile">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Internal Supervisor:</label>
+              <input class="form-control" type="text" formControlName="internalSupervisor">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Internship Domail:</label>
+              <input class="form-control" type="text" formControlName="internshipDomain">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Organization:</label>
+              <input class="form-control" type="text" formControlName="organization">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Organization Address:</label>
+              <input class="form-control" type="text" formControlName="organizationAddress">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Organization Address Type:</label>
+              <input class="form-control" type="text" formControlName="organizationAddressType">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="listView = true;">
+              <span class="glyphicon glyphicon-arrow-left"></span> Back
+            </button>
+            <button type="submit" class="btn btn-default" [disabled]="recordForm.invalid">Submit</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </form>
     </div>
 
   </div>
 </div>
 
-<div class="modal fade" id="studentPublicationModal" role="dialog" *ngIf="selectedQuarter.studentPublicationRecord">
+<div class="modal fade" id="studentPublicationModal" role="dialog" *ngIf="selectedQuarter.studentPublicationRecord&&selectedQuarter.studentPublicationRecord.length">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
@@ -403,7 +406,7 @@
       </form>
       <div *ngIf="listView">
         <div class="modal-body">
-          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+          <div class="table-responsive-sm">
             <table class="table table-bordered table-card">
               <thead>
                 <tr>
@@ -445,7 +448,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="facultyPublicationModal" role="dialog" *ngIf="selectedQuarter.facultyPublicationRecord">
+<div class="modal fade" id="facultyPublicationModal" role="dialog" *ngIf="selectedQuarter.facultyPublicationRecord&&selectedQuarter.facultyPublicationRecord.length;">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
@@ -497,7 +500,7 @@
       </form>
       <div *ngIf="listView">
         <div class="modal-body">
-          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+          <div class="table-responsive-sm">
             <table class="table table-bordered table-card">
               <thead>
                 <tr>
@@ -539,7 +542,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="professionalDevelopmentActivitiesModal" role="dialog" *ngIf="selectedQuarter.professionalDevelopmentActivityRecord">
+<div class="modal fade" id="professionalDevelopmentActivitiesModal" role="dialog" *ngIf="selectedQuarter.professionalDevelopmentActivityRecord&&selectedQuarter.professionalDevelopmentActivityRecord.length">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
@@ -594,7 +597,7 @@
       </form>
       <div *ngIf="listView">
         <div class="modal-body">
-          <div class="table-responsive-sm" *ngIf="selectedQuarter">
+          <div class="table-responsive-sm" >
             <table class="table table-bordered table-card">
               <thead>
                 <tr>
