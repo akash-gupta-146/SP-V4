@@ -1,0 +1,213 @@
+<!-- filter -->
+<div class="filter animate slideInUp" id="top">
+ <div class="d-flex ml-5" *ngIf="defaultCycle">
+   <div class="icon">
+     <i class="fas fa-calendar-check"></i>
+   </div>
+   <div class="form-group dropdown-st">
+     <label class="control-label">Plan Year</label>
+     <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" [(ngModel)]="selectedYear">
+       <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y" [disabled]="isFuture(y)">{{y}}</option>
+     </select>
+   </div>
+ </div>
+ <div class="d-flex ml-5">
+   <div class="icon">
+     <i class="fas fa-calendar-alt"></i>
+   </div>
+   <div class="form-group dropdown-st">
+     <label class="control-label">Strategic Plan</label>
+     <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getResults()">
+       <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}} : [{{c.startYear}} To {{c.endYear}}]</option>
+     </select>
+   </div>
+ </div>
+
+ <div class="d-flex">
+  <div class="icon">
+   <i class="fas fa-calendar-alt"></i>
+  </div>
+  <div class="form-group dropdown-st">
+   <label class="control-label">Select Department</label>
+   <select class="form-controls" data-toggle="collapse" data-target="#collapse1" >
+    <option  [value]="deptSelect" selected hidden>{{deptSelect.department}}</option>
+   </select>
+   <div id="collapse1" class="collapse form-control dept-list" style="font-size: 12px;">
+    <ul data-toggle="collapse" data-target="#collapse1">
+     <li *ngFor="let dept of departments;" [ngClass]="dept.reporteeDepartments.length?'parent':'child'">
+      <p (click)="getResultByDepartment(dept,$event);">
+        {{dept.department}}</p>
+      <ul>
+       <li *ngFor="let rDept of dept.reporteeDepartments" [ngClass]="rDept.reporteeDepartments.length?'parent':'child'">
+        <p (click)="getResultByDepartment(rDept,$event);">
+          {{rDept.department}}</p>
+        <ul>
+         <li *ngFor="let irDept of rDept.reporteeDepartments" [ngClass]="irDept.reporteeDepartments.length?'parent':'child'">
+          <p (click)="getResultByDepartment(irDept,$event);">
+            {{irDept.department}}</p>
+          <ul>
+           <li *ngFor="let iirDept of irDept.reporteeDepartments" [ngClass]="iirDept.reporteeDepartments.length?'parent':'child'">
+            <p (click)="getResultByDepartment(iirDept,$event);">
+              {{iirDept.department}}</p>
+           </li>
+          </ul>
+         </li>
+        </ul>
+       </li>
+      </ul>
+     </li>
+     <!-- <li (click)="getOpiResultByYear(defaultCycle.cycleId,selectedYear)">All department</li> -->
+    </ul>
+   </div>
+  </div>
+ </div>
+<!-- end of filter -->
+
+<div class="container-fluid">
+ <div class="card complete-view mt-2 animate bounceInDown" *ngFor="let goal of goals;let i = index;">
+   <div class="card-header">
+     <b>Goal {{i+1}}.</b> {{goal.goal}}
+   </div>
+   <div class="p-2" *ngFor="let initiative of goal.initiatives;let j=index;">
+     <b>
+       <i class="fas fa-angle-right"></i> Initiative {{i+1}}.{{j+1}}.</b> {{initiative.initiative}}
+     <div class="p-2" *ngFor="let activity of initiative.activities;let k=index;">
+       <b>
+         <i class="fas fa-angle-double-right"></i> Activity {{i+1}}.{{j+1}}.{{k+1}}.</b> {{activity.activity}}
+       <div class="p-2" *ngFor="let opi of activity.opis;let l=index">
+         <b>
+             <i class="fas fa-angle-right"></i>
+             <i class="fas fa-angle-right" style="margin-left: -4px;"></i>
+           <i class="fas fa-angle-right" style="margin-left: -6px;"></i>
+           KPI {{i+1}}.{{j+1}}.{{k+1}}.{{l+1}}.
+         </b>{{opi.opi}}
+         <!-- Quarter Boxes -->
+         <div >
+           <div class="d-flex justify-content-center">
+             <!-- <div *ngFor="let report of opi.quartersAnnualReport;let rp=index;" >  -->
+               <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" *ngFor="let report of opi.quartersAnnualReport;let rp=index;" style="width:25%" [style.border-color]="report.successInfo.color">
+                   <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background-color]="report.successInfo.color" [class.text-black]="report.successInfo.color == '#FFEB3B'">
+                   <div>
+                     <!-- <small>Quarter</small> -->
+                     <div class="text-uppercase">{{report.quarter}}</div>
+                   </div>
+                   <div class="text-right">
+                     <!-- <small>Status</small> -->
+                     <div class="text-capitalize">
+                       Over all Status
+                     </div>
+                   </div>
+                 </div>
+                 <div class="d-flex justify-content-between mt-2 mx-2">
+                   <div>
+                     <small>Estimated Cost</small>
+                     <div>{{report.estimatedCost}}</div>
+                   </div>
+                   <div class="text-right">
+                     <small>Estimated Target </small>
+                     <div>{{report.estimatedTargetLevel}}</div>
+                   </div>
+                 </div>
+                 <div class="d-flex justify-content-between mt-2 mx-2">
+                   <div>
+                     <small>Current Cost </small>
+                     <div>{{report.currentCost}}</div>
+                   </div>
+                   <div class="text-right">
+                     <small>Achievement</small>
+                     <div>{{report.currentTargetLevel}}</div>
+                   </div>
+                 </div>
+               </div>
+             <!-- </div> -->
+           </div>
+         </div>
+         <!-- end of quarter boxes -->
+         <div [attr.id]="'accordion'+ i + j + k + l">
+           <fieldset *ngFor="let dept of opi.departmentInfo;let d=index;">
+             <div class="card-header py-2 d-flex justify-content-between" [attr.data-target]="'#demo' + dept.departmentId + i + j + k + l"
+               data-toggle="collapse">
+               <span>{{d+1}}. {{dept.department}}
+                 <i class="fas fa-eye text-primary"></i>
+               </span>
+               <i class="fas fa-expand-arrows-alt text-primary"></i>
+             </div>
+
+             <div [attr.id]="'demo' + dept.departmentId + i + j + k + l" class="collapse" [attr.data-parent]="'#accordion'+ i + j + k + l" [ngClass]="d?'':'show'">
+               <div>
+                 <!-- Quarter Boxes -->
+                 <div class="px-3" *ngFor="let tdl of dept.opiAnnualTargets;let at=index;">
+                   <div class="d-flex justify-content-between py-2 mt-2">
+                     <div>
+                       <b>Year:</b> {{tdl.year}}
+                     </div>
+                     <div>
+                       <b>BASE LINE :</b>{{dept.baseline}}
+                     </div>
+                     <div>
+                       <b>Evidence Form:</b>{{opi.evidanceForm}}
+                       <span *ngIf="!opi.evidanceForm">None</span>
+                     </div>
+                   </div>
+                   <div class="d-flex justify-content-center">
+                     <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;" [style.border-color]="lev.successInfo.color">
+                       <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">
+                         <div>
+                           <!-- <small>Quarter</small> -->
+                           <div class="text-uppercase">{{lev.quarter}}</div>
+                         </div>
+                         <div class="text-right">
+                           <!-- <small>Status (role) </small> -->
+                           <div class="text-capitalize">
+                             
+                             {{lev.status}}
+                             <br>by {{lev.role}}</div>
+                         </div>
+                       </div>
+                       <div class="d-flex justify-content-between mt-2 mx-2">
+                         <div>
+                           <small>Target </small>
+                           <div> {{lev.estimatedTargetLevel}}</div>
+                         </div>
+                         <div class="text-right">
+                           <small>Estimated Cost </small>
+                           <div>{{tdl.estimatedCost}}</div>
+                         </div>
+                       </div>
+                       <div class="d-flex justify-content-between mt-2 mx-2">
+                         <div *ngIf="lev.status!='unsubmitted'|| lev.disable">
+                           <small>Current cost</small>
+                           <div>{{lev.currentCost}}</div>
+                         </div>
+                         <div class="text-right" *ngIf="lev.status!='unsubmitted'|| lev.disable">
+                           <small>Achievement</small>
+                           <div>{{lev.currentTargetLevel}}</div>
+                         </div>
+                       </div>
+                       <div class="d-flex justify-content-between align-items-center mt-2 mx-2 dropdown" *ngIf="lev.evidance&&lev.evidance.length">
+                         <h6 class="text-primary">Evidence</h6>
+                        <h6 class="float-right"> <a class="link primary-link text-primary dropdown-toggle" id="menu1" data-toggle="dropdown">Files
+                           <span class="caret"></span> </a>
+                         </h6>
+                        
+                         <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                           <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
+                             <a class="btn-link link primary-link text-primary" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidance {{e+1}}</a>
+                           </li>
+                           <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
+                         </ul>
+                       </div>
+                     </div>
+                   </div>
+                   <hr>
+                 </div>
+                 <!-- end of quarter boxes -->
+               </div>
+             </div>
+           </fieldset>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>

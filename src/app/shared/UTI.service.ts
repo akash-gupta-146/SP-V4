@@ -450,6 +450,12 @@ export class UniversityService {
     .catch(this.handleError);
   }
 
+  public getOpiResultByDepartment(cycleId:any,departmentId,year:any){
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false&departmentId="+departmentId,this.parent)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   private extractData(res: Response) {
     if (res.status === 204) { return res; }
     let body = res.json();
