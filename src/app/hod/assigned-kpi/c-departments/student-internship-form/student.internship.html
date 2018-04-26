@@ -49,7 +49,7 @@
         <div class="d-flex justify-content-between  mt-2 mx-2">
           <div *ngIf="lev.evidanceFormId==1">
             <div>
-              <a data-toggle="modal" href="#internshipModal" (click)="selectedQuarter=lev;listView=true;">
+              <a data-toggle="modal" [attr.href]="'#internshipModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
                 <small>Internship Records
                   <i class="fas fa-eye"></i>
                 </small>
@@ -59,7 +59,7 @@
           </div>
           <div *ngIf="lev.evidanceFormId==9">
             <div>
-              <a data-toggle="modal" href="#professionalDevelopmentActivitiesModal" (click)="selectedQuarter=lev;listView=true;">
+              <a data-toggle="modal" href="'#professionalDevelopmentActivitiesModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
                 <small>Professional Development Activities Records
                   <i class="fas fa-eye"></i>
                 </small>
@@ -69,7 +69,7 @@
           </div>
           <div *ngIf="lev.evidanceFormId==10">
             <div>
-              <a data-toggle="modal" href="#facultyPublicationModal" (click)="selectedQuarter=lev;listView=true;">
+              <a data-toggle="modal" href="'#facultyPublicationModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
                 <small>Faculty Publication Records
                   <i class="fas fa-eye"></i>
                 </small>
@@ -79,7 +79,7 @@
           </div>
           <div *ngIf="lev.evidanceFormId==11">
             <div>
-              <a data-toggle="modal" href="#studentPublicationModal" (click)="selectedQuarter=lev;listView=true;">
+              <a data-toggle="modal" href="'#studentPublicationModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
                 <small>Student Publication Records
                   <i class="fas fa-eye"></i>
                 </small>
@@ -239,7 +239,7 @@
 
 <evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" [selectedQuarter]="selectedQuarter" *ngIf="selectedQuarter"></evidence-form>
 
-<div class="modal fade" id="internshipModal" *ngIf="selectedQuarter">
+<div class="modal fade" [attr.id]="'internshipModal'+department.departmentId" *ngIf="selectedQuarter">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
@@ -354,7 +354,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="studentPublicationModal" role="dialog" *ngIf="selectedQuarter.studentPublicationRecord&&selectedQuarter.studentPublicationRecord.length">
+<div class="modal fade" [attr.id]="'studentPublicationModal'+department.departmentId" role="dialog" *ngIf="selectedQuarter.studentPublicationRecord&&selectedQuarter.studentPublicationRecord.length">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
@@ -448,7 +448,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="facultyPublicationModal" role="dialog" *ngIf="selectedQuarter.facultyPublicationRecord&&selectedQuarter.facultyPublicationRecord.length;">
+<div class="modal fade" [attr.id]="'facultyPublicationModal'+department.departmentId" role="dialog" *ngIf="selectedQuarter.facultyPublicationRecord&&selectedQuarter.facultyPublicationRecord.length;">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
@@ -542,7 +542,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="professionalDevelopmentActivitiesModal" role="dialog" *ngIf="selectedQuarter.professionalDevelopmentActivityRecord&&selectedQuarter.professionalDevelopmentActivityRecord.length">
+<div class="modal fade" [attr.id]="'professionalDevelopmentActivitiesModal'+department.departmentId" role="dialog" *ngIf="selectedQuarter.professionalDevelopmentActivityRecord&&selectedQuarter.professionalDevelopmentActivityRecord.length">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
 
     <!-- Modal content-->
