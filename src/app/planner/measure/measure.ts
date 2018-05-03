@@ -47,7 +47,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   ngOnInit() {
-    this.commonService.breadcrumb.next(true);
+    // this.commonService.breadcrumb.next(true);
     this.measureForm = this.setMeasure();
     this.loaderService.display(true);
     this.getCycleWithChildren(false);

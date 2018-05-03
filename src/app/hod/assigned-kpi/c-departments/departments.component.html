@@ -84,6 +84,7 @@
           <b>EVIDENCE FORM TYPE</b>
           <p>{{data.evidanceForm}}</p>
           <p *ngIf="!data.evidanceForm">None</p>
+          <p [hidden]="!templateUrl">Template : <a [attr.href]="getTemplateUrl(data.evidanceFormId)"> file </a></p>
         </div>
       </div>
       <div class="col-lg-4">

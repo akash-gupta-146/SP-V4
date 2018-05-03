@@ -34,7 +34,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   }
 
   ngOnInit(){
-    this.commonService.breadcrumb.next(true);
+    // this.commonService.breadcrumb.next(true);
     this.getCycles(false);
     this.goalForm = this.initObjectiveForm();
   }

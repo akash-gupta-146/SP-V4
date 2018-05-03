@@ -35,7 +35,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   ngOnInit() {
-    this.commonService.breadcrumb.next(true);
+    // this.commonService.breadcrumb.next(true);
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.activityForm = this.setActivity();

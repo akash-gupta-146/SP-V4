@@ -208,7 +208,7 @@
                         <!-- <button class="btn btn-link" [routerLink]="'./opis/' + msr.opiId" *ngIf="role!='coordinator'">
                           <i class="fas fa-edit"></i>
                         </button> -->
-                        <button class="btn btn-link" [routerLink]="'./kpis/'+msr.opiId" >
+                        <button class="btn btn-link" [routerLink]="['./kpis/',msr.opiId]" (click)="showLoader();">
                           <i class="fas fa-edit"></i>
                         </button>
                       </div>
@@ -267,7 +267,7 @@
 <!-- end of modal -->
 
 <!-- refresh button -->
-<div fab class="btn btn-primary" (click)="getOpi();">
+<div fab class="btn btn-primary" (click)="reloadOpis();">
   <i class="fas fa-sync"></i>
 </div>
 <!-- end of refresh button -->

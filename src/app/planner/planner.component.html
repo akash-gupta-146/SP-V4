@@ -69,7 +69,7 @@
 </nav>
 
 <!-- breadcrumb -->
-<div class="container animate slideInUp" *ngIf="breadcrumb">
+<div class="container animate slideInUp" [hidden]="!breadcrumb">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item" routerLinkActive="active">

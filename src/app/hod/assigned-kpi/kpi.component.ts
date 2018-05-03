@@ -82,6 +82,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   getOpiResult(cycle: any) {
+    this.loaderService.display(true);
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResultByCycleId(cycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
@@ -93,10 +94,15 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
         this.utServ.goals.next(response);
         this.initFilters(response);
       }
+      this.loaderService.display(false);
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong");
     });
   }
 
   getOpiResultByYear(cycleId: any, year: any) {
+    this.loaderService.display(true);
     this.selectedQuarter = "q1";
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
@@ -109,6 +115,10 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
         this.utServ.goals.next(response);
         this.initFilters(response);
       }
+      this.loaderService.display(false);
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong");
     });
   }
 
@@ -136,7 +146,9 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   getOpiResultByQuarter(quarter: any) {
+    this.loaderService.display(true);
     this.utServ.getOpiResultByQuarter(this.defaultCycle.cycleId,this.selectedYear,quarter).subscribe((response:any)=>{
+      this.loaderService.display(false);
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
       this.utServ.goals.next(response);
@@ -160,5 +172,9 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
 
   ngOnDestroy(){
     this.loaderService.display(false);
+  }
+
+  showLoader(){
+    this.loaderService.display(true);
   }
 }

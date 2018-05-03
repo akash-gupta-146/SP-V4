@@ -17,6 +17,7 @@ declare let $: any;
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorDepartmentsComponent implements OnInit {
+  templateUrl: string;
   departmentHeirarchyCopy: any;
   role: any;
   @Input() id: any;
@@ -45,6 +46,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
 
   ngOnInit(){
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
+    this.loaderService.display(true);
     // if (this.id) {
     //   console.log("asdf");
     //   this.utServ.getDepartmentByOpiId(this.id).subscribe((response: any) => {
@@ -56,8 +58,9 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     // } else {
       this.route.params.subscribe((params: any) => {
         this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
+          this.loaderService.display(false);
           this.data = response[0];
-          this.checkAssignDept(this.data.departmentInfo);
+          this.getDepartments();
           this.departmentInfo = response[0].departmentInfo;
           this.departmentsCopy = response[0].departmentInfo;
         });
@@ -71,7 +74,6 @@ export class CoordinatorDepartmentsComponent implements OnInit {
       files: new FormControl('', [Validators.required])
     });
     this.getEmployees();
-    this.getDepartments();
     this.actionForm = this.fb.group({
       "reason": ["", Validators.required],
       "description": ["", Validators.required],
@@ -96,6 +98,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     this.utServ.getDepartments().subscribe((res: any) => {
       this.departments = res;
       this.departmentHeirarchyCopy = res;
+      this.checkAssignDept(this.data.departmentInfo);
     })
   }
 
@@ -355,5 +358,25 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         });
       }).setHeader("Confirmation");
 
+  }
+
+  getTemplateUrl(evidanceFormId:number){
+    switch (evidanceFormId) {
+      case 1:
+        this.templateUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-8134238128587521432StudentInternship.xlsx?generation=1524033803030861&alt=media";
+        break;
+      case 9:
+        this.templateUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1624318121912940995ProfessionalDevlopmentActivity.xlsx?generation=1524033865327179&alt=media";
+        break;
+      case 10:
+        this.templateUrl =  "https://www.googleapis.com/download/storage/v1/b/spv4/o/5291564852172375383Faculty%20Publications.xlsx?generation=1524127909547947&alt=media";
+        break;
+      case 11:
+        this.templateUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1062272352555349828StudentPublications.xlsx?generation=1524033899774926&alt=media";
+        break;
+      default:
+        break;
+    }
+    return this.templateUrl;
   }
 }
