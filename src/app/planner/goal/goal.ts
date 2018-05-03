@@ -30,6 +30,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     private loaderService: LoaderService,
     private route: ActivatedRoute,) {
     super();
+    this.loaderService.display(true);    
   }
 
   ngOnInit(){
@@ -85,7 +86,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
   initObjectiveForm() {
     return this.formBuilder.group({
-      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
+      "cycleId": [{value: this.defaultCycle.cycleId, disabled: true}, [Validators.required]],
       "goal": ['', [Validators.required]],
       // "totalCost": ['', [Validators.required]],
       // "spis": this.formBuilder.array([this.inItSpi()]),
@@ -123,13 +124,19 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     }
 
   }
-  deleteGoal(goalId: any, goals: any[], index: any) {
+  deleteGoal(goal: any, goals: any[], index: any) {
     alertify.confirm("Are you sure you want to delete this Goal?", () => {
-      this.orgService.deleteObjective(goalId).subscribe((res: any) => {
-        goals.splice(index, 1);
-      }, (error: any) => {
-        alertify.alert("Something went wrong..");
-      });
+      if(!goal.initiatives.length)
+        this.orgService.deleteObjective(goal.goalId).subscribe((res: any) => {
+          goals.splice(index, 1);
+          alertify.success("Successfully deleted");
+        }, (error: any) => {
+          alertify.error("Something went wrong..");
+        });
+      else{
+        alertify.alert("You can not delete this goal because it has initiatives").setHeader("Alert");
+      }
+
     }).setHeader("Confirmation");
 
   }

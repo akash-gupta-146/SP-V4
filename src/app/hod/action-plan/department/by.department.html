@@ -16,7 +16,7 @@
 <!-- end of subheader -->
 
 <!-- Accordion -->
-<div class="container" id="accordion">
+<div class="container-fluid" id="accordion">
   <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 p-3">
     <h6 class="mb-0">
       <a data-toggle="collapse" class="btn btn-link d-flex justify-content-between" [attr.href]="'#collapse'+ s">
@@ -39,7 +39,7 @@
           <div [attr.id]="'demo' + s + opi.opiId" class="collapse" [attr.data-parent]="'#accordion'+s" [ngClass]="d?'':'show'">
             <!-- text-details box -->
             <div class="text-details">
-              <div class='container-fluid'>
+              <div class='container'>
                 <div class="row">
                   <div class="col-lg-4 col-sm-12">
                     <b>Strategic Goal</b>

@@ -27,6 +27,7 @@ export class InitiativeComponent extends Filters implements OnInit{
     private loaderService: LoaderService,
     private route:ActivatedRoute) {
     super();   
+    this.loaderService.display(true);    
   }
 
   ngOnInit(){
@@ -95,7 +96,7 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   initForm() {
     return this.formBuilder.group({
-      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
+      "cycleId": [{value: this.defaultCycle.cycleId, disabled: true}, [Validators.required]],
       "goalId": ['', [Validators.required]],
       "initiative": ['', [Validators.required]]
     });

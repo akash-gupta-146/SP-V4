@@ -28,6 +28,11 @@ export class ByKPIComponent {
               private storage: StorageService,
               private location: Location,
               private loaderService:LoaderService) {
+
+  }
+
+  ngOnInit(){
+    this.getOpi();
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     if (!(this.role == 'coordinator' || this.role == 'hod')) {
       this.departments = this.storage.getData('user_roleInfo');
@@ -44,9 +49,9 @@ export class ByKPIComponent {
   }
 
   navigateToKpi(opiId) {
-    if (this.role != 'coordinator')
-      this.router.navigateByUrl(this.role + "/" + opiId)
-    else
+    // if (this.role != 'coordinator')
+    //   this.router.navigateByUrl(this.role + "/" + opiId)
+    // else
       this.router.navigateByUrl(this.role + "/kpis/" + opiId);
   }
 
@@ -74,6 +79,20 @@ export class ByKPIComponent {
     this.utServ.goals.next(this.goals);
     this.loaderService.display(false);
     // this.router.navigateByUrl(this.role + "/home");
+  }
+
+  getOpi(): any {
+    this.initiatives = this.activities = this.opis = [];
+    this.utServ.getOpiResult().subscribe((response: any) => {
+      if (response.status == 204) {
+        this.goals = [];
+        this.goalsCopy = []
+      } else {
+        this.goals = response;
+        this.goalsCopy = JSON.parse(JSON.stringify(response));
+        this.utServ.goals.next(response);
+      }
+    });
   }
 
 }

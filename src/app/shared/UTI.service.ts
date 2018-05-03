@@ -6,11 +6,14 @@ import { CustomHttpService } from './default.header.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import {of} from 'rxjs/observable/of';
 
 @Injectable()
 export class UniversityService {
 
+  activeCycles: any[]=[];
   private baseUrl: string = "";
+  private allCycles:any[]=[];
   private child = new RequestOptions({
     headers: new Headers({
       'child': true
@@ -20,6 +23,13 @@ export class UniversityService {
   private parent = new RequestOptions({
     headers: new Headers({
       'parent': true
+    })
+  });
+
+  private both = new RequestOptions({
+    headers: new Headers({
+      'parent': true,
+      'child': true
     })
   });
 
@@ -113,10 +123,23 @@ export class UniversityService {
   }
 
   public getCycleWithChildren(disable: any) {
+    console.log(this.allCycles);
+    if(!disable&&this.allCycles.length)
+      return of(this.allCycles);
+    else if(disable&&this.activeCycles.length)
+      return of(this.activeCycles);
+
     return this.http.get(this.baseUrl + "/cycles?hideDisable=" + disable, this.child)
-      .map(this.extractData)
+      .map((response:any)=>{
+        if(!disable)
+          this.allCycles = response.json();
+        else
+          this.activeCycles = response.json();
+        return this.extractData(response);
+      })
       .catch(this.handleError);
   }
+  
 
   public deleteCycle(cycleId: any) {
     return this.http.delete(this.baseUrl + "/cycle/" + cycleId)
@@ -180,7 +203,7 @@ export class UniversityService {
   }
 
   public getMeasuresByCycleId(cycleId: any) {
-    return this.http.get(this.baseUrl + "/opis?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+    return this.http.get(this.baseUrl + "/opis?cycleId=" + cycleId + "&hideDisable=false", this.both)
       .map(this.extractData)
       .catch(this.handleError);
   }

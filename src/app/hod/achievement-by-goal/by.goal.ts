@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import { HodService } from '../hod.service';
 import { Location } from '@angular/common';
+import { LoaderService } from '../../shared/loader.service';
 
 @Component({
  selector:'by-goal',
@@ -11,11 +12,16 @@ export class ByGoal{
  goalsCopy: any[];
  goals: any[];
  opis:any[]=[];
- constructor(private utServ: HodService,private location: Location){
+ selectedGoal:any;
+ constructor( private utServ: HodService,
+              private location: Location,
+              private loaderService: LoaderService){
   this.getGoals();
  }
 
  getGoals(): any {
+   this.selectedGoal = 0;
+   this.loaderService.display(true);
   this.utServ.getOpiResultByGoalMode().subscribe((response: any) => {
     if (response.status == 204) {
       this.goals = [];
@@ -25,6 +31,7 @@ export class ByGoal{
       this.goalsCopy = response;
       console.log(response);
     }
+    this.loaderService.display(false);
   });
  }
 

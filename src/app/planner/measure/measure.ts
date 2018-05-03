@@ -22,13 +22,13 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   objectives: any[] = [];
   initiatives: any[] = [];
   activities: any[] = [];
-  public departments: any[] = [];
+  departments: any[] = [];
   departmentsCopy: any[] = [];
   evidenceForms: any[] = [];
-  public isUpdating: boolean = false;
-  public cycles: any[] = [];
+  isUpdating: boolean = false;
+  cycles: any[] = [];
 
-  public direction: any = {
+  direction: any = {
     true: 'Upward',
     false: 'Downward'
   }
@@ -43,6 +43,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder, public commonService: StorageService, private loaderService: LoaderService) {
     super();
+    this.loaderService.display(true);    
   }
 
   ngOnInit() {
@@ -50,9 +51,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.measureForm = this.setMeasure();
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
-    this.getQuarter();
-    this.getFrequencies();
-    this.getDepartments();
+    // this.getQuarter();
   }
 
   ngAfterViewInit() {
@@ -69,8 +68,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         }
       });
       if (!flag) {
-        this.getMeasure();
-        this.getEvidenceForms();
+        this.getMeasure();        
       }
       this.measureForm = this.setMeasure();
     });
@@ -278,6 +276,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   checkAssignDept(departmentInfo: any[]) {
+    this.getDepartments();
     setTimeout(function(){ $('#myModal').modal('show') }, 500);
     $('#detailModal').modal('hide');    
     this.selectedDepartmentIds = [];
@@ -518,12 +517,15 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   deleteMeasure(measureId: any, measures: any[], index: any) {
-    if (confirm("Are you sure you want to delete this Measure?"))
+    alertify.confirm("Are you sure you want to delete this Measure?",()=>{
       this.orgService.deleteMeasure(measureId).subscribe((res: any) => {
-        console.log(res);
-        // measures.splice(index, 1);
+        alertify.success("OPI Deleted");
         this.getMeasure();
-      })
+      },(error:any)=>{
+        alertify.error("Something went wrong");
+      });
+    }).setHeader("Confirmation");
+      
   }
 
   getEvidenceForms() {
@@ -540,6 +542,8 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   addNewMeasure() {
+    this.getFrequencies();
+    this.getEvidenceForms();
     this.enableFields();
     this.isUpdating = false;
     $('#add-opi').show();

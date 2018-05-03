@@ -102,7 +102,7 @@
             <button class="btn-link link primary-link text-primary ml-1" *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
             <button class="btn-link link primary-link text-primary ml-1" *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
           </div>
-          <div class="d-flex justify-content-end mt-3" *ngIf="role!='coordinator'">
+          <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
             <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)" [disabled]="lev.status!='locked'">
             Approve/Reject</button>
           </div>

@@ -14,7 +14,7 @@ declare let $: any;
   selector: 'c-dept',
   templateUrl: './departments.component.html',
   styleUrls: ['./../../hod.component.scss'],
-  //  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorDepartmentsComponent implements OnInit {
   departmentHeirarchyCopy: any;
@@ -45,24 +45,24 @@ export class CoordinatorDepartmentsComponent implements OnInit {
 
   ngOnInit(){
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
-    if (this.id) {
-      console.log("asdf");
-      this.utServ.getDepartmentByOpiId(this.id).subscribe((response: any) => {
-        this.data = response[0];
-        this.checkAssignDept(response[0].departmentInfo);
-        this.departmentInfo = response[0].departmentInfo;
-        this.departmentsCopy = response[0].departmentInfo;
-      });
-    } else {
+    // if (this.id) {
+    //   console.log("asdf");
+    //   this.utServ.getDepartmentByOpiId(this.id).subscribe((response: any) => {
+    //     this.data = response[0];
+    //     this.checkAssignDept(response[0].departmentInfo);
+    //     this.departmentInfo = response[0].departmentInfo;
+    //     this.departmentsCopy = response[0].departmentInfo;
+    //   });
+    // } else {
       this.route.params.subscribe((params: any) => {
         this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
           this.data = response[0];
-          this.checkAssignDept(response[0].departmentInfo);
+          this.checkAssignDept(this.data.departmentInfo);
           this.departmentInfo = response[0].departmentInfo;
           this.departmentsCopy = response[0].departmentInfo;
         });
       });
-    }
+    // }
 
 
     this.evidencForm = new FormGroup({
@@ -100,7 +100,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   }
 
   checkAssignDept(assignedDepartments: any[]) {
-    this.departments = JSON.parse(JSON.stringify(this.departmentHeirarchyCopy));
+    this.departments = this.departmentHeirarchyCopy;
     if(assignedDepartments.length)
     assignedDepartments.forEach(outerElement => {
       this.departments.forEach(innerElement => {

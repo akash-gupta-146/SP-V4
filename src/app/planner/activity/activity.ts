@@ -31,6 +31,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     private loaderService: LoaderService,
     private route:ActivatedRoute) {
     super();    
+    this.loaderService.display(true);    
   }
 
   ngOnInit() {
@@ -119,7 +120,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
 
   setActivity() {
     return this.formBuilder.group({
-      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
+      "cycleId": [{value: this.defaultCycle.cycleId, disabled: true}, [Validators.required]],
       "objectiveId": ['', [Validators.required]],
       "initiativeId": ['', [Validators.required]],
       "activity": ['', [Validators.required]],

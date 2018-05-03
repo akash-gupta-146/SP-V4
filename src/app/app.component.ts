@@ -44,12 +44,12 @@ export class AppComponent implements OnInit{
     this.loaderService.status.asObservable().subscribe((val: boolean) => {
       this.showLoader = val;
     });
-    this.loaderService.transactionLoader.asObservable().subscribe((val: boolean) => {
-      this.transactionLoader = val;
-    });
-    this.loaderService.loadingStatus.asObservable().subscribe((val: string) => {
-      this.loadingStatus = val;
-    });
+    // this.loaderService.transactionLoader.asObservable().subscribe((val: boolean) => {
+    //   this.transactionLoader = val;
+    // });
+    // this.loaderService.loadingStatus.asObservable().subscribe((val: string) => {
+    //   this.loadingStatus = val;
+    // });
 
   }
 

@@ -113,7 +113,7 @@
               <li role="presentation" class="dropdown-divider" style="clear: both;"></li>
               <li class="text-center" role="presentation">
                 <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
-                  (click)="selectedQuarter = lev" [disabled]="lev.disable">Upload</button>
+                (click)="selectedQuarter = lev;" [disabled]="lev.disable">Upload</button>
               </li>
             </ul>
           </div>
@@ -235,7 +235,8 @@
             Cancel</button>
           <button class="btn-link link primary-link text-primary ml-1" *ngIf="!lev.isUpdating&&!lev.disable&&lev.status != 'locked'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable||!lev.evidance.length">Lock</button>
         </div>
-        <div class="d-flex justify-content-end mt-3" *ngIf="role!='coordinator'&&lev.status=='locked'&&lev.isCurrent">
+        <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
+          
           <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)" [disabled]="lev.status!='locked'">
           Approve/Reject</button>
         </div>

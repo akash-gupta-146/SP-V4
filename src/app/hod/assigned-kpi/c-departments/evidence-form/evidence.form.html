@@ -1,10 +1,10 @@
 <!-- Evidence Form-->
 <div class="modal fade" [attr.id]="'evidenceForm'+formId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog ">
-    <div class="modal-content">
+    <div class="modal-content">      
       <div class="modal-header">
           <h4 class="modal-title" id="myModalLabel">Attach Evidence</h4>
-        <button type="button" class="close" data-dismiss="modal">
+        <button type="button" class="close" data-dismiss="modal" (click)="resetEvidenceForm()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -23,10 +23,15 @@
             <input type="file" class="form-control-file" id="exampleInputFile" formControlName="files" (change)="getFile($event)" aria-describedby="fileHelp">
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn-sp btn-primary">Submit</button>
-          <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
+        <div class="progress" *ngIf="selectedQuarter.submitButton">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span>Please wait<span class="dotdotdot"></span></span>
+          </div>
         </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn-sp btn-primary" [disabled]="selectedQuarter.submitButton" [disabled]="evidencForm.invalid" >Submit</button>
+          <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="resetEvidenceForm()">Close</button>          
+        </div>        
       </form>
     </div>
   </div>
