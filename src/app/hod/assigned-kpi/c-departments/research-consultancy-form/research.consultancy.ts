@@ -15,6 +15,7 @@ declare let $:any;
 })
 export class ResearchConsultancy implements OnInit{
 
+  @Output() selectEvidence: any = new EventEmitter();
  role: any;
  selectedProgram: any;
  url: string;
@@ -136,5 +137,9 @@ export class ResearchConsultancy implements OnInit{
  selectProgram(program:any){
   this.selectedQuarter.selectedForm = program;
   this.changeSelected.emit(this.selectedQuarter);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

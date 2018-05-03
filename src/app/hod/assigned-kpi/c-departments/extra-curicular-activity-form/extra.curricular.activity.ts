@@ -13,6 +13,7 @@ import { StorageService } from '../../../../shared/storage.service';
 })
 export class ExtraCurricularActivity implements OnInit{
 
+  @Output() selectEvidence: any = new EventEmitter();
  role: any;
  selectedProgram: any;
  url: string;
@@ -129,5 +130,9 @@ export class ExtraCurricularActivity implements OnInit{
  selectActivity(program:any){
   this.selectedQuarter.selectedForm = program;
   this.changeSelected.emit(this.selectedQuarter);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

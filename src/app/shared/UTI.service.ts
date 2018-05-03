@@ -179,7 +179,7 @@ export class UniversityService {
   }
 
   public getInitiativesByCycleId(cycleId: any) {
-    return this.http.get(this.baseUrl + "/initiatives?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+    return this.http.get(this.baseUrl + "/initiatives?cycleId=" + cycleId + "&hideDisable=false", this.both)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -191,7 +191,7 @@ export class UniversityService {
   }
 
   public getActivitiesByCycleId(cycleId: any) {
-    return this.http.get(this.baseUrl + "/activities?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+    return this.http.get(this.baseUrl + "/activities?cycleId=" + cycleId + "&hideDisable=false", this.both)
       .map(this.extractData)
       .catch(this.handleError);
   }

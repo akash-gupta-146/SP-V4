@@ -164,7 +164,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
                       <li role="presentation" *ngFor="let ev of program.evidance;let e = index;" class="d-flex justify-content-between">
-                        <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
+                        <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)" style="float:left">evidance {{e+1}}</a>
                         <button class="btn btn-link" class="close" (click)="deleteEvidence(ev,program.evidance)" [hidden]="selectedQuarter.status=='locked'">
                             <i class="fas fa-trash"></i>
                         </button>

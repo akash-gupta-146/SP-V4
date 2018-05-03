@@ -12,6 +12,7 @@ declare let $: any;
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class MousForm {
+  @Output() selectEvidence: any = new EventEmitter();
  formId: any;
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
@@ -107,5 +108,9 @@ export class MousForm {
  selectQuarter(level: any) {
   this.selectedQuarter = level;
   this.changeSelected.emit(level);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

@@ -103,7 +103,7 @@
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
              <li role="presentation" *ngFor="let ev of detail.evidance;let e = index;" class="px-2 d-flex justify-content-between">
-              <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidence {{e+1}}</a>
+              <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)">Evidence {{e+1}}</a>
               <button class="btn btn-link p-0" (click)="deleteEvidence(detail.evidance,ev,e)" [hidden]="detail.status=='locked'">
                   <small><i class="fas fa-trash"></i></small>
               </button>

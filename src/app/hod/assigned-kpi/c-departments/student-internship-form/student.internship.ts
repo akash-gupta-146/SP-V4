@@ -13,6 +13,7 @@ declare let $: any;
   styleUrls: ['./../../../hod.component.scss'],
 })
 export class StudentInternshipForm implements OnInit {
+   @Output() selectEvidence: any = new EventEmitter();
   role: any;
   facultyPublicationForm: FormGroup;
   professionalDevelopmentActivitiesForm: FormGroup;
@@ -274,4 +275,8 @@ export class StudentInternshipForm implements OnInit {
     $(element).addClass('show');
     $(".collapse-off").removeClass('show');
   }
+
+  storeEvidence(ev:any){
+    this.selectEvidence.emit(ev);
+   }
 }

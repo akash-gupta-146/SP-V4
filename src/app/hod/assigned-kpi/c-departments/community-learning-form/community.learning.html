@@ -191,7 +191,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu" class="d-flex justify-content-between flex-column list-group">
                       <li role="presentation" *ngFor="let ev of learning.evidance;let e = index;" class="d-flex justify-content-between list-group-item">
-                        <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url">Evidance {{e+1}}</a>
+                        <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)">Evidance {{e+1}}</a>
                         <button type="button" class="close" (click)="deleteEvidence(ev,learning.evidance)" [hidden]="selectedQuarter.status=='locked'">
                           <span aria-hidden="true">&times;</span>
                         </button>

@@ -17,7 +17,8 @@ declare let $: any;
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorDepartmentsComponent implements OnInit {
-  templateUrl: string;
+  selectedEvidence: any;
+  tempUrl: string = "";
   departmentHeirarchyCopy: any;
   role: any;
   @Input() id: any;
@@ -60,6 +61,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
           this.loaderService.display(false);
           this.data = response[0];
+          this.getTemplateUrl(this.data.evidanceFormId);
           this.getDepartments();
           this.departmentInfo = response[0].departmentInfo;
           this.departmentsCopy = response[0].departmentInfo;
@@ -361,22 +363,28 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   }
 
   getTemplateUrl(evidanceFormId:number){
+    console.log("asdf");
     switch (evidanceFormId) {
       case 1:
-        this.templateUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-8134238128587521432StudentInternship.xlsx?generation=1524033803030861&alt=media";
+        this.tempUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-8134238128587521432StudentInternship.xlsx?generation=1524033803030861&alt=media";
         break;
       case 9:
-        this.templateUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1624318121912940995ProfessionalDevlopmentActivity.xlsx?generation=1524033865327179&alt=media";
+        this.tempUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1624318121912940995ProfessionalDevlopmentActivity.xlsx?generation=1524033865327179&alt=media";
         break;
       case 10:
-        this.templateUrl =  "https://www.googleapis.com/download/storage/v1/b/spv4/o/5291564852172375383Faculty%20Publications.xlsx?generation=1524127909547947&alt=media";
+        this.tempUrl =  "https://www.googleapis.com/download/storage/v1/b/spv4/o/5291564852172375383Faculty%20Publications.xlsx?generation=1524127909547947&alt=media";
         break;
       case 11:
-        this.templateUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1062272352555349828StudentPublications.xlsx?generation=1524033899774926&alt=media";
+        this.tempUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1062272352555349828StudentPublications.xlsx?generation=1524033899774926&alt=media";
         break;
       default:
         break;
     }
-    return this.templateUrl;
+    return this.tempUrl;
+  }
+
+  getEvidence(evidence:any){
+    console.log(evidence);
+    this.selectedEvidence = evidence;
   }
 }

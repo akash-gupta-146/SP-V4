@@ -14,6 +14,7 @@ declare let $:any;
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class CurriculumReviewForm implements OnInit{
+  @Output() selectEvidence: any = new EventEmitter();
  role: any;
  selectedProgram: any;
  url: string;
@@ -130,5 +131,9 @@ export class CurriculumReviewForm implements OnInit{
  selectProgram(program:any){
   this.selectedQuarter.selectedForm = program;
   this.changeSelected.emit(this.selectedQuarter);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

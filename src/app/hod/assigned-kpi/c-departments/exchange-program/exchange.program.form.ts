@@ -15,6 +15,7 @@ declare let $:any;
 })
 export class ExchangeProgram implements OnInit{
 
+  @Output() selectEvidence: any = new EventEmitter();
  role: any;
  selectedProgram: any;
  url: string;
@@ -134,5 +135,9 @@ export class ExchangeProgram implements OnInit{
  selectProgram(program:any){
   this.selectedQuarter.selectedForm = program;
   this.changeSelected.emit(this.selectedQuarter);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

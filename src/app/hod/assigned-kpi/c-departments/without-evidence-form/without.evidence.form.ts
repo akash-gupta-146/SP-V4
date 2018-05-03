@@ -19,6 +19,8 @@ export class WithoutEvidenceForm implements OnInit{
   this.formId = id;
  }
 
+ @Output() selectEvidence: any = new EventEmitter();
+
  isUpdating: boolean = false;
  constructor(public utServ: HodService, 
              public loaderService: LoaderService,
@@ -94,5 +96,9 @@ export class WithoutEvidenceForm implements OnInit{
 
  selectQuarter(level: any) {
   this.changeSelected.emit(level);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

@@ -13,6 +13,7 @@ declare let $:any;
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class CommunityLearningForm implements OnInit{
+  @Output() selectEvidence: any = new EventEmitter();
  role: any;
  selectedLearning: any;
  url: any;
@@ -130,6 +131,10 @@ export class CommunityLearningForm implements OnInit{
  selectLearning(learning:any){
   this.selectedQuarter.selectedForm = learning;
   this.changeSelected.emit(this.selectedQuarter);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 
  
