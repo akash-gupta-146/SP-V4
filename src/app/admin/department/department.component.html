@@ -6,19 +6,60 @@
           <h4>Add New Department</h4>
         </div>
         <div class="panel-body">
-
+          <form class="form-horizontal" [formGroup]="newDepartment" (submit)="onSubmit()">
+            <div class="form-group">
+              <label for="exampleSelect2">Select Parent Department</label>
+              <div>
+                <select class="form-control" id="exampleSelect2" formControlName="parentDepartmentId">
+                  <option value="-1" disabled>Select parent department</option>
+                  <option value="-1">None</option>
+                  <option *ngFor="let dept of departments;let d = index;" [value]="dept.departmentId">{{dept.department}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <div>
+                <input type="text" class="form-control" id="name" formControlName="department">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
     <div class="col-sm-4">
       <div class="panel panel-default">
-          <div class="panel-heading" style="color: red;">
-            <h4>Existing Departments</h4>
-          </div>
-          <div class="panel-body">
-            
-          </div>
-        </div>       
-    </div>    
+        <div class="panel-heading" style="color: red;">
+          <h4>Existing Departments</h4>
+        </div>
+        <div class="panel-body department-list">
+          <ul>
+            <li *ngFor="let dept of departments;">
+              <p>{{dept.department}}</p>
+              <ul>
+                <li *ngFor="let rDept of dept.reporteeDepartments">
+                  <p>{{rDept.department}}</p>
+                  <ul>
+                    <li *ngFor="let irDept of rDept.reporteeDepartments">
+                      <p>{{irDept.department}}</p>
+                      <ul>
+                        <li *ngFor="let iirDept of irDept.reporteeDepartments">
+                          <p>{{iirDept.department}}</p>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
