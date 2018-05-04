@@ -17,11 +17,11 @@ declare let $: any;
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorDepartmentsComponent implements OnInit {
+  @Input() id: any;
   selectedEvidence: any;
   tempUrl: string = "";
   departmentHeirarchyCopy: any;
   role: any;
-  @Input() id: any;
   isEdit: boolean;
   selectedDepatrtmentId: any;
   selectedLevel:any = {};
@@ -29,13 +29,18 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   employees: any[] = [];
   actionSteps: any[] = [];
   actionForm: FormGroup;
-  data: any={};
+  data: any;
   departmentModel: any = 0;
   departments: any[] = [];
   departmentInfo: any[] = []
   departmentsCopy: any[] = [];
   evidencForm: FormGroup;
   evidences: any[] = [];
+  selectedQuarter: any;
+  file: any;
+  selectedInternshipFile: any;
+  selectedForm: any;
+  isNew: boolean = false;
   constructor(private route: ActivatedRoute, 
               private utServ: HodService,
               private storage: StorageService, 
@@ -177,13 +182,10 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     }).setHeader("Confirmation");
   }
 
-  file: any;
   getFile(event: any) {
     this.file = event.target.files[0];
   }
-  selectedQuarter: any;
-  public selectedInternshipFile: any;
-  selectedForm: any;
+
   passQuarter(event) {
     this.selectedLevel = event;
     // if (event.internshipDetails)
@@ -203,7 +205,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         this.actionSteps = response;
     });
   }
-  isNew: boolean = false;
+
   addNewActionStep(dept: any) {
     dept.isNew = true;
     dept.isEdit = false;

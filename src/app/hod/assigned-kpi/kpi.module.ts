@@ -5,7 +5,6 @@ import { KPIComponent } from './kpi.component';
 import { ByKPIComponent } from './kpi/by.kpi.component';
 import { ByFrequency } from './frequency/by-frequency';
 import { CoordinatorDepartmentsComponent } from './c-departments/departments.component';
-import { DepartmentsComponent } from './departments/departments.component';
 import { ByDepartment } from './department-wise/by.department';
 import { CommunityLearningForm } from './c-departments/community-learning-form/community.learning';
 import { StudentInternshipForm } from './c-departments/student-internship-form/student.internship';
@@ -37,13 +36,9 @@ import { ExchangeProgram } from './c-departments/exchange-program/exchange.progr
   {
    path: 'kpis/:id',
    loadChildren:'app/hod/assigned-kpi/c-departments/coordinator.depatrments.module#CoordinatorDepartmentsModule'
-  },
-  {
-   path: 'opis/:id',
-   component: DepartmentsComponent, pathMatch: 'full'
-  },
+  }
  ])],
- declarations: [KPIComponent, ByKPIComponent, ByDepartment, ByFrequency,DepartmentsComponent]
+ declarations: [KPIComponent, ByKPIComponent, ByDepartment, ByFrequency]
 })
 export class KPIModule {
 }
