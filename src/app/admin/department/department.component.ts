@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { AdminService } from "../admin.service";
 import { StorageService } from "../../shared/storage.service";
-
+import * as alertify from 'alertifyjs';
 declare let $: any;
 
 @Component({
@@ -35,7 +35,7 @@ export class DeparmtmentComponent {
     this.adminService.getUniversity().subscribe(response => {
       if (response.status === 204) {
         this.university = [];
-        alert("There is not university Entry yet.\nFirst Feed the entries of University");
+        alertify.alert("There is not university Entry yet.\nFirst Feed the entries of University").setHeader("Alert");
       } else {
         this.university = response;
       }

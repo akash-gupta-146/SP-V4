@@ -21,8 +21,10 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   newKpi: boolean;
   selectedYear: number;
   reloadBtn: boolean = false;
+  selectedMeasure: any;
   selectedDepartmentIds: any[]=[];
   defaultCycle: any = {};
+  frequencies: any[];
   objectives: any[] = [];
   initiatives: any[] = [];
   activities: any[] = [];
@@ -30,20 +32,17 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   departmentsCopy: any[] = [];
   evidenceForms: any[] = [];
   isUpdating: boolean = true;
+  emptySearchResult: any;
   cycles: any[] = [];
-
-  direction: any = {
-    true: 'Upward',
-    false: 'Downward'
-  }
-
   prev: boolean = true;
   next: boolean = false;
-
-  public quarter: any[] = ["Q1", "Q2", "Q3", "Q4"];
-  public quarters: any[];
-  public measureForm: FormGroup;
+  quarters: any[];
+  measureForm: FormGroup;
   selectedQuarter: any = 0;
+  selectedMeasureId: any;
+  selectedDepartments: any[] = [];
+  departmentForm: FormGroup;
+  cycle: any[];
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder, public commonService: StorageService, private loaderService: LoaderService) {
     super();
@@ -51,7 +50,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   ngOnInit() {
-    // this.commonService.breadcrumb.next(true);
     this.measureForm = this.setMeasure();
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
@@ -88,7 +86,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     });
   }
 
-  emptySearchResult: any;
 
   getInitiative(objId: any) {
     if (objId) {
@@ -143,7 +140,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       this.quarters = res;
     })
   }
-  frequencies: any[];
   getFrequencies() {
     this.orgService.getFrequencies().subscribe((response: any) => {
       console.log("frequencies :", response);
@@ -158,7 +154,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       this.departmentsCopy = res;
     })
   }
-  public selectedMeasureId: any;
+
 
   /**for editing opi target levels */
   editDepartmentForm: FormGroup;
@@ -245,7 +241,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.reloadBtn = false;
   }
 
-  public selectedDepartments: any[] = [];
   public department(event: any) {
     this.travers(event, event.my);
   }
@@ -316,8 +311,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     }
   }
 
-  departmentForm: FormGroup;
-  cycle: any[];
   assignDepartment() {
     this.cycles.forEach(element => {
       if (this.defaultCycle.cycleId == element.cycleId)
@@ -482,8 +475,8 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     }
   }
 
-  selectedMeasure: any;
   updateMeasure(objective: any, initiative: any, activity: any, measure: any, highlight: any) {
+    this.getEvidenceForms();
     $('#add-btn').hide();
     $(".to-be-highlighted").removeClass("highlight");
     $(highlight).addClass("highlight");
@@ -499,7 +492,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       initiativeId: initiative.initiativeId,
       activityId: activity.activityId,
       opi: measure.opi,
-      measureUnitId: measure.measureUnit,
+      measureUnitId: measure.measureUnitId,
       frequencyId: measure.frequencyId,
       baseline: measure.baselineOfOpi,
       evidanceFormId: measure.evidanceFormId,

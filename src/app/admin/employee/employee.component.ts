@@ -34,7 +34,7 @@ export class EmployeeComponent {
   this.adminService.getRoles().subscribe(response => {
    if (response.status === 204) {
     this.roles = [];
-    alert("There is not Roles Entry yet.\nFirst Feed the entries of Roles");
+    alertify.alert("There is not Roles Entry yet.\nFirst Feed the entries of Roles").setHeader("Alert");
    } else {
     this.roles = response;
    }

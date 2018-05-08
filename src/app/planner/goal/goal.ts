@@ -98,6 +98,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
         $('#add-btn').show();
         this.goalForm.controls["goal"].reset();
         this.getGoals();
+        this.getAllCycles();
       }, (error: any) => {
         alertify.error("Something went wrong..");
       });
@@ -109,6 +110,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
           alertify.success('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
           this.goalForm = this.initObjectiveForm()
           this.getGoals();
+          this.getAllCycles();          
           this.isUpdating = false;
           $("#add-plan").hide();
           $('#add-btn').show();
@@ -142,6 +144,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     $(highlight).addClass("highlight");
     this.selectedObjective = goal;
     this.isUpdating = true;
+    console.log(this.defaultCycle.cycleId);
     this.goalForm.patchValue({ goal: goal.goal, cycleId: this.defaultCycle.cycleId });
     $("#add-plan").show();
     $("#collapse1").collapse('show');
@@ -191,5 +194,12 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     $(".to-be-highlighted").removeClass("highlight");
     $("#add-plan").hide();
     $('#add-btn').show();
+  }
+
+  getAllCycles() {
+    this.orgService.getAllCycle().subscribe((response: any) => {
+      this.cycles = response;
+    }, (error: any) => {
+    });
   }
 }

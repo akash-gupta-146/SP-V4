@@ -118,21 +118,22 @@ export class InitiativeComponent extends Filters implements OnInit{
       this.orgService.addInitiative(this.initiativeForm.value).subscribe((res: any) => {
         this.getInitiative(this.defaultCycle);
         $("#add-initiative").hide();
-        alertify.notify("You have successfully added a new Initiative.");
+        alertify.notify("Initiative Successfully Added.");
         $('#add-btn').show();
         this.initiativeForm.controls["initiative"].reset();
+        this.getAllCycles();
       }, err => {
         console.log(err);
       });
     else
-      alertify.confirm("Are you sure you want to update this Initiative?", () => {
+      alertify.confirm("Are you sure you want to update selected Initiative?", () => {
         this.orgService.updateInitiative(this.selectedInitiative.initiativeId, this.initiativeForm.value).subscribe((res: any) => {
           $("#add-initiative").hide();
           $('#add-btn').show();
           this.getInitiative(this.defaultCycle);
-          alertify.notify("You have successfully updated Initiative.");
-          // $('#initiativeModal').modal('show');
+          alertify.notify(" Initiative Successfully Updated.");
           this.isUpdating = false;
+          this.getAllCycles();          
         })
       }).setHeader("Confirmation");
 
@@ -239,5 +240,12 @@ export class InitiativeComponent extends Filters implements OnInit{
   get(e) {
     var promise = new Promise((resolve: any, reject: any) => { $(e)["0"].height = $(e)["0"].clientHeight; resolve(); });
     return promise;
+  }
+
+  getAllCycles() {
+    this.orgService.getAllCycle().subscribe((response: any) => {
+      this.cycles = response;
+    }, (error: any) => {
+    });
   }
 }

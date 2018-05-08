@@ -98,7 +98,7 @@ export class PlanComponent implements OnInit {
 
   changeStatus(event: any, c: any) {
     if(c.defaultCycle){
-      alertify.alert("Default plan cannot be deactivated");
+      alertify.alert("Default plan cannot be deactivated").setHeader("Alert");
       event.target.checked = !event.target.checked;
     }else
     alertify.confirm("Are you sure you want to do this?", () => {
