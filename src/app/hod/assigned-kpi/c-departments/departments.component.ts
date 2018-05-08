@@ -17,6 +17,7 @@ declare let $: any;
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorDepartmentsComponent implements OnInit {
+  deptId: string;
   @Input() id: any;
   selectedEvidence: any;
   tempUrl: string = "";
@@ -29,7 +30,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   employees: any[] = [];
   actionSteps: any[] = [];
   actionForm: FormGroup;
-  data: any;
+  data: any = {};
   departmentModel: any = 0;
   departments: any[] = [];
   departmentInfo: any[] = []
@@ -50,29 +51,27 @@ export class CoordinatorDepartmentsComponent implements OnInit {
 
   }
 
-  ngOnInit(){
+  ngOnInit(){  
+    this.deptId = this.route.snapshot.paramMap.get('deptId');  
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     this.loaderService.display(true);
-    // if (this.id) {
-    //   console.log("asdf");
-    //   this.utServ.getDepartmentByOpiId(this.id).subscribe((response: any) => {
-    //     this.data = response[0];
-    //     this.checkAssignDept(response[0].departmentInfo);
-    //     this.departmentInfo = response[0].departmentInfo;
-    //     this.departmentsCopy = response[0].departmentInfo;
-    //   });
-    // } else {
-      this.route.params.subscribe((params: any) => {
+      this.route.params.subscribe((params: any) => {        
         this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
           this.loaderService.display(false);
           this.data = response[0];
           this.getTemplateUrl(this.data.evidanceFormId);
           this.getDepartments();
-          this.departmentInfo = response[0].departmentInfo;
-          this.departmentsCopy = response[0].departmentInfo;
+          if(params['deptId']){
+            const deptId = parseInt(this.deptId);
+            this.departmentInfo = this.data.departmentInfo.filter(element=>{
+              return element.departmentId === deptId;
+            })
+          }else{
+            this.departmentInfo = response[0].departmentInfo;
+            this.departmentsCopy = response[0].departmentInfo;
+          }
         });
-      });
-    // }
+      }); 
 
 
     this.evidencForm = new FormGroup({

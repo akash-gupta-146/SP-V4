@@ -25,7 +25,7 @@
         <label class="control-label">Strategic Plan</label>
         <select id="cycle" name="cycle" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,selectedYear)" style="width:auto;height: auto;padding: 0px;"
           [(ngModel)]="defaultCycle">
-          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+          <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.title}}</option>
         </select>
       </div>
     </div>

@@ -31,7 +31,7 @@
 
 <div class="container-fluid animate slideInDown" *ngIf="goals">
   <div class="grid">
-    <div class="grid-head" style="grid-template-columns:20% 20% 20% 10% 10% 10% 10%">
+    <div class="grid-head" style="grid-template-columns:20% 20% 20% 8% 8% 8% 8% 8%">
       <div class="item">Goal</div>
       <div class="item">KPI</div>
       <div class="item">Department</div>
@@ -39,6 +39,7 @@
       <div class="item">Target</div>
       <div class="item">Achieved</div>
       <div class="item">Status</div>
+      <div class="item">config</div>
     </div>
     <div class="grid-outer-body" style="grid-template-columns: 20% 80%" *ngFor="let goal of goals;let g = index;">
       <div class="item" [style.grid-row-end]="goal.opis.length + 1">
@@ -52,9 +53,9 @@
           <div class="item" [style.grid-row-end]="dept.opiAnnualTargets[0].levels + 1">
             {{dept.department}}
           </div>
-          <div class="grid-inner-body" style="grid-template-columns: 25% 25% 25% 25%;" *ngFor="let level of dept.opiAnnualTargets[0].levels">
+          <div class="grid-inner-body" style="grid-template-columns: 20% 20% 20% 20% 20%;" *ngFor="let level of dept.opiAnnualTargets[0].levels">
             <div class="item text-uppercase">
-              {{level.quarter}}
+              {{level.quarter}} ({{opi.frequency}})
             </div>
             <div class="item">
               {{level.estimatedTargetLevel}}
@@ -62,11 +63,16 @@
             <div class="item">
               {{level.estimatedTargetLevel}}
             </div>
-            <div class="item d-flex align-items-baseline justify-content-between mr-1">
+            <div class="item d-flex align-items-baseline justify-content-between">
               <div class="text-capitalize">{{level.quarterStatus.successInfo.target}}</div>
               <div class='badge text-white' [style.background]="dept.quarterStatus.successInfo.color" [class.text-black]="dept.quarterStatus.successInfo.color == '#FFEB3B'">
                 <b>{{dept.quarterStatus.successInfo.difference}}</b>
               </div>
+            </div>
+            <div class="item  align-items-baseline justify-content-between mr-1">
+              <button class="btn btn-link" [routerLink]="['../kpis/'+opi.opiId,{deptId:dept.departmentId}]">
+                <i class="fas fa-edit"></i>
+              </button>
             </div>
           </div>
         </div>

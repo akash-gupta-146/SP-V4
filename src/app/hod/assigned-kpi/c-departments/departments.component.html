@@ -100,7 +100,7 @@
 
 
   <!-- filter -->
-  <div class="filter animate slideInUp">
+  <div class="filter animate slideInUp" *ngIf="!deptId">
     <div class="d-flex">
       <div class="icon">
         <i class="fas fa-calendar-alt"></i>
@@ -112,7 +112,7 @@
           <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
         </select>
       </div> -->
-      <div class="form-group dropdown-st">
+      <div class="form-group dropdown-st" >
         <label class="control-label">Corresponding Departments</label>
         <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="departmentModel" *ngIf="(role=='hod'||role=='coordinator'); else heirarchy">
           <option value="0">All Departments</option>
