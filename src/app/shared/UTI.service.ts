@@ -111,7 +111,9 @@ export class UniversityService {
   }
 
   public getAllCycle() {
-    return this.http.get(this.baseUrl + "/cycles?hideDisable=false")
+    this.allCycles = [];
+    this.activeCycles = [];
+    return this.http.get(this.baseUrl + "/cycles?hideDisable=false",this.child)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -123,7 +125,6 @@ export class UniversityService {
   }
 
   public getCycleWithChildren(disable: any) {
-    console.log(this.allCycles);
     if(!disable&&this.allCycles.length)
       return of(this.allCycles);
     else if(disable&&this.activeCycles.length)
@@ -137,6 +138,7 @@ export class UniversityService {
           this.activeCycles = response.json();
         return this.extractData(response);
       })
+      // .map(this.extractData)
       .catch(this.handleError);
   }
   
@@ -468,13 +470,13 @@ export class UniversityService {
   }
 
   public getOpiResultByYear(cycleId:any,year:any){
-    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false",this.parent)
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false",this.both)
     .map(this.extractData)
     .catch(this.handleError);
   }
 
   public getOpiResultByDepartment(cycleId:any,departmentId,year:any){
-    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false&departmentId="+departmentId,this.parent)
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false&departmentId="+departmentId,this.both)
     .map(this.extractData)
     .catch(this.handleError);
   }

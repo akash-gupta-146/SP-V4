@@ -5,6 +5,7 @@ import { StorageService } from "../../shared/storage.service";
 import { TreeView } from "./tree-view";
 import { Filters } from '../../shared/filters';
 import * as alertify from 'alertifyjs';
+import * as _ from 'underscore';
 import { LoaderService } from '../../shared/loader.service';
 
 declare let $: any;
@@ -15,6 +16,9 @@ declare let $: any;
   styleUrls: ['./measure.scss', './../planner.component.css']
 })
 export class MeasureComponent extends Filters implements AfterViewInit {
+  activeCycle: any[];
+  allCycle: any[];
+  newKpi: boolean;
   selectedYear: number;
   reloadBtn: boolean = false;
   selectedDepartmentIds: any[]=[];
@@ -25,7 +29,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   departments: any[] = [];
   departmentsCopy: any[] = [];
   evidenceForms: any[] = [];
-  isUpdating: boolean = false;
+  isUpdating: boolean = true;
   cycles: any[] = [];
 
   direction: any = {
@@ -51,6 +55,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.measureForm = this.setMeasure();
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
+    this.getFrequencies();
     // this.getQuarter();
   }
 
@@ -112,23 +117,25 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   getMeasure() {
+    this.loaderService.display(true);
+    this.objectives = this.initiatives = this.activities = [];
+    this.getObjective(this.defaultCycle.cycleId);
     this.orgService.getMeasuresByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = [];
-      } else {
-        this.goals = response;
-        this.goalsCopy = response;
-        this.filteredActivities = response;
-        this.filteredGoals = response;
-        this.filteredInitiatives = response;
-        this.filteredOpis = response;
-        this.selectedYear = new Date().getFullYear();
-      }
+      this.goals = response;
+      this.goalsCopy = response;
+      this.selectedYear = new Date().getFullYear();
       this.loaderService.display(false);
     }, (error: any) => {
       this.loaderService.display(false);
     });
+    this.getActiveCycles();
+  }
+
+  getActiveCycles(){
+    this.allCycle = JSON.parse(JSON.stringify(this.cycles));
+    this.activeCycle = this.cycles.filter(cycle=>{
+      return !cycle.disable;
+    })
   }
 
   getQuarter() {
@@ -422,7 +429,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   setMeasure() {
     return this.formBuilder.group({
-      "cycleId": [{ value: this.defaultCycle.cycleId, disabled: true }, [Validators.required]],
+      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
       "objectiveId": [{ value: '', disabled: false }, [Validators.required]],
       "initiativeId": [{ value: '', disabled: false }, [Validators.required]],
       "activityId": [{ value: '', disabled: false }, [Validators.required]],
@@ -516,15 +523,26 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.measureForm = this.setMeasure();
   }
 
-  deleteMeasure(measureId: any, measures: any[], index: any) {
-    alertify.confirm("Are you sure you want to delete this Measure?",()=>{
-      this.orgService.deleteMeasure(measureId).subscribe((res: any) => {
-        alertify.success("OPI Deleted");
-        this.getMeasure();
-      },(error:any)=>{
-        alertify.error("Something went wrong");
-      });
-    }).setHeader("Confirmation");
+  deleteMeasure(kpi: any, measures: any[], index: any) {
+    alertify.confirm("Please confirm that you want to delete selected KPI?",()=>{
+      if(!kpi.departmentInfo.length){
+        this.orgService.deleteMeasure(kpi.opiId).subscribe((res: any) => {
+          alertify.success("OPI Deleted");
+          // this.getMeasure();
+          measures.splice(measures.indexOf(kpi),1);
+        },(error:any)=>{
+          alertify.error("Something went wrong");
+        });
+      }else{
+        alertify.alert("You can not delete selected KPI because it has been assigned to Other Departments").setHeader("Alert");
+      }
+    }).setHeader("Confirmation").setting({
+      'closableByDimmer': false,
+      'movable': false,
+      'labels': { ok: 'Confirm', cancel: 'Cancel' },
+      })
+      .set({transition:'fade'})
+      .show();
       
   }
 
@@ -535,13 +553,16 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   closeForm() {
+    this.newKpi = false;
     $('#add-btn').show();
     this.enableFields();
     this.isUpdating = false;
-    this.getCycleWithChildren(false);
+    this.cycles = JSON.parse(JSON.stringify(this.allCycle));
+    this.setDefaultCycle();
   }
 
   addNewMeasure() {
+    this.newKpi = true;
     this.getFrequencies();
     this.getEvidenceForms();
     this.enableFields();
@@ -552,11 +573,21 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
     this.initiatives = [];
     this.activities = [];
-    this.getCycleWithChildren(true);
+    // this.getCycleWithChildren(true);
+    this.cycles = JSON.parse(JSON.stringify(this.activeCycle));
+    this.setDefaultCycle();
+  }
+
+  setDefaultCycle() {
+    this.cycles.forEach((cycle: any) => {
+      if (cycle.cycleId == this.defaultCycle.cycleId)
+          this.defaultCycle = cycle;
+    });
+    console.log(this.defaultCycle);
   }
 
   disable(event: any, opiId: any) {
-    if (!event.target.checked)
+    if (!event.target.checked){
       alertify.confirm("Are you sure you want to unassign selected Department ?", () => {
         this.orgService.disableKPI(opiId).subscribe((response: any) => {
           alertify.success("Deactivated selected KPI");
@@ -564,11 +595,12 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         }, () => {
           event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
-        })
+        });
       }, () => {
         event.target.checked = !event.target.checked;
         alertify.error("Action was not performed")
       }).setHeader("Confirmation");
+    }
     else
       alertify.confirm("Are you sure you want to activate this KPI ?", () => {
         this.orgService.enableKPI(opiId).subscribe((response: any) => {
@@ -586,6 +618,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   getOpiResultByYear(cycleId: any, year: any) {
     this.orgService.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
+      console.log(response);
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = []

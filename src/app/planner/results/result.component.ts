@@ -1,20 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
 import { StorageService } from '../../shared/storage.service';
 import { UniversityService } from '../../shared/UTI.service';
 import { LoaderService } from '../../shared/loader.service';
+
+declare let $:any;
 
 @Component({
  selector:'result',
  templateUrl:'result.component.html',
  styleUrls:['result.component.css']
 })
-export class ResultComponent implements OnInit{
+export class ResultComponent implements OnInit, AfterViewInit{
  departments: any[]=[];
- goals: any;
+ goals: any[]=[];
  goalsCopy: any;
  cycles: any[]=[];
  defaultCycle: any;
- deptSelect:any={};
+ deptSelect:string;
  selectedYear:number = new Date().getFullYear();
  constructor(private utServ: UniversityService,private commonService: StorageService,private loaderService: LoaderService){
   this.commonService.breadcrumb.next(false);
@@ -22,6 +24,7 @@ export class ResultComponent implements OnInit{
  }
 
  ngOnInit(){
+  this.deptSelect = "All Department";
   this.utServ.getDepartments().subscribe((response)=>{
     this.departments = response;
    });
@@ -35,6 +38,14 @@ export class ResultComponent implements OnInit{
         }
       });
   })
+ }
+
+ ngAfterViewInit(){
+  $(document).click(function(e) {
+    if (!$(e.target).is('.dropdown-st')) {
+        $('.collapse').collapse('hide');	    
+      }
+  });
  }
 
  getResults() {
@@ -71,10 +82,12 @@ getOpiResultByYear(cycleId: any, year: any) {
   return (y > new Date().getFullYear());
  }
 
- getResultByDepartment(department:any,e:any){
-  this.deptSelect = department;
-  if(department.reporteeDepartments.length)
+ getResultByDepartment(department:any,e:any){  
+  if(department.reporteeDepartments.length){
     e.stopPropagation();
+    return;
+  }
+  this.deptSelect = department.department;
   this.utServ.getOpiResultByDepartment(this.defaultCycle.cycleId,department.departmentId,this.selectedYear).subscribe((response: any) => {
     if (response.status == 204) {
       this.goals = [];
@@ -87,5 +100,10 @@ getOpiResultByYear(cycleId: any, year: any) {
   }, (error: any) => {
    this.loaderService.display(false);
   });
+ }
+
+ getResultOfAllDepartment(){
+  this.deptSelect = "All Department";
+  this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
  }
 }

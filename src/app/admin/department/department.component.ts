@@ -11,6 +11,7 @@ declare let $: any;
   styleUrls: ['./department.component.css']
 })
 export class DeparmtmentComponent {
+  hierarchy: any[];
   university: any;
   departments: any[] = [];
   newDepartment: FormGroup;
@@ -21,15 +22,15 @@ export class DeparmtmentComponent {
   }
 
   ngOnInit() {
-    this.adminService.getDepartments().subscribe(response => {
-      if (response.status === 204) {
-        this.departments = [];
-        // alert("There is not Departments Entry yet.\nYou are going to create Parent Department");
-      } else {
-        this.departments = response;
-      }
+    this.adminService.getDepartments(false).subscribe(response => {
+      this.departments = response;
     }, err => {
       this.departments = [];
+    });
+    this.adminService.getDepartments(true).subscribe(response => {
+      this.hierarchy = response;
+    }, err => {
+      this.hierarchy = [];
     });
     this.adminService.getUniversity().subscribe(response => {
       if (response.status === 204) {

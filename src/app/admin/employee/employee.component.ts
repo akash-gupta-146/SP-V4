@@ -26,16 +26,10 @@ export class EmployeeComponent {
    this.loaderService.display(false);
   })
 
-  this.adminService.getDepartments().subscribe(response => {
-   if (response.status === 204) {
-    this.departments = [];
-    alert("There is not Department Entry yet.\nFirst Feed the entries of Department");
-   } else {
-    this.departments = response;
-   }
+  this.adminService.getDepartments(false).subscribe(response => {
+   this.departments = response;
   }, err => {
    this.departments = [];
-   console.log(err);
   });
   this.adminService.getRoles().subscribe(response => {
    if (response.status === 204) {

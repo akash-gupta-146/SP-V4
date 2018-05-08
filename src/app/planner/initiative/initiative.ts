@@ -16,6 +16,10 @@ declare let $: any;
   styleUrls: ['./initiative.css', './../planner.component.css']
 })
 export class InitiativeComponent extends Filters implements OnInit{
+  newInitiative: boolean;
+  allCycle: any[];
+  activeCycle: any[];
+  goalId: number;
   public cycles: any[] = [];
   public objectives: any[] = [];
   public initiativeForm: FormGroup;
@@ -39,25 +43,28 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   getCycleWithChildren(flag: any) {
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.cycles = [];
-      } else {
-        this.cycles = response;
-        const cycleId = +this.route.snapshot.paramMap.get('cycleId');
-        if(cycleId)
-          this.cycles.forEach(element => {
-            if (element.cycleId === cycleId)
-              this.defaultCycle = element;
-          });          
-        else{
-          this.cycles.forEach(element => {
-            if (element.defaultCycle)
-              this.defaultCycle = element;
-          });
-        }
-        if (!flag)
-          this.getInitiative(this.defaultCycle);
+      this.cycles = response;
+      const cycleId = +this.route.snapshot.paramMap.get('cycleId');
+      if(cycleId)
+        this.cycles.forEach(element => {
+          if (element.cycleId === cycleId)
+            this.defaultCycle = element;
+        });          
+      else{
+        this.cycles.forEach(element => {
+          if (element.defaultCycle)
+            this.defaultCycle = element;
+        });
       }
+      this.getInitiative(this.defaultCycle);
+      this.getObjective(this.defaultCycle.cycleId);
+    });
+  }
+
+  getActiveCycles() {
+    this.allCycle = JSON.parse(JSON.stringify(this.cycles));
+    this.activeCycle = this.cycles.filter(cycle => {
+      return !cycle.disable;
     })
   }
 
@@ -72,15 +79,17 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   defaultCycle: any = {};
   getInitiative(defaultCycle) {
-    const id = +this.route.snapshot.paramMap.get('goalId');
+    this.objectives = [];
+    this.getObjective(this.defaultCycle.cycleId);
+    this.goalId = +this.route.snapshot.paramMap.get('goalId');
     this.orgService.getInitiativesByCycleId(defaultCycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
         this.goalsCopy = [];
       } else {
-        if(id){
+        if(this.goalId){
           this.goals = response.filter((element:any)=>{
-            return (element.goalId === id);
+            return (element.goalId === this.goalId);
           });
         }
         else 
@@ -92,12 +101,13 @@ export class InitiativeComponent extends Filters implements OnInit{
     }, (error: any) => {
       this.loaderService.display(false);
     });
+    this.getActiveCycles();
   }
 
   initForm() {
     return this.formBuilder.group({
-      "cycleId": [{value: this.defaultCycle.cycleId, disabled: true}, [Validators.required]],
-      "goalId": ['', [Validators.required]],
+      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
+      "goalId": [this.goalId, [Validators.required]],
       "initiative": ['', [Validators.required]]
     });
   }
@@ -128,15 +138,17 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   }
 
-  deleteInitiative(initiativeId: any, initiatives: any[], index: any) {
+  deleteInitiative(initiative: any, initiatives: any[], index: any) {
     alertify.confirm("Are you sure you want to delete this Initiative?", () => {
-      this.orgService.deleteInitiative(initiativeId).subscribe((res: any) => {
-        console.log(res);
-        initiatives.splice(index, 1);
-        this.getInitiative(this.defaultCycle);
-      }, (error: any) => {
-        alertify.alert("Something went wrong..");
-      });
+      if(!initiative.activities.length)
+        this.orgService.deleteInitiative(initiative.initiativeId).subscribe((res: any) => {
+          initiatives.splice(index, 1);
+          this.getInitiative(this.defaultCycle);
+        }, (error: any) => {
+          alertify.error("Something went wrong..");
+        });
+      else
+        alertify.alert("You can not delete this initiative because it has activities.").setHeader("Alert");
     }).setHeader("Confirmation");
   }
 
@@ -166,21 +178,33 @@ export class InitiativeComponent extends Filters implements OnInit{
   }
 
   closeForm() {
+    this.newInitiative = false;
     $("#add-initiative").hide();
     $('#add-btn').show();
     this.enableFields();
     this.isUpdating = false;
-    this.getCycleWithChildren(false);
+    // this.getCycleWithChildren(false);
+    this.cycles = JSON.parse(JSON.stringify(this.activeCycle));
+    this.setDefaultCycle();
   }
 
   addNewInitiative() {
+    this.newInitiative = true;
     $("#add-initiative").show();
     $('#add-btn').hide();
     this.isUpdating = false;
     $("#collapse1").collapse('show');
-    this.getCycleWithChildren(true);
+    // this.getCycleWithChildren(true);
+    this.cycles = JSON.parse(JSON.stringify(this.activeCycle));
+    this.setDefaultCycle();
     this.initiativeForm = this.initForm();
+  }
 
+  setDefaultCycle() {
+    this.cycles.forEach((cycle: any) => {
+      if (cycle.cycleId == this.defaultCycle.cycleId)
+          this.defaultCycle = cycle;
+    });
   }
 
   disable(event: any, initiativeId: any) {

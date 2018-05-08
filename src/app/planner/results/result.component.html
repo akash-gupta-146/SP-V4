@@ -30,10 +30,11 @@
   <div class="form-group dropdown-st">
    <label class="control-label">Select Department</label>
    <select class="form-controls" data-toggle="collapse" data-target="#collapse1" >
-    <option  [value]="deptSelect" selected hidden>{{deptSelect.department}}</option>
+    <option  [value]="deptSelect" selected hidden>{{deptSelect}}</option>
    </select>
    <div id="collapse1" class="collapse form-control dept-list" style="font-size: 12px;">
     <ul data-toggle="collapse" data-target="#collapse1">
+    <li class="child" (click)="getResultOfAllDepartment()"><p>All Department</p></li>
      <li *ngFor="let dept of departments;" [ngClass]="dept.reporteeDepartments.length?'parent':'child'">
       <p (click)="getResultByDepartment(dept,$event);">
         {{dept.department}}</p>
@@ -210,4 +211,9 @@
      </div>
    </div>
  </div>
+  <!-- No content -->
+  <div no-content *ngIf="!goals.length&&!loaderService.status.value">
+    No Content
+  </div>
+  <!-- end of no content -->
 </div>

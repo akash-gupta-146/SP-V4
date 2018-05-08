@@ -63,6 +63,9 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
           this.getOpiResultByQuarter(this.selectedQuarter);
           }
       });
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong");
     });
   }
 

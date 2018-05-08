@@ -39,7 +39,7 @@
         </div>
         <div class="panel-body department-list">
           <ul>
-            <li *ngFor="let dept of departments;">
+            <li *ngFor="let dept of hierarchy;">
               <p>{{dept.department}}</p>
               <ul>
                 <li *ngFor="let rDept of dept.reporteeDepartments">

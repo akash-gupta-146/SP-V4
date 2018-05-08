@@ -5,9 +5,9 @@
       <i class="fas fa-calendar-alt"></i>
     </div>
     <div class="form-group dropdown-st">
-      <label class="control-label">Current Strategic Plan</label>
+      <label class="control-label">Strategic Plan</label>
       <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getActivities($event)">
-        <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}]</option>
+        <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.title}}</option>
       </select>
     </div>
   </div>
@@ -33,9 +33,9 @@
         <div class="row">
           <div class="col-sm-12 col-lg-4 col-md-12">
             <div class="form-group">
-              <label for="year">Plan Year:</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)">
-                <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
+              <label for="year">Strategic Plan:</label>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
+                <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.title}}</option>
               </select>
             </div>
           </div>
@@ -43,7 +43,7 @@
             <div class="form-group">
               <label for="sel1">Goal:</label>
               <select class="form-control" id="sel1" formControlName="objectiveId" (ngModelChange)="getInitiative($event)">
-                <option *ngFor="let objective of objectives;let i=index;" [value]="objective.goalId">{{i+1}}.{{objective.goal}}</option>
+                <option *ngFor="let objective of objectives;let i=index;" [ngValue]="objective.goalId">{{i+1}}.{{objective.goal}}</option>
               </select>
             </div>
           </div>
@@ -51,7 +51,7 @@
             <div class="form-group">
               <label for="sel1">Initiative:</label>
               <select class="form-control" id="sel1" formControlName="initiativeId">
-                <option *ngFor="let initiative of initiatives;let j=index;" [value]="initiative.initiativeId">{{j+1}}.{{initiative.initiative}}</option>
+                <option *ngFor="let initiative of initiatives;let j=index;" [ngValue]="initiative.initiativeId">{{j+1}}.{{initiative.initiative}}</option>
               </select>
             </div>
           </div>
@@ -69,7 +69,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="activityForm.invalid">
           Save
         </button>
-        <button data-dismiss="modal" class="btn-sp btn-clear"  (click)="closeForm();">Close</button>
+        <button type="button" data-dismiss="modal" class="btn-sp btn-clear"  (click)="closeForm();">Close</button>
       </div>
     </form>
   </div>
@@ -150,7 +150,7 @@
                       </button>
                     </div>
                     <div>
-                      <button class="btn btn-link" type="button" [disabled]="goal.disable||initiate.disable||activit.disable" (click)="deleteActivity(activit.activityId,initiate.activities,k)">
+                      <button class="btn btn-link" type="button" [disabled]="goal.disable||initiate.disable||activit.disable" (click)="deleteActivity(activit,initiate.activities,k)">
                         <i class="fas fa-trash-alt"></i>
                       </button>
                     </div>
@@ -168,15 +168,15 @@
   </div>
 </div>
 <!-- end of table -->
-      <!-- No content -->
-      <div no-content *ngIf="!goals.length&&!loaderService.status.value">
-          Data not available
-        </div>
-      <!-- end of no content -->
+<!-- No content -->
+<div no-content *ngIf="!goals.length&&!loaderService.status.value&&!newActivity">
+  Data not available
+</div>
+<!-- end of no content -->
 
 
 <!-- add new -->
-<div fab class="btn btn-primary" id="add-btn" (click)="addNewActivity()">
+<button fab class="btn btn-primary" id="add-btn" (click)="addNewActivity()" [disabled]="defaultCycle.disable">
   <i class="fas fa-plus"></i>
-</div>
+</button>
 <!-- end of add new -->

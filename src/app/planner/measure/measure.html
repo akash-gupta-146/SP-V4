@@ -18,7 +18,7 @@
     <div class="form-group dropdown-st">
       <label class="control-label">Strategic Plan</label>
       <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getMeasure()">
-        <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}} : [{{c.startYear}} To {{c.endYear}}]</option>
+        <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.title}}</option>
       </select>
     </div>
   </div>
@@ -50,9 +50,9 @@
         <div class="row collapse modal-box" id="editDetails">
           <div class="col-sm-12">
             <div class="form-group">
-              <label class="control-label" for="year">Plan Year</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" (ngModelChange)="getObjective($event)">
-                <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.planYear}}: [{{c.startYear}} To {{c.endYear}}] : {{c.description}}</option>
+              <label class="control-label" for="year">Strategic Plan</label>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" (ngModelChange)="getObjective($event)" disabled>
+                <option *ngFor="let c of cycles;let y = index;" [value]="c.cycleId">{{c.title}}</option>
               </select>
             </div>
           </div>
@@ -163,7 +163,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="measureForm.invalid">
           Save
         </button>
-        <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
+        <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="closeForm()">Close</button>
       </div>
     </form>
   </div>
@@ -322,7 +322,7 @@
                         [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
                         <i class="fas fa-edit"></i>
                       </button>
-                      <button class="btn btn-link" (click)="deleteMeasure(msr.opiId,activit.opis,l)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable"
+                      <button class="btn btn-link" (click)="deleteMeasure(msr,activit.opis,l)" [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable"
                         [ngClass]="goal.disable||initiate.disable||activit.disable||msr.disable?'icon-mark':'icon-mark2'">
                         <i class="fas fa-trash-alt"></i>
                       </button>
@@ -343,9 +343,9 @@
     </div>
   </div>
   <!-- No content -->
-  <div no-content *ngIf="!goals.length&&!loaderService.status.value">
-      Data not available
-    </div>
+  <div no-content *ngIf="!goals.length&&!loaderService.status.value&&!newKpi">
+    Data not available
+  </div>
     <!-- end of no content -->
   
     <!-- Modal -->
@@ -492,15 +492,15 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content" *ngIf="selectedMeasure">
         <div class="modal-header">
-            <h5 class="modal-title">
-              <b>KPI </b>
-              <br>
-              <h6>{{selectedMeasure.opi}}</h6>
-            </h5>
+          <h5 class="modal-title">
+            <b>KPI </b>
+            <br>
+            <h6>{{selectedMeasure.opi}}</h6>
+          </h5>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-
+  
           <div class="dept-list">
             <!-- No content -->
             <div no-content *ngIf="!selectedDepartments">
@@ -508,144 +508,155 @@
             </div>
             <!-- end of no content -->
             <ul style="list-style:none;padding-left:0;">
-                <div class="d-flex justify-content-between">
-                  <div>
-                      <b>Assigned Departments</b>
+              <div class="d-flex justify-content-between">
+                <div>
+                  <b>Assigned Departments</b>
+                </div>
+                <div>
+                  <button class="btn-sp btn-sp-small btn-primary" (click)="next=false;prev=true;checkAssignDept(selectedMeasure.departmentInfo);">
+                    Add departments
+                  </button>
+                </div>
+              </div>
+              <li *ngFor="let dept of selectedMeasure.departmentInfo;let arr=index;" class="modal-box my-3">
+                <div *ngIf="!dept.edit">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
+                      title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip"
+                      data-placement="top" title="Save">
+                      <i class="fas fa-save"></i>
+                    </button>
+                    <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit" data-toggle="tooltip"
+                      data-placement="top" title="Delete">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top"
+                      title="Cancel">
+                      <i class="fas fa-undo"></i>
+                    </button>
                   </div>
-                  <div>
-                      <button class="btn-sp btn-sp-small btn-primary" (click)="next=false;prev=true;checkAssignDept(selectedMeasure.departmentInfo);">
-                          Add departments
-                      </button>
+                  <div class="d-flex justify-content-between m-1">
+                    <div>
+                      <b>{{dept.department}}</b>
+                    </div>
+                    <div>
+                      <b>BaseLine:</b> {{dept.baseline}}
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between my-2 border-bottom p-2" *ngFor="let array of dept.opiAnnualTargets;let op=index;">
+  
+                    <div class="px-1">
+                      <small class="text-primary">
+                        Year
+                      </small>
+                      <div>{{array.year}}</div>
+                    </div>
+  
+                    <div class="d-flex justify-content-between px-1">
+                      <div *ngFor="let level of array.levels;let l = index;" class='px-3'>
+                        <div>
+                          <small class="text-primary text-capitalize">
+                            {{level.quarter}}
+                          </small>
+                          <div>{{level.estimatedTargetLevel}}</div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="px-1">
+                      <small class="text-primary">
+                        Estimated Cost
+                      </small>
+                      <div>{{array.estimatedCost}}</div>
+                    </div>
                   </div>
                 </div>
-                <li *ngFor="let dept of selectedMeasure.departmentInfo;let arr=index;" class="modal-box my-3">
-                  <div *ngIf="!dept.edit">
-                      <div class="d-flex justify-content-end">
-                            <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top" title="Edit">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Save">
-                              <i class="fas fa-save"></i>
-                            </button>
-                            <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Delete">
-                              <i class="fas fa-trash-alt"></i>
-                            </button>
-                            <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Cancel">
-                              <i class="fas fa-undo"></i>
-                            </button>
-                        </div>
-                      <div class="d-flex justify-content-between m-1">
-                          <div>
-                            <b>{{dept.department}}</b>
-                          </div>
-                          <div>
-                            <b>BaseLine:</b>  {{dept.baseline}}
-                          </div>
-                        </div>
-                        <div class="d-flex justify-content-between my-2 border-bottom p-2" *ngFor="let array of dept.opiAnnualTargets;let op=index;">
-        
-                          <div class="px-1">
-                            <small class="text-primary">
-                              Year
-                            </small>
-                            <div>{{array.year}}</div>
-                          </div>
-        
-                          <div class="d-flex justify-content-between px-1">
-                                <div  *ngFor="let level of array.levels;let l = index;" class='px-3'>
-                                  <div>
-                                      <small class="text-primary text-capitalize">
-                                          {{level.quarter}}
-                                        </small>
-                                        <div>{{level.estimatedTargetLevel}}</div>
-                                  </div>
-                                </div>
-                          </div>
-        
-                          <div class="px-1">
-                              <small class="text-primary">
-                                Estimated Cost
-                              </small>
-                              <div>{{array.estimatedCost}}</div>
-                          </div>
-                        </div>
-                  </div>
-                  
-                  <fieldset [formGroup]="editDepartmentForm" *ngIf="dept.edit">
-                      <div class="d-flex justify-content-end">
-                            <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top" title="Edit">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Save">
-                              <i class="fas fa-save"></i>
-                            </button>
-                            <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Remove">
-                              <i class="fas fa-trash-alt"></i>
-                            </button>
-                            <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top" title="Cancel">
-                              <i class="fas fa-undo"></i>
-                            </button>
-                        </div>
-                      <div class="d-flex justify-content-between m-1">
-                          <div>
-                            <b>{{dept.department}}</b>
-                          </div>
-                          <div>
-                            <b>BaseLine:</b>  <input type="number" class="animate bounceIn px-3" autofocus formControlName="baseline" id="exampleInputAmount">
-                          </div>
-                        </div>
-                        <ng-container formArrayName="opiAnnualTargets">
-                        <div class="d-flex justify-content-between my-2 border-bottom p-2" *ngFor="let array of editDepartmentForm.controls.opiAnnualTargets.controls;let op=index;" [formGroupName]="op">
-        
-                          <div class="px-1">
-                            <small class="text-primary">
-                              Year
-                            </small>
-                            <div>{{dept.opiAnnualTargets[op].year}}</div>
-                          </div>
-        
-                          <div class="d-flex justify-content-between px-1">
-                              <ng-container formArrayName="levels">
-                                <div  *ngFor="let level of array.controls.levels.controls;let l = index;" [formGroupName]="l" class='px-3'>
-                                  <div>
-                                      <small class="text-primary text-capitalize">
-                                          {{dept.opiAnnualTargets[op].levels[l].quarter}}
-                                        </small>
-                                        <input type="number" class="form-control animate bounceIn" id="exampleInputAmount" formControlName="estimatedTargetLevel">
-                                  </div>
-                                </div>
-                                </ng-container>
-                          </div>
-        
-                          <div class="px-1">
-                              <small class="text-primary">
-                                Estimated Cost
-                              </small>
-                              <input type="number" class="form-control animate bounceIn" formControlName="estimatedCost" id="exampleInputAmount">
-                          </div>
-                        </div>
-                      </ng-container>
-                  </fieldset>
   
-                </li>
-              </ul>
-
-
-
-
-          
-              </div>
-
-
-
-
-            </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn-sp btn-clear"  (click)="reset()">Close</button>
-            </div>
+                <fieldset [formGroup]="editDepartmentForm" *ngIf="dept.edit">
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
+                      title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-link" (click)="updateOpiTarget(selectedMeasure,arr);dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip"
+                      data-placement="top" title="Save">
+                      <i class="fas fa-save"></i>
+                    </button>
+                    <button class="btn btn-link" (click)="removeAssignedDept(selectedMeasure,arr)" [disabled]="!dept.edit" data-toggle="tooltip"
+                      data-placement="top" title="Remove">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-link" (click)="dept.edit = false;" [disabled]="!dept.edit" data-toggle="tooltip" data-placement="top"
+                      title="Cancel">
+                      <i class="fas fa-undo"></i>
+                    </button>
+                  </div>
+                  <div class="d-flex justify-content-between m-1">
+                    <div>
+                      <b>{{dept.department}}</b>
+                    </div>
+                    <div>
+                      <b>BaseLine:</b>
+                      <input type="number" class="animate bounceIn px-3" autofocus formControlName="baseline"
+                        id="exampleInputAmount">
+                    </div>
+                  </div>
+                  <ng-container formArrayName="opiAnnualTargets">
+                    <div class="d-flex justify-content-between my-2 border-bottom p-2" *ngFor="let array of editDepartmentForm.controls.opiAnnualTargets.controls;let op=index;"
+                      [formGroupName]="op">
+  
+                      <div class="px-1">
+                        <small class="text-primary">
+                          Year
+                        </small>
+                        <div>{{dept.opiAnnualTargets[op].year}}</div>
+                      </div>
+  
+                      <div class="d-flex justify-content-between px-1">
+                        <ng-container formArrayName="levels">
+                          <div *ngFor="let level of array.controls.levels.controls;let l = index;" [formGroupName]="l" class='px-3'>
+                            <div>
+                              <small class="text-primary text-capitalize">
+                                {{dept.opiAnnualTargets[op].levels[l].quarter}}
+                              </small>
+                              <input type="number" class="form-control animate bounceIn" id="exampleInputAmount" formControlName="estimatedTargetLevel">
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+  
+                      <div class="px-1">
+                        <small class="text-primary">
+                          Estimated Cost
+                        </small>
+                        <input type="number" class="form-control animate bounceIn" formControlName="estimatedCost" id="exampleInputAmount">
+                      </div>
+                    </div>
+                  </ng-container>
+                </fieldset>
+  
+              </li>
+            </ul>
+  
+  
+  
+  
+  
           </div>
+  
+  
+  
+  
+        </div>
+        <div class="modal-footer">
+          <button data-dismiss="modal" class="btn-sp btn-clear" (click)="reset()">Close</button>
         </div>
       </div>
+    </div>
+  </div>
 
 
   <!-- Modal -->
@@ -673,7 +684,7 @@
 
 
   <!-- add new -->
-  <div fab class="btn btn-primary" id="add-btn" (click)="addNewMeasure()">
+  <button fab class="btn btn-primary" id="add-btn" (click)="addNewMeasure()" [disabled]="defaultCycle.disable">
     <i class="fas fa-plus"></i>
-  </div>
+  </button>
   <!-- end of add new -->

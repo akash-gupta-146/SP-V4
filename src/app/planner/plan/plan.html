@@ -57,7 +57,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="cycleForm.invalid">
           Save
         </button>
-        <button data-dismiss="modal" class="btn-sp btn-clear"  (click)="reset()">Close</button>
+        <button type="button" data-dismiss="modal" class="btn-sp btn-clear"  (click)="reset()">Close</button>
       </div>
     </form>
 </div>
@@ -94,7 +94,7 @@
               <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)">
           </td>
           <td>
-            <button class="btn btn-link" (click)="deleteCycle(c.cycleId)" type="button" [disabled]="c.disable">
+            <button class="btn btn-link" (click)="deleteCycle(c)" type="button" [disabled]="c.disable">
                 <i class="fas fa-trash-alt"></i>
             </button>
           </td>
@@ -104,7 +104,7 @@
             </button>
           </td>
           <td>
-            <button class="btn btn-link" type="button"  [routerLink]="['../../strategic-goal',{cycleId:c.cycleId}]" [disabled]="c.disable">
+            <button class="btn btn-link" type="button"  [routerLink]="['../../strategic-goal',{cycleId:c.cycleId}]" [disabled]="c.disable" (click)="shareCycle(c.cycleId)">
              <i class="fas fa-eye"></i>
             </button>
           </td>

@@ -16,6 +16,7 @@ declare let $: any;
   styleUrls: ['./goal.css', './../planner.component.css']
 })
 export class GoalComponent extends Filters implements AfterViewInit, OnInit{
+  newGoal: boolean;
   public goalForm: FormGroup;
   public isUpdating: boolean = false;
   // public goals:any[]=[];
@@ -48,23 +49,19 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     this.loaderService.display(true);
     
     this.orgService.getCycleWithChildren(disable).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.cycles = [];
-      } else {
-        this.cycles = response;
-        const id = +this.route.snapshot.paramMap.get('cycleId');
-        if(id)
-          this.cycles.forEach(element => {
-            if (element.cycleId === id)
-              this.defaultCycle = element;
-          });
-        else
-          this.cycles.forEach(element => {
-            if (element.defaultCycle)
-              this.defaultCycle = element;
-          });
-        this.getGoals();
-      }
+      this.cycles = response;
+      const id = +this.route.snapshot.paramMap.get('cycleId');
+      if(id)
+        this.cycles.forEach(element => {
+          if (element.cycleId === id)
+            this.defaultCycle = element;
+        });
+      else
+        this.cycles.forEach(element => {
+          if (element.defaultCycle)
+            this.defaultCycle = element;
+        });
+      this.getGoals();
     });
   }
 
@@ -86,7 +83,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
   initObjectiveForm() {
     return this.formBuilder.group({
-      "cycleId": [{value: this.defaultCycle.cycleId, disabled: true}, [Validators.required]],
+      "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
       "goal": ['', [Validators.required]],
       // "totalCost": ['', [Validators.required]],
       // "spis": this.formBuilder.array([this.inItSpi()]),
@@ -96,29 +93,27 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   onSubmit() {
     if (!this.isUpdating) {
       this.orgService.addObjective(this.goalForm.value).subscribe((response: any) => {
-        // $('#objectModal').modal('show');
-        alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
+        alertify.success('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
         $("#add-plan").hide();
         $('#add-btn').show();
         this.goalForm.controls["goal"].reset();
         this.getGoals();
       }, (error: any) => {
-        alertify.alert("Something went wrong..");
+        alertify.error("Something went wrong..");
       });
     }
 
     if (this.isUpdating) {
       alertify.confirm("Are you sure you want to update current Goal ?", () => {
         this.orgService.updateObjective(this.selectedObjective.goalId, this.goalForm.value).subscribe((res: any) => {
-          // $('#objectModal').modal('show');
-          alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
+          alertify.success('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
           this.goalForm = this.initObjectiveForm()
           this.getGoals();
           this.isUpdating = false;
           $("#add-plan").hide();
           $('#add-btn').show();
         }, (error: any) => {
-          alertify.alert("Something went wrong..");
+          alertify.error("Something went wrong..");
         });
       }).setHeader("Confirmation");
     }
@@ -129,7 +124,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
       if(!goal.initiatives.length)
         this.orgService.deleteObjective(goal.goalId).subscribe((res: any) => {
           goals.splice(index, 1);
-          alertify.success("Successfully deleted");
+          alertify.success("Goal Successfully deleted");
         }, (error: any) => {
           alertify.error("Something went wrong..");
         });
@@ -153,6 +148,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   }
 
   addNewGoal() {
+    this.newGoal = true;
     $("#add-plan").show();
     $('#add-btn').hide();
     this.isUpdating = false;
@@ -191,6 +187,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   }
 
   closeForm() {
+    this.newGoal = false;
     $(".to-be-highlighted").removeClass("highlight");
     $("#add-plan").hide();
     $('#add-btn').show();
