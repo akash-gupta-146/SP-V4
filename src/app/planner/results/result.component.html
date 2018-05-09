@@ -126,7 +126,7 @@
          <!-- end of quarter boxes -->
          <div [attr.id]="'accordion'+ i + j + k + l">
            <fieldset *ngFor="let dept of opi.departmentInfo;let d=index;">
-             <div class="card-header py-2 d-flex justify-content-between" [attr.data-target]="'#demo' + dept.departmentId + i + j + k + l"
+             <div class="card-header py-2 d-flex justify-content-between dept" [attr.data-target]="'#demo' + dept.departmentId + i + j + k + l"
                data-toggle="collapse">
                <span>{{d+1}}. {{dept.department}}
                  <i class="fas fa-eye text-primary"></i>

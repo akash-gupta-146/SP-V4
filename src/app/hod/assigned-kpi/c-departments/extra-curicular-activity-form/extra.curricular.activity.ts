@@ -65,7 +65,7 @@ export class ExtraCurricularActivity implements OnInit{
     }, (error: any) => {
      console.log(error);
     });
-   });
+   }).setHeader("Confirmation");
   }
  }
 

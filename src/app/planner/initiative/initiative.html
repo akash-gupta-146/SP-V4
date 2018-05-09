@@ -193,7 +193,7 @@
           <div class="col-lg-6 col-sm-12">
             <div class="form-group">
               <label class="control-label" for="year">Strategic Plan :</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle" (ngModelChange)="getObjective($event)" disabled>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" (ngModelChange)="getObjective($event)" disabled>
                 <option *ngFor="let c of cycles;let y = index;" [ngValue]="c.cycleId">{{c.title}}</option>
               </select>
             </div>

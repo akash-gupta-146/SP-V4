@@ -67,7 +67,7 @@ export class CommunityLearningForm implements OnInit{
     }, (error: any) => {
      console.log(error);
     });
-   });
+   }).setHeader("Confirmation");
   }   
  }
 

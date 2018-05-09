@@ -1,6 +1,7 @@
 import { Component, Input, Output, OnInit } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import * as alertify from 'alertifyjs';
+import * as _ from 'underscore';
 import { HodService } from '../../../hod.service';
 import { LoaderService } from '../../../../shared/loader.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -103,20 +104,24 @@ export class StudentInternshipForm implements OnInit {
     formData.append('file', lev.file);
     formData.append('currentCost', lev.currentCost);
     this.utServ.saveQuarterWithInternship(this.url, lev.id, formData).subscribe((response: any) => {
-      switch (lev.evidanceFormId) {
-        case 9:
-          lev.professionalDevelopmentActivities.push(response.professionalDevelopmentActivities[0]);
-          break;
-        case 10:
-          lev.facultyPublications.push(response.facultyPublications[0]);
-          break;
-        case 11:
-          lev.studentPublications.push(response.studentPublications[0]);
-          break;
-        default:
-          lev.internshipDetails.push(response.internshipDetails[0]);
-          break;
-      }
+
+      // switch (lev.evidanceFormId) {
+      //   case 9:
+      //     lev.professionalDevelopmentActivities.push(response.professionalDevelopmentActivities[0]);
+      //     break;
+      //   case 10:
+      //     lev.facultyPublications.push(response.facultyPublications[0]);
+      //     break;
+      //   case 11:
+      //     lev.studentPublications.push(response.studentPublications[0]);
+      //     break;
+      //   default:
+      //     lev.internshipDetails.push(response.internshipDetails[0]);
+      //     break;
+      // }
+      Object.keys(response).forEach((key:any)=>{
+        lev[key]=response[key];
+      });
       lev.status = "inprogress";
       this.changeSelected.emit(lev);
     })
@@ -126,13 +131,10 @@ export class StudentInternshipForm implements OnInit {
     var object = {
       "currentCost": lev.currentCost
     }
-    this.loaderService.setLoadingStatus("Updating");
-    this.loaderService.setTransactionLoader(true);
     this.utServ.updateQuarterResultCurrentCost(lev.id, object).subscribe((response: any) => {
       alertify.success("Updated");
       lev.isUpdating = false;
       lev.status = "inprogress";
-      console.log(response);
     });
   }
 
@@ -140,6 +142,7 @@ export class StudentInternshipForm implements OnInit {
     alertify.confirm("Are you sure you want to delete this file", (response: any) => {
       this.utServ.deleteInternshipFile(this.url, file.id).subscribe((response: any) => {
         files.splice(index, 1);
+        alertify.success("File Deleted");
       }, (error: any) => {
         alertify.error("Something went wrong ..");
       });
@@ -199,51 +202,67 @@ export class StudentInternshipForm implements OnInit {
   updateInternshipRecord() {
     alertify.confirm("Do you want to update internship record?", (ok) => {
       this.utServ.editInternshipRecord(this.selectedRecord.recordId, this.recordForm.value).subscribe((response: any) => {
+        _.extend(this.selectedRecord,this.recordForm.value);
         alertify.success("Successfully updated");
+        this.listView = true;
       }, (error: any) => {
         alertify.error("Something went wrong");
       })
-    });
+    }).setHeader("Confirmation");
   }
 
   updateStudentPublicationRecord() {
     alertify.confirm("Do you want to update Student Publication record?", (ok) => {
       this.utServ.editStudentPublicationRecord(this.selectedRecord.recordId, this.studentPublicationForm.value).subscribe((response: any) => {
+        _.extend(this.selectedRecord,this.studentPublicationForm.value);        
         alertify.success("Successfully updated");
+        this.listView = true;
       }, (error: any) => {
         alertify.error("Something went wrong");
       });
-    });
+    }).setHeader("Confirmation");
   }
 
   updateProfessionalDevelopmentActivityRecord() {
     alertify.confirm("Do you want to update professional development activity record?", (ok) => {
       this.utServ.editProfessionalDevelopmentActivitiesRecord(this.selectedRecord.recordId, this.professionalDevelopmentActivitiesForm.value).subscribe((response: any) => {
+        _.extend(this.selectedRecord,this.professionalDevelopmentActivitiesForm.value);        
         alertify.success("Successfully updated");
+        this.listView = true;
       }, (error: any) => {
         alertify.error("Something went wrong");
       });
-    });
+    }).setHeader("Confirmation");
   }
 
   updateFacultyPublicationRecord(){
     alertify.confirm("Do you want to update Faculty Publication record?", (ok) => {
-      this.utServ.editStudentPublicationRecord(this.selectedRecord.recordId, this.facultyPublicationForm.value).subscribe((response: any) => {
+      this.utServ.editFacultyPublicationRecord(this.selectedRecord.recordId, this.facultyPublicationForm.value).subscribe((response: any) => {
+        _.extend(this.selectedRecord,this.facultyPublicationForm.value);
         alertify.success("Successfully updated");
+        this.listView = true;
       }, (error: any) => {
         alertify.error("Something went wrong");
       });
-    });
+    }).setHeader("Confirmation");
   }
 
   uploadFile(lev:any){
-    console.log(lev.file,lev.replace);
+    this.selectedQuarter.submitButton = true;
     var formData = new FormData();
+    var replace = true;
+    if(!lev.replace) replace = false;
     formData.append('file', lev.file);
-    this.utServ.UploadFormsFile(this.url,lev.id,formData,lev.replace).subscribe((response:any)=>{
-      console.log(response);
+    this.utServ.UploadFormsFile(this.url,lev.id,formData,replace).subscribe((response:any)=>{
+      Object.keys(response).forEach((key:any)=>{
+        lev[key]=response[key];
+      });
+      alertify.success("File Uploaded ..");
+      $('#fileUploadModal').modal('hide');
+      this.selectedQuarter.submitButton = false;
     },(error:any)=>{
-      console.log(error);
+      alertify.error("Something went wrong");
+      $('#fileUploadModal').modal('hide');
     })
   }
 

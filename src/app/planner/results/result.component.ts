@@ -41,7 +41,7 @@ export class ResultComponent implements OnInit, AfterViewInit{
  }
 
  ngAfterViewInit(){
-  $(document).click(function(e) {
+  $('result').click(function(e) {
     if (!$(e.target).is('.dropdown-st')) {
         $('.collapse').collapse('hide');	    
       }

@@ -6,7 +6,7 @@ import { LoaderService } from '../../../shared/loader.service';
 import { Location } from '@angular/common';
 import * as alertify from 'alertifyjs';
 @Component({
-  selector: 'action-step-by-department',
+  selector: 'by-department',
   templateUrl: './by.department.html',
   styleUrls: ['./../../hod.component.scss']
 })
@@ -22,6 +22,8 @@ export class ByDepartment {
     this.role = this.storage.getData('user_roleInfo')[0].role;
     this.getDepartments();
   }
+
+  
 
   getDepartments() {
     this.utServ.getDepartments().subscribe((res: any) => {

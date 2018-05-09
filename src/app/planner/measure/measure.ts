@@ -54,6 +54,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.getFrequencies();
+    this.getDepartments();
     // this.getQuarter();
   }
 
@@ -278,7 +279,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   checkAssignDept(departmentInfo: any[]) {
-    this.getDepartments();
     setTimeout(function(){ $('#myModal').modal('show') }, 500);
     $('#detailModal').modal('hide');    
     this.selectedDepartmentIds = [];

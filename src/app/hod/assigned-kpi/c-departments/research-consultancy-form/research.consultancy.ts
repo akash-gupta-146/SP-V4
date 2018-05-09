@@ -72,7 +72,7 @@ export class ResearchConsultancy implements OnInit{
     }, (error: any) => {
      console.log(error);
     });
-   });
+   }).setHeader("Confirmation");
   }
  }
 
