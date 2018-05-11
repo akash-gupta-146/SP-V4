@@ -1,5 +1,59 @@
-<div class="container-fluid">
-  <div class="container text-center" style="    padding: 20px;">
-    <img src="assets/uaeu_signature.png" style="height: 100px;">
+<div class="container-fluid mt-3" *ngIf="organisationInfo">
+  <div class="row">
+    <div class="col col-lg-12 col-sm-12 collapse multi-collapse show" id="mission">
+      <div class="card p-3 mb-2">
+        <div class="card-icon-title">
+          <div class="icon">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <div class="title">
+            Mission
+          </div>
+        </div>
+        <div class="icon-card-body">
+          {{organisationInfo.mission}}
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-12 col-sm-12 collapse multi-collapse show" id="vision">
+      <div class="card p-3 mb-2">
+        <div class="card-icon-title">
+          <div class="icon">
+            <i class="fas fa-eye"></i>
+          </div>
+          <div class="title">
+            Vision
+          </div>
+        </div>
+        <div class="icon-card-body">
+          {{organisationInfo.vision}}
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-12 col-sm-12 collapse multi-collapse show" id="value">
+      <div class="card p-3 mb-2">
+        <div class="card-icon-title">
+          <div class="icon">
+            <i class="fas fa-align-left"></i>
+          </div>
+          <div class="title">
+            Values
+          </div>
+        </div>
+        <div class="icon-card-body">
+          <div class="row m-0">
+            <div class="col-lg-4 col-md-6 col-sm-12 card-box" *ngFor="let value of organisationInfo.values;let v = index;">
+              <div class='d-flex flex-column justify-content-start h-100'>
+                <h6>
+                  <span>{{v+1}}) </span> {{value.title}}</h6>
+                <p>
+                  {{value.description}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

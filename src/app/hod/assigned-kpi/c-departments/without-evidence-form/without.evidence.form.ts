@@ -1,14 +1,16 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import * as alertify from 'alertifyjs';
 import { LoaderService } from '../../../../shared/loader.service';
 import { HodService } from '../../../hod.service';
+import { StorageService } from '../../../../shared/storage.service';
 
 @Component({
  selector: 'without-evidence-form',
  templateUrl: './without.evidence.form.html',
  styleUrls: ['./../../../hod.component.scss'],
 })
-export class WithoutEvidenceForm {
+export class WithoutEvidenceForm implements OnInit{
+ role: any;
  formId: any;
  @Output() changeSelected: any = new EventEmitter();
  @Input() department: any;
@@ -17,10 +19,18 @@ export class WithoutEvidenceForm {
   this.formId = id;
  }
 
- constructor(public utServ: HodService, public loaderService: LoaderService) {
- }
+ @Output() selectEvidence: any = new EventEmitter();
 
  isUpdating: boolean = false;
+ constructor(public utServ: HodService, 
+             public loaderService: LoaderService,
+             public storage:StorageService) {
+ }
+
+ ngOnInit(){
+  this.role = this.storage.getData('userDetails').roleInfo[0].role;
+ }
+
  public saveQuarterResult(quarter: any) {
   if (!quarter.isUpdating) {
    var object = {
@@ -86,5 +96,9 @@ export class WithoutEvidenceForm {
 
  selectQuarter(level: any) {
   this.changeSelected.emit(level);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

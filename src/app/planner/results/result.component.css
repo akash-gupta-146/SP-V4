@@ -1,0 +1,35 @@
+.parent{
+ font-weight: 600;
+ list-style: none;
+}
+
+.child{
+ font-weight: unset;
+}
+
+.child:hover{
+ color: white;
+ background: #2196f3;;
+ cursor: pointer;
+}
+
+.dropdown-st{
+ position: relative;
+}
+
+.dropdown-st .dept-list{
+ font-size: 12px;
+ position: absolute;
+ z-index: 1;
+ width: max-content;
+ top: 50px;
+}
+
+.dropdown-st .dept-list>ul{
+ list-style: none;
+ padding: 0px;
+}
+
+li>p{
+ margin-bottom: 0rem;
+}

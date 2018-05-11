@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Filters } from '../../shared/filters';
 import { HodService } from '../hod.service';
 import { StorageService } from '../../shared/storage.service';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
 import { LoaderService } from '../../shared/loader.service';
+import { ActivatedRoute } from '@angular/router';
 declare let $: any;
 
 @Component({
@@ -12,8 +13,8 @@ declare let $: any;
   templateUrl: './kpi.component.html',
   styleUrls: ['./../hod.component.scss']
 })
-export class KPIComponent extends Filters implements OnInit{
-  selectedQuarter: string = "q1";
+export class KPIComponent extends Filters implements OnInit,OnDestroy{
+  selectedQuarter: string = "";
   defaultCycle: any;
   cycles: any[];
   selectedLevel: any;
@@ -24,25 +25,26 @@ export class KPIComponent extends Filters implements OnInit{
   initiatives: any[] = [];
   activities: any[] = [];
   opis: any[] = [];
+  frequencies: any[];
   quarters: any[];
   selectedYear: any = new Date().getFullYear();
   constructor(private utServ: HodService,
     private storage: StorageService,
     private loaderService: LoaderService) {
-    super();    
+    super(); 
+    this.loaderService.display(true);   
   }
 
   ngOnInit(){
-    this.role = this.storage.getData('user_roleInfo')[0].role;
     // this.getOpi();
+    // this.getFrequencies();
+    this.role = this.storage.getData('user_roleInfo')[0].role;
     this.getCycles();
-    this.getFrequencies();
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
       this.goals = val;
     });
   }
 
-  frequencies: any[];
   getFrequencies() {
     this.utServ.getFrequencies().subscribe((response: any) => {
       this.frequencies = response;
@@ -52,16 +54,16 @@ export class KPIComponent extends Filters implements OnInit{
   getCycles() {
     this.loaderService.display(true);
     this.utServ.getCycles().subscribe((response: any) => {
-      if (response.status === 204)
-        this.cycles = [];
-      else
-        this.cycles = response;
+      this.cycles = response;
       this.cycles.forEach(element => {
         if (element.defaultCycle){
           this.defaultCycle = element;
-          this.getOpiResultByQuarter(this.selectedQuarter);
+          this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
           }
       });
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong");
     });
   }
 
@@ -81,6 +83,7 @@ export class KPIComponent extends Filters implements OnInit{
   }
 
   getOpiResult(cycle: any) {
+    this.loaderService.display(true);
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResultByCycleId(cycle.cycleId).subscribe((response: any) => {
       if (response.status == 204) {
@@ -92,22 +95,27 @@ export class KPIComponent extends Filters implements OnInit{
         this.utServ.goals.next(response);
         this.initFilters(response);
       }
+      this.loaderService.display(false);
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong");
     });
   }
 
   getOpiResultByYear(cycleId: any, year: any) {
+    this.loaderService.display(true);
     this.selectedQuarter = "q1";
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-        this.goalsCopy = JSON.parse(JSON.stringify(response));
-        this.utServ.goals.next(response);
-        this.initFilters(response);
-      }
+      this.goals = response;
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
+      this.utServ.goals.next(response);
+      this.initFilters(response);
+      this.loaderService.display(false);
+      this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong");
     });
   }
 
@@ -135,7 +143,9 @@ export class KPIComponent extends Filters implements OnInit{
   }
 
   getOpiResultByQuarter(quarter: any) {
+    this.loaderService.display(true);
     this.utServ.getOpiResultByQuarter(this.defaultCycle.cycleId,this.selectedYear,quarter).subscribe((response:any)=>{
+      this.loaderService.display(false);
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
       this.utServ.goals.next(response);
@@ -149,11 +159,20 @@ export class KPIComponent extends Filters implements OnInit{
 
   reloadOpis(){
     this.selectedYear = new Date().getFullYear();
-    this.selectedQuarter = "q1";
-    this.getOpiResultByQuarter(this.selectedQuarter);
+    // this.selectedQuarter = "q1";
+    // this.getOpiResultByQuarter(this.selectedQuarter);
+    this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
   }
 
   isFuture(y:number){
     return (y > new Date().getFullYear());
+  }
+
+  ngOnDestroy(){
+    this.loaderService.display(false);
+  }
+
+  showLoader(){
+    this.loaderService.display(true);
   }
 }

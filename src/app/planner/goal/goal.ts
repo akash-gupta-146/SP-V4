@@ -16,6 +16,7 @@ declare let $: any;
   styleUrls: ['./goal.css', './../planner.component.css']
 })
 export class GoalComponent extends Filters implements AfterViewInit, OnInit{
+  newGoal: boolean;
   public goalForm: FormGroup;
   public isUpdating: boolean = false;
   // public goals:any[]=[];
@@ -30,10 +31,11 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     private loaderService: LoaderService,
     private route: ActivatedRoute,) {
     super();
+    this.loaderService.display(true);    
   }
 
   ngOnInit(){
-    this.commonService.breadcrumb.next(true);
+    // this.commonService.breadcrumb.next(true);
     this.getCycles(false);
     this.goalForm = this.initObjectiveForm();
   }
@@ -47,23 +49,19 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     this.loaderService.display(true);
     
     this.orgService.getCycleWithChildren(disable).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.cycles = [];
-      } else {
-        this.cycles = response;
-        const id = +this.route.snapshot.paramMap.get('cycleId');
-        if(id)
-          this.cycles.forEach(element => {
-            if (element.cycleId === id)
-              this.defaultCycle = element;
-          });
-        else
-          this.cycles.forEach(element => {
-            if (element.defaultCycle)
-              this.defaultCycle = element;
-          });
-        this.getGoals();
-      }
+      this.cycles = response;
+      const id = +this.route.snapshot.paramMap.get('cycleId');
+      if(id)
+        this.cycles.forEach(element => {
+          if (element.cycleId === id)
+            this.defaultCycle = element;
+        });
+      else
+        this.cycles.forEach(element => {
+          if (element.defaultCycle)
+            this.defaultCycle = element;
+        });
+      this.getGoals();
     });
   }
 
@@ -95,41 +93,47 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   onSubmit() {
     if (!this.isUpdating) {
       this.orgService.addObjective(this.goalForm.value).subscribe((response: any) => {
-        // $('#objectModal').modal('show');
-        alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
+        alertify.success('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
         $("#add-plan").hide();
         $('#add-btn').show();
         this.goalForm.controls["goal"].reset();
         this.getGoals();
+        this.getAllCycles();
       }, (error: any) => {
-        alertify.alert("Something went wrong..");
+        alertify.error("Something went wrong..");
       });
     }
 
     if (this.isUpdating) {
       alertify.confirm("Are you sure you want to update current Goal ?", () => {
         this.orgService.updateObjective(this.selectedObjective.goalId, this.goalForm.value).subscribe((res: any) => {
-          // $('#objectModal').modal('show');
-          alertify.notify('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
+          alertify.success('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
           this.goalForm = this.initObjectiveForm()
           this.getGoals();
+          this.getAllCycles();          
           this.isUpdating = false;
           $("#add-plan").hide();
           $('#add-btn').show();
         }, (error: any) => {
-          alertify.alert("Something went wrong..");
+          alertify.error("Something went wrong..");
         });
       }).setHeader("Confirmation");
     }
 
   }
-  deleteGoal(goalId: any, goals: any[], index: any) {
+  deleteGoal(goal: any, goals: any[], index: any) {
     alertify.confirm("Are you sure you want to delete this Goal?", () => {
-      this.orgService.deleteObjective(goalId).subscribe((res: any) => {
-        goals.splice(index, 1);
-      }, (error: any) => {
-        alertify.alert("Something went wrong..");
-      });
+      if(!goal.initiatives.length)
+        this.orgService.deleteObjective(goal.goalId).subscribe((res: any) => {
+          goals.splice(index, 1);
+          alertify.success("Goal Successfully deleted");
+        }, (error: any) => {
+          alertify.error("Something went wrong..");
+        });
+      else{
+        alertify.alert("You can not delete this goal because it has initiatives").setHeader("Alert");
+      }
+
     }).setHeader("Confirmation");
 
   }
@@ -140,12 +144,14 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     $(highlight).addClass("highlight");
     this.selectedObjective = goal;
     this.isUpdating = true;
+    console.log(this.defaultCycle.cycleId);
     this.goalForm.patchValue({ goal: goal.goal, cycleId: this.defaultCycle.cycleId });
     $("#add-plan").show();
     $("#collapse1").collapse('show');
   }
 
   addNewGoal() {
+    this.newGoal = true;
     $("#add-plan").show();
     $('#add-btn').hide();
     this.isUpdating = false;
@@ -184,8 +190,16 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
   }
 
   closeForm() {
+    this.newGoal = false;
     $(".to-be-highlighted").removeClass("highlight");
     $("#add-plan").hide();
     $('#add-btn').show();
+  }
+
+  getAllCycles() {
+    this.orgService.getAllCycle().subscribe((response: any) => {
+      this.cycles = response;
+    }, (error: any) => {
+    });
   }
 }

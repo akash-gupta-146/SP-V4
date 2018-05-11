@@ -19,8 +19,8 @@ export class AdminService {
     public con: StorageService) {
       this.baseUrl = con.baseUrl + con.getData('user_roleInfo')[0].role;
   }
-  getDepartments() {
-    return this.http.get(this.baseUrl + "/department")
+  getDepartments(hierarchy:any) {
+    return this.http.get(this.baseUrl + "/department?hierarchy="+hierarchy)
       .map(this.extractData)
       .catch(this.handleError);
   }

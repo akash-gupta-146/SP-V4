@@ -16,25 +16,31 @@ declare let $: any;
   styleUrls: ['./activity.css', './../planner.component.css']
 })
 export class ActivityComponent extends Filters implements OnInit, AfterViewInit {
-  public cycles: any[] = [];
-  public activityForm: FormGroup;
-  public quarter: any[] = ["Q1", "Q2", "Q3", "Q4"];
-  public objectives: any[];
-  public objectiveIndex: any[] = [];
-  public initiatives: any[];
-  public isUpdating: boolean = false;
-  public defaultCycle: any = {};
+  goalId: any;
+  initiativeId: number;
+  newActivity: boolean;
+  cycles: any[] = [];
+  activeCycle: any[] = [];
+  allCycle: any[] = [];
+  activityForm: FormGroup;
+  quarter: any[] = ["Q1", "Q2", "Q3", "Q4"];
+  objectives: any[];
+  objectiveIndex: any[] = [];
+  initiatives: any[];
+  isUpdating: boolean = false;
+  defaultCycle: any = {};
 
   constructor(public orgService: UniversityService,
     public formBuilder: FormBuilder,
     public commonService: StorageService,
     private loaderService: LoaderService,
-    private route:ActivatedRoute) {
-    super();    
+    private route: ActivatedRoute) {
+    super();
+    this.loaderService.display(true);
   }
 
   ngOnInit() {
-    this.commonService.breadcrumb.next(true);
+    // this.commonService.breadcrumb.next(true);
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.activityForm = this.setActivity();
@@ -49,25 +55,24 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   getCycleWithChildren(flag: any) {
     const cycleId = +this.route.snapshot.paramMap.get('cycleId');
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.cycles = [];
-        this.objectives = [];
+      this.cycles = response;
+      if (cycleId) {
+        this.cycles.forEach((element: any) => {
+          if (element.cycleId === cycleId)
+            this.defaultCycle = element;
+        });
       } else {
-        this.cycles = response;
-        if(cycleId){
-          this.cycles.forEach((element:any) => {
-            if (element.cycleId === cycleId)
-              this.defaultCycle = element;
-          });
-        }else{
-          this.cycles.forEach((element:any) => {
-            if (element.defaultCycle)
-              this.defaultCycle = element;
-          });
-        }
+        this.cycles.forEach((element: any) => {
+          if (element.defaultCycle)
+            this.defaultCycle = element;
+        });
+      }
+      if (!flag) {
         this.getActivities(this.defaultCycle);
+        this.getObjective(this.defaultCycle.cycleId);
       }
     });
+
   }
 
   getObjective(cycleId: any) {
@@ -78,29 +83,34 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       }
     });
   }
-  getActivities(defaultCycle:any) {
-    const id = +this.route.snapshot.paramMap.get('initiativeId');
+  getActivities(defaultCycle: any) {
+    this.objectives = this.initiatives = [];
+    this.getObjective(this.defaultCycle.cycleId);
+    this.initiativeId = +this.route.snapshot.paramMap.get('initiativeId');
     this.orgService.getActivitiesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = [];
-      } else {  
-        this.goals = response;         
-        if(id){
-          this.goals = this.goals.filter((element:any)=>{
-            element.initiatives = element.initiatives.filter((initiative:any)=>{
-              return initiative.initiativeId == id;
-            });
-            return (element.initiatives.length)?true:false;
-          })
-        }   
-        this.goalsCopy = this.goals;
-        this.initFilters(this.goals);
+      this.goals = response;
+      if (this.initiativeId) {
+        this.goals = this.goals.filter((element: any) => {
+          element.initiatives = element.initiatives.filter((initiative: any) => {
+            return initiative.initiativeId === this.initiativeId;
+          });
+          return (element.initiatives.length) ? true : false;
+        });
       }
+      this.goalsCopy = this.goals;
+      this.initFilters(this.goals);
       this.loaderService.display(false);
     }, (error: any) => {
       this.loaderService.display(false);
     });
+    this.getActiveCycles();
+  }
+
+  getActiveCycles() {
+    this.allCycle = JSON.parse(JSON.stringify(this.cycles));
+    this.activeCycle = this.cycles.filter(cycle => {
+      return !cycle.disable;
+    })
   }
 
 
@@ -120,8 +130,8 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   setActivity() {
     return this.formBuilder.group({
       "cycleId": [this.defaultCycle.cycleId, [Validators.required]],
-      "objectiveId": ['', [Validators.required]],
-      "initiativeId": ['', [Validators.required]],
+      "objectiveId": [this.goalId, [Validators.required]],
+      "initiativeId": [this.initiativeId, [Validators.required]],
       "activity": ['', [Validators.required]],
     });
   }
@@ -145,7 +155,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           $("#add-activity").hide();
           $('#add-btn').show();
           this.getActivities(this.defaultCycle);
-          alertify.notify("Updated successfully!");
+          alertify.success("Updated successfully!");
           this.isUpdating = false;
           this.activityForm = this.setActivity();
         });
@@ -153,13 +163,16 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     }
   }
 
-  deleteActivity(activityId: any, activities: any[], index: any) {
-    alertify.confirm("Are you sure you want to delete this Activity?", () => {
-      this.orgService.deleteActivity(activityId).subscribe((res: any) => {
-        activities.splice(index, 1);
-        alertify.notify("Deleted successfully!");
-      });
-    }).setHeader("Confirmation");
+  deleteActivity(activity: any, activities: any[], index: any) {
+    if (!activity.opis.length)
+      alertify.confirm("Are you sure you want to delete this Activity?", () => {
+        this.orgService.deleteActivity(activity.activityId).subscribe((res: any) => {
+          activities.splice(index, 1);
+          alertify.success("Deleted successfully!");
+        });
+      }).setHeader("Confirmation");
+    else
+      alertify.alert("You can not delete this activity because it has OPIs.").setHeader("Alert");
   }
   seletedActivity: any;
   updateActivity(objective: any, initiative: any, activity: any, highlight: any) {
@@ -182,10 +195,16 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   closeForm() {
+    this.newActivity = false;
     $('#add-btn').show();
     this.enableFields();
     this.isUpdating = false;
-    this.getCycleWithChildren(false);
+    // this.getCycleWithChildren(false);
+    this.cycles = JSON.parse(JSON.stringify(this.allCycle));
+    this.cycles.forEach((element: any) => {
+      if (element.cycleId == this.defaultCycle.cycleId)
+        this.defaultCycle = element;
+    });
   }
 
   enableFields() {
@@ -198,14 +217,32 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   addNewActivity() {
+    this.newActivity = true;
     this.enableFields();
     this.isUpdating = false;
     $("#add-activity").show();
     $('#add-btn').hide();
     $("#collapse1").collapse('show');
+    // this.getCycleWithChildren(true);
+    this.cycles = JSON.parse(JSON.stringify(this.activeCycle));
+    this.getFormData();
     this.activityForm = this.setActivity();
-    this.getCycleWithChildren(true);
-    
+
+  }
+
+  getFormData() {
+    this.cycles.forEach((cycle: any) => {
+      if (cycle.cycleId == this.defaultCycle.cycleId)
+          this.defaultCycle = cycle;
+      cycle.goals.forEach(goal => {        
+        goal.initiatives.forEach((initiative: any) => {
+          if (initiative.initiativeId === this.initiativeId) {
+            this.goalId = goal.goalId;
+            this.getInitiative(this.goalId);
+          }
+        });
+      });
+    });
   }
 
   disable(event: any, activityId: any) {

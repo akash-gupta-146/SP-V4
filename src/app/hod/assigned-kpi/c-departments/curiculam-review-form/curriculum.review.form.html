@@ -67,6 +67,10 @@
             <i class="fas fa-lock"></i> Lock
           </button>
         </div>
+        <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
+          <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)" [disabled]="lev.status!='locked'">
+          Approve/Reject</button>
+        </div>
       </div>
     </div>
   </div>
@@ -160,7 +164,7 @@
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
                       <li role="presentation" *ngFor="let ev of program.evidance;let e = index;" class="d-flex justify-content-between">
-                        <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">evidance {{e+1}}</a>
+                        <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)" style="float:left">evidance {{e+1}}</a>
                         <button class="btn btn-link" class="close" (click)="deleteEvidence(ev,program.evidance)" [hidden]="selectedQuarter.status=='locked'">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -169,7 +173,7 @@
                       <li role="presentation" class="divider" style="clear: both;"></li>
                       <li class="text-center" role="presentation">
                         <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectProgram(program)"> Upload</button> -->
-                        <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = program" [disabled]="selectedQuarter.disable">Upload</button>
+                        <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId" (click)="selectedForm = program" [disabled]="selectedQuarter.disable">Upload</button>
                       </li>
                     </ul>
                   </div>
@@ -195,4 +199,4 @@
   </div>
 </div>
 
-<evidence-form [evidanceFormId]="formId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

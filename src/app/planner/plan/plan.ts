@@ -30,6 +30,10 @@ export class PlanComponent implements OnInit {
     this.getCycles();
   }
 
+  shareCycle(cycleId){
+    this.ss.cycle.next(cycleId);
+  }
+
   initForm() {
     return new FormGroup({
       "universityId": new FormControl(this.ss.getData('org_info').universityId),
@@ -48,12 +52,9 @@ export class PlanComponent implements OnInit {
     $("#collapse1").collapse('show');
   }
   getCycles() {
+    this.loaderService.display(true);
     this.orgService.getAllCycle().subscribe((response: any) => {
-      if (response.status == 204) {
-        this.cycles = [];
-      } else {
-        this.cycles = response;
-      }
+      this.cycles = response;
       this.loaderService.display(false);
     }, (error: any) => {
       this.loaderService.display(false);
@@ -85,7 +86,7 @@ export class PlanComponent implements OnInit {
       data['title'] = this.cycleForm.value["title"];
       data['endYear'] = this.cycleForm.value["endYear"];
       this.orgService.updateCycle(this.selectedCycle.cycleId, data).subscribe((response: any) => {
-        alertify.success('You updated Strategic plan.');
+        alertify.success('Strategic plan Updated.');
         $("#add-plan").hide();
         $('#add-btn').show();
         this.isUpdating = false;
@@ -97,13 +98,13 @@ export class PlanComponent implements OnInit {
 
   changeStatus(event: any, c: any) {
     if(c.defaultCycle){
-      alertify.alert("Default plan cannot be deactivated");
+      alertify.alert("Default plan cannot be deactivated").setHeader("Alert");
       event.target.checked = !event.target.checked;
     }else
     alertify.confirm("Are you sure you want to do this?", () => {
       if (!event.target.checked)
         this.orgService.disableCycle(c.cycleId).subscribe((response: any) => {
-          alertify.success('Cycle deactivated.');
+          alertify.success('Plan deactivated.');
           this.getCycles();
         }, (error: any) => {
           alertify.error("Something went wrong");
@@ -120,20 +121,24 @@ export class PlanComponent implements OnInit {
     }).setHeader('Confirmation');
   }
 
-  deleteCycle(cycleId: any) {
-    
-    alertify.confirm("Are you sure you want to Delete this plan ?", () => {
-      this.orgService.deleteCycle(cycleId).subscribe((response: any) => {
-        this.getCycles();
-      }, (error: any) => {
-        alertify.alert("You Can not Delete this plan ?");
-      })
+  deleteCycle(cycle: any) {    
+    alertify.confirm("Are you sure you want to delete selected plan ?", () => {
+      if(!cycle.goals.length){
+        this.orgService.deleteCycle(cycle.cycleId).subscribe((response: any) => {
+          this.getCycles();
+          alertify.success("Plan Deleted");
+        }, (error: any) => {
+          alertify.error("Something went wrong..");
+        });
+      }else{
+        alertify.alert("You can not delete this cycle because it has data.").setHeader("Alert");
+      }
     }).setHeader('Delete plan')
   }
 
   defaultCycle(event: any, cycleId: any) {
     if (!event.target.checked) {
-      alertify.alert("Atleast one plan should be selected as default").setHeader("Alert Message")
+      alertify.alert("Atleast one plan should be selected as default").setHeader("Alert")
       event.target.checked = !event.target.checked;
     } else {
       alertify.confirm("Are you sure you want to make current plan as default plan ?", () => {

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../shared/storage.service';
 import { UniversityService } from "../shared/UTI.service";
 import { Router } from "@angular/router";
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LoaderService } from '../shared/loader.service';
 
 declare let $: any;
@@ -15,17 +14,21 @@ declare let $: any;
 export class PlannerComponent implements OnInit{
 	userDetails: any;
 	breadcrumb:boolean = false;
-	constructor(public stogareService: StorageService,
+	constructor(public storageService: StorageService,
 		public utiService: UniversityService,
-		public router: Router) {
-		this.userDetails = this.stogareService.getData('userDetails');
+		public router: Router,
+		private loaderService: LoaderService) {
+		this.loaderService.display(false);			
+		// this.storageService.breadcrumb.next(true);
+		this.userDetails = this.storageService.getData('userDetails');
 		$(document).ready(function () {
 			$('[data-toggle="tooltip"]').tooltip();
 		});
 	}
 
 	ngOnInit(){
-		this.stogareService.breadcrumb.asObservable().subscribe((val: boolean) => {
+		this.storageService.breadcrumb.next(true);		
+		this.storageService.breadcrumb.asObservable().subscribe((val: boolean) => {
 			this.breadcrumb = val;
 	});
 	}

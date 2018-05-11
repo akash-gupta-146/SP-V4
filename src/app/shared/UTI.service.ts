@@ -6,11 +6,14 @@ import { CustomHttpService } from './default.header.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import {of} from 'rxjs/observable/of';
 
 @Injectable()
 export class UniversityService {
 
+  activeCycles: any[]=[];
   private baseUrl: string = "";
+  private allCycles:any[]=[];
   private child = new RequestOptions({
     headers: new Headers({
       'child': true
@@ -20,6 +23,13 @@ export class UniversityService {
   private parent = new RequestOptions({
     headers: new Headers({
       'parent': true
+    })
+  });
+
+  private both = new RequestOptions({
+    headers: new Headers({
+      'parent': true,
+      'child': true
     })
   });
 
@@ -101,7 +111,9 @@ export class UniversityService {
   }
 
   public getAllCycle() {
-    return this.http.get(this.baseUrl + "/cycles?hideDisable=false")
+    this.allCycles = [];
+    this.activeCycles = [];
+    return this.http.get(this.baseUrl + "/cycles?hideDisable=false",this.child)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -113,10 +125,23 @@ export class UniversityService {
   }
 
   public getCycleWithChildren(disable: any) {
+    if(!disable&&this.allCycles.length)
+      return of(this.allCycles);
+    else if(disable&&this.activeCycles.length)
+      return of(this.activeCycles);
+
     return this.http.get(this.baseUrl + "/cycles?hideDisable=" + disable, this.child)
-      .map(this.extractData)
+      .map((response:any)=>{
+        if(!disable)
+          this.allCycles = response.json();
+        else
+          this.activeCycles = response.json();
+        return this.extractData(response);
+      })
+      // .map(this.extractData)
       .catch(this.handleError);
   }
+  
 
   public deleteCycle(cycleId: any) {
     return this.http.delete(this.baseUrl + "/cycle/" + cycleId)
@@ -156,7 +181,7 @@ export class UniversityService {
   }
 
   public getInitiativesByCycleId(cycleId: any) {
-    return this.http.get(this.baseUrl + "/initiatives?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+    return this.http.get(this.baseUrl + "/initiatives?cycleId=" + cycleId + "&hideDisable=false", this.both)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -168,7 +193,7 @@ export class UniversityService {
   }
 
   public getActivitiesByCycleId(cycleId: any) {
-    return this.http.get(this.baseUrl + "/activities?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+    return this.http.get(this.baseUrl + "/activities?cycleId=" + cycleId + "&hideDisable=false", this.both)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -180,7 +205,7 @@ export class UniversityService {
   }
 
   public getMeasuresByCycleId(cycleId: any) {
-    return this.http.get(this.baseUrl + "/opis?cycleId=" + cycleId + "&hideDisable=false", this.parent)
+    return this.http.get(this.baseUrl + "/opis?cycleId=" + cycleId + "&hideDisable=false", this.both)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -445,7 +470,13 @@ export class UniversityService {
   }
 
   public getOpiResultByYear(cycleId:any,year:any){
-    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year,this.parent)
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false",this.both)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  public getOpiResultByDepartment(cycleId:any,departmentId,year:any){
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false&departmentId="+departmentId,this.both)
     .map(this.extractData)
     .catch(this.handleError);
   }

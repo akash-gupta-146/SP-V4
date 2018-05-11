@@ -15,7 +15,7 @@ export class HodService{
  baseUrl: string;
 
  public goals: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-
+  
  private parent = new RequestOptions({
   headers: new Headers({
     'parent': true
@@ -178,6 +178,12 @@ public editInternshipRecord(recordId:number,data:any){
 
 public editStudentPublicationRecord(recordId:number,data:any){
   return this.http.put(this.baseUrl + "/student-publication/record/"+recordId,data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public editFacultyPublicationRecord(recordId:number,data:any){
+  return this.http.put(this.baseUrl + "/faculty-publication/record/"+recordId,data)
   .map(this.extractData)
   .catch(this.handleError);
 }

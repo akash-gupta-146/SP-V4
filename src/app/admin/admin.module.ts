@@ -5,6 +5,7 @@ import { StorageService } from "../shared/storage.service";
 import { CustomHttpService } from "../shared/default.header.service";
 import { AdminComponent } from "./admin.component";
 import { AdminService } from "./admin.service";
+import { RoleComponent } from './role/role.component';
 
 @NgModule({
   imports: [SharedModule,RouterModule.forChild([
@@ -24,13 +25,21 @@ import { AdminService } from "./admin.service";
         {
 					path: 'department',
 					loadChildren: 'app/admin/department/department.module#DepartmentModule'
-        },
+				},
+				{
+					path:'employee',
+					loadChildren:'app/admin/employee/employee.module#EmployeeModule'
+				},
+				{
+					path:'role',
+					component:RoleComponent
+				}
         
 			]
 		},
 	])],
 	providers: [StorageService, CustomHttpService, AdminService],
-	declarations: [AdminComponent],
+	declarations: [AdminComponent,RoleComponent],
 })
 export class AdminModule{
   constructor(){

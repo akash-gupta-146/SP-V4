@@ -6,6 +6,7 @@ export class LoaderService {
  public status: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
  public transactionLoader: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
  public loadingStatus: BehaviorSubject<string> = new BehaviorSubject<string>("");
+ 
  public display(value: boolean) {
   this.status.next(value);
  }

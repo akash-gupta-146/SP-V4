@@ -1,0 +1,10 @@
+.department-list{ 
+ max-height: 80vh;
+ overflow-y: scroll;
+ direction: rtl;
+}
+
+.department-list>ul{
+ direction: ltr;
+ padding-left: 0px; 
+}

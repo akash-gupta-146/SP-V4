@@ -12,7 +12,7 @@
 <!-- end of subheader -->
 
 <!-- text-details box -->
-<div class="text-details animate slideInDown">
+<div class="text-details animate slideInDown" *ngIf="data">
   <div class='container'>
     <div class="row">
       <div class="col-lg-12">
@@ -84,6 +84,7 @@
           <b>EVIDENCE FORM TYPE</b>
           <p>{{data.evidanceForm}}</p>
           <p *ngIf="!data.evidanceForm">None</p>
+          <p *ngIf="tempUrl">Template : <a [attr.href]="tempUrl"> file </a></p>
         </div>
       </div>
       <div class="col-lg-4">
@@ -97,18 +98,31 @@
   </div>
 
 
+
   <!-- filter -->
-  <div class="filter animate slideInUp">
+  <div class="filter animate slideInUp" *ngIf="!deptId">
     <div class="d-flex">
       <div class="icon">
         <i class="fas fa-calendar-alt"></i>
       </div>
-      <div class="form-group dropdown-st">
+      <!-- <div class="form-group dropdown-st">
         <label class="control-label">Corresponding Departments</label>
         <select id="year" name="year" class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="department">
           <option value="0">All Departments</option>
           <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
         </select>
+      </div> -->
+      <div class="form-group dropdown-st" >
+        <label class="control-label">Corresponding Departments</label>
+        <select class="form-control" (ngModelChange)="viewDepartment($event)" [(ngModel)]="departmentModel" *ngIf="(role=='hod'||role=='coordinator'); else heirarchy">
+          <option value="0">All Departments</option>
+          <option *ngFor="let dept of data.departmentInfo;let d = index;" [ngValue]="dept">{{dept.department}}</option>
+        </select>
+        <ng-template #heirarchy>
+          <a class="text-primary link text-small pt-0 text-center" data-toggle="modal" data-target="#departmentModal">
+            <small>Departments</small>
+          </a>
+        </ng-template>
       </div>
     </div>
   </div>
@@ -140,22 +154,22 @@
           </div>
         </div>
         <div *ngIf="!dept.actionStepView">
-          <without-evidence-form [department]="dept" [evidanceFormId]="data.evidanceFormId" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)">
+          <without-evidence-form [department]="dept" [evidanceFormId]="data.evidanceFormId" *ngIf="!data.evidanceFormId" (changeSelected)="passQuarter($event)" (selectEvidence)="getEvidence($event)">
           </without-evidence-form>
           <student-internship [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==1||data.evidanceFormId==9||data.evidanceFormId==10||data.evidanceFormId==11"
-            (changeSelected)="passQuarter($event)"></student-internship>
-          <mous-form [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==2" (changeSelected)="passQuarter($event)"></mous-form>
-          <community-learning [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==5" (changeSelected)="passQuarter($event)"></community-learning>
+            (changeSelected)="passQuarter($event)" (selectEvidence)="getEvidence($event)"></student-internship>
+          <mous-form [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==2" (changeSelected)="passQuarter($event)" (selectEvidence)="getEvidence($event)"></mous-form>
+          <community-learning [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" *ngIf="data.evidanceFormId==5" (changeSelected)="passQuarter($event)" (selectEvidence)="getEvidence($event)"></community-learning>
           <curriculum-review [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
-            *ngIf="data.evidanceFormId==6"></curriculum-review>
+            *ngIf="data.evidanceFormId==6" (selectEvidence)="getEvidence($event)"></curriculum-review>
           <exchange-program [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
-            *ngIf="data.evidanceFormId==4"></exchange-program>
+            *ngIf="data.evidanceFormId==4" (selectEvidence)="getEvidence($event)"></exchange-program>
           <extra-curricular-activity [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
-            *ngIf="data.evidanceFormId==3"> </extra-curricular-activity>
+            *ngIf="data.evidanceFormId==3" (selectEvidence)="getEvidence($event)"> </extra-curricular-activity>
           <research-consultancy [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
-            *ngIf="data.evidanceFormId==7"></research-consultancy>
+            *ngIf="data.evidanceFormId==7" (selectEvidence)="getEvidence($event)"></research-consultancy>
           <student-research [department]="dept" [d]="d" [evidanceFormId]="data.evidanceFormId" (changeSelected)="passQuarter($event)"
-            *ngIf="data.evidanceFormId==8"></student-research>
+            *ngIf="data.evidanceFormId==8" (selectEvidence)="getEvidence($event)"></student-research>
         </div>
 
         <!-- Action Steps -->
@@ -213,7 +227,7 @@
             </tbody>
           </table>
           <!-- No content -->
-          <div no-content *ngIf="!actionSteps.length">
+          <div no-content *ngIf="!actionSteps.length&&!dept.isNew">
             No action steps available
           </div>
           <!-- end of no content -->
@@ -255,42 +269,6 @@
   </div>
 </div>
 
-<!-- Evidence Form-->
-<div class="modal fade" id="evidenceForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog ">
-    <div class="modal-content" *ngIf="data">
-      <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Attach Evidence</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="evidencForm" (submit)="onEvidenceSubmit(data.evidanceFormId)">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" id="title" formControlName="title" />
-          </div>
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputFile">Attachment</label>
-            <input type="file" class="form-control-file" id="exampleInputFile" formControlName="files" (change)="getFile($event)" aria-describedby="fileHelp">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn-sp btn-primary float-right">Submit</button>
-          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- end of evidence form -->
-
-
 <!-- ASSIGN EMP MODAL -->
 <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -315,10 +293,91 @@
                 <!-- END OF ASSIGN EMP LIST -->
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-sp btn-primary" [disabled]="!employeeIds" (click)="assignEmployee()" data-dismiss="modal">Save</button>
+          <button type="button" class="btn-sp btn-primary" [disabled]="!employeeIds.length" (click)="assignEmployee($event)" data-dismiss="modal">Save</button>
           <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </div>
     </div>
   </div>
   <!-- END ASSIGN EMP MODAL -->
+
+
+  <div class="modal fade" id="feedbackModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="modal-title">Feedback of Achievement</p>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+  
+          <div class="form-group">
+            <label for="optradio">Feedback :</label>
+            <label class="radio-inline">
+              <input type="radio" class="mr-1" name="optradio" [(ngModel)]="selectedLevel.feedback" value="true">Approve
+            </label>
+            <label class="radio-inline">
+              <input type="radio" class="mr-1" name="optradio" [(ngModel)]="selectedLevel.feedback" value="false">Reject
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="comment">Comment :</label>
+            <textarea class="form-control" id="comment" name="comment" [(ngModel)]="selectedLevel.comment"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-sp btn-primary" (click)="setQuarterFeedback(selectedLevel)">Submit</button>
+          <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+  <div class="modal left fade" id="departmentModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content" *ngIf="data">
+        <div class="modal-header">
+            <h5 class="modal-title">Assigned Departments</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="department-hierarchy">
+            <b>Organisation Unit</b>
+            <tree-view id="termSheetPopup" [treeData]="departments" [assignedDepartment]="data.departmentInfo" (onSelected)="department($event)"></tree-view>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-sp btn-clear" data-dismiss="modal">CLose</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- The Modal -->
+<div class="modal fade" id="evidenceFileModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" *ngIf="selectedEvidence">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Title : {{selectedEvidence.title}}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body" >
+        <label>Description : </label> {{selectedEvidence.description}}
+        <!-- <img *ngIf="!loaded" src="" [hidden]="!loaded" (load)="loaded = true"/> -->
+        <img [src]="selectedEvidence.url" width="100%" height="100%">
+        <a class="btn-link" [attr.href]="selectedEvidence.url">Download</a>
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      
+    </div>
+  </div>
+</div>

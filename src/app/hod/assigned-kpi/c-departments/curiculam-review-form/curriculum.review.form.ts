@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { HodService } from '../../../hod.service';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
 import { LoaderService } from '../../../../shared/loader.service';
+import { StorageService } from '../../../../shared/storage.service';
 
 declare let $:any;
 
@@ -12,7 +13,9 @@ declare let $:any;
  templateUrl: 'curriculum.review.form.html',
  styleUrls: ['./../../../hod.component.scss'],
 })
-export class CurriculumReviewForm {
+export class CurriculumReviewForm implements OnInit{
+  @Output() selectEvidence: any = new EventEmitter();
+ role: any;
  selectedProgram: any;
  url: string;
  isUpdating: boolean;
@@ -28,14 +31,22 @@ export class CurriculumReviewForm {
  public curriculumReviewForm:FormGroup
  programListView:boolean;
 
- constructor(private fb: FormBuilder,public utServ: HodService, public loaderService: LoaderService) {
+ constructor(private fb: FormBuilder,
+             public utServ: HodService, 
+             public loaderService: LoaderService,
+             public storage:StorageService) {
+  
+ }
+
+ ngOnInit(){
+  this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.curriculumReviewForm = this.fb.group({
    currentCost:['',[Validators.required]],
    program:['',[Validators.required]],
    reviewType:['',[Validators.required]],
    totalCollegeStaffInvolved:['',[Validators.required]],
    sentToCurriculamCommittee:['',[Validators.required]],
-  })
+  });
  }
 
  submitForm(){
@@ -55,7 +66,7 @@ export class CurriculumReviewForm {
     }, (error: any) => {
      console.log(error);
     });
-   });
+   }).setHeader("Confirmation");
   } 
  }
 
@@ -120,5 +131,9 @@ export class CurriculumReviewForm {
  selectProgram(program:any){
   this.selectedQuarter.selectedForm = program;
   this.changeSelected.emit(this.selectedQuarter);
+ }
+
+ storeEvidence(ev:any){
+  this.selectEvidence.emit(ev);
  }
 }

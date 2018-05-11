@@ -20,6 +20,7 @@ export class HomeComponent {
   public selectedValue: any;
 
   constructor(public commonService: StorageService, public orgSer: UniversityService) {
+    this.commonService.breadcrumb.next(false);    
     this.valueForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', Validators.required),
@@ -47,7 +48,7 @@ export class HomeComponent {
     if (this.selectedValue) {
       this.orgSer.updateValue(this.valueForm.value, this.selectedValue.valueId)
         .subscribe((res: any) => {
-          alertify.success("Successfully Updated..");
+          alertify.success("Value Successfully Updated..");
           this.valueForm.value["valueId"] = this.selectedValue.valueId;
           this.organizationInfo.values[this.selectedValueIndex] = this.valueForm.value;
           this.commonService.storeData('org_info', this.organizationInfo);
@@ -60,7 +61,7 @@ export class HomeComponent {
     } else {
       this.valueForm.value["universityId"] = this.organizationInfo.universityId;
       this.orgSer.addValue([this.valueForm.value]).subscribe((res: any) => {
-        alertify.success("Successfully Saved..");
+        alertify.success("Successfully Value Saved..");
         this.organizationInfo.values.push(this.valueForm.value);
         $('#valueForm').modal('hide');
         this.valueForm.reset();
@@ -71,18 +72,18 @@ export class HomeComponent {
   }
 
   deleteValue(val: any, index: any) {
-    alertify.confirm("This will permanently delete the selected value",(response:any)=>{
+    alertify.confirm("Please confirm that you want to delete selected Value?",(response:any)=>{
       this.orgSer.deleteValue(val.valueId).subscribe((res: any) => {
         alertify.success("Value has been deleted");
         this.organizationInfo.values.splice(index, 1);
       },(error:any)=>{
         alertify.error("Something went wrong");
       });
-    }).setHeader("Delete data")
+    }).setHeader("Confirmation")
     .setting({
       'closableByDimmer': false,
       'movable': false,
-      'labels': { ok: 'Delete', cancel: 'Cancel' },
+      'labels': { ok: 'Confirm', cancel: 'Cancel' },
       })
       .set({transition:'fade'})
       .show();

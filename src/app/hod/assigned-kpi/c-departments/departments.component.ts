@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as alertify from 'alertifyjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -14,46 +14,64 @@ declare let $: any;
   selector: 'c-dept',
   templateUrl: './departments.component.html',
   styleUrls: ['./../../hod.component.scss'],
-  //  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoordinatorDepartmentsComponent implements AfterViewInit {
+export class CoordinatorDepartmentsComponent implements OnInit {
+  deptId: string;
   @Input() id: any;
+  selectedEvidence: any;
+  tempUrl: string = "";
+  departmentHeirarchyCopy: any;
+  role: any;
   isEdit: boolean;
   selectedDepatrtmentId: any;
+  selectedLevel:any = {};
   employeesCopy: any;
   employees: any[] = [];
   actionSteps: any[] = [];
   actionForm: FormGroup;
-  data: any={};
-  department: any = 0;
+  data: any = {};
+  departmentModel: any = 0;
   departments: any[] = [];
   departmentInfo: any[] = []
   departmentsCopy: any[] = [];
   evidencForm: FormGroup;
   evidences: any[] = [];
+  selectedQuarter: any;
+  file: any;
+  selectedInternshipFile: any;
+  selectedForm: any;
+  isNew: boolean = false;
   constructor(private route: ActivatedRoute, 
               private utServ: HodService,
               private storage: StorageService, 
               private loaderService: LoaderService,
               private fb: FormBuilder,
               private location:Location) {
-    console.log(this.id);
-    if (this.id) {
 
-      this.utServ.getDepartmentByOpiId(this.id).subscribe((response: any) => {
-        this.data = response[0];
-        this.departmentInfo = response[0].departmentInfo;
-        this.departmentsCopy = response[0].departmentInfo;
-      });
-    } else {
-      this.route.params.subscribe((params: any) => {
+  }
+
+  ngOnInit(){  
+    this.deptId = this.route.snapshot.paramMap.get('deptId');  
+    this.role = this.storage.getData('userDetails').roleInfo[0].role;
+    this.loaderService.display(true);
+      this.route.params.subscribe((params: any) => {        
         this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
+          this.loaderService.display(false);
           this.data = response[0];
-          this.departmentInfo = response[0].departmentInfo;
-          this.departmentsCopy = response[0].departmentInfo;
+          this.getTemplateUrl(this.data.evidanceFormId);
+          this.getDepartments();
+          if(params['deptId']){
+            const deptId = parseInt(this.deptId);
+            this.departmentInfo = this.data.departmentInfo.filter(element=>{
+              return element.departmentId === deptId;
+            })
+          }else{
+            this.departmentInfo = response[0].departmentInfo;
+            this.departmentsCopy = response[0].departmentInfo;
+          }
         });
-      });
-    }
+      }); 
 
 
     this.evidencForm = new FormGroup({
@@ -71,8 +89,50 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  department(event: any) {
+    if (event.my) {
+      this.departmentsCopy.forEach((element: any, index: any) => {
+        if (element.departmentId == event.departmentId)
+          this.departmentInfo.push(element);
+      });
+    } else {
+      this.departmentInfo = this.departmentInfo.filter((val) => val.departmentId !== event.departmentId);
+    }
+  }
 
+  getDepartments() {
+    this.utServ.getDepartments().subscribe((res: any) => {
+      this.departments = res;
+      this.departmentHeirarchyCopy = res;
+      this.checkAssignDept(this.data.departmentInfo);
+    })
+  }
+
+  checkAssignDept(assignedDepartments: any[]) {
+    this.departments = this.departmentHeirarchyCopy;
+    if(assignedDepartments.length)
+    assignedDepartments.forEach(outerElement => {
+      this.departments.forEach(innerElement => {
+        this.searchDepartment(innerElement, outerElement);
+      });
+    });
+  }
+
+  searchDepartment(department: any, assigneddepartment: any) {
+    if (!department) {
+      return;
+    } else {
+      if (department.departmentId == assigneddepartment.departmentId) {
+        department.my = true;
+        department.disabled = !department.my;
+      } else {
+        department.disabled = !department.my;
+      }
+      if (department.reporteeDepartments && department.reporteeDepartments.length)
+        department.reporteeDepartments.forEach((element: any) => {
+          this.searchDepartment(element, assigneddepartment);
+        });
+    }
   }
 
 
@@ -121,21 +181,17 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
     }).setHeader("Confirmation");
   }
 
-  file: any;
   getFile(event: any) {
     this.file = event.target.files[0];
   }
-  selectedQuarter: any;
-  public selectedInternshipFile: any;
-  selectedForm: any;
+
   passQuarter(event) {
-    console.log(event);
-    this.selectedQuarter = event;
-    if (event.internshipDetails)
-      this.selectedInternshipFile = event.internshipDetails[0];
-    if (event.selectedForm)
-      this.selectedForm = event.selectedForm;
-    console.log(event.selectedForm);
+    this.selectedLevel = event;
+    // if (event.internshipDetails)
+    //   this.selectedInternshipFile = event.internshipDetails[0];
+    // if (event.selectedForm)
+    //   this.selectedForm = event.selectedForm;
+    // console.log(event.selectedForm);
   }
 
   getActionSteps(dept: any) {
@@ -148,7 +204,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
         this.actionSteps = response;
     });
   }
-  isNew: boolean = false;
+
   addNewActionStep(dept: any) {
     dept.isNew = true;
     dept.isEdit = false;
@@ -230,7 +286,7 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
     })
   }
 
-  assignEmployee() {
+  assignEmployee(e:any) {    
     alertify.confirm("Are  you sure to assign this action step?", (response: any) => {
       var ids = [];
       this.employeeIds.forEach(element => {
@@ -250,11 +306,13 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
         $('.emp-list').hide({ direction: "left" });
       });
     }).setHeader("Confirmation");
+    event.stopPropagation();
   }
 
   selectedStep: any;
   employeeIds: any[] = [];
   showList(selectedStep: any) {
+    this.employeeIds = [];
     this.selectedStep = selectedStep;
     this.employees = selectedStep.otherEmployees;
     $('.emp-list').show({ direction: "left" });
@@ -276,5 +334,58 @@ export class CoordinatorDepartmentsComponent implements AfterViewInit {
     }
     $(element).addClass('show');
     $(".collapse-off").removeClass('show');
+  }
+
+  setQuarterFeedback(data: any) {
+    console.log(data.feedback);
+    if (data.feedback == 'true')
+      alertify.confirm("Do you realy want to Approve this ?", () => {
+        this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
+          data.status = 'Approved'
+          alertify.notify("Audit has been Approved");
+          $("#feedbackModal").modal('hide');
+        }, (error: any) => {
+          alertify.notify("Something went wrong");
+          $("#feedbackModal").modal('hide');
+        });
+      }).setHeader("Confirmation");
+    else
+      alertify.confirm("Do you realy want to Reject this ?", () => {
+        this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
+          data.status = 'Rejected'
+          alertify.notify("Audit has been Rejected");
+          $("#feedbackModal").modal('hide');
+        }, (error: any) => {
+          alertify.notify("Something went wrong");
+          $("#feedbackModal").modal('hide');
+        });
+      }).setHeader("Confirmation");
+
+  }
+
+  getTemplateUrl(evidanceFormId:number){
+    console.log("asdf");
+    switch (evidanceFormId) {
+      case 1:
+        this.tempUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-8134238128587521432StudentInternship.xlsx?generation=1524033803030861&alt=media";
+        break;
+      case 9:
+        this.tempUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1624318121912940995ProfessionalDevlopmentActivity.xlsx?generation=1524033865327179&alt=media";
+        break;
+      case 10:
+        this.tempUrl =  "https://www.googleapis.com/download/storage/v1/b/spv4/o/5291564852172375383Faculty%20Publications.xlsx?generation=1524127909547947&alt=media";
+        break;
+      case 11:
+        this.tempUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-1062272352555349828StudentPublications.xlsx?generation=1524033899774926&alt=media";
+        break;
+      default:
+        break;
+    }
+    return this.tempUrl;
+  }
+
+  getEvidence(evidence:any){
+    console.log(evidence);
+    this.selectedEvidence = evidence;
   }
 }

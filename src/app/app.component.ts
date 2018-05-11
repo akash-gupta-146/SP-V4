@@ -16,7 +16,7 @@ import { StorageService } from './shared/storage.service';
   selector: 'my-app',
   template: `
   <router-outlet>
-  <div yugma-loader  *ngIf="showLoader">
+  <div yugma-loader  [hidden]="!showLoader">
     <div color-area></div>
   </div>
   </router-outlet>
@@ -44,12 +44,12 @@ export class AppComponent implements OnInit{
     this.loaderService.status.asObservable().subscribe((val: boolean) => {
       this.showLoader = val;
     });
-    this.loaderService.transactionLoader.asObservable().subscribe((val: boolean) => {
-      this.transactionLoader = val;
-    });
-    this.loaderService.loadingStatus.asObservable().subscribe((val: string) => {
-      this.loadingStatus = val;
-    });
+    // this.loaderService.transactionLoader.asObservable().subscribe((val: boolean) => {
+    //   this.transactionLoader = val;
+    // });
+    // this.loaderService.loadingStatus.asObservable().subscribe((val: string) => {
+    //   this.loadingStatus = val;
+    // });
 
   }
 

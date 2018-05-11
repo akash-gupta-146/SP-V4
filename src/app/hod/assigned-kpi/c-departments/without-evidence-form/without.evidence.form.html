@@ -57,8 +57,8 @@
                 <input type="number" [(ngModel)]="lev.currentTargetLevel" style="width:65px" *ngIf="lev.status=='unsubmitted'&&!lev.disable">
               </div>
             </div>
-          <div class="d-flex justify-content-between mt-2 mx-2"  *ngIf="lev.status!='unsubmited'">
-            <div *ngIf="lev.status!='unsubmited'" class="dropdown">
+          <div class="d-flex justify-content-between mt-2 mx-2"  *ngIf="lev.status!='unsubmitted'">
+            <div *ngIf="lev.status!='unsubmitted'" class="dropdown">
               <div class="float-right">
                   <small>Evidence</small>
               </div>
@@ -68,7 +68,7 @@
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
                 <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
-                  <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="ev.url" style="float:left">Evidence {{e+1}}</a>
+                  <a class="btn-link" role="menuitem" tabindex="-1" style="float:left" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)">Evidence {{e+1}}</a>
                   <button type="button" class="close" (click)="deleteEvidence(lev.evidance,ev,e)" [hidden]="lev.status=='locked'">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -76,7 +76,7 @@
                 <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
                 <li role="presentation" class="divider" style="clear: both;"></li>
                 <li class="text-center" role="presentation">
-                  <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedQuarter = lev" [disabled]="lev.disable">Upload</button>
+                  <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId" (click)="selectedQuarter = lev" [disabled]="lev.disable">Upload</button>
                 </li>
               </ul>
             </div>      
@@ -102,10 +102,14 @@
             <button class="btn-link link primary-link text-primary ml-1" *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;"> Cancel</button>
             <button class="btn-link link primary-link text-primary ml-1" *ngIf="lev.evidance.length&&!isUpdating" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
           </div>
+          <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
+            <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)" [disabled]="lev.status!='locked'">
+            Approve/Reject</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <!-- end of quarter boxes -->
 
-<evidence-form [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId" *ngIf="selectedQuarter"></evidence-form>
+<evidence-form [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" *ngIf="selectedQuarter"></evidence-form>
