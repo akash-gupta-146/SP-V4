@@ -22,6 +22,13 @@ export class HodService{
   })
  });
 
+ private both = new RequestOptions({
+  headers: new Headers({
+    'parent': true,
+    'child': true
+  })
+});
+
  private goalMode = new RequestOptions({
    headers: new Headers({
      'goalMode':true
@@ -72,7 +79,7 @@ export class HodService{
  }
 
  getOpiByDepartmentId(cycleId:any,deptId:any[]){
-  return this.http.get(this.baseUrl + "/result??cycleId="+cycleId+"&departmentIds="+deptId)
+  return this.http.get(this.baseUrl + "/result?cycleId="+cycleId+"&departmentIds="+deptId)
     .map(this.extractData)
     .catch(this.handleError);
  }

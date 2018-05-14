@@ -26,7 +26,6 @@ export class ByDepartment implements OnInit{
 
   ngOnInit(){
     this.storage.cycle.asObservable().subscribe((cycle)=>{
-      console.log(cycle);
       this.defaultCycle = cycle;
     })
   }
@@ -82,6 +81,8 @@ export class ByDepartment implements OnInit{
         if (response.status === 204) {
           this.utServ.goals.next([]);
         } else {
+          this.defaultCycle.departmentIds = this.departmentIds;
+          this.storage.cycle.next(this.defaultCycle);
           this.utServ.goals.next(response);
         }
         this.loaderService.display(false);

@@ -5,7 +5,7 @@ import { StorageService } from '../../shared/storage.service';
 import * as alertify from 'alertifyjs';
 import * as _ from 'underscore';
 import { LoaderService } from '../../shared/loader.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 declare let $: any;
 
 @Component({
@@ -30,19 +30,20 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   selectedYear: any = new Date().getFullYear();
   constructor(private utServ: HodService,
     private storage: StorageService,
-    private loaderService: LoaderService) {
+    private loaderService: LoaderService,private route:ActivatedRoute,private router:Router) {
     super(); 
     this.loaderService.display(true);   
   }
 
   ngOnInit(){
-    // this.getOpi();
-    // this.getFrequencies();
-    this.role = this.storage.getData('user_roleInfo')[0].role;
-    this.getCycles();
+    this.role = this.storage.getData('user_roleInfo')[0].role;    
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
       this.goals = val;
-    });
+    });  
+    this.storage.cycle.asObservable().subscribe(cycle=>{
+      this.defaultCycle = cycle;
+    })  
+    this.getCycles();
   }
 
   getFrequencies() {
@@ -55,17 +56,46 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.loaderService.display(true);
     this.utServ.getCycles().subscribe((response: any) => {
       this.cycles = response;
-      this.cycles.forEach(element => {
-        if (element.defaultCycle){
-          this.storage.cycle.next(element);
-          this.defaultCycle = element;
-          this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
-          }
+      this.route.params.subscribe((params: any) => {
+        if (params['cycleId'] && params['year'] && params['quarter']) {
+          this.cycles.forEach(element => {
+            if (element.cycleId == params['cycleId']) {
+              this.defaultCycle = element;
+              this.selectedYear = params['year'];
+              this.selectedQuarter = params['quarter'];
+              this.storage.cycle.next(element);
+            }
+          });
+          this.getOpiResultByQuarter(params['quarter']);
+        } else if (params['cycleId'] && params['year']) {
+          this.cycles.forEach(element => {
+            if (element.cycleId == params['cycleId']) {
+              this.defaultCycle = element;
+              this.selectedYear = params['year'];
+              this.storage.cycle.next(element);
+            }
+          });
+          this.getResult(params['cycleId'], params['year']);
+        }
+        else {
+          this.cycles.forEach(element => {
+            if (element.defaultCycle) {
+              this.storage.cycle.next(element);
+              this.defaultCycle = element;
+              this.getResult(this.defaultCycle.cycleId, this.selectedYear);
+            }
+          });
+        }
+        
       });
-    },(error:any)=>{
+    }, (error: any) => {
       this.loaderService.display(false);
       alertify.error("Something went wrong");
     });
+  }
+
+  getResult(cycleId,year){
+    this.getOpiResultByYear(cycleId,year);
   }
 
   getOpi(): any {
@@ -115,12 +145,16 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       // this.utServ.goals.next(response);
       this.initFilters(response);
       this.loaderService.display(false);
-      if(this.selectedQuarter.length)
-        this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter
+      if(response.length)
+      this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
     },(error:any)=>{
       this.loaderService.display(false);
       alertify.error("Something went wrong");
     });
+  }
+
+  onCycleChange(cycleId: any, year: any,quarter:any){
+    this.router.navigate(['/coordinator',{cycleId:cycleId,year:year,quarter:quarter}]);
   }
 
   setQuarterFeedback(data: any) {
@@ -165,7 +199,8 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.selectedYear = new Date().getFullYear();
     // this.selectedQuarter = "q1";
     // this.getOpiResultByQuarter(this.selectedQuarter);
-    this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
+    // this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
+    this.router.navigate(["/coordinator"]);
   }
 
   isFuture(y:number){
