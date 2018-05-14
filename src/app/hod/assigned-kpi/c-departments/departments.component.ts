@@ -167,20 +167,6 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     }
   }
 
-  deleteMou(mous: any[], mou: any, index: any) {
-    alertify.confirm("Are you sure you want to delete this mou", () => {
-      this.loaderService.setLoadingStatus("Updating");
-      this.loaderService.setTransactionLoader(true);
-      this.utServ.deleteMou(mou.id).subscribe((response: any) => {
-        mous.splice(index, 1);
-        this.loaderService.setTransactionLoader(false);
-        alertify.success("Sucessfully removed");
-      }, (error: any) => {
-        alertify.error("Something went wrong");
-      });
-    }).setHeader("Confirmation");
-  }
-
   getFile(event: any) {
     this.file = event.target.files[0];
   }
@@ -341,7 +327,8 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     if (data.feedback == 'true')
       alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
-          data.status = 'Approved'
+          data.status = 'Approved';
+          data.disable = true;
           alertify.notify("Audit has been Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
@@ -352,7 +339,8 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     else
       alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
-          data.status = 'Rejected'
+          data.status = 'Rejected';
+          data.disable = 'true';
           alertify.notify("Audit has been Rejected");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {

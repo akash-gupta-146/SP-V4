@@ -57,6 +57,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       this.cycles = response;
       this.cycles.forEach(element => {
         if (element.defaultCycle){
+          this.storage.cycle.next(element);
           this.defaultCycle = element;
           this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
           }
@@ -76,13 +77,15 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       } else {
         this.goals = response;
         this.goalsCopy = JSON.parse(JSON.stringify(response));
-        this.utServ.goals.next(response);
+        // this.utServ.goals.next(response);
         this.initFilters(response);
       }
     });
   }
 
   getOpiResult(cycle: any) {
+    console.log(cycle);
+    this.storage.cycle.next(cycle);
     this.loaderService.display(true);
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResultByCycleId(cycle.cycleId).subscribe((response: any) => {
@@ -92,7 +95,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       } else {
         this.goals = response;
         this.goalsCopy = JSON.parse(JSON.stringify(response));
-        this.utServ.goals.next(response);
+        // this.utServ.goals.next(response);
         this.initFilters(response);
       }
       this.loaderService.display(false);
@@ -104,15 +107,16 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
 
   getOpiResultByYear(cycleId: any, year: any) {
     this.loaderService.display(true);
-    this.selectedQuarter = "q1";
+    // this.selectedQuarter = "q1";
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
-      this.utServ.goals.next(response);
+      // this.utServ.goals.next(response);
       this.initFilters(response);
       this.loaderService.display(false);
-      this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter
+      if(this.selectedQuarter.length)
+        this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter
     },(error:any)=>{
       this.loaderService.display(false);
       alertify.error("Something went wrong");
@@ -148,7 +152,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       this.loaderService.display(false);
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
-      this.utServ.goals.next(response);
+      // this.utServ.goals.next(response);
       this.loaderService.status.next(false);            
       this.initFilters(response);
     },(error:any)=>{

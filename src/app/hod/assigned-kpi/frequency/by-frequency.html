@@ -49,7 +49,7 @@
     </div>
     <div class="form-group dropdown-st">
       <label class="control-label">Frequency</label>
-      <select class="form-control" id="frequency" (ngModelChange)="quarters = $event.quarters" [(ngModel)]="selectedFrequency">
+      <select class="form-control" id="frequency" (ngModelChange)="quarters = $event.quarters;get()" [(ngModel)]="selectedFrequency">
         <option *ngFor="let frequency of frequencies;let i = index;" [ngValue]="frequency">{{frequency.frequency}}</option>
       </select>
     </div>

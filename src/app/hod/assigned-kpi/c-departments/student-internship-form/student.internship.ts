@@ -161,10 +161,10 @@ export class StudentInternshipForm implements OnInit {
   }
 
   lockQuarterResult(quarter: any) {
-    alertify.confirm("Are you sure you want to Lock you results", () => {
+    alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
       this.loaderService.setLoadingStatus("Locking");
       this.loaderService.setTransactionLoader(true);
-      this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {
+      this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
         this.loaderService.setTransactionLoader(false);
         console.log(response);
         quarter.disable = true;
@@ -250,10 +250,10 @@ export class StudentInternshipForm implements OnInit {
   uploadFile(lev:any){
     this.selectedQuarter.submitButton = true;
     var formData = new FormData();
-    var replace = true;
-    if(!lev.replace) replace = false;
+    // var replace = true;
+    // if(!lev.replace) replace = false;
     formData.append('file', lev.file);
-    this.utServ.UploadFormsFile(this.url,lev.id,formData,replace).subscribe((response:any)=>{
+    this.utServ.UploadFormsFile(this.url,lev.id,formData,lev.replace).subscribe((response:any)=>{
       Object.keys(response).forEach((key:any)=>{
         lev[key]=response[key];
       });

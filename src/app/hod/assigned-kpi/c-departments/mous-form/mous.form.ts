@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import * as alertify from 'alertifyjs';
 import { HodService } from '../../../hod.service';
 import { LoaderService } from '../../../../shared/loader.service';
+import { StorageService } from '../../../../shared/storage.service';
 declare let $: any;
 
 @Component({
@@ -11,7 +12,8 @@ declare let $: any;
  templateUrl: './mous.form.html',
  styleUrls: ['./../../../hod.component.scss'],
 })
-export class MousForm {
+export class MousForm implements OnInit{
+  role: any;
   @Output() selectEvidence: any = new EventEmitter();
  formId: any;
  @Output() changeSelected: any = new EventEmitter();
@@ -20,8 +22,12 @@ export class MousForm {
  @Input () set evidanceFormId(id:any){
   this.formId = id;
  }
- constructor(public utServ: HodService, public loaderService: LoaderService) {
+ constructor(public utServ: HodService, public loaderService: LoaderService,private storage:StorageService) {
 
+ }
+
+ ngOnInit(){
+  this.role = this.storage.getData('userDetails').roleInfo[0].role;
  }
 
  saveQuarterResultWithMou(lev: any) {
@@ -112,5 +118,29 @@ export class MousForm {
 
  storeEvidence(ev:any){
   this.selectEvidence.emit(ev);
+ }
+
+ deleteMou(mous: any[], mou: any, index: any) {
+  alertify.confirm("Are you sure you want to delete Selected MOU", () => {
+    this.utServ.deleteMou(mou.id).subscribe((response: any) => {
+      mous.splice(index, 1);
+      alertify.success("MOU Sucessfully removed");
+    }, (error: any) => {
+      alertify.error("Something went wrong");
+    });
+  }).setHeader("Confirmation");
+}
+
+lockQuarterResult(quarter: any) {
+  alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
+   this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
+    console.log(response);
+    quarter.disable = true;
+    quarter.status = "locked";
+    alertify.success("Successfully Locked");
+   }, (error: any) => {
+    alertify.error("Something went wrong");
+   });
+  }).setHeader("Confirmation");
  }
 }

@@ -54,6 +54,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.getFrequencies();
+    this.getEvidenceForms();
     this.getDepartments();
     // this.getQuarter();
   }
@@ -71,9 +72,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
           this.objectives = element.goals;
         }
       });
-      if (!flag) {
-        this.getMeasure();        
-      }
+      this.getMeasure(); 
       this.measureForm = this.setMeasure();
     });
   }
@@ -118,14 +117,18 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.loaderService.display(true);
     this.objectives = this.initiatives = this.activities = [];
     this.getObjective(this.defaultCycle.cycleId);
-    this.orgService.getMeasuresByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-      this.goals = response;
-      this.goalsCopy = response;
-      this.selectedYear = new Date().getFullYear();
-      this.loaderService.display(false);
-    }, (error: any) => {
-      this.loaderService.display(false);
-    });
+    // this.orgService.getMeasuresByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
+    //   this.goals = response;
+    //   this.goalsCopy = response;
+    //   this.selectedYear = new Date().getFullYear();
+    //   this.loaderService.display(false);
+    // }, (error: any) => {
+    //   this.loaderService.display(false);
+    // });
+    this.goals = this.defaultCycle.goals;
+    this.goalsCopy = this.goals;
+    this.initFilters(this.goals);
+    this.loaderService.display(false);
     this.getActiveCycles();
   }
 
@@ -193,17 +196,26 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   removeAssignedDept(selectedMeasure: any, index: any) {
     const departmentInfo: any[] = selectedMeasure.departmentInfo;
-    if (confirm("Do you realy want to unassign department ?"))
+    alertify.confirm("Do you realy want to unassign department ?",()=>{
       this.orgService.deleteAssignedDepartment(selectedMeasure.departmentInfo[index].id).subscribe((response: any) => {
         departmentInfo.splice(index, 1);
-      })
+        alertify.success("Successfully Unassigned");
+      },(error)=>{
+        alertify.error("Something went wrong.");
+      });
+    });
   }
 
   updateOpiTarget(selectedMeasure: any, index: any) {
-    if (confirm("Do you realy want to update targets ?"))
+    alertify.confirm("Do you realy want to update targets ?",()=>{
       this.orgService.updateTarget(selectedMeasure.opiId, [this.editDepartmentForm.value]).subscribe((response: any) => {
         selectedMeasure.departmentInfo[index] = response[0];
+        _.extend(selectedMeasure.departmentInfo[index] , response[0]);
       });
+    },(error)=>{
+      alertify.error("Something went wrong");
+    });
+      
   }
 
   viewDepartmentFilter(){
@@ -445,6 +457,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     delete this.measureForm.value["initiativeId"];
     if (!this.isUpdating) {
       this.orgService.saveMeasure(this.measureForm.value).subscribe((response: any) => {
+        this.selectedActivity.opis.push(response);
         this.getMeasure();
         alertify.notify("You have successfully added a new OPI.");
         this.measureForm.reset({
@@ -556,8 +569,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   addNewMeasure() {
     this.newKpi = true;
-    this.getFrequencies();
-    this.getEvidenceForms();
     this.enableFields();
     this.isUpdating = false;
     $('#add-opi').show();
@@ -571,6 +582,22 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     this.setDefaultCycle();
   }
 
+  addMeasure(goal:any,initiative:any,activity:any) {
+    this.selectedActivity = activity;
+    this.newKpi = true;
+    this.enableFields();
+    this.isUpdating = false;
+    $('#add-opi').show();
+    $('#add-btn').hide();
+    $("#collapse1").collapse('show');
+    this.measureForm.patchValue({
+      cycleId:this.defaultCycle.cycleId,
+      objectiveId: goal.goalId,
+      initiativeId: initiative.initiativeId,
+      activityId: activity.activityId,
+    });
+  }
+
   setDefaultCycle() {
     this.cycles.forEach((cycle: any) => {
       if (cycle.cycleId == this.defaultCycle.cycleId)
@@ -581,7 +608,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   disable(event: any, opiId: any) {
     if (!event.target.checked){
-      alertify.confirm("Are you sure you want to unassign selected Department ?", () => {
+      alertify.confirm("Are you sure you want to inactivate this KPI ?", () => {
         this.orgService.disableKPI(opiId).subscribe((response: any) => {
           alertify.success("Deactivated selected KPI");
           this.getMeasure();
@@ -639,5 +666,25 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   isFuture(y:number){
     return (y > new Date().getFullYear());
+  }
+
+  toShowOrNot(goal){
+    var flag= 1;
+    goal.initiatives.forEach(element => {
+      if(element.activities.length){
+        flag = 0;
+        return;}
+        
+    });
+    return !flag;
+  }
+
+  getInitiativesLength(initiatives:any[]){
+    var len = 0;
+    initiatives.forEach(element => {
+      if(element.activities.length)
+        len ++;
+    });
+    return len;
   }
 }

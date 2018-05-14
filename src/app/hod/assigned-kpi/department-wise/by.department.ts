@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HodService } from '../../hod.service';
 import { StorageService } from '../../../shared/storage.service';
 import { Router } from '@angular/router';
@@ -10,10 +10,11 @@ import * as alertify from 'alertifyjs';
   templateUrl: './by.department.html',
   styleUrls: ['./../../hod.component.scss']
 })
-export class ByDepartment {
+export class ByDepartment implements OnInit{
   role: any;
   departments: any;
   departmentIds: any[] = [];
+  defaultCycle:any;
   constructor(public utServ: HodService, 
               private storage: StorageService, 
               private router: Router,
@@ -23,7 +24,12 @@ export class ByDepartment {
     this.getDepartments();
   }
 
-  
+  ngOnInit(){
+    this.storage.cycle.asObservable().subscribe((cycle)=>{
+      console.log(cycle);
+      this.defaultCycle = cycle;
+    })
+  }
 
   getDepartments() {
     this.utServ.getDepartments().subscribe((res: any) => {
@@ -72,7 +78,7 @@ export class ByDepartment {
   goBack() {
     this.loaderService.display(true);
     if (this.departmentIds.length)
-      this.utServ.getOpiByDepartmentId(this.departmentIds).subscribe((response: any) => {
+      this.utServ.getOpiByDepartmentId(this.defaultCycle.cycleId,this.departmentIds).subscribe((response: any) => {
         if (response.status === 204) {
           this.utServ.goals.next([]);
         } else {

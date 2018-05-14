@@ -15,7 +15,7 @@ export class HodService{
  baseUrl: string;
 
  public goals: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-  
+ public results:any[];
  private parent = new RequestOptions({
   headers: new Headers({
     'parent': true
@@ -27,6 +27,7 @@ export class HodService{
      'goalMode':true
    })
  });
+ 
 
  constructor(public http: CustomHttpService,private htttp:Http,
   public con: StorageService){
@@ -46,8 +47,8 @@ export class HodService{
     .catch(this.handleError);
  }
 
- getOpiResultByGoalMode(){
-  return this.http.get(this.baseUrl + "/result",this.goalMode)
+ getOpiResultByGoalMode(cycleId){
+  return this.http.get(this.baseUrl + "/result?cycleId="+cycleId,this.goalMode)
   .map(this.extractData)
   .catch(this.handleError);
  }
@@ -70,8 +71,8 @@ export class HodService{
     .catch(this.handleError);
  }
 
- getOpiByDepartmentId(deptId:any[]){
-  return this.http.get(this.baseUrl + "/result?departmentIds="+deptId)
+ getOpiByDepartmentId(cycleId:any,deptId:any[]){
+  return this.http.get(this.baseUrl + "/result??cycleId="+cycleId+"&departmentIds="+deptId)
     .map(this.extractData)
     .catch(this.handleError);
  }

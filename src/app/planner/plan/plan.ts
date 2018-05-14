@@ -131,7 +131,7 @@ export class PlanComponent implements OnInit {
           alertify.error("Something went wrong..");
         });
       }else{
-        alertify.alert("You can not delete this cycle because it has data.").setHeader("Alert");
+        alertify.alert("This plan cannot be deleted as it has data in initiative and activities. It can only be deleted if all data is deleted first. You may choose to disable it instead.").setHeader("Alert");
       }
     }).setHeader('Delete plan')
   }

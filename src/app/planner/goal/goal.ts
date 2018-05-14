@@ -107,7 +107,7 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     if (this.isUpdating) {
       alertify.confirm("Are you sure you want to update current Goal ?", () => {
         this.orgService.updateObjective(this.selectedObjective.goalId, this.goalForm.value).subscribe((res: any) => {
-          alertify.success('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
+          alertify.success('Goal Successfully Updated.', 'success', 5, function () { console.log('dismissed'); });
           this.goalForm = this.initObjectiveForm()
           this.getGoals();
           this.getAllCycles();          

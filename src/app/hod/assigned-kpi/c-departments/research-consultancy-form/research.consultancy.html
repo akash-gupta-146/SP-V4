@@ -67,7 +67,7 @@
             </button>
           </div>
           <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
-            <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)" [disabled]="lev.status!='locked'">
+            <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)">
             Approve/Reject</button>
           </div>
         </div>
@@ -170,7 +170,7 @@
       <div *ngIf="programListView">
         <div class="modal-body">
             <div>
-                  Exchange Programs
+              Research Consultancy
                 <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
                     <i class="fas fa-plus-circle"></i> Add New
                 </button>
@@ -190,7 +190,7 @@
                 <th style="vertical-align:middle;">No. of Researchers Involved</th>
                 <th style="vertical-align:middle;">No. of Faculty Involved</th>
                 <th style="vertical-align: middle">Evidence</th>
-                <th style="vertical-align: middle">Action</th>
+                <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -226,7 +226,7 @@
                     </ul>
                   </div>
                 </td>
-                <td>
+                <td *ngIf="role=='coordinator'">
                   <button (click)="edit(project)" class="btn btn-link">
                       <i class="fas fa-edit"></i>
                   </button>

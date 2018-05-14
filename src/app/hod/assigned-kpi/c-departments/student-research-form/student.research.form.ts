@@ -79,10 +79,10 @@ export class StudentResearch implements OnInit{
  }
 
  lockQuarterResult(quarter: any) {
-  alertify.confirm("Are you sure you want to Lock you results", () => {
+  alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
    this.loaderService.setLoadingStatus("Locking");
    this.loaderService.setTransactionLoader(true);
-   this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {
+   this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     this.loaderService.setTransactionLoader(false);
     console.log(response);
     quarter.disable = true;
@@ -138,5 +138,9 @@ export class StudentResearch implements OnInit{
 
  storeEvidence(ev:any){
   this.selectEvidence.emit(ev);
+ }
+
+ selectLevel(level){
+   this.changeSelected.emit(level);
  }
 }

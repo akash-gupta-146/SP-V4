@@ -2,7 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { UniversityService } from "../../shared/UTI.service";
 import { FormBuilder, Validators, FormGroup, FormArray } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
-
+import * as alertify from 'alertifyjs';
 declare let $: any;
 
 @Component({
@@ -85,11 +85,15 @@ export class SPIComponent implements AfterViewInit {
   }
 
   deleteSpi(spiId: any, spis: any[], index: any) {
-    if (confirm("SPi will be deleted permanently.."))
+    alertify.confirm("SPi will be deleted permanently..",()=>{
       this.orgService.deleteSpi(spiId).subscribe((response: any) => {
         spis.splice(index, 1);
-        console.log("success");
+        alertify.success("SPI Successfully deleted");
+      },(error)=>{
+        alertify.error("Something went wrong");
       })
+    })
+
   }
   
   inItTarget() {

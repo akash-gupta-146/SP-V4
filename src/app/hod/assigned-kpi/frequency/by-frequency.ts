@@ -18,6 +18,7 @@ export class ByFrequency implements AfterViewInit {
   frequencies: any;
   selectedFrequency: any;
   selectedQuarter: any;
+  cycle:any;
   constructor(public utServ: HodService,
     public router: Router,
     private storage: StorageService,
@@ -26,6 +27,10 @@ export class ByFrequency implements AfterViewInit {
   }
 
   ngOnInit() {
+    this.storage.cycle.asObservable().subscribe((element:any)=>{
+      console.log(element);
+      this.cycle = element;
+    })
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
       this.goals = val;
     });
@@ -46,5 +51,9 @@ export class ByFrequency implements AfterViewInit {
     }, (error: any) => {
       this.loaderService.display(false);
     });
+  }
+
+  get(){
+    console.log(this.cycle);
   }
 }

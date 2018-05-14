@@ -25,6 +25,17 @@
       </select>
     </div>
   </div>
+  <div class="d-flex ">
+    <div class="icon">
+      <i class="fas fa-calendar-check"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Strategic Plan</label>
+      <select id="cycle" name="cycle" class="form-control" (ngModelChange)="getGoals($event)" [(ngModel)]="defaultCycle">
+        <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.title}}</option>
+      </select>
+    </div>
+  </div>
 </div>
 <!-- end of filter     -->
 
@@ -78,11 +89,16 @@
         </div>
       </div>
     </div>
+    <!-- No content -->
+    <div no-content *ngIf="!goals.length&&!loaderService.status.value">
+      Data not available
+    </div>
+    <!-- end of no content -->
   </div>
 </div>
 
 <!-- refresh button -->
-<div fab class="btn btn-primary" (click)="getGoals();">
+<div fab class="btn btn-primary" (click)="getGoals(defaultCycle);">
     <i class="fas fa-sync"></i>
   </div>
   <!-- end of refresh button -->

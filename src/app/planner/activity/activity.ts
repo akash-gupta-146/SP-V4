@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
 import { Filters } from "../../shared/filters";
 import * as alertify from 'alertifyjs';
+import * as _ from 'underscore';
 import { LoaderService } from '../../shared/loader.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -87,22 +88,35 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     this.objectives = this.initiatives = [];
     this.getObjective(this.defaultCycle.cycleId);
     this.initiativeId = +this.route.snapshot.paramMap.get('initiativeId');
-    this.orgService.getActivitiesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-      this.goals = response;
-      if (this.initiativeId) {
-        this.goals = this.goals.filter((element: any) => {
-          element.initiatives = element.initiatives.filter((initiative: any) => {
-            return initiative.initiativeId === this.initiativeId;
-          });
-          return (element.initiatives.length) ? true : false;
+    // this.orgService.getActivitiesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
+    //   this.goals = response;
+      // if (this.initiativeId) {
+      //   this.goals = this.goals.filter((element: any) => {
+      //     element.initiatives = element.initiatives.filter((initiative: any) => {
+      //       return initiative.initiativeId === this.initiativeId;
+      //     });
+      //     return (element.initiatives.length) ? true : false;
+      //   });
+      // }
+      // this.goalsCopy = this.goals;
+      // this.initFilters(this.goals);
+      // this.loaderService.display(false);
+    // }, (error: any) => {
+    //   this.loaderService.display(false);
+    // });
+    this.goals = this.defaultCycle.goals;
+    if (this.initiativeId) {
+      this.goals = this.goals.filter((element: any) => {
+        element.initiatives = element.initiatives.filter((initiative: any) => {
+          return initiative.initiativeId === this.initiativeId;
         });
-      }
-      this.goalsCopy = this.goals;
-      this.initFilters(this.goals);
-      this.loaderService.display(false);
-    }, (error: any) => {
-      this.loaderService.display(false);
-    });
+        return (element.initiatives.length) ? true : false;
+      });
+    }
+    this.goalsCopy = this.goals;
+    this.initFilters(this.goals);
+    this.loaderService.display(false);
+    console.log(this.defaultCycle);
     this.getActiveCycles();
   }
 
@@ -145,17 +159,17 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           $("#add-activity").hide();
           $('#add-btn').show();
           alertify.notify("Saved successfully .,.");
-          this.getActivities(this.defaultCycle);
+          this.selectedInitiative.activities.push(response);
           this.activityForm.controls["activity"].reset();
         })
     } else {
       alertify.confirm("Are you sure you want to Update this Activity?", () => {
         delete this.activityForm.value["initiativeId"];
-        this.orgService.updateActivity(this.seletedActivity.activityId, this.activityForm.value).subscribe((res: any) => {
+        this.orgService.updateActivity(this.selectedActivity.activityId, this.activityForm.value).subscribe((response: any) => {
           $("#add-activity").hide();
           $('#add-btn').show();
-          this.getActivities(this.defaultCycle);
-          alertify.success("Updated successfully!");
+          this.selectedActivity.activity = this.activityForm.controls['activity'].value;
+          alertify.success("Activity Successfully Updated!");
           this.isUpdating = false;
           this.activityForm = this.setActivity();
         });
@@ -174,7 +188,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     else
       alertify.alert("You can not delete this activity because it has OPIs.").setHeader("Alert");
   }
-  seletedActivity: any;
+  selectedActivity: any;
   updateActivity(objective: any, initiative: any, activity: any, highlight: any) {
     $('#add-btn').hide();
     $(".to-be-highlighted").removeClass("highlight");
@@ -182,7 +196,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     $("#add-activity").show();
     $("#collapse1").collapse('show');
     this.isUpdating = true;
-    this.seletedActivity = activity;
+    this.selectedActivity = activity;
     this.activityForm.controls["cycleId"].disable();
     this.activityForm.controls["objectiveId"].disable();
     this.activityForm.controls["initiativeId"].disable();
@@ -228,6 +242,20 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     this.getFormData();
     this.activityForm = this.setActivity();
 
+  }
+
+  addActivity(goal:any,initiative:any){
+    this.selectedInitiative = initiative;
+    this.newActivity = true;
+    this.enableFields();
+    this.isUpdating = false;
+    $("#add-activity").show();
+    $('#add-btn').hide();
+    $("#collapse1").collapse('show');
+    this.goalId = goal.goalId;
+    this.getInitiative(this.goalId);
+    this.initiativeId = initiative.initiativeId;
+    this.activityForm = this.setActivity();
   }
 
   getFormData() {

@@ -18,7 +18,7 @@
    <div class="form-group dropdown-st">
      <label class="control-label">Strategic Plan</label>
      <select id="year" name="year" class="form-control" [(ngModel)]="defaultCycle" (ngModelChange)="getResults()">
-       <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.planYear}} : [{{c.startYear}} To {{c.endYear}}]</option>
+       <option *ngFor="let c of cycles;let y = index;" [ngValue]="c">{{c.title}}</option>
      </select>
    </div>
  </div>

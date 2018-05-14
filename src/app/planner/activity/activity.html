@@ -34,7 +34,8 @@
           <div class="col-sm-12 col-lg-4 col-md-12">
             <div class="form-group">
               <label for="year">Strategic Plan:</label>
-              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" (ngModelChange)="getObjective($event)" disabled>
+              <select id="year" name="year" class="form-control" formControlName="cycleId" [ngModel]="defaultCycle.cycleId" (ngModelChange)="getObjective($event)"
+                disabled>
                 <option *ngFor="let c of cycles;let y = index;" [ngValue]="c.cycleId">{{c.title}}</option>
               </select>
             </div>
@@ -69,7 +70,7 @@
         <button type="submit" class="btn-sp btn-primary" [disabled]="activityForm.invalid">
           Save
         </button>
-        <button type="button" data-dismiss="modal" class="btn-sp btn-clear"  (click)="closeForm();">Close</button>
+        <button type="button" data-dismiss="modal" class="btn-sp btn-clear" (click)="closeForm();">Close</button>
       </div>
     </form>
   </div>
@@ -132,7 +133,7 @@
           </div>
         </div>
         <div class="grid-outer-body" style="grid-template-columns:30% 70%" *ngFor="let goal of goals;let i = index;">
-          <div class="item" [style.grid-row-end]="goal.initiatives.length + 1">
+          <div class="item" [style.grid-row-end]="goal.initiatives.length + 1" *ngIf="goal.initiatives.length">
             {{goal.goal}}
           </div>
           <div class="grid-inner-body" style="grid-template-columns:42.86% 57.14%" *ngFor="let initiate of goal.initiatives;let j=index;">
@@ -161,12 +162,27 @@
                 </div>
               </div>
             </div>
-          </div>
+
+            <div class="grid-inner-body" style="grid-template-columns:75% 25%;" *ngIf="!initiate.activities.length">
+              <div class="item" style="color:red">No Activity Added Yet</div>
+              <div class="grid-inner-body" style="grid-template-columns:100%;">
+                <div class="item">
+                  <div class="d-flex justify-content-center">
+                    <div>
+                      <button class="btn btn-link" type="button" (click)="addActivity(goal,initiate)"[disabled]="goal.disable||initiate.disable">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <!-- end of table -->
 <!-- No content -->
 <div no-content *ngIf="!goals.length&&!loaderService.status.value&&!newActivity">
