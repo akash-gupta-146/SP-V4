@@ -16,10 +16,11 @@ declare let $: any;
   styleUrls: ['./measure.scss', './../planner.component.css']
 })
 export class MeasureComponent extends Filters implements AfterViewInit {
+  departmentLoader: boolean;
   activeCycle: any[];
   allCycle: any[];
   newKpi: boolean;
-  selectedYear: number;
+  selectedYear: number = new Date().getFullYear();
   reloadBtn: boolean = false;
   selectedMeasure: any;
   selectedDepartmentIds: any[]=[];
@@ -50,6 +51,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   ngOnInit() {
+    this.commonService.breadcrumb.next(true);    
     this.measureForm = this.setMeasure();
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
@@ -66,12 +68,16 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   getCycleWithChildren(flag: any) {
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
       this.cycles = response;
-      this.cycles.forEach(element => {
-        if (element.defaultCycle){
-          this.defaultCycle = element;
-          this.objectives = element.goals;
-        }
-      });
+      if (this.orgService.commonCycle) {
+        this.defaultCycle = this.cycles.find((element: any) => {
+          return this.orgService.commonCycle == element.cycleId;
+        })
+      } else {
+        this.defaultCycle = this.cycles.find((element: any) => {
+          return element.defaultCycle;
+        });
+      }
+      this.objectives = this.defaultCycle.goals;
       this.getMeasure(); 
       this.measureForm = this.setMeasure();
     });
@@ -114,6 +120,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   getMeasure() {
+    this.orgService.commonCycle = this.defaultCycle.cycleId;
     this.loaderService.display(true);
     this.objectives = this.initiatives = this.activities = [];
     this.getObjective(this.defaultCycle.cycleId);
@@ -126,7 +133,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     //   this.loaderService.display(false);
     // });
     this.goals = this.defaultCycle.goals;
-    this.goalsCopy = this.goals;
+    this.goalsCopy = JSON.parse(JSON.stringify(this.goals));
     this.initFilters(this.goals);
     this.loaderService.display(false);
     this.getActiveCycles();
@@ -227,30 +234,31 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   applyFilter(){
-    console.log(this.selectedDepartmentIds);
-    this.goals = this.goalsCopy.filter((element:any)=>{
-      element.initiatives = element.initiatives.filter((initiative:any)=>{
-        initiative.activities = initiative.activities.filter((activity:any)=>{
-          activity.opis = activity.opis.filter((opi:any)=>{
-            opi.departmentInfo = opi.departmentInfo.filter(dept => {
-              if(this.selectedDepartmentIds.indexOf(dept.departmentId) != -1){
-                this.reloadBtn = true;
-                return true;
-              }
+    if(this.selectedDepartmentIds.length)
+      this.goals = this.goalsCopy.filter((element:any)=>{
+        element.initiatives = element.initiatives.filter((initiative:any)=>{
+          initiative.activities = initiative.activities.filter((activity:any)=>{
+            activity.opis = activity.opis.filter((opi:any)=>{
+              opi.departmentInfo = opi.departmentInfo.filter(dept => {
+                if(this.selectedDepartmentIds.indexOf(dept.departmentId) != -1){
+                  this.reloadBtn = true;
+                  return true;
+                }
+              });
+              return opi.departmentInfo.length;
             });
-            return opi.departmentInfo.length;
+            return activity.opis.length;
           });
-          return activity.opis.length;
+          return initiative.activities.length;
         });
-        return initiative.activities.length;
-      });
-      return element.initiatives.length;
-    });
+        return element.initiatives.length;
+      });      
     return true;
   }
 
   getOpi(){
-    this.getMeasure();
+    this.goals = this.goalsCopy;
+    // this.getMeasure();
     this.reloadBtn = false;
   }
 
@@ -686,5 +694,14 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         len ++;
     });
     return len;
+  }
+
+  getDepartmentWithData(opi:any){
+    this.selectedMeasure = opi;
+    this.departmentLoader = true;
+    this.orgService.getAssignedDepartmentWithData(opi.opiId).subscribe((response:any)=>{
+      this.selectedMeasure.departmentInfo = response;
+      this.departmentLoader = false;
+    })
   }
 }

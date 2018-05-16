@@ -13,7 +13,7 @@
 <!-- filter -->
 <div class="filter animate slideInUp my-3" id="top">
   <div>
-    <button type="button" class="btn-sp btn-sp-small btn-primary" routerLink="../" (click)="goBack()">Apply</button>
+    <button type="button" class="btn-sp btn-sp-small btn-primary" [routerLink]="['/coordinator',{deptId:departmentIds}]" (click)="goBack()">Apply</button>
     <button type="button" class="btn-sp btn-sp-small btn-clear" routerLink="../">Hide</button>
   </div>
 

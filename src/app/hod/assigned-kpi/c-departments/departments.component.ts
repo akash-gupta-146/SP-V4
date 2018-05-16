@@ -55,22 +55,41 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     this.deptId = this.route.snapshot.paramMap.get('deptId');  
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     this.loaderService.display(true);
-      this.route.params.subscribe((params: any) => {        
-        this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
-          this.loaderService.display(false);
-          this.data = response[0];
-          this.getTemplateUrl(this.data.evidanceFormId);
-          this.getDepartments();
-          if(params['deptId']){
-            const deptId = parseInt(this.deptId);
-            this.departmentInfo = this.data.departmentInfo.filter(element=>{
-              return element.departmentId === deptId;
-            })
-          }else{
-            this.departmentInfo = response[0].departmentInfo;
-            this.departmentsCopy = response[0].departmentInfo;
-          }
-        });
+      this.route.params.subscribe((params: any) => {  
+        if(params['quarter']){
+          this.utServ.getDepartmentByOpiIdAndQuarter(params['id'],params['quarter']).subscribe((response: any) => {
+            this.loaderService.display(false);
+            this.data = response[0];
+            this.getTemplateUrl(this.data.evidanceFormId);
+            this.getDepartments();
+            if(params['deptId']){
+              const deptId = parseInt(this.deptId);
+              this.departmentInfo = this.data.departmentInfo.filter(element=>{
+                return element.departmentId === deptId;
+              })
+            }else{
+              this.departmentInfo = response[0].departmentInfo;
+              this.departmentsCopy = response[0].departmentInfo;
+            }
+          });
+        }else{
+          this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
+            this.loaderService.display(false);
+            this.data = response[0];
+            this.getTemplateUrl(this.data.evidanceFormId);
+            this.getDepartments();
+            if(params['deptId']){
+              const deptId = parseInt(this.deptId);
+              this.departmentInfo = this.data.departmentInfo.filter(element=>{
+                return element.departmentId === deptId;
+              })
+            }else{
+              this.departmentInfo = response[0].departmentInfo;
+              this.departmentsCopy = response[0].departmentInfo;
+            }
+          });
+        }
+
       }); 
 
 

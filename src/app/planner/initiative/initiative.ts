@@ -35,8 +35,7 @@ export class InitiativeComponent extends Filters implements OnInit{
   }
 
   ngOnInit(){
-
-    // this.commonService.breadcrumb.next(true);
+    this.commonService.breadcrumb.next(true);
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.initiativeForm = this.initForm();
@@ -44,20 +43,27 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   getCycleWithChildren(flag: any) {
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
+      this.loaderService.display(false);
       this.cycles = response;
       const cycleId = +this.route.snapshot.paramMap.get('cycleId');
-      if(cycleId)
+      if(cycleId){
         this.cycles.forEach(element => {
           if (element.cycleId === cycleId)
             this.defaultCycle = element;
-        });          
-      else{
-        this.cycles.forEach(element => {
-          if (element.defaultCycle)
-            this.defaultCycle = element;
-        });
-      }
-      this.getInitiative(this.defaultCycle);
+        }); 
+        this.getInitiative(this.defaultCycle);         
+      }else{     
+        if(this.orgService.commonCycle){
+          this.defaultCycle = this.cycles.find((element:any)=>{
+            return this.orgService.commonCycle == element.cycleId;
+          })
+        }else {
+          this.defaultCycle = this.cycles.find((element:any)=>{
+            return element.defaultCycle;
+          });
+        }   
+        this.getInitiative(this.defaultCycle);
+      }      
       this.getObjective(this.defaultCycle.cycleId);
     });
   }
@@ -80,6 +86,7 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   defaultCycle: any = {};
   getInitiative(defaultCycle) {
+    this.orgService.commonCycle = defaultCycle.cycleId;    
     this.objectives = [];
     this.getObjective(this.defaultCycle.cycleId);
     this.goalId = +this.route.snapshot.paramMap.get('goalId');
@@ -108,10 +115,11 @@ export class InitiativeComponent extends Filters implements OnInit{
         return (element.goalId === this.goalId);
       });
     }
+
+    console.log("came",this.goals);
     this.goalsCopy = this.goals;
     this.initFilters(this.goals);
     this.loaderService.display(false);
-    console.log(this.defaultCycle);
     this.getActiveCycles();
   }
 
@@ -127,13 +135,13 @@ export class InitiativeComponent extends Filters implements OnInit{
     delete this.initiativeForm.value["cycleId"];
     if (!this.isUpdating)
       this.orgService.addInitiative(this.initiativeForm.value).subscribe((res: any) => {
-        this.getInitiative(this.defaultCycle);
+        // this.getInitiative(this.defaultCycle);
         $("#add-initiative").hide();
         alertify.notify("Initiative Successfully Added.");
         $('#add-btn').show();
         this.initiativeForm.controls["initiative"].reset();
-        // this.getAllCycles();
         this.selectedGoal.initiatives.push(res);
+        this.getAllCycles();
       }, err => {
         console.log(err);
       });
@@ -202,6 +210,13 @@ export class InitiativeComponent extends Filters implements OnInit{
   }
 
   addNewInitiative() {
+    if(this.goalId){
+      console.log("came");
+      this.selectedGoal = this.goals.find(element=>{
+        return element.goalId == this.goalId;
+      });
+      console.log(this.selectedGoal);
+    }
     this.newInitiative = true;
     $("#add-initiative").show();
     $('#add-btn').hide();
@@ -272,5 +287,9 @@ export class InitiativeComponent extends Filters implements OnInit{
       this.cycles = response;
     }, (error: any) => {
     });
+  }
+
+  shareCycle(){
+    this.orgService.commonCycle = this.defaultCycle.cycleId;
   }
 }

@@ -44,11 +44,11 @@
 <!-- end of filter -->
 
 <!-- table -->
-<div class="container-fluid mt-3 animate slideInDown table-responsive" *ngIf="goals.length">
+<div class="container-fluid mt-3 animate slideInDown table-responsive" *ngIf="goalsCopy.length">
   <div class="card">
     <div class="table-responsive">
       <div class="grid">
-        <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 16% 4% ">
+        <div class="grid-head" style="grid-template-columns:16% 16% 16% 16% 16% 16% 4%">
           <div class="item">
             <div class="d-flex justify-content-between align-items-center">
               <div>
@@ -131,7 +131,7 @@
             <span class="hide-text">KPI Details</span>
           </div>
           <div class="item">
-            <span class="hide-text">Departmentwise Status</span>
+            <span class="hide-text">Overall Status</span>
           </div>
           <div class="item">
             <span class="hide-text">Edit</span>
@@ -231,16 +231,14 @@
             </div>
           </div>
         </div>
+        <div no-content *ngIf="!goals.length&&!loaderService.status.value">
+          Data not available
+        </div>
       </div>
     </div>
   </div>
 </div>
 <!-- end of table -->
-<!-- No content -->
-<div no-content *ngIf="!goals.length&&!loaderService.status.value">
-  Data not available
-</div>
-<!-- end of no content -->
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">

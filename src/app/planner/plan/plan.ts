@@ -30,8 +30,8 @@ export class PlanComponent implements OnInit {
     this.getCycles();
   }
 
-  shareCycle(cycleId){
-    this.ss.cycle.next(cycleId);
+  shareCycle(cycle){
+    this.orgService.commonCycle = cycle.cycleId;
   }
 
   initForm() {
@@ -77,7 +77,14 @@ export class PlanComponent implements OnInit {
         $("#add-plan").hide();
         $('#add-btn').show();
         this.isUpdating = false;
-        this.getCycles();
+        // this.getCycles();
+        this.cycles.push(response);
+        this.orgService.getAllCycle().subscribe((response: any) => {
+          this.cycles = response;
+          this.loaderService.display(false);
+        }, (error: any) => {
+          this.loaderService.display(false);
+        });
         this.cycleForm = this.initForm();
       });
     else {
@@ -90,7 +97,12 @@ export class PlanComponent implements OnInit {
         $("#add-plan").hide();
         $('#add-btn').show();
         this.isUpdating = false;
-        this.getCycles();
+        this.orgService.getAllCycle().subscribe((response: any) => {
+          this.cycles = response;
+          this.loaderService.display(false);
+        }, (error: any) => {
+          this.loaderService.display(false);
+        });
         this.cycleForm = this.initForm();
       })
     }

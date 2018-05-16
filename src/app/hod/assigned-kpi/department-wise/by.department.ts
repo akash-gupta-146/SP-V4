@@ -78,18 +78,15 @@ export class ByDepartment implements OnInit{
     this.loaderService.display(true);
     if (this.departmentIds.length)
       this.utServ.getOpiByDepartmentId(this.defaultCycle.cycleId,this.departmentIds).subscribe((response: any) => {
-        if (response.status === 204) {
-          this.utServ.goals.next([]);
-        } else {
-          this.defaultCycle.departmentIds = this.departmentIds;
-          this.storage.cycle.next(this.defaultCycle);
-          this.utServ.goals.next(response);
-        }
+        this.utServ.goals.next(response);
+        this.defaultCycle.departmentIds = this.departmentIds;
+        this.storage.cycle.next(this.defaultCycle);
         this.loaderService.display(false);
       },(error:any)=>{
         this.loaderService.display(false);
                 
-      })
+      });
+
     //  this.router.navigateByUrl(this.role + "/home");
   }
 }

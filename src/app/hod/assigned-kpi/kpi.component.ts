@@ -14,6 +14,7 @@ declare let $: any;
   styleUrls: ['./../hod.component.scss']
 })
 export class KPIComponent extends Filters implements OnInit,OnDestroy{
+  departmentIds: any;
   selectedQuarter: string = "";
   defaultCycle: any;
   cycles: any[];
@@ -76,6 +77,16 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
             }
           });
           this.getResult(params['cycleId'], params['year']);
+        } else if(params['deptId']){
+          this.departmentIds = params['deptId'];
+          this.cycles.forEach(element => {
+            if (element.defaultCycle) {
+              this.storage.cycle.next(element);
+              this.defaultCycle = element;
+              // this.getOpiResultByDepartment(this.defaultCycle.cycleId, this.selectedYear,this.departmentIds);
+            }
+          });
+          this.loaderService.display(false);
         }
         else {
           this.cycles.forEach(element => {
@@ -146,7 +157,23 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       this.initFilters(response);
       this.loaderService.display(false);
       if(response.length)
-      this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
+        this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
+    },(error:any)=>{
+      this.loaderService.display(false);
+      alertify.error("Something went wrong");
+    });
+  }
+
+  getOpiResultByDepartment(cycleId: any, year: any,departmentIds:any) {
+    this.loaderService.display(true);
+    this.initiatives = this.activities = this.opis = [];
+    this.utServ.getOpiResultByDeptIds(cycleId, year,departmentIds).subscribe((response: any) => {
+      this.goals = response;
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
+      this.initFilters(response);
+      this.loaderService.display(false);
+      if(response.length)
+        this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
     },(error:any)=>{
       this.loaderService.display(false);
       alertify.error("Something went wrong");
@@ -212,6 +239,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   showLoader(){
+    
     this.loaderService.display(true);
   }
 }

@@ -44,6 +44,7 @@
             <div class="form-group">
               <label for="sel1">Goal:</label>
               <select class="form-control" id="sel1" formControlName="objectiveId" (ngModelChange)="getInitiative($event)">
+                <option *ngIf="!objectives.length" disabled>No Goal added in selected Plan</option>
                 <option *ngFor="let objective of objectives;let i=index;" [ngValue]="objective.goalId">{{i+1}}.{{objective.goal}}</option>
               </select>
             </div>
@@ -52,6 +53,7 @@
             <div class="form-group">
               <label for="sel1">Initiative:</label>
               <select class="form-control" id="sel1" formControlName="initiativeId">
+                <option *ngIf="!initiatives.length" disabled>No Initiative added to selected Goal</option>
                 <option *ngFor="let initiative of initiatives;let j=index;" [ngValue]="initiative.initiativeId">{{j+1}}.{{initiative.initiative}}</option>
               </select>
             </div>
@@ -169,7 +171,7 @@
                 <div class="item">
                   <div class="d-flex justify-content-center">
                     <div>
-                      <button class="btn btn-link" type="button" (click)="addActivity(goal,initiate)"[disabled]="goal.disable||initiate.disable">
+                      <button class="btn btn-link" type="button" (click)="addActivity(goal,initiate)"[disabled]="goal.disable||initiate.disable" (click)="shareCycle()">
                         <i class="fas fa-plus"></i>
                       </button>
                     </div>

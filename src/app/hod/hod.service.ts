@@ -107,6 +107,12 @@ export class HodService{
   .catch(this.handleError);
 }
 
+getDepartmentByOpiIdAndQuarter(opiId:any,quarter:any){
+  return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments?quarter="+quarter,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 getDepartmentByOpiId(opiId:any){
   return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments",this.parent)
   .map(this.extractData)
@@ -133,6 +139,12 @@ public getAllOpiResultByCycleId(cycleId:number){
 
 public getOpiResultByYear(cycleId:any,year:any){
   return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public getOpiResultByDeptIds(cycleId:any,year:any,deptId:any[]){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year+"&departmentIds="+deptId,this.parent)
   .map(this.extractData)
   .catch(this.handleError);
 }

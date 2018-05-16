@@ -12,6 +12,7 @@ import {of} from 'rxjs/observable/of';
 export class UniversityService {
 
   activeCycles: any[]=[];
+  commonCycle:number;
   private baseUrl: string = "";
   private allCycles:any[]=[];
   private child = new RequestOptions({
@@ -477,6 +478,12 @@ export class UniversityService {
 
   public getOpiResultByDepartment(cycleId:any,departmentId,year:any){
     return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false&departmentId="+departmentId,this.both)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getAssignedDepartmentWithData(opiId:any){
+    return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments?currentYear=false&currentQuarter=false")
     .map(this.extractData)
     .catch(this.handleError);
   }

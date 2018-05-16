@@ -7,7 +7,7 @@
     <div class="form-group dropdown-st">
       <label class="control-label">Plan Year</label>
       <select id="year" name="year" class="form-control" (ngModelChange)="getOpiResultByYear(defaultCycle.cycleId,$event)" [(ngModel)]="selectedYear">
-        <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y" [disabled]="isFuture(y)">{{y}}</option>
+        <option *ngFor="let y of defaultCycle.cycle;let y = index;" [value]="y">{{y}}</option>
       </select>
     </div>
   </div>
@@ -62,6 +62,7 @@
             <div class="form-group">
               <label>Goal</label>
               <select class="form-control" id="sel1" formControlName="objectiveId" [ngModel]="defaultCycle" (ngModelChange)="getInitiative($event)">
+                <option *ngIf="!objectives.length" disabled>No Goal added in selected Plan</option>
                 <option *ngFor="let objective of objectives;let i=index;" [value]="objective.goalId">{{i+1}}.{{objective.goal}}</option>
               </select>
             </div>
@@ -70,6 +71,7 @@
             <div class="form-group">
               <label>Initiative</label>
               <select class="form-control" id="sel1" formControlName="initiativeId" (ngModelChange)="getActivities($event)">
+                <option *ngIf="!initiatives.length" disabled>No initiative added to selected Goal</option>
                 <option *ngFor="let initiative of initiatives;let j=index;" [value]="initiative.initiativeId">{{j+1}}.{{initiative.initiative}}</option>
               </select>
             </div>
@@ -78,6 +80,7 @@
             <div class="form-group">
               <label>Activity</label>
               <select class="form-control" id="sel1" formControlName="activityId">
+                <option *ngIf="!activities.length" disabled>No activity added to selected Initiative</option>
                 <option *ngFor="let activity of activities;let k=index;" [value]="activity.activityId">{{k+1}}.{{activity.activity}}</option>
               </select>
             </div>
@@ -251,9 +254,9 @@
             <div>
               Assigned Departments
             </div>
-            <button class="btn btn-plain btn-link-secondary" data-toggle="modal" data-target="#filterModal" (click)="viewDepartmentFilter()">
+            <!-- <button class="btn btn-plain btn-link-secondary" data-toggle="modal" data-target="#filterModal" (click)="viewDepartmentFilter()">
               <i class="fas fa-filter"></i>
-            </button>
+            </button> -->
           </div>
         </div>
         <div class="item">
@@ -319,7 +322,7 @@
                         <ul class="list-group list-group-flush" *ngIf="msr.departmentInfo">
                           <li class="list-group-item" *ngFor="let dept of msr.departmentInfo;let d = index">{{dept.department}}</li>
                           <li class="list-group-item" *ngIf="msr.departmentInfo.length">
-                            <a class="text-primary link primary-link float-right" data-toggle="modal" data-target="#detailModal" (click)="selectedMeasure=msr;">View details</a>
+                            <a class="text-primary link primary-link float-right" data-toggle="modal" data-target="#detailModal" (click)="getDepartmentWithData(msr);">View details</a>
                           </li>
                           <li class="list-group-item" *ngIf="!msr.departmentInfo.length">
                             <button class="btn link mx-auto d-block" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;next=false;prev=true;checkAssignDept(msr.departmentInfo);"
@@ -431,8 +434,7 @@
                     </div>
                     <div>
                       <b>BaseLine:</b>
-                      <input type="text" class="form-control" formControlName="baseline" id="exampleInputAmount"
-                        min="0">
+                      <input type="text" class="form-control" formControlName="baseline" id="exampleInputAmount" min="0">
                     </div>
                   </div>
                   <ng-container formArrayName="opiAnnualTargets">
@@ -561,7 +563,10 @@
                   </button>
                 </div>
               </div>
-              <li *ngFor="let dept of selectedMeasure.departmentInfo;let arr=index;" class="modal-box my-3">
+              <li class="loader" [hidden]="!departmentLoader">
+                <div class="loadersmall"></div>
+              </li>
+              <li *ngFor="let dept of selectedMeasure.departmentInfo;let arr=index;" class="modal-box my-3" [hidden]="departmentLoader">
                 <div *ngIf="!dept.edit">
                   <div class="d-flex justify-content-end">
                     <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
@@ -682,16 +687,7 @@
 
               </li>
             </ul>
-
-
-
-
-
           </div>
-
-
-
-
         </div>
         <div class="modal-footer">
           <button data-dismiss="modal" class="btn-sp btn-clear" (click)="reset()">Close</button>

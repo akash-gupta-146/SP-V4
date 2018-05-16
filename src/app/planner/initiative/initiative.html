@@ -39,6 +39,7 @@
             <div class="form-group">
               <label for="sel1">Goal:</label>
               <select class="form-control" id="sel1" formControlName="goalId">
+                <option *ngIf="!objectives.length" disabled>No Goal added in selected Plan</option>
                 <option *ngFor="let goal of objectives;let i=index;" [value]="goal.goalId">{{i+1}}. {{goal.goal}}</option>
               </select>
             </div>
@@ -52,8 +53,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn-sp btn-primary" [disabled]="initiativeForm.invalid" data-toggle="tooltip" data-placement="auto"
-          title="Submit Form">
+        <button type="submit" class="btn-sp btn-primary" [disabled]="initiativeForm.invalid">
           Save
         </button>
         <button type="button" data-dismiss="modal" class="btn-sp btn-clear"  (click)="closeForm();">Close</button>
@@ -144,7 +144,7 @@
                     </button>
                   </td>
                   <td>
-                    <button class="btn btn-link" type="button" [routerLink]="['../../activities',{initiativeId:initiate.initiativeId,cycleId:defaultCycle.cycleId}]" [disabled]="goal.disable">
+                    <button class="btn btn-link" type="button" [routerLink]="['../../activities',{initiativeId:initiate.initiativeId,cycleId:defaultCycle.cycleId}]" [disabled]="goal.disable" (click)="shareCycle()">
                       <i class="fas fa-eye"></i>
                     </button>
                   </td>

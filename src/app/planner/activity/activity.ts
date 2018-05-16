@@ -25,9 +25,9 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   allCycle: any[] = [];
   activityForm: FormGroup;
   quarter: any[] = ["Q1", "Q2", "Q3", "Q4"];
-  objectives: any[];
+  objectives: any[]=[];
   objectiveIndex: any[] = [];
-  initiatives: any[];
+  initiatives: any[]=[];
   isUpdating: boolean = false;
   defaultCycle: any = {};
 
@@ -41,7 +41,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   ngOnInit() {
-    // this.commonService.breadcrumb.next(true);
+    this.commonService.breadcrumb.next(true);
     this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.activityForm = this.setActivity();
@@ -62,11 +62,16 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           if (element.cycleId === cycleId)
             this.defaultCycle = element;
         });
-      } else {
-        this.cycles.forEach((element: any) => {
-          if (element.defaultCycle)
-            this.defaultCycle = element;
-        });
+      } else{     
+        if(this.orgService.commonCycle){
+          this.defaultCycle = this.cycles.find((element:any)=>{
+            return this.orgService.commonCycle == element.cycleId;
+          })
+        }else {
+          this.defaultCycle = this.cycles.find((element:any)=>{
+            return element.defaultCycle;
+          });
+        }   
       }
       if (!flag) {
         this.getActivities(this.defaultCycle);
@@ -85,6 +90,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     });
   }
   getActivities(defaultCycle: any) {
+    this.orgService.commonCycle = this.defaultCycle.cycleId;    
     this.objectives = this.initiatives = [];
     this.getObjective(this.defaultCycle.cycleId);
     this.initiativeId = +this.route.snapshot.paramMap.get('initiativeId');
@@ -116,7 +122,6 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     this.goalsCopy = this.goals;
     this.initFilters(this.goals);
     this.loaderService.display(false);
-    console.log(this.defaultCycle);
     this.getActiveCycles();
   }
 
@@ -161,6 +166,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           alertify.notify("Saved successfully .,.");
           this.selectedInitiative.activities.push(response);
           this.activityForm.controls["activity"].reset();
+          this.getAllCycles();
         })
     } else {
       alertify.confirm("Are you sure you want to Update this Activity?", () => {
@@ -172,6 +178,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           alertify.success("Activity Successfully Updated!");
           this.isUpdating = false;
           this.activityForm = this.setActivity();
+          this.getAllCycles()
         });
       }).setHeader("Confirmation");
     }
@@ -231,6 +238,13 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   addNewActivity() {
+    if(this.initiativeId){
+      this.goals.forEach(goal => {
+        this.selectedInitiative = goal.initiatives.find(initiative=>{
+          return initiative.initiativeId == this.initiativeId;
+        });
+      });
+    }
     this.newActivity = true;
     this.enableFields();
     this.isUpdating = false;
@@ -306,5 +320,14 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     var promise = new Promise((resolve: any, reject: any) => { $(e)["0"].height = $(e)["0"].clientHeight; resolve(); });
     return promise;
   }
+  shareCycle(){
+    this.orgService.commonCycle = this.defaultCycle.cycleId;
+  }
 
+  getAllCycles() {
+    this.orgService.getAllCycle().subscribe((response: any) => {
+      this.cycles = response;
+    }, (error: any) => {
+    });
+  }
 }
