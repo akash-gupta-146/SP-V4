@@ -69,8 +69,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn-sp btn-primary" [disabled]="activityForm.invalid">
-          Save
+        <button type="submit" class="btn-sp btn-primary" [disabled]="activityForm.invalid" [disabled]="saving">
+          <span *ngIf="saving;else save">
+            <i class="fa fa-spinner fa-spin"></i> Saving
+          </span>
+          <ng-template #save>Save</ng-template>
         </button>
         <button type="button" data-dismiss="modal" class="btn-sp btn-clear" (click)="closeForm();">Close</button>
       </div>
@@ -80,11 +83,11 @@
 <!-- end of data fidder -->
 
 <!-- table -->
-<div class="container-fluid mt-3 animate slideInDown" *ngIf="goals.length&&!loaderService.status.value">
+<div class="container-fluid mt-3 animate slideInDown">
   <div class="card">
     <div class="table-responsive">
       <div class="grid">
-        <div class="grid-head" style="grid-template-columns:30% 30% 30% 10%" *ngIf="goalsCopy.length">
+        <div class="grid-head" style="grid-template-columns:30% 30% 25% 5% 10%" *ngIf="goalsCopy.length">
           <div class="item">
             <div class="d-flex justify-content-between align-items-center">
               <div>
@@ -131,6 +134,9 @@
             </div>
           </div>
           <div class="item">
+            Add
+          </div>
+          <div class="item">
             Edit
           </div>
         </div>
@@ -142,9 +148,15 @@
             <div class="item" [style.grid-row-end]="initiate.activities.length + 1">
               {{initiate.initiative}}
             </div>
-            <div class="grid-inner-body" style="grid-template-columns:75% 25%;" *ngFor="let activit of initiate.activities;let k=index;">
+            <div class="grid-inner-body" style="grid-template-columns:62.25% 37.75%;" *ngFor="let activit of initiate.activities;let k=index;">
               <div class="item">{{activit.activity}}</div>
-              <div class="grid-inner-body" style="grid-template-columns:100%;">
+              <div class="grid-inner-body" style="grid-template-columns:33.33%66.67;">
+                <div class="item">
+                  <button class="btn btn-link" type="button" (click)="addActivity(goal,initiate)" [disabled]="goal.disable||initiate.disable"
+                  (click)="shareCycle()">
+                  <i class="fas fa-plus"></i>
+                  </button>
+                </div>
                 <div class="item">
                   <div class="d-flex justify-content-center">
                     <div>
@@ -165,13 +177,14 @@
               </div>
             </div>
 
-            <div class="grid-inner-body" style="grid-template-columns:75% 25%;" *ngIf="!initiate.activities.length">
+            <div class="grid-inner-body" style="grid-template-columns:62.25% 37.75%;" *ngIf="!initiate.activities.length">
               <div class="item" style="color:red">No Activity Added Yet</div>
               <div class="grid-inner-body" style="grid-template-columns:100%;">
                 <div class="item">
-                  <div class="d-flex justify-content-center">
+                  <div class="d-flex">
                     <div>
-                      <button class="btn btn-link" type="button" (click)="addActivity(goal,initiate)"[disabled]="goal.disable||initiate.disable" (click)="shareCycle()">
+                      <button class="btn btn-link" type="button" (click)="addActivity(goal,initiate)" [disabled]="goal.disable||initiate.disable"
+                        (click)="shareCycle()">
                         <i class="fas fa-plus"></i>
                       </button>
                     </div>
@@ -179,22 +192,22 @@
                 </div>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- end of table -->
+  <!-- No content -->
+  <div no-content *ngIf="noData&&!newActivity">
+    Data not available
+  </div>
+  <!-- end of no content -->
 </div>
 
-<!-- end of table -->
-<!-- No content -->
-<div no-content *ngIf="!goals.length&&!loaderService.status.value&&!newActivity">
-  Data not available
-</div>
-<!-- end of no content -->
-
-
-<!-- add new -->
-<button fab class="btn btn-primary" id="add-btn" (click)="addNewActivity()" [disabled]="defaultCycle.disable">
-  <i class="fas fa-plus"></i>
-</button>
-<!-- end of add new -->
+  <!-- add new -->
+  <button fab class="btn btn-primary" id="add-btn" (click)="addNewActivity()" [disabled]="defaultCycle.disable">
+    <i class="fas fa-plus"></i>
+  </button>
+  <!-- end of add new -->

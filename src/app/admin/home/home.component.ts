@@ -19,7 +19,7 @@ export class HomeComponent{
       }
     }, err => {
       this.organisationInfo = {};
-      console.log(err);
+      
     });
   }
 }

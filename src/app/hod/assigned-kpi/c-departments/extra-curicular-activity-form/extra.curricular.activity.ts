@@ -51,19 +51,18 @@ export class ExtraCurricularActivity implements OnInit{
  }
 
  submitForm() {
-  console.log(this.extraCurricularActivityForm.value);
   if(!this.isUpdating)
   this.utServ.postQuarterWithExtraCurricularActivity(this.selectedQuarter.id, this.extraCurricularActivityForm.value).subscribe((response: any) => {
-   console.log(response);
+    this.selectedQuarter.extraCurricularActivities.push(response);
+    this.activityListView = true;   
   });
   else {
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.extraCurricularActivityForm.value).subscribe((response: any) => {
-     console.log(response);
      _.extend(this.selectedProgram,this.extraCurricularActivityForm.value);
      this.activityListView = true;
     }, (error: any) => {
-     console.log(error);
+     
     });
    }).setHeader("Confirmation");
   }
@@ -80,7 +79,7 @@ export class ExtraCurricularActivity implements OnInit{
    this.loaderService.setTransactionLoader(true);
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     this.loaderService.setTransactionLoader(false);
-    console.log(response);
+    
     quarter.disable = true;
     quarter.status = "locked";
    }, (error: any) => {

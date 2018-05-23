@@ -73,7 +73,6 @@ export class ActionPlan implements OnInit{
    this.utServ.updateActionStep(this.selectedStep.stepId, this.actionForm.value).subscribe((response: any) => {
     $('#myModal').modal('hide');
     alertify.success("Updated");
-    console.log(response);
    }, (error: any) => {
     alertify.error("Something went wrong");
    })
@@ -89,7 +88,6 @@ export class ActionPlan implements OnInit{
    var object = {
     employeeIds: ids
    }
-   console.log(object);
    this.utServ.assignActionStep(this.selectedStep.linkingId, object).subscribe((response: any) => {
     this.employeeIds.forEach(element => {
      this.selectedStep.employeeAssigned.push(element);

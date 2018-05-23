@@ -56,21 +56,31 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     this.loaderService.display(true);
       this.route.params.subscribe((params: any) => {  
-        if(params['quarter']){
-          this.utServ.getDepartmentByOpiIdAndQuarter(params['id'],params['quarter']).subscribe((response: any) => {
+        if(params['quarter']&&parseInt(params['deptId'])){
+          // this.utServ.getDepartmentByOpiIdAndQuarter(params['id'],params['quarter']).subscribe((response: any) => {
+          //   this.loaderService.display(false);
+          //   this.data = response[0];
+          //   this.getTemplateUrl(this.data.evidanceFormId);
+          //   this.getDepartments();
+          //   if(parseInt(params['deptId'])){
+          //     console.log("came");
+          //     const deptId = parseInt(this.deptId);
+          //     this.departmentInfo = this.data.departmentInfo.filter(element=>{
+          //       return element.departmentId === deptId;
+          //     });
+          //   }else{
+          //     this.departmentInfo = response[0].departmentInfo;
+          //     this.departmentsCopy = response[0].departmentInfo;
+          //   }
+          // });
+          this.utServ.getDepartmentByQuarterAndDepartment(params['id'],params['quarter'],params['deptId']).subscribe((response: any) => {
+            console.log(response);
             this.loaderService.display(false);
             this.data = response[0];
             this.getTemplateUrl(this.data.evidanceFormId);
             this.getDepartments();
-            if(params['deptId']){
-              const deptId = parseInt(this.deptId);
-              this.departmentInfo = this.data.departmentInfo.filter(element=>{
-                return element.departmentId === deptId;
-              })
-            }else{
               this.departmentInfo = response[0].departmentInfo;
               this.departmentsCopy = response[0].departmentInfo;
-            }
           });
         }else{
           this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
@@ -163,7 +173,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
       return;
     }
     this.utServ.getAnnualTargets(department.id).subscribe((response: any) => {
-      console.log(response);
+      
       department.allAnnualTargets = response;
       department.currentAnnualTargets = department.opiAnnualTargets;
       department.opiAnnualTargets = response;
@@ -196,7 +206,6 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     //   this.selectedInternshipFile = event.internshipDetails[0];
     // if (event.selectedForm)
     //   this.selectedForm = event.selectedForm;
-    // console.log(event.selectedForm);
   }
 
   getActionSteps(dept: any) {
@@ -219,7 +228,6 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   onSubmit(dept, array: any[]) {
     var actionSteps = [];
     actionSteps.push(this.actionForm.value);
-    console.log(this.actionForm.value);
     if (!dept.isEdit) {
       this.utServ.postActionSteps(dept.id, actionSteps).subscribe((response: any) => {
         response[0]['linked'] = true;
@@ -245,11 +253,9 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     if (data.feedback == 'true')
       alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approveActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
-          console.log(reponse);
           alertify.notify("Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
-          console.log(error);
           alertify.notify("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
@@ -257,10 +263,8 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     else
       alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.rejectActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
-          console.log(reponse);
           alertify.notify("Rejected");
         }, (error: any) => {
-          console.log(error);
           alertify.notify("Something went wrong");
         });
       }).setHeader("Confirmation");
@@ -342,7 +346,6 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   }
 
   setQuarterFeedback(data: any) {
-    console.log(data.feedback);
     if (data.feedback == 'true')
       alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
@@ -371,7 +374,6 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   }
 
   getTemplateUrl(evidanceFormId:number){
-    console.log("asdf");
     switch (evidanceFormId) {
       case 1:
         this.tempUrl = "https://www.googleapis.com/download/storage/v1/b/spv4/o/-8134238128587521432StudentInternship.xlsx?generation=1524033803030861&alt=media";
@@ -392,7 +394,6 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   }
 
   getEvidence(evidence:any){
-    console.log(evidence);
     this.selectedEvidence = evidence;
   }
 }

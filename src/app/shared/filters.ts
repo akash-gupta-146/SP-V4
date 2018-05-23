@@ -83,7 +83,6 @@ export class Filters {
     this.goals = this.goalsCopy.filter((element:any,index:number)=>{
       return (element.goalId === this.selectedGoal.goalId);
     });
-    console.log(this.goalsCopy1);
   }
   public selectInitiative(selectedInitiative){
     this.selectedInitiative = selectedInitiative;

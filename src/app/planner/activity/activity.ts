@@ -17,6 +17,8 @@ declare let $: any;
   styleUrls: ['./activity.css', './../planner.component.css']
 })
 export class ActivityComponent extends Filters implements OnInit, AfterViewInit {
+  saving: boolean;
+  noData: boolean = false;
   goalId: any;
   initiativeId: number;
   newActivity: boolean;
@@ -54,6 +56,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
   }
 
   getCycleWithChildren(flag: any) {
+    this.loaderService.display(true);
     const cycleId = +this.route.snapshot.paramMap.get('cycleId');
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
       this.cycles = response;
@@ -75,42 +78,47 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       }
       if (!flag) {
         this.getActivities(this.defaultCycle);
-        this.getObjective(this.defaultCycle.cycleId);
       }
     });
 
   }
 
   getObjective(cycleId: any) {
-    this.cycles.forEach(element => {
-      if (element.cycleId == cycleId) {
-        this.objectives = element.goals;
-        return;
-      }
+    this.objectives = this.goals.filter(element=>{
+      return !element.disable;
     });
+    // this.cycles.forEach(element => {
+    //   if (element.cycleId == cycleId) {
+    //     this.objectives = element.goals;
+    //     return;
+    //   }
+    // });
   }
   getActivities(defaultCycle: any) {
+    this.loaderService.display(true);
     this.orgService.commonCycle = this.defaultCycle.cycleId;    
     this.objectives = this.initiatives = [];
-    this.getObjective(this.defaultCycle.cycleId);
     this.initiativeId = +this.route.snapshot.paramMap.get('initiativeId');
-    // this.orgService.getActivitiesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-    //   this.goals = response;
-      // if (this.initiativeId) {
-      //   this.goals = this.goals.filter((element: any) => {
-      //     element.initiatives = element.initiatives.filter((initiative: any) => {
-      //       return initiative.initiativeId === this.initiativeId;
-      //     });
-      //     return (element.initiatives.length) ? true : false;
-      //   });
-      // }
-      // this.goalsCopy = this.goals;
-      // this.initFilters(this.goals);
-      // this.loaderService.display(false);
-    // }, (error: any) => {
-    //   this.loaderService.display(false);
-    // });
-    this.goals = this.defaultCycle.goals;
+
+    this.orgService.getCycleByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
+      this.goals = response.goals;
+      this.noData = (response.goals.length)?false:true; 
+      if (this.initiativeId) {
+        this.goals = this.goals.filter((element: any) => {
+          element.initiatives = element.initiatives.filter((initiative: any) => {
+            return initiative.initiativeId === this.initiativeId;
+          });
+          return (element.initiatives.length) ? true : false;
+        });
+      }
+      this.goalsCopy = JSON.parse(JSON.stringify(this.goals));
+      this.initFilters(this.goals);
+      this.getObjective(this.defaultCycle.cycleId);
+      this.loaderService.display(false);
+    }, (error: any) => {
+      this.loaderService.display(false);
+    });
+    // this.goals = this.defaultCycle.goals;
     if (this.initiativeId) {
       this.goals = this.goals.filter((element: any) => {
         element.initiatives = element.initiatives.filter((initiative: any) => {
@@ -159,26 +167,30 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     delete this.activityForm.value["cycleId"];
     delete this.activityForm.value["objectiveId"];
     if (!this.isUpdating) {
+      this.saving = true;
       this.orgService.saveActivity(this.activityForm.value)
         .subscribe(response => {
           $("#add-activity").hide();
           $('#add-btn').show();
+          this.saving = false;
           alertify.notify("Saved successfully .,.");
           this.selectedInitiative.activities.push(response);
           this.activityForm.controls["activity"].reset();
-          this.getAllCycles();
+          //this.getAllCycles();
         })
     } else {
       alertify.confirm("Are you sure you want to Update this Activity?", () => {
         delete this.activityForm.value["initiativeId"];
+        this.saving = true
         this.orgService.updateActivity(this.selectedActivity.activityId, this.activityForm.value).subscribe((response: any) => {
+          this.saving = false;
           $("#add-activity").hide();
           $('#add-btn').show();
           this.selectedActivity.activity = this.activityForm.controls['activity'].value;
           alertify.success("Activity Successfully Updated!");
           this.isUpdating = false;
           this.activityForm = this.setActivity();
-          this.getAllCycles()
+          // this.getAllCycles();
         });
       }).setHeader("Confirmation");
     }
@@ -276,7 +288,8 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     this.cycles.forEach((cycle: any) => {
       if (cycle.cycleId == this.defaultCycle.cycleId)
           this.defaultCycle = cycle;
-      cycle.goals.forEach(goal => {        
+      });
+      this.goals.forEach(goal => {        
         goal.initiatives.forEach((initiative: any) => {
           if (initiative.initiativeId === this.initiativeId) {
             this.goalId = goal.goalId;
@@ -284,7 +297,6 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           }
         });
       });
-    });
   }
 
   disable(event: any, activityId: any) {
@@ -299,7 +311,6 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
         })
       }, () => {
         event.target.checked = !event.target.checked;
-        alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
       alertify.confirm("Are you sure you want to activate this Activity ?", () => {
@@ -312,7 +323,6 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
         })
       }, () => {
         event.target.checked = !event.target.checked;
-        alertify.error("Action was not performed")
       }).setHeader("Confirmation");
   }
 
@@ -329,5 +339,9 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
       this.cycles = response;
     }, (error: any) => {
     });
+  }
+
+  ngOnDestroy(){
+    this.loaderService.display(false);
   }
 }

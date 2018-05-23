@@ -16,6 +16,8 @@ declare let $: any;
   styleUrls: ['./goal.css', './../planner.component.css']
 })
 export class GoalComponent extends Filters implements AfterViewInit, OnInit{
+  saving: boolean;
+  noData: boolean;
   newGoal: boolean;
   public goalForm: FormGroup;
   public isUpdating: boolean = false;
@@ -73,22 +75,17 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
   defaultCycle: any = {};
   getGoals(defaultCycle) {
-    console.log(this.orgService.commonCycle , this.defaultCycle.cycleId);
     this.orgService.commonCycle = this.defaultCycle.cycleId;
-    // this.orgService.getObjectivesByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-    //   this.loaderService.display(false);
-    //   if (response.status == 204) {
-    //     this.goals = [];
-    //     this.goalsCopy = [];
-    //   } else {
-    //     this.goals = response;
-    //     this.goalsCopy = response;
-    //   }
-    // }, (error: any) => {
-    //   this.loaderService.display(false);
-    // })
-    this.goals = this.defaultCycle.goals;
-    this.goalsCopy = this.defaultCycle.goals;
+    this.orgService.getCycleByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
+      this.noData = (response.goals.length)?false:true;
+      this.loaderService.display(false);      
+        this.goals = response.goals;
+        this.goalsCopy = JSON.parse(JSON.stringify(response.goals));
+    }, (error: any) => {
+      this.loaderService.display(false);
+    });
+    // this.goals = this.defaultCycle.goals;
+    // this.goalsCopy = this.defaultCycle.goals;
     this.loaderService.display(false);
   }
 
@@ -103,14 +100,16 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
   onSubmit() {
     if (!this.isUpdating) {
+      this.saving = true;
       this.orgService.addObjective(this.goalForm.value).subscribe((response: any) => {
-        alertify.success('You have successfully added a new Goal.', 'success', 5, function () { console.log('dismissed'); });
+        this.saving = false;        
+        alertify.success('You have successfully added a new Goal.', 'success', 5, function () {  });
         $("#add-plan").hide();
         $('#add-btn').show();
         this.goalForm.controls["goal"].reset();
         this.goals.push(response);
         this.getGoals(this.defaultCycle);
-        this.getAllCycles();
+        //this.getAllCycles();
       }, (error: any) => {
         alertify.error("Something went wrong..");
       });
@@ -118,13 +117,15 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
     if (this.isUpdating) {
       alertify.confirm("Are you sure you want to update current Goal ?", () => {
+        this.saving = true;
         this.orgService.updateObjective(this.selectedObjective.goalId, this.goalForm.value).subscribe((res: any) => {
-          alertify.success('Goal Successfully Updated.', 'success', 5, function () { console.log('dismissed'); });
+          this.saving = false;
+          alertify.success('Goal Successfully Updated.', 'success', 5, function () { });
           this.goalForm.value['goalId'] = this.selectedObjective.goalId;
           this.goalForm.value['disable'] = false;
           _.extend(this.selectedObjective,this.goalForm.value);
           this.getGoals(this.defaultCycle);
-          this.getAllCycles();          
+          //this.getAllCycles();          
           this.isUpdating = false;
           $("#add-plan").hide();
           $('#add-btn').show();
@@ -206,5 +207,9 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
 
   shareCycle(){
     this.orgService.commonCycle = this.defaultCycle.cycleId;
+  }
+
+  ngOnDestroy(){
+    this.loaderService.display(false);
   }
 }

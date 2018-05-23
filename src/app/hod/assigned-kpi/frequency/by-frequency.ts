@@ -28,7 +28,6 @@ export class ByFrequency implements AfterViewInit {
 
   ngOnInit() {
     this.storage.cycle.asObservable().subscribe((element:any)=>{
-      console.log(element);
       this.cycle = element;
     })
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
@@ -54,6 +53,5 @@ export class ByFrequency implements AfterViewInit {
   }
 
   get(){
-    console.log(this.cycle);
   }
 }

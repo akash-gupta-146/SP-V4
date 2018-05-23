@@ -1,15 +1,15 @@
 <!-- data fidder -->
 <div class="container card data-fidder animate slideInDown" style="display:none" id="add-plan">
-<div  class="small-fidder">
-  <div class="modal-header">
-    <h5>
+  <div class="small-fidder">
+    <div class="modal-header">
+      <h5>
         ADD STRATEGIC PLAN
-    </h5>
-    <button type="button" class="close"  (click)="reset()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <form [formGroup]="cycleForm" (submit)="onSubmit()">
+      </h5>
+      <button type="button" class="close" (click)="reset()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="cycleForm" (submit)="onSubmit()">
       <div class="modal-body">
         <div class="row">
           <div class="col-lg-6 col-sm-12">
@@ -42,7 +42,7 @@
                   </select>
                 </div>
               </div>
-              
+
             </div>
           </div>
           <div class="col-lg-6 col-sm-12">
@@ -54,64 +54,69 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn-sp btn-primary" [disabled]="cycleForm.invalid">
-          Save
+        <button type="submit" class="btn-sp btn-primary buttonload" [disabled]="cycleForm.invalid">
+          <span *ngIf="saving;else save">
+            <i class="fa fa-spinner fa-spin"></i> Saving</span>
+          <ng-template #save>Save</ng-template>
         </button>
-        <button type="button" data-dismiss="modal" class="btn-sp btn-clear"  (click)="reset()">Close</button>
+        <button type="button" data-dismiss="modal" class="btn-sp btn-clear" (click)="reset()">Close</button>
       </div>
     </form>
-</div>
+  </div>
 </div>
 <!-- end of data fidder -->
 
-<div class="container mt-3 animate slideInDown" >
+<div class="container mt-3 animate slideInDown">
   <div class="card">
-<div class="table-responsive">
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th class="align-middle">Title</th>
-          <th class="align-middle">From Year</th>
-          <th>End Year</th>
-          <th class="align-middle">Description</th>
-          <th class="align-middle">Active</th>
-          <th class="align-middle">Default</th>
-          <th class="align-middle">Delete</th>
-          <th class="align-middle">Edit</th>
-          <th class="align-middle">Goals...</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let c of cycles;let y = index;" [class.active]="c.defaultCycle" >
-          <td>{{c.title}}</td>
-          <td>{{c.startYear}}</td>
-          <td>{{c.endYear}}</td>
-          <td><span>{{c.description}}</span></td>
-          <td>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th class="align-middle">Title</th>
+            <th class="align-middle">From Year</th>
+            <th>End Year</th>
+            <th class="align-middle">Description</th>
+            <th class="align-middle">Active</th>
+            <th class="align-middle">Default</th>
+            <th class="align-middle">Delete</th>
+            <th class="align-middle">Edit</th>
+            <th class="align-middle">Goals...</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of cycles;let y = index;" [class.active]="c.defaultCycle">
+            <td>{{c.title}}</td>
+            <td>{{c.startYear}}</td>
+            <td>{{c.endYear}}</td>
+            <td>
+              <span>{{c.description}}</span>
+            </td>
+            <td>
               <input type="checkbox" [checked]="!c.disable" (change)="changeStatus($event,c)">
-          </td>
-          <td>
+            </td>
+            <td>
               <input type="checkbox" [checked]="c.defaultCycle" [disabled]="c.disable" (change)="defaultCycle($event,c.cycleId)">
-          </td>
-          <td>
-            <button class="btn btn-link" (click)="deleteCycle(c)" type="button" [disabled]="c.disable">
+            </td>
+            <td>
+              <button class="btn btn-link" (click)="deleteCycle(c)" type="button" [disabled]="c.disable">
                 <i class="fas fa-trash-alt"></i>
-            </button>
-          </td>
-          <td>
-            <button class="btn btn-link" type="button" (click)="editCycle(c)" [disabled]="c.disable">
-             <i class="fas fa-edit"></i>
-            </button>
-          </td>
-          <td>
-            <button class="btn btn-link" type="button"  [routerLink]="['../../strategic-goal',{cycleId:c.cycleId}]" [disabled]="c.disable" (click)="shareCycle(c)">
-             <i class="fas fa-eye"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-link" type="button" (click)="editCycle(c)" [disabled]="c.disable">
+                <i class="fas fa-edit"></i>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-link" type="button" [routerLink]="['../../strategic-goal',{cycleId:c.cycleId}]" [disabled]="c.disable"
+                (click)="shareCycle(c)">
+                <i class="fas fa-eye"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -184,6 +189,6 @@
 
 <!-- add new -->
 <div fab (click)="addNewPlan()" id="add-btn" class="btn btn-primary">
-    <i class="fas fa-plus"></i>
+  <i class="fas fa-plus"></i>
 </div>
 <!-- end of add new -->

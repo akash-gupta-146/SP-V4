@@ -41,7 +41,7 @@ export class DeparmtmentComponent {
       }
     }, err => {
       this.university = [];
-      console.log(err);
+      
     });
 
     this.newDepartment = this.formBuilder.group({
@@ -59,9 +59,9 @@ export class DeparmtmentComponent {
       this.departments.push(res);
       $('#deptModal').modal('show');
       this.newDepartment.reset();
-      console.log(res);
+      
     }, err => {
-      console.log(err);
+      
     })
   }
 }

@@ -14,7 +14,10 @@ declare let $: any;
   styleUrls: ['./../hod.component.scss']
 })
 export class KPIComponent extends Filters implements OnInit,OnDestroy{
-  departmentIds: any;
+  
+  departmentModel: number;
+  departments: any[];
+  departmentIds: any[] = [];
   selectedQuarter: string = "";
   defaultCycle: any;
   cycles: any[];
@@ -37,14 +40,19 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   ngOnInit(){
-    this.role = this.storage.getData('user_roleInfo')[0].role;    
+    this.role = this.storage.getData('user_roleInfo')[0].role; 
+    this.departmentModel = 0;  
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
       this.goals = val;
     });  
     this.storage.cycle.asObservable().subscribe(cycle=>{
       this.defaultCycle = cycle;
-    })  
-    this.getCycles();
+    });
+    this.utServ.getCurrentQuarter().subscribe((quarter:any)=>{
+      this.selectedQuarter = quarter.quarter;
+      this.getDepartments();
+      this.getCycles();
+    }); 
   }
 
   getFrequencies() {
@@ -58,46 +66,65 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.utServ.getCycles().subscribe((response: any) => {
       this.cycles = response;
       this.route.params.subscribe((params: any) => {
-        if (params['cycleId'] && params['year'] && params['quarter']) {
+        if(params['cycleId'] && params['year'] && params['quarter'] && params['deptId']){
+          this.cycles.forEach(element => {
+            if (element.cycleId == params['cycleId']) {
+              this.defaultCycle = element;
+              this.departmentIds = params['deptId'].toString().split(",");
+
+
+              
+              // if(typeof(params['deptId'])=='string'){
+                // this.departmentIds = params['deptId'].split(",");
+              // }else{
+              //   this.departmentIds = params['deptId'];
+              // }            
+              this.departmentModel = parseInt(params['deptId']);
+              this.selectedYear = params['year'];
+              this.selectedQuarter = params['quarter'];
+              this.storage.cycle.next(element);
+              if(this.departmentIds.length)
+                this.getOpiResultByDepartmentAndAll();
+              else
+                this.getResultsByComination();
+            }
+          });
+        }else if (params['cycleId'] && params['year'] && params['quarter']) {
           this.cycles.forEach(element => {
             if (element.cycleId == params['cycleId']) {
               this.defaultCycle = element;
               this.selectedYear = params['year'];
               this.selectedQuarter = params['quarter'];
               this.storage.cycle.next(element);
+              if(this.departmentIds.length)
+                this.getOpiResultByDepartmentAndAll();
+              else
+                this.getResultsByComination();
             }
           });
-          this.getOpiResultByQuarter(params['quarter']);
         } else if (params['cycleId'] && params['year']) {
           this.cycles.forEach(element => {
             if (element.cycleId == params['cycleId']) {
               this.defaultCycle = element;
               this.selectedYear = params['year'];
               this.storage.cycle.next(element);
+              if(this.departmentModel)
+                this.getOpiResultByDepartmentAndAll();
+              else
+                this.getResultsByComination();
             }
           });
-          this.getResult(params['cycleId'], params['year']);
-        } else if(params['deptId']){
-          this.departmentIds = params['deptId'];
+        }else{
           this.cycles.forEach(element => {
             if (element.defaultCycle) {
               this.storage.cycle.next(element);
               this.defaultCycle = element;
-              // this.getOpiResultByDepartment(this.defaultCycle.cycleId, this.selectedYear,this.departmentIds);
+                this.getResultsByComination();
+                this.departmentIds = [];
+                this.getDepartments();
             }
           });
-          this.loaderService.display(false);
-        }
-        else {
-          this.cycles.forEach(element => {
-            if (element.defaultCycle) {
-              this.storage.cycle.next(element);
-              this.defaultCycle = element;
-              this.getResult(this.defaultCycle.cycleId, this.selectedYear);
-            }
-          });
-        }
-        
+        }        
       });
     }, (error: any) => {
       this.loaderService.display(false);
@@ -105,83 +132,111 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     });
   }
 
-  getResult(cycleId,year){
-    this.getOpiResultByYear(cycleId,year);
-  }
-
-  getOpi(): any {
-    this.initiatives = this.activities = this.opis = [];
-    this.utServ.getOpiResult().subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-        this.goalsCopy = JSON.parse(JSON.stringify(response));
-        // this.utServ.goals.next(response);
-        this.initFilters(response);
-      }
-    });
-  }
-
-  getOpiResult(cycle: any) {
-    console.log(cycle);
-    this.storage.cycle.next(cycle);
-    this.loaderService.display(true);
-    this.initiatives = this.activities = this.opis = [];
-    this.utServ.getOpiResultByCycleId(cycle.cycleId).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-        this.goalsCopy = JSON.parse(JSON.stringify(response));
-        // this.utServ.goals.next(response);
-        this.initFilters(response);
-      }
+  getResultsByComination(){
+    this.utServ.getOpiResultByCombination(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter).subscribe(response=>{
       this.loaderService.display(false);
-    },(error:any)=>{
-      this.loaderService.display(false);
-      alertify.error("Something went wrong");
-    });
-  }
-
-  getOpiResultByYear(cycleId: any, year: any) {
-    this.loaderService.display(true);
-    // this.selectedQuarter = "q1";
-    this.initiatives = this.activities = this.opis = [];
-    this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
-      // this.utServ.goals.next(response);
+      this.loaderService.status.next(false);            
       this.initFilters(response);
-      this.loaderService.display(false);
-      if(response.length)
-        this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
     },(error:any)=>{
       this.loaderService.display(false);
-      alertify.error("Something went wrong");
+      alertify.error("Something went wrong..");
     });
   }
 
-  getOpiResultByDepartment(cycleId: any, year: any,departmentIds:any) {
-    this.loaderService.display(true);
-    this.initiatives = this.activities = this.opis = [];
-    this.utServ.getOpiResultByDeptIds(cycleId, year,departmentIds).subscribe((response: any) => {
+  getOpiResultByDepartmentAndAll(){
+    this.utServ.getOpiResultByDepartment(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds).subscribe(response=>{
+      this.loaderService.display(false);
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
+      this.loaderService.status.next(false);            
       this.initFilters(response);
-      this.loaderService.display(false);
-      if(response.length)
-        this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
     },(error:any)=>{
       this.loaderService.display(false);
-      alertify.error("Something went wrong");
+      alertify.error("Something went wrong..");
     });
   }
 
-  onCycleChange(cycleId: any, year: any,quarter:any){
-    this.router.navigate(['/coordinator',{cycleId:cycleId,year:year,quarter:quarter}]);
+  // getResult(cycleId,year){
+  //   this.getOpiResultByYear(cycleId,year);
+  // }
+
+  // getOpi(): any {
+  //   this.initiatives = this.activities = this.opis = [];
+  //   this.utServ.getOpiResult().subscribe((response: any) => {
+  //     if (response.status == 204) {
+  //       this.goals = [];
+  //       this.goalsCopy = []
+  //     } else {
+  //       this.goals = response;
+  //       this.goalsCopy = JSON.parse(JSON.stringify(response));
+  //       // this.utServ.goals.next(response);
+  //       this.initFilters(response);
+  //     }
+  //   });
+  // }
+
+  // getOpiResult(cycle: any) {
+  //   this.storage.cycle.next(cycle);
+  //   this.loaderService.display(true);
+  //   this.initiatives = this.activities = this.opis = [];
+  //   this.utServ.getOpiResultByCycleId(cycle.cycleId).subscribe((response: any) => {
+  //     if (response.status == 204) {
+  //       this.goals = [];
+  //       this.goalsCopy = []
+  //     } else {
+  //       this.goals = response;
+  //       this.goalsCopy = JSON.parse(JSON.stringify(response));
+  //       this.initFilters(response);
+  //     }
+  //     this.loaderService.display(false);
+  //   },(error:any)=>{
+  //     this.loaderService.display(false);
+  //     alertify.error("Something went wrong");
+  //   });
+  // }
+
+  // getOpiResultByYear(cycleId: any, year: any) {
+  //   this.loaderService.display(true);
+  //   this.initiatives = this.activities = this.opis = [];
+  //   this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
+  //     this.goals = response;
+  //     this.goalsCopy = JSON.parse(JSON.stringify(response));
+  //     this.initFilters(response);
+  //     this.loaderService.display(false);
+  //     if(response.length)
+  //       this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
+  //   },(error:any)=>{
+  //     this.loaderService.display(false);
+  //     alertify.error("Something went wrong");
+  //   });
+  // }
+
+  // getOpiResultByDepartment(cycleId: any, year: any,departmentIds:any) {
+  //   this.loaderService.display(true);
+  //   this.initiatives = this.activities = this.opis = [];
+  //   this.utServ.getOpiResultByDeptIds(cycleId, year,departmentIds).subscribe((response: any) => {
+  //     this.goals = response;
+  //     this.goalsCopy = JSON.parse(JSON.stringify(response));
+  //     this.initFilters(response);
+  //     this.loaderService.display(false);
+  //     if(response.length)
+  //       this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
+  //   },(error:any)=>{
+  //     this.loaderService.display(false);
+  //     alertify.error("Something went wrong");
+  //   });
+  // }
+
+  onCycleChange(cycleId: any, year: any,quarter:any,deptId:any){
+    console.log(this.departmentIds);
+    if(this.departmentIds.length){
+      console.log("came");
+      this.router.navigate(['./',{cycleId:cycleId,year:year,quarter:quarter,deptId:this.departmentIds.slice(0)}]);
+    } else
+    this.router.navigate(['./',{cycleId:cycleId,year:year,quarter:quarter}]);
+
   }
 
   setQuarterFeedback(data: any) {
@@ -224,9 +279,12 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
 
   reloadOpis(){
     this.selectedYear = new Date().getFullYear();
+    this.departmentModel = 0;
+    this.departmentIds = [];
     // this.selectedQuarter = "q1";
     // this.getOpiResultByQuarter(this.selectedQuarter);
     // this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
+    this.getResultsByComination();
     this.router.navigate(["/coordinator"]);
   }
 
@@ -234,12 +292,85 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     return (y > new Date().getFullYear());
   }
 
+  getDepartments() {
+    this.utServ.getDepartments().subscribe((res: any) => {
+      this.departments = res;
+      this.checkDepartment(this.departments);
+    });
+  }
+
+  department(event: any) {
+    this.travers(event, event.my);
+    // this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);
+  }
+
+  checkDepartment(departments:any[]): any {
+    if(!departments.length)
+      return;
+    departments.forEach(department => {
+      this.departmentIds.forEach(id => {
+        if(id == department.departmentId)
+          department.my = true;
+      });
+      this.checkDepartment(department.reporteeDepartments);
+    });
+  }
+
+  travers(department: any, checked: boolean) {
+    if (!department) {
+      return;
+    } else {
+      if (department.reporteeDepartments && department.reporteeDepartments.length) {
+        if (checked)
+          department.my = true;
+        else
+          department.my = false;
+        department.reporteeDepartments.forEach((element: any) => {
+          this.travers(element, checked);
+        });
+      } else {
+        if (checked) {
+          if (!department.disabled) {
+            department.my = true;
+            if (this.departmentIds.indexOf(''+department.departmentId) === -1)
+              this.departmentIds.push(''+department.departmentId);
+          }
+        } else {
+          department.my = false;
+          this.departmentIds.splice(this.departmentIds.indexOf(''+department.departmentId), 1);
+        }
+      }
+    }
+  }
+
+  viewDepartment(departmentId: any) {
+    this.departmentIds = [];
+    this.departmentIds.push(departmentId);
+    // this.goBack();
+    this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);
+  }
+
+  goBack() {
+    this.loaderService.display(true);
+    if (this.departmentIds.length)
+      this.utServ.getOpiByDepartmentId(this.defaultCycle.cycleId,this.departmentIds).subscribe((response: any) => {
+        this.utServ.goals.next(response);
+        this.defaultCycle.departmentIds = this.departmentIds;
+        this.storage.cycle.next(this.defaultCycle);
+        this.loaderService.display(false);
+      },(error:any)=>{
+        this.loaderService.display(false);
+                
+      });
+
+    //  this.router.navigateByUrl(this.role + "/home");
+  }
+
   ngOnDestroy(){
     this.loaderService.display(false);
   }
 
-  showLoader(){
-    
+  showLoader(){    
     this.loaderService.display(true);
   }
 }

@@ -40,7 +40,7 @@ export class EmployeeComponent {
    }
   }, err => {
    this.roles = [];
-   console.log(err);
+   
   });
   this.newEmployee = this.initForm();
  }
@@ -64,7 +64,6 @@ export class EmployeeComponent {
   });
  }
  onSubmit() {
-  console.log(this.newEmployee.value);
   this.adminService.addEmployee(this.newEmployee.value).subscribe(response => {
    alertify.success("Employee Added");
    this.employees.push(response);

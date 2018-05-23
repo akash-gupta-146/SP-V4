@@ -54,7 +54,6 @@ export class ExchangeProgram implements OnInit{
  }
 
  submitForm(){
-  console.log(this.exchangeProgramForm.value);
   if(!this.isUpdating) 
    this.utServ.postQuarterWithExchangeProgram(this.selectedQuarter.id,this.exchangeProgramForm.value).subscribe((response:any)=>{
     this.selectedQuarter.exchangePrograms.push(response.exchangePrograms[0]);
@@ -64,11 +63,9 @@ export class ExchangeProgram implements OnInit{
   else {
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.exchangeProgramForm.value).subscribe((response: any) => {
-     console.log(response);
      _.extend(this.selectedProgram, this.exchangeProgramForm.value);
      this.programListView = true;
     }, (error: any) => {
-     console.log(error);
     });
    }).setHeader("Confirmation");
   }
@@ -85,7 +82,7 @@ export class ExchangeProgram implements OnInit{
    this.loaderService.setTransactionLoader(true);
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     this.loaderService.setTransactionLoader(false);
-    console.log(response);
+    
     quarter.disable = true;
     quarter.status = "locked";
    }, (error: any) => {

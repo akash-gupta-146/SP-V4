@@ -56,21 +56,21 @@ export class ResearchConsultancy implements OnInit{
  }
 
  submitForm(){
-  console.log(this.researchConsultancyForm.value);
   if(!this.isUpdating)
    this.utServ.postQuarterWithResearchConsultancy(this.selectedQuarter.id,this.researchConsultancyForm.value).subscribe((response:any)=>{
     this.selectedQuarter.researchConsultancies.push(response.researchConsultancies[0]);
-    this.selectedQuarter.currentCost += response.currentCost;
-    $("#myModal"+this.d).modal('hide');
+    // this.selectedQuarter.currentCost += response.currentCost;
+    this.programListView = true;
+    // $("#myModal"+this.d).modal('hide');
    });
   else{
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.researchConsultancyForm.value).subscribe((response: any) => {
-     console.log(response);
+     
      _.extend(this.selectedProgram,this.researchConsultancyForm.value);
      this.programListView = true;
     }, (error: any) => {
-     console.log(error);
+     
     });
    }).setHeader("Confirmation");
   }
@@ -87,7 +87,7 @@ export class ResearchConsultancy implements OnInit{
    this.loaderService.setTransactionLoader(true);
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     this.loaderService.setTransactionLoader(false);
-    console.log(response);
+    
     quarter.disable = true;
     quarter.status = "locked";
    }, (error: any) => {

@@ -44,7 +44,6 @@ export class InitialSetup implements OnInit {
 
   onSubmit() {
     this.utiService.saveInitialSetup(this.setupForm.value).subscribe((response: any) => {
-      console.log("success", response);
     })
   }
   inItValue() {

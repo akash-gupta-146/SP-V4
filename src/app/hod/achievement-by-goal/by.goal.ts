@@ -53,7 +53,6 @@ export class ByGoal implements OnInit {
       } else {
         this.goals = response;
         this.goalsCopy = response;
-        console.log(response);
       }
       this.loaderService.display(false);
     });

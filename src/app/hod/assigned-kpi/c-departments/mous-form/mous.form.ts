@@ -134,7 +134,7 @@ export class MousForm implements OnInit{
 lockQuarterResult(quarter: any) {
   alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
-    console.log(response);
+    
     quarter.disable = true;
     quarter.status = "locked";
     alertify.success("Successfully Locked");

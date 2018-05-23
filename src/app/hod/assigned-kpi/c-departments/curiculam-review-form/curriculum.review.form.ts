@@ -50,21 +50,19 @@ export class CurriculumReviewForm implements OnInit{
  }
 
  submitForm(){
-  console.log(this.curriculumReviewForm.value);
   if(!this.isUpdating)  
    this.utServ.postQuarterWithCurriculumReview(this.selectedQuarter.id,this.curriculumReviewForm.value).subscribe((response:any)=>{
     this.selectedQuarter.curriculamReview.push(response.curriculamReview[0]);
-    this.selectedQuarter.currentCost += response.currentCost;
-    $("#myModal"+this.d).modal('hide');
+    // this.selectedQuarter.currentCost += response.currentCost;
+    this.programListView = true;
+    // $("#myModal"+this.d).modal('hide');
    });
   else {
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.curriculumReviewForm.value).subscribe((response: any) => {
-     console.log(response);
      _.extend(this.selectedProgram,this.curriculumReviewForm.value);
      this.programListView = true;
     }, (error: any) => {
-     console.log(error);
     });
    }).setHeader("Confirmation");
   } 
@@ -81,7 +79,6 @@ export class CurriculumReviewForm implements OnInit{
    this.loaderService.setTransactionLoader(true);
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     this.loaderService.setTransactionLoader(false);
-    console.log(response);
     quarter.disable = true;
     quarter.status = "locked";
    }, (error: any) => {

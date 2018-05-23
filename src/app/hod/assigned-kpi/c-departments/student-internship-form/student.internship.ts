@@ -95,7 +95,6 @@ export class StudentInternshipForm implements OnInit {
   }
 
   getFile(lev: any, event) {
-    console.log(event);
     lev.file = event.target.files["0"];
   }
 
@@ -166,7 +165,7 @@ export class StudentInternshipForm implements OnInit {
       this.loaderService.setTransactionLoader(true);
       this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
         this.loaderService.setTransactionLoader(false);
-        console.log(response);
+        
         quarter.disable = true;
         quarter.status = "locked";
       }, (error: any) => {

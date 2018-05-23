@@ -60,7 +60,7 @@ export class WithoutEvidenceForm implements OnInit{
     quarter.isUpdating = false;
     this.loaderService.setTransactionLoader(false);
     alertify.success("Updated");
-    console.log(response);
+    
    }, (error: any) => {
     this.loaderService.setTransactionLoader(false);
     alertify.error("Something went wrong..");
@@ -74,7 +74,7 @@ export class WithoutEvidenceForm implements OnInit{
    this.loaderService.setTransactionLoader(true);
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     this.loaderService.setTransactionLoader(false);
-    console.log(response);
+    
     quarter.disable = true;
     quarter.status = "locked";
    }, (error: any) => {

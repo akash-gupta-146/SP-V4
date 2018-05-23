@@ -59,7 +59,6 @@ export class ActionPlanByDepartment implements OnInit{
    this.utServ.updateActionStep(this.selectedStep.stepId, this.actionForm.value).subscribe((response: any) => {
     $('#myModal').modal('hide');
     alertify.success("Updated");
-    console.log(response);
    }, (error: any) => {
     alertify.error("Something went wrong");
    })

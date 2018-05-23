@@ -16,6 +16,8 @@ declare let $: any;
   styleUrls: ['./initiative.css', './../planner.component.css']
 })
 export class InitiativeComponent extends Filters implements OnInit{
+  saving: boolean;
+  noData: boolean;
   newInitiative: boolean;
   allCycle: any[];
   activeCycle: any[];
@@ -33,17 +35,16 @@ export class InitiativeComponent extends Filters implements OnInit{
     super();   
     this.loaderService.display(true);    
   }
-
+  
   ngOnInit(){
     this.commonService.breadcrumb.next(true);
-    this.loaderService.display(true);
     this.getCycleWithChildren(false);
     this.initiativeForm = this.initForm();
   }
-
+  
   getCycleWithChildren(flag: any) {
+    this.loaderService.display(true);    
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
-      this.loaderService.display(false);
       this.cycles = response;
       const cycleId = +this.route.snapshot.paramMap.get('cycleId');
       if(cycleId){
@@ -64,7 +65,6 @@ export class InitiativeComponent extends Filters implements OnInit{
         }   
         this.getInitiative(this.defaultCycle);
       }      
-      this.getObjective(this.defaultCycle.cycleId);
     });
   }
 
@@ -76,47 +76,45 @@ export class InitiativeComponent extends Filters implements OnInit{
   }
 
   getObjective(cycleId: any) {
-    this.cycles.forEach(element => {
-      if (element.cycleId == cycleId) {
-        this.objectives = element.goals;
-        return;
-      }
-    });
+    this.objectives = this.goals;
+    console.log("adsf",this.objectives);
+    // this.cycles.forEach(element => {
+    //   if (element.cycleId == cycleId) {
+    //     this.objectives = element.goals;
+    //     return;
+    //   }
+    // });
   }
 
   defaultCycle: any = {};
   getInitiative(defaultCycle) {
+    this.loaderService.display(true);        
     this.orgService.commonCycle = defaultCycle.cycleId;    
     this.objectives = [];
-    this.getObjective(this.defaultCycle.cycleId);
     this.goalId = +this.route.snapshot.paramMap.get('goalId');
-    // this.orgService.getInitiativesByCycleId(defaultCycle.cycleId).subscribe((response: any) => {
-    //   if (response.status == 204) {
-    //     this.goals = [];
-    //     this.goalsCopy = [];
-    //   } else {
-    //     if(this.goalId){
-    //       this.goals = response.filter((element:any)=>{
-    //         return (element.goalId === this.goalId);
-    //       });
-    //     }
-    //     else 
-    //       this.goals = response;
-    //     this.goalsCopy = this.goals;
-    //     this.initFilters(this.goals);
-    //   }
-    //   this.loaderService.display(false);
-    // }, (error: any) => {
-    //   this.loaderService.display(false);
-    // });
-    this.goals = this.defaultCycle.goals;
+    this.orgService.getCycleByCycleId(defaultCycle.cycleId).subscribe((response: any) => {
+      if(this.goalId){
+        this.goals = response.goals.filter((element:any)=>{
+          return (element.goalId === this.goalId);
+        });
+      }
+      else 
+      this.goals = response.goals;
+      this.noData = (response.goals.length)?false:true;
+      this.goalsCopy = JSON.parse(JSON.stringify(this.goals));
+      this.initFilters(this.goals);
+      this.loaderService.display(false);
+      this.getObjective(this.defaultCycle.cycleId);
+    }, (error: any) => {
+      this.loaderService.display(false);
+    });
+    // this.goals = this.defaultCycle.goals;
     if(this.goalId){
       this.goals = this.goals.filter((element:any)=>{
         return (element.goalId === this.goalId);
       });
     }
 
-    console.log("came",this.goals);
     this.goalsCopy = this.goals;
     this.initFilters(this.goals);
     this.loaderService.display(false);
@@ -133,30 +131,33 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   submitInitiative() {
     delete this.initiativeForm.value["cycleId"];
-    if (!this.isUpdating)
+    if (!this.isUpdating){
+      this.saving = true;
       this.orgService.addInitiative(this.initiativeForm.value).subscribe((res: any) => {
+        this.saving = false;
         // this.getInitiative(this.defaultCycle);
         $("#add-initiative").hide();
         alertify.notify("Initiative Successfully Added.");
         $('#add-btn').show();
         this.initiativeForm.controls["initiative"].reset();
         this.selectedGoal.initiatives.push(res);
-        this.getAllCycles();
+        //this.getAllCycles();
       }, err => {
-        console.log(err);
+        
       });
-    else
+    }else
       alertify.confirm("Are you sure you want to update selected Initiative?", () => {
+        this.saving = true;
         this.orgService.updateInitiative(this.selectedInitiative.initiativeId, this.initiativeForm.value).subscribe((res: any) => {
+          this.saving = false;
           $("#add-initiative").hide();
           $('#add-btn').show();
           this.getInitiative(this.defaultCycle);
           alertify.notify(" Initiative Successfully Updated.");
           this.isUpdating = false;
-          this.getAllCycles();          
+          //this.getAllCycles();          
         })
       }).setHeader("Confirmation");
-
   }
 
   deleteInitiative(initiative: any, initiatives: any[], index: any) {
@@ -211,11 +212,9 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   addNewInitiative() {
     if(this.goalId){
-      console.log("came");
       this.selectedGoal = this.goals.find(element=>{
         return element.goalId == this.goalId;
       });
-      console.log(this.selectedGoal);
     }
     this.newInitiative = true;
     $("#add-initiative").show();
@@ -291,5 +290,9 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   shareCycle(){
     this.orgService.commonCycle = this.defaultCycle.cycleId;
+  }
+
+  ngOnDestroy(){
+    this.loaderService.display(false);
   }
 }

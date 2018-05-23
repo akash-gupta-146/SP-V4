@@ -54,7 +54,6 @@ export class StudentResearch implements OnInit{
  }
 
  submitForm(){
-  console.log(this.studentResearchForm.value);
   if(!this.isUpdating)
    this.utServ.postQuarterWithStudentResearch(this.selectedQuarter.id,this.studentResearchForm.value).subscribe((response:any)=>{
     this.selectedQuarter.studentResearches.push(response.studentResearches[0]);
@@ -64,10 +63,10 @@ export class StudentResearch implements OnInit{
    else{
     alertify.confirm("Do You want to update it?", (ok: any) => {
      this.utServ.updateForm(this.url, this.studentResearchForm.value).subscribe((response: any) => {
-      console.log(response);
+      
       _.extend(this.selectedProgram,this.studentResearchForm.value);
      }, (error: any) => {
-      console.log(error);
+      
      });
     }).setHeader("Confirmation");
    }
@@ -84,7 +83,7 @@ export class StudentResearch implements OnInit{
    this.loaderService.setTransactionLoader(true);
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     this.loaderService.setTransactionLoader(false);
-    console.log(response);
+    
     quarter.disable = true;
     quarter.status = "locked";
    }, (error: any) => {

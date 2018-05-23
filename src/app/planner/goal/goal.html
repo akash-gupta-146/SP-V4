@@ -50,8 +50,11 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn-sp btn-primary" [disabled]="goalForm.invalid">
-          Save
+        <button type="submit" class="btn-sp btn-primary" [disabled]="goalForm.invalid" [disabled]="saving">
+          <span *ngIf="saving;else save">
+            <i class="fa fa-spinner fa-spin"></i> Saving
+          </span>
+          <ng-template #save>Save</ng-template>
         </button>
         <button data-dismiss="modal" class="btn-sp btn-clear"  (click)="closeForm();isUpdating=false;">Close</button>
       </div>
@@ -61,7 +64,7 @@
 <!-- end of data fidder -->
 
 <!-- table -->
-<div class="container mt-3 animate slideInDown" *ngIf="goals.length&&!loaderService.status.value">
+<div class="container mt-3 animate slideInDown">
   <div class="card">
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -118,7 +121,7 @@
 </div>
 <!-- end of table -->
 <!-- No content -->
-<div no-content *ngIf="!goals.length&&!loaderService.status.value&&!newGoal">
+<div no-content *ngIf="noData&&!newGoal">
   Data not available
 </div>
 <!-- end of no content -->

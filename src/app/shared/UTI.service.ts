@@ -114,7 +114,7 @@ export class UniversityService {
   public getAllCycle() {
     this.allCycles = [];
     this.activeCycles = [];
-    return this.http.get(this.baseUrl + "/cycles?hideDisable=false",this.child)
+    return this.http.get(this.baseUrl + "/cycles?hideDisable=false")
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -131,7 +131,7 @@ export class UniversityService {
     else if(disable&&this.activeCycles.length)
       return of(this.activeCycles);
 
-    return this.http.get(this.baseUrl + "/cycles?hideDisable=" + disable, this.child)
+    return this.http.get(this.baseUrl + "/cycles?hideDisable=" + disable)
       .map((response:any)=>{
         if(!disable)
           this.allCycles = response.json();
@@ -142,7 +142,18 @@ export class UniversityService {
       // .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getCycleByCycleId(cycleId:any){
+    return this.http.get(this.baseUrl + "/cycle/" + cycleId, this.child)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
   
+  getCycleByCycleIdAndYear(cycleId:any,year:any){
+    return this.http.get(this.baseUrl + "/cycle/" + cycleId + "?year="+year, this.child)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
 
   public deleteCycle(cycleId: any) {
     return this.http.delete(this.baseUrl + "/cycle/" + cycleId)
@@ -471,7 +482,7 @@ export class UniversityService {
   }
 
   public getOpiResultByYear(cycleId:any,year:any){
-    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false",this.both)
+    return this.http.get(this.baseUrl +"/opis?cycleId="+cycleId+"&year="+year+"&hideDisable=false&annualTarget=true",this.both)
     .map(this.extractData)
     .catch(this.handleError);
   }
@@ -507,7 +518,7 @@ export class UniversityService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    return Observable.throw(errMsg);
+    return Observable.throw(error);
   }
 
 }

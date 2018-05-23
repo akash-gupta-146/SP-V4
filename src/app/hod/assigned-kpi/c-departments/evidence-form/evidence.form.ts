@@ -80,7 +80,13 @@ export class EvidenceForm {
     formData.append('description', this.evidencForm.value['description']);
     formData.append('file', this.file);
     this.utServ.saveEvidence(this.url, formData).subscribe((res: any) => {
-      if (this.selectedQuarter) {
+      if(this.selectedQuarter&&this.selectedForm)
+      {
+        if (!this.selectedForm.evidance)
+          this.selectedForm.evidance = [];
+        this.selectedForm.evidance.push(res);
+      }
+      else if (this.selectedQuarter) {
         if (!this.selectedQuarter.evidance)
           this.selectedQuarter.evidance = [];
         this.selectedQuarter.evidance.push(res);

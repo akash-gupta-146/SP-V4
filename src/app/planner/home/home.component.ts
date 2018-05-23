@@ -89,7 +89,6 @@ export class HomeComponent {
       .show();
 
       // let btn = $('.ajs-ok');
-      // console.log(btn[0].innerHTML);
       // if(btn[0].innerHTML == 'Delete'){
       //   btn.addClass('btn-danger btn-sp');
       //   btn.removeClass('ajs-button ajs-ok');
@@ -113,7 +112,6 @@ export class HomeComponent {
     var org_info: any = this.commonService.getData('org_info');
     var object: any = {};
     object[this.missionVision] = this.missionVisionForm.value['description'];
-    console.log(object);
     this.orgSer.updateMisionVision(object).subscribe(res => {
       this.organizationInfo[this.missionVision] = this.missionVisionForm.value['description'];
       org_info[this.missionVision] = this.missionVisionForm.value['description'];

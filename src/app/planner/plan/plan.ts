@@ -13,6 +13,7 @@ declare let $: any;
   styleUrls: ['./../planner.component.css']
 })
 export class PlanComponent implements OnInit {
+  saving: boolean;
   selectedCycle: any;
   isUpdating: boolean;
   title: string = "Strategic Plan";
@@ -71,8 +72,10 @@ export class PlanComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.isUpdating)
+    if (!this.isUpdating){
+      this.saving = true;
       this.orgService.saveCycle(this.cycleForm.value).subscribe((response: any) => {
+        this.saving = false;
         alertify.success('You added New Strategic plan.');
         $("#add-plan").hide();
         $('#add-btn').show();
@@ -87,24 +90,34 @@ export class PlanComponent implements OnInit {
         });
         this.cycleForm = this.initForm();
       });
-    else {
+    }else {
       var data = {};
       data['description'] = this.cycleForm.value["description"];
       data['title'] = this.cycleForm.value["title"];
       data['endYear'] = this.cycleForm.value["endYear"];
-      this.orgService.updateCycle(this.selectedCycle.cycleId, data).subscribe((response: any) => {
-        alertify.success('Strategic plan Updated.');
-        $("#add-plan").hide();
-        $('#add-btn').show();
-        this.isUpdating = false;
-        this.orgService.getAllCycle().subscribe((response: any) => {
-          this.cycles = response;
-          this.loaderService.display(false);
-        }, (error: any) => {
-          this.loaderService.display(false);
+      alertify.confirm("Please Confirm that you want to update this plan ?",()=>{
+        this.saving = true;
+        this.orgService.updateCycle(this.selectedCycle.cycleId, data).subscribe((response: any) => {
+          this.saving = false;
+          alertify.success('Strategic plan Updated.');
+          $("#add-plan").hide();
+          $('#add-btn').show();
+          this.isUpdating = false;
+          this.orgService.getAllCycle().subscribe((response: any) => {
+            this.cycles = response;
+            this.loaderService.display(false);
+          }, (error: any) => {
+            this.loaderService.display(false);
+          });
+          this.cycleForm = this.initForm();
         });
-        this.cycleForm = this.initForm();
-      })
+      }).setHeader("Confirmation").setting({
+        'closableByDimmer': false,
+        'movable': false,
+        'labels': { ok: 'Confirm', cancel: 'Cancel' },
+        })
+        .set({transition:'fade'})
+        .show();;
     }
   }
 
@@ -133,18 +146,21 @@ export class PlanComponent implements OnInit {
     }).setHeader('Confirmation');
   }
 
-  deleteCycle(cycle: any) {    
+  deleteCycle(cycle: any) {   
     alertify.confirm("Are you sure you want to delete selected plan ?", () => {
-      if(!cycle.goals.length){
+      // if(!cycle.goals.length){
         this.orgService.deleteCycle(cycle.cycleId).subscribe((response: any) => {
           this.getCycles();
           alertify.success("Plan Deleted");
         }, (error: any) => {
-          alertify.error("Something went wrong..");
+          if(error.status === 401)
+            alertify.error((error.json()).message);
+          else
+            alertify.error("Something went wrong..");
         });
-      }else{
-        alertify.alert("This plan cannot be deleted as it has data in initiative and activities. It can only be deleted if all data is deleted first. You may choose to disable it instead.").setHeader("Alert");
-      }
+      // }else{
+      //   alertify.alert("This plan cannot be deleted as it has data in initiative and activities. It can only be deleted if all data is deleted first. You may choose to disable it instead.").setHeader("Alert");
+      // }
     }).setHeader('Delete plan')
   }
 
@@ -165,18 +181,19 @@ export class PlanComponent implements OnInit {
         event.target.checked = !event.target.checked;
       }).setHeader("Confirmation");
     }
-
   }
 
   click(event: any) {
-    console.log(event);
   }
 
   reset() {
-    
     $("#add-plan").hide();
     this.isUpdating = false;
     this.cycleForm.reset();
     $('#add-btn').show();
+  }
+
+  ngOnDestroy(){
+    this.loaderService.display(false);
   }
 }

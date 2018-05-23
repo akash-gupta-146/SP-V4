@@ -35,7 +35,6 @@ export class AppComponent implements OnInit{
     //   this.navigationInterceptor(event)
     // })
     // ROLE = JSON.parse(localStorage.getItem('role'));
-    // console.log(ROLE);
     if (!localStorage.getItem('access_token'))
       this.router.navigateByUrl('/login');
   }

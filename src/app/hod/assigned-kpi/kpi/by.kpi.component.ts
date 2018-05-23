@@ -39,7 +39,7 @@ export class ByKPIComponent {
     } else {
       this.utServ.getDepartments().subscribe((res: any) => {
         this.departments = res;
-        console.log(res);
+        
       });
     }
     this.utServ.goals.asObservable().subscribe((val: any[]) => {

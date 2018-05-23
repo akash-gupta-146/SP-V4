@@ -113,6 +113,12 @@ getDepartmentByOpiIdAndQuarter(opiId:any,quarter:any){
   .catch(this.handleError);
 }
 
+getDepartmentByQuarterAndDepartment(opiId:any,quarter:any,departments:any){
+  return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments?quarter="+quarter+"&departmentIds="+departments,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 getDepartmentByOpiId(opiId:any){
   return this.http.get(this.baseUrl + "/opi/"+opiId+"/departments",this.parent)
   .map(this.extractData)
@@ -158,6 +164,18 @@ public getOpiAllResultByYear(cycleId:any,year:any){
 
 public getOpiResultByQuarter(cycleId:any,year:any,quarter:any){
   return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year+"&quarter="+quarter,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public getOpiResultByCombination(cycleId:any,year:any,quarter:any){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year+"&quarter="+quarter,this.parent)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+public getOpiResultByDepartment(cycleId:any,year:any,quarter:any,department:any){
+  return this.http.get(this.baseUrl +"/result?cycleId="+cycleId+"&year="+year+"&quarter="+quarter+"&departmentIds="+department,this.parent)
   .map(this.extractData)
   .catch(this.handleError);
 }
@@ -549,6 +567,12 @@ public deleteEvidenceofStudentResearch(id:any){
 
 public updateForm(url:string,data:any){
   return this.http.put(this.baseUrl + url,data)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getCurrentQuarter(){
+  return this.http.get(this.baseUrl + "/quarters?default=true")
   .map(this.extractData)
   .catch(this.handleError);
 }

@@ -51,21 +51,19 @@ export class CommunityLearningForm implements OnInit{
  }
 
  submitForm(){
-  console.log(this.communityLearningForm.value);
   if(!this.isUpdating)
    this.utServ.postQuarterWithCommunityLearning(this.selectedQuarter.id,this.communityLearningForm.value).subscribe((response:any)=>{
     this.selectedQuarter.communityLearnings.push(response.communityLearnings[0]);
-    this.selectedQuarter.currentCost += response.currentCost;
-    $("#myModal"+this.d).modal('hide');
+    // this.selectedQuarter.currentCost += response.currentCost;
+    this.learningListView = true;
+    // $("#myModal"+this.d).modal('hide');
    });
   else {
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.communityLearningForm.value).subscribe((response: any) => {
-     console.log(response);
      _.extend(this.selectedLearning,this.communityLearningForm.value);
      this.learningListView = true;
     }, (error: any) => {
-     console.log(error);
     });
    }).setHeader("Confirmation");
   }   
