@@ -100,11 +100,11 @@
               <label>MeasureUnit</label>
               <select class="form-control" formControlName="measureUnitId">
                 <option value="" disabled selected>Choose Measurement Unit</option>
-                <option value="1">Increase in number</option>
+                <!-- <option value="1">Increase in number</option> -->
                 <option value="2">Total Number</option>
-                <option value="3">Increase in percentage </option>
+                <!-- <option value="3">Increase in percentage </option> -->
                 <option value="4">Total Percentage</option>
-                <option value="5">Rate</option>
+                <!-- <option value="5">Rate</option> -->
               </select>
             </div>
           </div>
@@ -165,7 +165,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn-sp btn-primary" [disabled]="measureForm.invalid" [disabled]="saving">
+        <button type="submit" class="btn-sp btn-primary" [disabled]="measureForm.invalid||saving">
           <span *ngIf="saving;else save">
             <i class="fa fa-spinner fa-spin"></i> Saving
           </span>

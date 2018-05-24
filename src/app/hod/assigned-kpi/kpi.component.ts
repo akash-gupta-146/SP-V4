@@ -15,6 +15,7 @@ declare let $: any;
 })
 export class KPIComponent extends Filters implements OnInit,OnDestroy{
   
+  departmentNames: string[]=[];
   departmentModel: number;
   departments: any[];
   departmentIds: any[] = [];
@@ -332,12 +333,15 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
         if (checked) {
           if (!department.disabled) {
             department.my = true;
-            if (this.departmentIds.indexOf(''+department.departmentId) === -1)
+            if (this.departmentIds.indexOf(''+department.departmentId) === -1){
               this.departmentIds.push(''+department.departmentId);
+              this.departmentNames.push(department.department);
+            }
           }
         } else {
           department.my = false;
           this.departmentIds.splice(this.departmentIds.indexOf(''+department.departmentId), 1);
+          this.departmentIds.splice(this.departmentNames.indexOf(''+department.department), 1);
         }
       }
     }
@@ -345,8 +349,8 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
 
   viewDepartment(departmentId: any) {
     this.departmentIds = [];
-    this.departmentIds.push(departmentId);
-    // this.goBack();
+    if(departmentId!=0)
+      this.departmentIds.push(departmentId);
     this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);
   }
 

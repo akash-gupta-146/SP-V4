@@ -162,9 +162,10 @@ export class InitiativeComponent extends Filters implements OnInit{
 
   deleteInitiative(initiative: any, initiatives: any[], index: any) {
     alertify.confirm("Are you sure you want to delete this Initiative?", () => {
-      if(!initiative.activities.length)
+      if(initiative.activities && !initiative.activities.length)
         this.orgService.deleteInitiative(initiative.initiativeId).subscribe((res: any) => {
           initiatives.splice(index, 1);
+          alertify.success("Initiative deleted");
           this.getInitiative(this.defaultCycle);
         }, (error: any) => {
           alertify.error("Something went wrong..");

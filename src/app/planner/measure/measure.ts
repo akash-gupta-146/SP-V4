@@ -364,9 +364,13 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     alertify.confirm("Are you sure you want to assign selected department(s) to KPI", () => {
       this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe((response: any) => {
         this.selectedMeasure.departmentInfo = this.selectedMeasure.departmentInfo.concat(response);
+        this.getDepartments();
+        this.selectedDepartments = [];
+        this.selectedDepartmentIds = [];
         alertify.notify("Successfully assigned");
         $('#detailModal').modal('show');
         $('#myModal').modal('hide');
+        this.prev = true;this.next = false;
       }, (error: any) => {
         alertify.error("Something went wrong");
       })
@@ -476,6 +480,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         response['departmentInfo']=[];
         this.selectedActivity.opis.push(response);
         this.selectedMeasure = response;
+        console.log(this.selectedMeasure);
         $('#myModal').modal('show');
         alertify.success("You have successfully added a new OPI.");
         // this.getMeasure();
@@ -595,7 +600,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     $('#add-opi').show();
     $('#add-btn').hide();
     $("#collapse1").collapse('show');
-
+    this.getObjective(this.defaultCycle.cycleId);
     this.initiatives = [];
     this.activities = [];
     // this.getCycleWithChildren(true);

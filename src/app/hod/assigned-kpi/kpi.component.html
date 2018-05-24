@@ -190,10 +190,19 @@
                         </div>
                         <div class="text-right">{{msr.measureUnit}}</div>
                       </li>
+                      <li class="d-flex justify-content-between ">
+                        <div>
+                          <i class="fas fa-compass text-secondary"></i>
+                        </div>
+                        <div>
+                          <i class="text-primary" [ngClass]="msr.direction ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down'"></i>
+                          <span *ngIf="msr.direction"> Ascending </span>
+                          <span *ngIf="!msr.direction"> Descending </span>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                   <div class="grid-inner-body" style="grid-template-columns:81% 19%;">
-                    <!-- Departmentwise status -->
                     <div class="item d-flex flex-column text-center justify-content-around">
                       <div>
                         Success Difference:

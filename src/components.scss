@@ -680,6 +680,17 @@ button[disabled] {
       background: none;
     }
   }
+  input {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: gray;
+    width: auto;
+    cursor: pointer;
+    &:focus-within {
+      background: none;
+    }
+  }
   .form-group {
     display: flex;
     flex-direction: column;

@@ -12,16 +12,15 @@ export class AnnualAchievement implements OnInit,OnDestroy{
   selectedYear:any = new Date().getFullYear();
   cycles: any;
   organisationInfo: any;
-  goalsCopy: any[];
-  goals: any[];
+  goalsCopy: any[]=[];
+  goals: any[]=[];
   constructor(private utServ: HodService,
-              private loaderSErvice:LoaderService) {
-    this.loaderSErvice.display(true);
-                
+              private loaderService:LoaderService) {
+    this.loaderService.display(true);                
   }
 
   ngOnInit(){
-    this.loaderSErvice.display(true);
+    this.loaderService.display(true);
     this.utServ.fetchOrganizationInfo().subscribe((response) => {
       this.organisationInfo = response;
       this.cycles = response.cycles;
@@ -73,6 +72,7 @@ export class AnnualAchievement implements OnInit,OnDestroy{
   }
 
   getOpiResultByYear(cycleId: any, year: any) {
+    this.loaderService.display(true);
     this.utServ.getOpiAllResultByYear(cycleId, year).subscribe((response: any) => {
       if (response.status == 204) {
         this.goals = [];
@@ -80,9 +80,9 @@ export class AnnualAchievement implements OnInit,OnDestroy{
       } else {
         this.goals = response;
       }
-      this.loaderSErvice.display(false);
+      this.loaderService.display(false);
     },(error:any)=>{      
-      this.loaderSErvice.display(false);      
+      this.loaderService.display(false);      
     });
   }
   isFuture(y:number){
@@ -90,7 +90,7 @@ export class AnnualAchievement implements OnInit,OnDestroy{
   }
 
   ngOnDestroy(){
-    this.loaderSErvice.display(false);
+    this.loaderService.display(false);
   }
 
 }
