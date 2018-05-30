@@ -80,17 +80,17 @@
 
 <!-- Modal -->
 <div [attr.id]="'myModal'+d" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-full">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title">Research Consultancy</h4>
+          <h5 class="modal-title">Research Consultancy</h5>
         <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
       </div>
       <form class="form-horizontal" [formGroup]="researchConsultancyForm" (submit)="submitForm()" *ngIf="!programListView">
         <div class="modal-body">
-          <div class="row">
+          <div class="row  modal-box m-2">
           <div class="form-group col-lg-12">
             <label class="control-label">Project Title:</label>
             
@@ -103,49 +103,49 @@
               <textarea class="form-control" formControlName="description" rows="2"></textarea>
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">Current Cost</label>
             
               <input type="number" class="form-control" formControlName="currentCost" min="0">
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">Start Date</label>
             
               <input type="date" class="form-control" formControlName="startDate">
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">Estimated Time (in days)</label>
             
               <input type="text" class="form-control" formControlName="estimatedTime">
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">External Partners</label>
             
               <input type="text" class="form-control" formControlName="externalPartners">
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">Fund From External Partners:</label>
             
               <input type="number" class="form-control" formControlName="fundFromExternalPartners">
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">Fund From University</label>
             
               <input type="number" class="form-control" formControlName="fundFromUniversity">
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">Number of Researchers Involved</label>
             
               <input type="number" class="form-control" formControlName="totalResearchersInvolved">
             
           </div>
-          <div class="form-group col-sm-12 col-lg-4">
+          <div class="form-group col-sm-12 col-lg-3">
             <label class="control-label">Number of Faculty Involved </label>
             
               <input type="number" class="form-control" formControlName="totalFacultyInvolved">
@@ -160,40 +160,36 @@
         </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="programListView = true;">
+          <button type="button" class="btn-sp btn-primary" (click)="programListView = true;">
             <span class="glyphicon glyphicon-arrow-left"></span> Back
           </button>
-          <button type="submit" class="btn btn-default" [disabled]="researchConsultancyForm.invalid"> Save</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn-sp btn-primary" [disabled]="researchConsultancyForm.invalid"> Save</button>
+          <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
         </div>
       </form>
       <div *ngIf="programListView">
         <div class="modal-body">
-          <h5>
-            <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
-                <i class="fas fa-plus-circle"></i> Add New
-            </button>
-          </h5>
           <div class="table-responsive">
-          <table class="table table-bordered table-card" style="position: relative;">
+          <table class="table table-striped table-card">
+
             <thead>
               <tr>
-                <th style="vertical-align:middle;">*</th>
-                <th style="vertical-align:middle;">Project</th>
-                <th style="vertical-align:middle;">Description</th>
-                <th style="vertical-align:middle;">Start Date</th>
-                <th style="vertical-align:middle;">Estimated Time</th>
-                <th style="vertical-align:middle;">External Partners</th>
-                <th style="vertical-align:middle;">Fund From External Partnenrs</th>
-                <th style="vertical-align:middle;">Fund From University</th>
-                <th style="vertical-align:middle;">No. of Researchers Involved</th>
-                <th style="vertical-align:middle;">No. of Faculty Involved</th>
-                <th style="vertical-align: middle">Evidence</th>
-                <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
+                <th style="width:1%">*</th>
+                <th style="width:3%">Project</th>
+                <th style="width:15%">Description</th>
+                <th  style="width:10%">Start Date</th>
+                <th >Estimated Time</th>
+                <th style="width:10%">External Partners</th>
+                <th >Fund From External Partnenrs</th>
+                <th >Fund From University</th>
+                <th >No. of Researchers Involved</th>
+                <th >No. of Faculty Involved</th>
+                <th style="width:10%">Evidence</th>
+                <th *ngIf="role=='coordinator'">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let project of selectedQuarter.researchConsultancies;let p = index;" style="position: relative;">
+              <tr *ngFor="let project of selectedQuarter.researchConsultancies;let p = index;">
                 <td>{{p+1}}</td>
                 <td>{{project.projectTitle}}</td>
                 <td>{{project.description}}</td>
@@ -206,11 +202,10 @@
                 <td>{{project.totalFacultyInvolved}}</td>
                 <td>
                   <div class="dropdown">
-                    <strong>Evidence </strong>:
                     <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown"><small>Files</small> {{project.evidance.length}}
                       <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu">
                       <li role="presentation" *ngFor="let ev of project.evidance;let e = index;" class="d-flex justify-content-between">
                         <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)" style="float:left">evidance {{e+1}}</a>
                         <button type="button" class="close" (click)="deleteEvidence(ev,project.evidance)" [hidden]="selectedQuarter.status=='locked'">
@@ -225,7 +220,7 @@
                     </ul>
                   </div>
                 </td>
-                <td *ngIf="role=='coordinator'">
+                <td *ngIf="role=='coordinator'" class="d-flex justify-content-between"> 
                   <button (click)="edit(project)" class="btn btn-link">
                       <i class="fas fa-edit"></i>
                   </button>
@@ -239,6 +234,7 @@
         </div>
         </div>
         <div class="modal-footer">
+            <button type="button" class="btn-sp btn-primary" data-dismiss="modal" (click)="programListView = false;resetForm()">Add New</button>
           <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>
