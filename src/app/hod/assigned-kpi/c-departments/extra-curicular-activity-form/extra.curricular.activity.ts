@@ -26,6 +26,7 @@ export class ExtraCurricularActivity implements OnInit{
  @Input() department: any;
  @Input() d: number;
  @Input () set evidanceFormId(id:any){
+   console.log(id);
   this.formId = id;
  }
  public extraCurricularActivityForm: FormGroup
@@ -40,7 +41,7 @@ export class ExtraCurricularActivity implements OnInit{
   this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.extraCurricularActivityForm = this.fb.group({
    title: ['', [Validators.required]],
-   currentCost: ['', [Validators.required]],
+   currentCost: ['', [Validators.required,Validators.min(0)]],
    activityDate: ['', [Validators.required]],
    activityType: ['', [Validators.required]],
    internal: ['', [Validators.required]],
@@ -69,6 +70,7 @@ export class ExtraCurricularActivity implements OnInit{
  }
 
  selectQuarter(level: any) {
+   console.log("selectedQuarter",level);
   this.selectedQuarter = level;
   this.changeSelected.emit(level);
  }

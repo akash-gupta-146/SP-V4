@@ -92,6 +92,14 @@ export class ActionPlan implements OnInit{
     this.employeeIds.forEach(element => {
      this.selectedStep.employeeAssigned.push(element);
     });
+
+    response.forEach(element => {
+     this.selectedStep.otherEmployees = this.selectedStep.otherEmployees.filter(employee=>{     
+      return !(employee.id == element.employeeId);
+     }); 
+    });
+    
+
     alertify.success("Assigned");
     $('.emp-list').hide({ direction: "left" });
    }, (error: any) => {

@@ -14,6 +14,7 @@ declare let $: any;
   styleUrls: ['./../../../hod.component.scss'],
 })
 export class StudentInternshipForm implements OnInit {
+  saving: boolean;
    @Output() selectEvidence: any = new EventEmitter();
   role: any;
   facultyPublicationForm: FormGroup;
@@ -99,11 +100,12 @@ export class StudentInternshipForm implements OnInit {
   }
 
   saveForm(lev: any) {
+    this.saving = true;
     var formData = new FormData();
     formData.append('file', lev.file);
     formData.append('currentCost', lev.currentCost);
     this.utServ.saveQuarterWithInternship(this.url, lev.id, formData).subscribe((response: any) => {
-
+      this.saving = false;
       // switch (lev.evidanceFormId) {
       //   case 9:
       //     lev.professionalDevelopmentActivities.push(response.professionalDevelopmentActivities[0]);
@@ -123,14 +125,20 @@ export class StudentInternshipForm implements OnInit {
       });
       lev.status = "inprogress";
       this.changeSelected.emit(lev);
+      alertify.success("Successfully Saved");
+    },(error)=>{
+      this.saving = false;
+      alertify.error("Something went wrong");
     })
   }
 
   updateCurrentCost(lev: any) {
+    this.saving = true;
     var object = {
       "currentCost": lev.currentCost
     }
     this.utServ.updateQuarterResultCurrentCost(lev.id, object).subscribe((response: any) => {
+      this.saving = false;
       alertify.success("Updated");
       lev.isUpdating = false;
       lev.status = "inprogress";
@@ -260,6 +268,7 @@ export class StudentInternshipForm implements OnInit {
       $('#fileUploadModal').modal('hide');
       this.selectedQuarter.submitButton = false;
     },(error:any)=>{
+      this.selectedQuarter.submitButton = false;
       alertify.error("Something went wrong");
       $('#fileUploadModal').modal('hide');
     })

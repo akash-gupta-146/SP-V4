@@ -41,7 +41,7 @@ export class CurriculumReviewForm implements OnInit{
  ngOnInit(){
   this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.curriculumReviewForm = this.fb.group({
-   currentCost:['',[Validators.required]],
+   currentCost:['',[Validators.required,Validators.min(0)]],
    program:['',[Validators.required]],
    reviewType:['',[Validators.required]],
    totalCollegeStaffInvolved:['',[Validators.required]],

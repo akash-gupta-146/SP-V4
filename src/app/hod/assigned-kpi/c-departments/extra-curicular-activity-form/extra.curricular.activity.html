@@ -179,7 +179,7 @@
           <div class="form-group col-sm-12 col-lg-6">
             <label>Current Cost</label>
             
-              <input type="number" class="form-control" formControlName="currentCost">
+              <input type="number" class="form-control" formControlName="currentCost" min="0">
             
           </div>
           <div class="form-group col-sm-12 col-lg-6">
@@ -219,11 +219,11 @@
       </form>
       <div *ngIf="activityListView">
         <div class="modal-body">
-            <div>Extra Curricular Activity
-                <button type="button" class="btn-sp btn-sp-small btn-primary float-right" (click)="activityListView = false;resetForm()">
-                    <i class="fas fa-plus-circle"></i> Add New
-                  </button>
-                </div>
+            <h5>
+              <button type="button" class="btn-sp btn-sp-small btn-primary float-right" (click)="activityListView = false;resetForm()">
+                <i class="fas fa-plus-circle"></i> Add New
+              </button>
+            </h5>
           <div class="table-responsive">
           <table class="table table-bordered table-hoverable" style="position: relative;">
             <thead>
@@ -291,4 +291,4 @@
 </div>
 
 
-<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

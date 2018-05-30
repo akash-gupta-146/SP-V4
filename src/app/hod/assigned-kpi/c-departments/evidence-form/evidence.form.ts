@@ -8,10 +8,14 @@ import { HodService } from '../../../hod.service';
   styleUrls: ['./evidence.form.css']
 })
 export class EvidenceForm {
+  selectedFormId: any;
   @Input() selectedQuarter: any;
   @Input() selectedForm: any;
   @Input() set evidanceFormId(id: any) {
     this.formId = id;
+  };
+  @Input() set evFormId(id: any) {
+    this.selectedFormId = id;
   };
   formId: any;
   url: string;
@@ -26,7 +30,7 @@ export class EvidenceForm {
   }
 
   ngOnChanges() {
-    switch (this.formId) {
+    switch (this.selectedFormId) {
       case 1:
         this.url = "/level/" + this.selectedQuarter.id;
         break;

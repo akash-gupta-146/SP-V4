@@ -3,7 +3,7 @@ import { StorageService } from '../shared/storage.service';
 import { UniversityService } from "../shared/UTI.service";
 import { Router } from "@angular/router";
 import { LoaderService } from '../shared/loader.service';
-
+import * as alertify from 'alertifyjs';
 declare let $: any;
 
 @Component({
@@ -33,8 +33,14 @@ export class PlannerComponent implements OnInit{
 	});
 	}
 
-	logout() {
-		localStorage.clear();
-	}
+	logout(){
+		this.loaderService.display(true);
+		this.utiService.logout().subscribe((response:any)=>{
+				localStorage.clear();
+				this.loaderService.display(false);
+				this.router.navigate(['/login']);
+				alertify.success(response);
+		});
+}
 
 }	

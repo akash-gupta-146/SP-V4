@@ -106,7 +106,7 @@
           <div class="form-group col-sm-12 col-lg-4">
             <label class="control-label">Current Cost</label>
             
-              <input type="number" class="form-control" formControlName="currentCost">
+              <input type="number" class="form-control" formControlName="currentCost" min="0">
             
           </div>
           <div class="form-group col-sm-12 col-lg-4">
@@ -116,13 +116,13 @@
             
           </div>
           <div class="form-group col-sm-12 col-lg-4">
-            <label class="control-label">Estimated Time</label>
+            <label class="control-label">Estimated Time (in days)</label>
             
               <input type="text" class="form-control" formControlName="estimatedTime">
             
           </div>
           <div class="form-group col-sm-12 col-lg-4">
-            <label class="control-label">Externals Partner</label>
+            <label class="control-label">External Partners</label>
             
               <input type="text" class="form-control" formControlName="externalPartners">
             
@@ -169,13 +169,12 @@
       </form>
       <div *ngIf="programListView">
         <div class="modal-body">
-            <div>
-              Research Consultancy
-                <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
-                    <i class="fas fa-plus-circle"></i> Add New
-                </button>
-              </div>
-              <div class="table-responsive">
+          <h5>
+            <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
+                <i class="fas fa-plus-circle"></i> Add New
+            </button>
+          </h5>
+          <div class="table-responsive">
           <table class="table table-bordered table-card" style="position: relative;">
             <thead>
               <tr>
@@ -247,4 +246,4 @@
   </div>
 </div>
 
-<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

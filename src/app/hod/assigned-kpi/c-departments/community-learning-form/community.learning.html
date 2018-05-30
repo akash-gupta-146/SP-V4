@@ -122,7 +122,7 @@
           <div class="row mt-4">
             <div class="col-lg-4 col-sm-12">
                 <label>Current Cost</label>
-                <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost">
+                <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost" min="0">
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label>Start Date</label>
@@ -159,7 +159,6 @@
       <div *ngIf="learningListView">
         <div class="modal-body">
           <h5>
-            Community Learnings
             <button class="float-right btn-sp btn-sp-small btn-primary" (click)="learningListView = false;">
                 <i class="fas fa-plus-circle"></i> Add New
             </button>
@@ -204,7 +203,6 @@
                       </li>
                       <li class="list-group-item" role="presentation" *ngIf="!learning.evidance.length">None</li>
                       <li class="list-group-item" role="presentation">
-                        <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectLearning(learning)"> Upload</button> -->
                         <button class="btn-sp btn-sp-small btn-primary" *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
                           (click)="selectedForm = learning" [disabled]="selectedQuarter.disable">Upload</button>
                       </li>
@@ -237,4 +235,4 @@
   </div>
 </div>
 
-<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

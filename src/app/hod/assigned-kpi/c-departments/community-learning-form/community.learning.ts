@@ -38,7 +38,7 @@ export class CommunityLearningForm implements OnInit{
  ngOnInit(){
   this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.communityLearningForm = this.fb.group({
-   "currentCost": ['',[Validators.required]],
+   "currentCost": ['',[Validators.required,Validators.min(0)]],
    "title": ['',[Validators.required]],
    "learningType": ['',[Validators.required]],
    // "scopeId": ['',[Validators.required]],

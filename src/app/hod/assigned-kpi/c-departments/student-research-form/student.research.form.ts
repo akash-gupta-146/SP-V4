@@ -41,7 +41,7 @@ export class StudentResearch implements OnInit{
  ngOnInit(){
   this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.studentResearchForm = this.fb.group({
-    "currentCost":['',[Validators.required]],
+    "currentCost":['',[Validators.required,Validators.min(0)]],
     "eventTitle":['',[Validators.required]],
     "organizedBy":['',[Validators.required]],
     "startAt":['',[Validators.required]],

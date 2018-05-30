@@ -57,35 +57,36 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     this.loaderService.display(true);
       this.route.params.subscribe((params: any) => {  
         if(params['quarter']&&parseInt(params['deptId'])){
-          // this.utServ.getDepartmentByOpiIdAndQuarter(params['id'],params['quarter']).subscribe((response: any) => {
-          //   this.loaderService.display(false);
-          //   this.data = response[0];
-          //   this.getTemplateUrl(this.data.evidanceFormId);
-          //   this.getDepartments();
-          //   if(parseInt(params['deptId'])){
-          //     console.log("came");
-          //     const deptId = parseInt(this.deptId);
-          //     this.departmentInfo = this.data.departmentInfo.filter(element=>{
-          //       return element.departmentId === deptId;
-          //     });
-          //   }else{
-          //     this.departmentInfo = response[0].departmentInfo;
-          //     this.departmentsCopy = response[0].departmentInfo;
-          //   }
-          // });
           this.utServ.getDepartmentByQuarterAndDepartment(params['id'],params['quarter'],params['deptId']).subscribe((response: any) => {
             console.log(response);
             this.loaderService.display(false);
-            this.data = response[0];
+            this.data = response[0]; console.log(this.data);
             this.getTemplateUrl(this.data.evidanceFormId);
             this.getDepartments();
               this.departmentInfo = response[0].departmentInfo;
               this.departmentsCopy = response[0].departmentInfo;
           });
+        }else if(params['quarter']){
+          this.utServ.getDepartmentByOpiIdAndQuarter(params['id'],params['quarter']).subscribe((response: any) => {
+            this.loaderService.display(false);
+            this.data = response[0]; console.log(this.data);
+            this.getTemplateUrl(this.data.evidanceFormId);
+            this.getDepartments();
+            if(parseInt(params['deptId'])){
+              console.log("came");
+              const deptId = parseInt(this.deptId);
+              this.departmentInfo = this.data.departmentInfo.filter(element=>{
+                return element.departmentId === deptId;
+              });
+            }else{
+              this.departmentInfo = response[0].departmentInfo;
+              this.departmentsCopy = response[0].departmentInfo;
+            }
+          });
         }else{
           this.utServ.getDepartmentByOpiId(params['id']).subscribe((response: any) => {
             this.loaderService.display(false);
-            this.data = response[0];
+            this.data = response[0]; console.log(this.data);
             this.getTemplateUrl(this.data.evidanceFormId);
             this.getDepartments();
             if(params['deptId']){
@@ -110,10 +111,10 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     });
     this.getEmployees();
     this.actionForm = this.fb.group({
-      "reason": ["", Validators.required],
-      "description": ["", Validators.required],
-      "resources": ["", Validators.required],
-      "deadline": ["", Validators.required],
+      "reason": ["", [Validators.required]],
+      "description": ["", [Validators.required]],
+      "resources": ["", [Validators.required]],
+      "deadline": ["", [Validators.required]],
       "opiId": ['']
     });
   }
@@ -231,6 +232,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     if (!dept.isEdit) {
       this.utServ.postActionSteps(dept.id, actionSteps).subscribe((response: any) => {
         response[0]['linked'] = true;
+        this.selectedStep = response[0];
         array.push(response[0]);
         dept.isNew = false;
         alertify.success("Action Step added and linked");
@@ -308,8 +310,15 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         this.employeeIds.forEach(element => {
           this.selectedStep.employeeAssigned.push(element);
         });
+
+        response.forEach(element => {
+          this.selectedStep.otherEmployees = this.selectedStep.otherEmployees.filter(employee=>{     
+           return !(employee.id == element.employeeId);
+          }); 
+         });
+         
         alertify.success("Assigned");
-        $('.emp-list').hide({ direction: "left" });
+        $('#assignModal').modal('hide');
       }, (error: any) => {
         alertify.error("Something went wrong");
         $('.emp-list').hide({ direction: "left" });

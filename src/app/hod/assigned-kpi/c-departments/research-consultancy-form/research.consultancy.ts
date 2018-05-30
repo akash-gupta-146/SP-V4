@@ -41,9 +41,9 @@ export class ResearchConsultancy implements OnInit{
  ngOnInit(){
   this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.researchConsultancyForm = this.fb.group({
-   "currentCost":['',[Validators.required]],
+   "currentCost":['',[Validators.required,Validators.min(0)]],
    "projectTitle":['',[Validators.required]],
-   "interDisciplinaryProject":[false,[Validators.required]],
+   "interDisciplinaryProject":[false,[]],
    "description":['',[Validators.required]],
    "startDate":['',[Validators.required]],
    "estimatedTime":['',[Validators.required]],

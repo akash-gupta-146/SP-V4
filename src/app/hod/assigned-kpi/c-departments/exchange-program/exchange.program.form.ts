@@ -41,7 +41,7 @@ export class ExchangeProgram implements OnInit{
  ngOnInit(){
   this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.exchangeProgramForm = this.fb.group({
-   currentCost:['',[Validators.required]],
+   currentCost:['',[Validators.required,Validators.min(0)]],
    program:['',[Validators.required]],
    partnerOrganization:['',[Validators.required]],
    totalInsideParticipants:['',[Validators.required]],

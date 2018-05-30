@@ -134,6 +134,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   getResultsByComination(){
+    this.loaderService.display(true);    
     this.utServ.getOpiResultByCombination(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter).subscribe(response=>{
       this.loaderService.display(false);
       this.goals = response;
@@ -147,6 +148,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   getOpiResultByDepartmentAndAll(){
+    this.loaderService.display(true);
     this.utServ.getOpiResultByDepartment(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds).subscribe(response=>{
       this.loaderService.display(false);
       this.goals = response;
@@ -231,7 +233,6 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   // }
 
   onCycleChange(cycleId: any, year: any,quarter:any,deptId:any){
-    console.log(this.departmentIds);
     if(this.departmentIds.length){
       console.log("came");
       this.router.navigate(['./',{cycleId:cycleId,year:year,quarter:quarter,deptId:this.departmentIds.slice(0)}]);
@@ -278,15 +279,24 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     });
   }
 
+  getCurrentQuarter(){
+    this.utServ.getCurrentQuarter().subscribe((quarter:any)=>{
+      this.selectedQuarter = quarter.quarter;
+      this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);
+      this.getDepartments();
+    }); 
+  }
+
   reloadOpis(){
     this.selectedYear = new Date().getFullYear();
     this.departmentModel = 0;
     this.departmentIds = [];
+    this.getCurrentQuarter();
     // this.selectedQuarter = "q1";
     // this.getOpiResultByQuarter(this.selectedQuarter);
     // this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
-    this.getResultsByComination();
-    this.router.navigate(["/coordinator"]);
+    // this.getResultsByComination();
+    // this.router.navigate(["/coordinator"]);
   }
 
   isFuture(y:number){

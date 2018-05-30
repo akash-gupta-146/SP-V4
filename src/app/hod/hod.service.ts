@@ -577,6 +577,12 @@ getCurrentQuarter(){
   .catch(this.handleError);
 }
 
+logout(){
+  return this.http.get(this.baseUrl + "/logout")
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
  private extractData(res: Response) {
   if (res.status === 204) { return res; }
   let body = res.json();

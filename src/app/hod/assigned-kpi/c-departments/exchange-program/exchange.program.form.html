@@ -163,7 +163,7 @@
      <div class="form-group col-lg-4 col-sm-12">
       <label>Current Cost</label>
       
-       <input type="number" class="form-control" formControlName="currentCost">
+       <input type="number" class="form-control" formControlName="currentCost" min="0">
       
      </div>
      <div class="form-group col-lg-4 col-sm-12">
@@ -212,12 +212,11 @@
    </form>
    <div *ngIf="programListView">
     <div class="modal-body">
-        <div>
-          Exchange Programs
-            <button type="button" class="btn-sp btn-primary btn-sp-small float-right" (click)="programListView = false;resetForm()">
-                <i class="fas fa-plus-circle"></i> Add New
-             </button>  
-        </div>
+        <h5>
+          <button type="button" class="btn-sp btn-primary btn-sp-small float-right" (click)="programListView = false;resetForm()">
+              <i class="fas fa-plus-circle"></i> Add New
+            </button>  
+        </h5>
         <div class="table-responsive">
      <table class="table table-bordered table-card" style="position: relative;">
      <thead>
@@ -285,4 +284,4 @@
  </div>
 </div>
 
-<evidence-form [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
