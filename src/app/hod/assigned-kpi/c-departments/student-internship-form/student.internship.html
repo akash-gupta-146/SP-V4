@@ -746,19 +746,20 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Upload File</h4>
+        <h5 class="modal-title">Upload File</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body" *ngIf="selectedQuarter">
+        <div class="modal-box m-2">
         <div class="form-group">
           <label>Select File</label>
           <input type="file" class="form-control-file" id="exampleInputFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
             aria-describedby="fileHelp" (change)="selectedQuarter.file = $event.target.files[0];">
           <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
         </div>
-        <div class="form-check form-check-inline">
+        <div class="form-check form-check-inline d-flex flex-column align-items-start">
           <label class="form-check-label">
             <input type="radio" name="replace" class="form-check-input" [(ngModel)]="selectedQuarter.replace" value="true" checked="true">Replace current records
           </label>
@@ -767,15 +768,16 @@
           </label>
         </div>
       </div>
+    </div>
       <div class="progress" *ngIf="selectedQuarter.submitButton">
         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-          <span>Uploading..<span class="dotdotdot"></span></span>
+          <span>Uploading...<span class="dotdotdot"></span></span>
         </div>
       </div>
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="uploadFile(selectedQuarter);" [disabled]="!selectedQuarter.file">Upload</button>
+        <button type="button" class="btn-sp btn-primary" (click)="uploadFile(selectedQuarter);" [disabled]="!selectedQuarter.file">Upload</button>
         <button type="button" class="btn-sp btn-clear" data-dismiss="modal" >Close</button>
       </div>
 
