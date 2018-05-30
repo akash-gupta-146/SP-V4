@@ -251,12 +251,12 @@
 <evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" [selectedQuarter]="selectedQuarter" *ngIf="selectedQuarter"></evidence-form>
 
 <div class="modal fade" [attr.id]="'internshipModal'+department.departmentId" *ngIf="selectedQuarter.internshipRecord">
-  <div class="modal-dialog modal-lg" style="max-width: 900px;">
+  <div class="modal-dialog modal-full" style="max-width: 900px;">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Student Internship Records</h4>
+        <h5 class="modal-title">Student Internship Records</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <form class="form-horizontal" [formGroup]="recordForm" (submit)="updateInternshipRecord()" *ngIf="!listView">
@@ -332,7 +332,7 @@
       <div *ngIf="listView">
         <div class="modal-body">
           <div class="table-responsive-sm">
-            <table class="table table-bordered table-card">
+            <table class="table table-striped table-card">
               <thead>
                 <tr>
                   <th>#</th>
@@ -433,7 +433,6 @@
           </div>
         </form>
     </div>
-
   </div>
 </div>
 
@@ -490,7 +489,7 @@
       <div *ngIf="listView">
         <div class="modal-body">
           <div class="table-responsive-sm">
-            <table class="table table-bordered table-card">
+            <table class="table table-striped table-card">
               <thead>
                 <tr>
                   <th>#</th>
@@ -537,12 +536,12 @@
 </div>
 
 <div class="modal fade" [attr.id]="'facultyPublicationModal'+department.departmentId" role="dialog" *ngIf="selectedQuarter.facultyPublicationRecord">
-  <div class="modal-dialog modal-lg" style="max-width: 900px;">
+  <div class="modal-dialog modal-full">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Faculty Publication Records</h4>
+        <h5 class="modal-title">Faculty Publication Records</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <form class="form-horizontal" [formGroup]="facultyPublicationForm" (submit)="updateFacultyPublicationRecord()" *ngIf="!listView">
@@ -588,18 +587,18 @@
       </form>
       <div *ngIf="listView">
         <div class="modal-body">
-          <div class="table-responsive-sm">
-            <table class="table table-bordered table-card">
+          <div class="">
+            <table class="table table-striped table-card">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>Faculty</th>
-                  <th>facultyRank</th>
+                  <th>Faculty Rank</th>
                   <th>Publication Title</th>
                   <th>Publication Date</th>
                   <th>Journal Title</th>
                   <th>Journal Type</th>
-                  <th></th>
+                  <th>Edit</th>
                 </tr>
               </thead>
               <tbody>

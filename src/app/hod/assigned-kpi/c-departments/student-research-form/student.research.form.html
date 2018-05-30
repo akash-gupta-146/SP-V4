@@ -91,7 +91,7 @@
 
 <!-- Modal -->
 <div [attr.id]="'myModal'+d" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg" style="    max-width: max-content;">
+  <div class="modal-dialog modal-full">
 
     <!-- Modal content-->
     <div class="modal-content">
@@ -100,7 +100,7 @@
         <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
       </div>
       <form class="form-horizontal" [formGroup]="studentResearchForm" (submit)="submitForm()" *ngIf="!programListView">
-        <div class="modal-body row">
+        <div class="modal-body row modal-box m-3">
           <div class="form-group col-lg-6 col-sm-12">
             <label class="control-label">Event Title:</label>
               <input type="text" class="form-control" placeholder="Enter Event Title" formControlName="eventTitle">
@@ -151,7 +151,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-sp btn-clear" (click)="programListView = true;">
+          <button type="button" class="btn-sp btn-primary" (click)="programListView = true;">
             Back
           </button>
           <button type="submit" class="btn-sp btn-primary" [disabled]="studentResearchForm.invalid"> Submit</button>
@@ -160,26 +160,21 @@
       </form>
       <div *ngIf="programListView">
         <div class="modal-body">
-          <h5>
-            <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
-                <i class="fas fa-plus-circle"></i> Add
-            </button>
-          </h5>
           <div class="table-responsive">
-          <table class="table table-bordered table-hoverable" style="position: relative;">
+          <table class="table table-striped">
             <thead>
               <tr>
-                <th style="vertical-align:middle;">#</th>
-                <th style="vertical-align:middle;">Event</th>
-                <th style="vertical-align:middle;">Event Type</th>
-                <th style="vertical-align:middle;">Start Date</th>
-                <th style="vertical-align:middle;">End Date</th>
-                <th style="vertical-align:middle;">Location</th>
-                <th style="vertical-align:middle;">Organized By</th>
-                <th style="vertical-align:middle;">No. of Student Attended From Our College</th>
-                <th style="vertical-align:middle;">Scope</th>
-                <th style="vertical-align: middle">Evidence</th>
-                <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
+                <th >#</th>
+                <th >Event</th>
+                <th >Event Type</th>
+                <th style="width:10%">Start Date</th>
+                <th style="width:10%">End Date</th>
+                <th >Location</th>
+                <th >Organized By</th>
+                <th style="width:10%">No. of Student Attended From Our College</th>
+                <th >Scope</th>
+                <th style="width:10%">Evidence</th>
+                <th *ngIf="role=='coordinator'">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -214,7 +209,7 @@
                     </ul>
                   </div>
                 </td>
-                <td *ngIf="role=='coordinator'">
+                <td *ngIf="role=='coordinator'" class="d-flex justify-content-between">
                   <button (click)="edit(research)" class="btn btn-link">
                       <i class="fas fa-edit"></i>
                   </button>
@@ -228,6 +223,7 @@
         </div>
         </div>
         <div class="modal-footer">
+              <button type="button" class="btn-sp btn-primary" data-dismiss="modal"  (click)="programListView = false;resetForm()">Add</button>
           <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>
