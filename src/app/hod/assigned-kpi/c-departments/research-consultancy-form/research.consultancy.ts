@@ -58,7 +58,7 @@ export class ResearchConsultancy implements OnInit{
  submitForm(){
   if(!this.isUpdating)
    this.utServ.postQuarterWithResearchConsultancy(this.selectedQuarter.id,this.researchConsultancyForm.value).subscribe((response:any)=>{
-    this.selectedQuarter.researchConsultancies.push(response.researchConsultancies[0]);
+    this.selectedQuarter.researchConsultancies.push(response);
     // this.selectedQuarter.currentCost += response.currentCost;
     this.programListView = true;
     // $("#myModal"+this.d).modal('hide');

@@ -52,7 +52,7 @@ export class CurriculumReviewForm implements OnInit{
  submitForm(){
   if(!this.isUpdating)  
    this.utServ.postQuarterWithCurriculumReview(this.selectedQuarter.id,this.curriculumReviewForm.value).subscribe((response:any)=>{
-    this.selectedQuarter.curriculamReview.push(response.curriculamReview[0]);
+    this.selectedQuarter.curriculamReview.push(response);
     // this.selectedQuarter.currentCost += response.currentCost;
     this.programListView = true;
     // $("#myModal"+this.d).modal('hide');

@@ -260,6 +260,7 @@ export class StudentInternshipForm implements OnInit {
     // var replace = true;
     // if(!lev.replace) replace = false;
     formData.append('file', lev.file);
+    formData.append('currentCost', lev.currentCost);
     this.utServ.UploadFormsFile(this.url,lev.id,formData,lev.replace).subscribe((response:any)=>{
       Object.keys(response).forEach((key:any)=>{
         lev[key]=response[key];

@@ -53,7 +53,7 @@ export class CommunityLearningForm implements OnInit{
  submitForm(){
   if(!this.isUpdating)
    this.utServ.postQuarterWithCommunityLearning(this.selectedQuarter.id,this.communityLearningForm.value).subscribe((response:any)=>{
-    this.selectedQuarter.communityLearnings.push(response.communityLearnings[0]);
+    this.selectedQuarter.communityLearnings.push(response);
     // this.selectedQuarter.currentCost += response.currentCost;
     this.learningListView = true;
     // $("#myModal"+this.d).modal('hide');

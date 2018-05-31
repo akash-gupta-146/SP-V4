@@ -10,18 +10,20 @@
       </div>
     </div>
     <div class="d-flex justify-content-center">
-      <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;" [style.border-color]="lev.successInfo.color">
-        <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">          <div>
+      <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;"
+        [style.border-color]="lev.successInfo.color">
+        <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color"
+          [class.text-black]="lev.successInfo.color == '#FFEB3B'">
+          <div>
             <!-- <small>Quarter</small> -->
             <div class="text-uppercase">{{lev.quarter}}</div>
           </div>
           <div class="text-right">
             <!-- <small>Status (role)</small> -->
             <div class="text-capitalize">
-                
-                {{lev.status}}
-              <br>
-              by {{lev.role}}
+
+              {{lev.status}}
+              <br> by {{lev.role}}
             </div>
           </div>
         </div>
@@ -60,27 +62,27 @@
             <div *ngIf="lev.status!='unsubmitted'">
               <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);programListView = true;">
                 <!-- <small>Number of Research Consultancy Project</small> -->
-                <small>RCP
+                <small>Student Research
                   <i class="fas fa-eye"></i>
                 </small>
               </a>
               <div>{{lev.studentResearches.length}}</div>
             </div>
           </div>
-          
+
         </div>
         <div class="d-flex justify-content-end mt-3" *ngIf="!lev.disable">
-          <a class="btn-link link primary-link text-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
+          <a class="btn-link link primary-link text-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)"
+            *ngIf="lev.status=='unsubmitted'">
             <i class="fas fa-sign-in-alt"></i> Fill
           </a>
-          <button class="btn-link link primary-link text-primary" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
-            [disabled]="lev.disable">
+          <button class="btn-link link primary-link text-primary" *ngIf="lev.studentResearches.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">
             <i class="fas fa-lock"></i> Lock
           </button>
         </div>
         <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
           <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)">
-          Approve/Reject</button>
+            Approve/Reject</button>
         </div>
       </div>
     </div>
@@ -96,57 +98,57 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title">Student Research Form</h4>
+        <h4 class="modal-title">Student Research Form</h4>
         <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
       </div>
       <form class="form-horizontal" [formGroup]="studentResearchForm" (submit)="submitForm()" *ngIf="!programListView">
         <div class="modal-body row">
           <div class="form-group col-lg-6 col-sm-12">
             <label class="control-label">Event Title:</label>
-              <input type="text" class="form-control" placeholder="Enter Event Title" formControlName="eventTitle">
+            <input type="text" class="form-control" placeholder="Enter Event Title" formControlName="eventTitle">
           </div>
           <div class="form-group col-lg-6 col-sm-12">
             <label class="control-label">Event Type:</label>
-              <select class="form-control" formControlName="eventType">
-                <option value="course">course</option>
-                <option value="workshop">workshop</option>
-                <option value="seminar">seminar</option>
-                <option value="conference">conference</option>
-              </select>
+            <select class="form-control" formControlName="eventType">
+              <option value="course">course</option>
+              <option value="workshop">workshop</option>
+              <option value="seminar">seminar</option>
+              <option value="conference">conference</option>
+            </select>
           </div>
           <div class="form-group col-lg-6 col-sm-12">
             <label class="control-label">Current Cost:</label>
-              <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost" min="0">
+            <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost" min="0">
           </div>
           <div class="form-group col-lg-6 col-sm-12">
             <label class="control-label">Organised By:</label>
-              <input type="text" class="form-control" formControlName="organizedBy">
+            <input type="text" class="form-control" formControlName="organizedBy">
           </div>
           <div class="form-group col-lg-6 col-sm-12">
-              <label class="control-label">Scope:</label>
-                <select class="form-control" formControlName="scopeId">
-                  <option value="1">Local</option>
-                  <option value="2">Emirates</option>
-                  <option value="3">UAE</option>
-                  <option value="4">GCC</option>
-                  <option value="5">International</option>
-                </select>
-            </div>
-            <div class="form-group col-lg-6 col-sm-12">
-              <label class="control-label">Number of Student Attended From Our College:</label>
-                <input type="number" class="form-control" formControlName="totalStudentAttendedFromOurCollege">
-            </div>
+            <label class="control-label">Scope:</label>
+            <select class="form-control" formControlName="scopeId">
+              <option value="1">Local</option>
+              <option value="2">Emirates</option>
+              <option value="3">UAE</option>
+              <option value="4">GCC</option>
+              <option value="5">International</option>
+            </select>
+          </div>
+          <div class="form-group col-lg-6 col-sm-12">
+            <label class="control-label">Number of Student Attended From Our College:</label>
+            <input type="number" class="form-control" formControlName="totalStudentAttendedFromOurCollege">
+          </div>
           <div class="form-group col-lg-4 col-sm-12">
             <label class="control-label">Start Date:</label>
-              <input type="date" class="form-control" formControlName="startAt">
+            <input type="date" class="form-control" formControlName="startDate">
           </div>
           <div class="form-group col-lg-4 col-sm-12">
             <label class="control-label">End Date:</label>
-              <input type="date" class="form-control" formControlName="endAt">
+            <input type="date" class="form-control" formControlName="endDate">
           </div>
           <div class="form-group col-lg-4 col-sm-12">
             <label class="control-label">Location:</label>
-              <input type="text" class="form-control" formControlName="location">
+            <input type="text" class="form-control" formControlName="location">
           </div>
 
         </div>
@@ -154,7 +156,12 @@
           <button type="button" class="btn-sp btn-clear" (click)="programListView = true;">
             Back
           </button>
-          <button type="submit" class="btn-sp btn-primary" [disabled]="studentResearchForm.invalid"> Submit</button>
+          <button type="submit" class="btn-sp btn-primary" [disabled]="studentResearchForm.invalid" [disabled]="saving"> 
+            <span *ngIf="saving;else save">
+              <i class="fa fa-spinner fa-spin"></i> Saving
+            </span>
+            <ng-template #save>Save</ng-template>
+          </button>
           <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
         </div>
       </form>
@@ -162,70 +169,71 @@
         <div class="modal-body">
           <h5>
             <button class="float-right btn-sp btn-sp-small btn-primary" (click)="programListView = false;resetForm()">
-                <i class="fas fa-plus-circle"></i> Add
+              <i class="fas fa-plus-circle"></i> Add
             </button>
           </h5>
           <div class="table-responsive">
-          <table class="table table-bordered table-hoverable" style="position: relative;">
-            <thead>
-              <tr>
-                <th style="vertical-align:middle;">#</th>
-                <th style="vertical-align:middle;">Event</th>
-                <th style="vertical-align:middle;">Event Type</th>
-                <th style="vertical-align:middle;">Start Date</th>
-                <th style="vertical-align:middle;">End Date</th>
-                <th style="vertical-align:middle;">Location</th>
-                <th style="vertical-align:middle;">Organized By</th>
-                <th style="vertical-align:middle;">No. of Student Attended From Our College</th>
-                <th style="vertical-align:middle;">Scope</th>
-                <th style="vertical-align: middle">Evidence</th>
-                <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let research of selectedQuarter.studentResearches;let p = index;" style="position: relative;">
-                <td>{{p+1}}</td>
-                <td>{{research.eventTitle}}</td>
-                <td>{{research.eventType}}</td>
-                <td>{{research.startAt}}</td>
-                <td>{{research.endAt}}</td>
-                <td>{{research.location}}</td>
-                <td>{{research.organizedBy}}</td>
-                <td>{{research.totalStudentAttendedFromOurCollege}}</td>
-                <td>{{research.scope}}</td>
-                <td>
-                  <div class="dropdown">
-                    <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown"><small>Files</small> {{research.evidance.length}}
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                      <li role="presentation" *ngFor="let ev of research.evidance;let e = index;" class="d-flex justify-content-between">
-                        <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)" style="float:left">evidance {{e+1}}</a>
-                        <button type="button" class="close" (click)="deleteEvidence(ev,research.evidance)" [hidden]="selectedQuarter.status=='locked'">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </li>
-                      <li class="text-center" role="presentation" *ngIf="!research.evidance.length">None</li>
-                      <li role="presentation" class="divider" style="clear: both;"></li>
-                      <li class="text-center" role="presentation">
-                        <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm"
-                          [disabled]="selectedQuarter.disable" (click)="selectProgram(research)"> Upload</button> -->
-                        <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId" (click)="selectedForm = research" [disabled]="selectedQuarter.disable">Upload</button> 
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td *ngIf="role=='coordinator'">
-                  <button (click)="edit(research)" class="btn btn-link">
+            <table class="table table-bordered table-hoverable" style="position: relative;">
+              <thead>
+                <tr>
+                  <th style="vertical-align:middle;">#</th>
+                  <th style="vertical-align:middle;">Event</th>
+                  <th style="vertical-align:middle;">Event Type</th>
+                  <th style="vertical-align:middle;">Start Date</th>
+                  <th style="vertical-align:middle;">End Date</th>
+                  <th style="vertical-align:middle;">Location</th>
+                  <th style="vertical-align:middle;">Organized By</th>
+                  <th style="vertical-align:middle;">No. of Student Attended From Our College</th>
+                  <th style="vertical-align:middle;">Scope</th>
+                  <th style="vertical-align: middle">Evidence</th>
+                  <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let research of selectedQuarter.studentResearches;let p = index;" style="position: relative;">
+                  <td>{{p+1}}</td>
+                  <td>{{research.eventTitle}}</td>
+                  <td>{{research.eventType}}</td>
+                  <td>{{research.startAt}}</td>
+                  <td>{{research.endAt}}</td>
+                  <td>{{research.location}}</td>
+                  <td>{{research.organizedBy}}</td>
+                  <td>{{research.totalStudentAttendedFromOurCollege}}</td>
+                  <td>{{research.scope}}</td>
+                  <td>
+                    <div class="dropdown">
+                      <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown">
+                        <small>Files</small> {{research.evidance.length}}
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                        <li role="presentation" *ngFor="let ev of research.evidance;let e = index;" class="d-flex justify-content-between">
+                          <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)"
+                            style="float:left">evidance {{e+1}}</a>
+                          <button type="button" class="close" (click)="deleteEvidence(ev,research.evidance)" [hidden]="selectedQuarter.status=='locked'">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </li>
+                        <li class="text-center" role="presentation" *ngIf="!research.evidance.length">None</li>
+                        <li role="presentation" class="divider" style="clear: both;"></li>
+                        <li class="text-center" role="presentation">
+                          <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId"
+                            (click)="selectedForm = research" [disabled]="selectedQuarter.disable">Upload</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td *ngIf="role=='coordinator'">
+                    <button (click)="edit(research)" class="btn btn-link">
                       <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn btn-link" (click)="delete(research,selectedQuarter.studentResearches)">
+                    </button>
+                    <button class="btn btn-link" (click)="delete(research,selectedQuarter.studentResearches)">
                       <i class="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
@@ -235,4 +243,5 @@
   </div>
 </div>
 
-<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId" [selectedForm]="selectedForm"
+  *ngIf="selectedForm"></evidence-form>

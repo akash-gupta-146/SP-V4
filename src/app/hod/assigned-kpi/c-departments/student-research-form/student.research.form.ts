@@ -15,6 +15,7 @@ declare let $:any;
 })
 export class StudentResearch implements OnInit{
 
+  saving: boolean;
    @Output() selectEvidence: any = new EventEmitter();
   role: any;
  selectedProgram: any;
@@ -44,8 +45,8 @@ export class StudentResearch implements OnInit{
     "currentCost":['',[Validators.required,Validators.min(0)]],
     "eventTitle":['',[Validators.required]],
     "organizedBy":['',[Validators.required]],
-    "startAt":['',[Validators.required]],
-    "endAt":['',[Validators.required]],
+    "startDate":['',[Validators.required]],
+    "endDate":['',[Validators.required]],
     "location":['',[Validators.required]],
     "totalStudentAttendedFromOurCollege":['',[Validators.required]],
     "scopeId":['',[Validators.required]],
@@ -54,19 +55,29 @@ export class StudentResearch implements OnInit{
  }
 
  submitForm(){
-  if(!this.isUpdating)
+  if(!this.isUpdating){
+    this.saving = true;
    this.utServ.postQuarterWithStudentResearch(this.selectedQuarter.id,this.studentResearchForm.value).subscribe((response:any)=>{
-    this.selectedQuarter.studentResearches.push(response.studentResearches[0]);
-    this.selectedQuarter.currentCost += response.currentCost;
-    $("#myModal"+this.d).modal('hide');
-   });
-   else{
+     this.saving = false;
+     this.programListView = true;
+     this.selectedQuarter.studentResearches.push(response);
+     this.selectedQuarter.currentCost += response.currentCost;
+     alertify.success("Successfully Saved");
+     $("#myModal"+this.d).modal('hide');
+    },(error)=>{
+      this.saving = false;     
+    });
+  }else{
+    this.saving = true;
     alertify.confirm("Do You want to update it?", (ok: any) => {
-     this.utServ.updateForm(this.url, this.studentResearchForm.value).subscribe((response: any) => {
-      
-      _.extend(this.selectedProgram,this.studentResearchForm.value);
-     }, (error: any) => {
-      
+      this.utServ.updateForm(this.url, this.studentResearchForm.value).subscribe((response: any) => {
+        this.saving = false;
+        this.programListView = true;
+        _.extend(this.selectedProgram,this.studentResearchForm.value);
+        alertify.success("Successfully updated");
+      }, (error: any) => {
+        alertify.error("Somethig went wrong.");
+        this.saving = false;      
      });
     }).setHeader("Confirmation");
    }

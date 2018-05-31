@@ -56,7 +56,7 @@ export class ExchangeProgram implements OnInit{
  submitForm(){
   if(!this.isUpdating) 
    this.utServ.postQuarterWithExchangeProgram(this.selectedQuarter.id,this.exchangeProgramForm.value).subscribe((response:any)=>{
-    this.selectedQuarter.exchangePrograms.push(response.exchangePrograms[0]);
+    this.selectedQuarter.exchangePrograms.push(response);
     this.selectedQuarter.currentCost += response.currentCost;
     $("#myModal"+this.d).modal('hide');
    });

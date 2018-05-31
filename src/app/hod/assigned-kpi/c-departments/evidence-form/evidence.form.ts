@@ -104,6 +104,7 @@ export class EvidenceForm {
       $('#evidenceForm' + this.formId).modal('hide');
       this.selectedQuarter.submitButton = false;
     }, (error: any) => {
+      this.selectedQuarter.submitButton = false;
       alertify.error("Something went wrong");
       $('#evidenceForm' + this.formId).modal('hide');
     });

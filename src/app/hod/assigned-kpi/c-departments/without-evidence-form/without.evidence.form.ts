@@ -10,6 +10,7 @@ import { StorageService } from '../../../../shared/storage.service';
  styleUrls: ['./../../../hod.component.scss'],
 })
 export class WithoutEvidenceForm implements OnInit{
+  saving: boolean;
  role: any;
  formId: any;
  @Output() changeSelected: any = new EventEmitter();
@@ -32,23 +33,26 @@ export class WithoutEvidenceForm implements OnInit{
  }
 
  public saveQuarterResult(quarter: any) {
+   this.saving = true;
   if (!quarter.isUpdating) {
    var object = {
     'levelId': quarter.id,
     'currentCost': quarter.currentCost,
     'currentTargetLevel': quarter.currentTargetLevel,
    }
-   this.loaderService.setLoadingStatus("Saving");
-   this.loaderService.setTransactionLoader(true);
    this.utServ.saveQuarterResult(object).subscribe((response: any) => {
-    this.loaderService.setTransactionLoader(false);
+     this.saving = false;
     quarter.isUpdating = false;
     quarter.status = 'inprogress';
+    Object.keys(response).forEach((key:any)=>{
+      quarter[key]=response[key];
+    });
    }, (error: any) => {
-    this.loaderService.setTransactionLoader(false);
+    this.saving = false;     
     alertify.error("Something went wrong..");
    });
   } else {
+    this.saving = true;
    let object = {
     'currentCost': quarter.currentCost,
     'currentTargetLevel': quarter.currentTargetLevel,
@@ -56,13 +60,13 @@ export class WithoutEvidenceForm implements OnInit{
    this.loaderService.setLoadingStatus("Updating");
    this.loaderService.setTransactionLoader(true);
    this.utServ.updateQuarterResult(quarter.id, object).subscribe((response: any) => {
+    this.saving = false;
     quarter.status = 'inprogress';
     quarter.isUpdating = false;
-    this.loaderService.setTransactionLoader(false);
     alertify.success("Updated");
     
    }, (error: any) => {
-    this.loaderService.setTransactionLoader(false);
+    this.saving = false;
     alertify.error("Something went wrong..");
    })
   }
@@ -73,7 +77,6 @@ export class WithoutEvidenceForm implements OnInit{
    this.loaderService.setLoadingStatus("Locking");
    this.loaderService.setTransactionLoader(true);
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
-    this.loaderService.setTransactionLoader(false);
     
     quarter.disable = true;
     quarter.status = "locked";

@@ -21,7 +21,6 @@
           <div class="text-right">
             <!-- <small>Status (role)</small> -->
             <div class="text-capitalize">
-
               {{lev.status}}
               <br> by {{lev.role}}
             </div>
@@ -82,7 +81,7 @@
         </div>
         <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
           <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)">
-          Approve/Reject</button>
+            Approve/Reject</button>
         </div>
       </div>
     </div>
@@ -110,44 +109,44 @@
               <input type="text" class="form-control" placeholder="Enter title" formControlName="title">
             </div>
             <div class="col-lg-6 col-sm-12">
-                <label>Learning Type</label>
-                <select class="form-control" formControlName="learningType">
-                    <option value="course">Course</option>
-                    <option value="workshop">Workshop</option>
-                    <option value="seminar">Seminar</option>
-                    <option value="conference">conference</option>
-                </select>
+              <label>Learning Type</label>
+              <select class="form-control" formControlName="learningType">
+                <option value="course">Course</option>
+                <option value="workshop">Workshop</option>
+                <option value="seminar">Seminar</option>
+                <option value="conference">conference</option>
+              </select>
             </div>
           </div>
           <div class="row mt-4">
             <div class="col-lg-4 col-sm-12">
-                <label>Current Cost</label>
-                <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost" min="0">
+              <label>Current Cost</label>
+              <input type="number" class="form-control" placeholder="Enter Current Cost" formControlName="currentCost" min="0">
             </div>
             <div class="col-lg-4 col-sm-12">
-                <label>Start Date</label>
-                <input type="date" class="form-control" formControlName="startDate">
-              </div>
-              <div class="col-lg-4 col-sm-12">
-                  <label>End Date</label>
-                  <input type="date" class="form-control" formControlName="endDate">
-              </div>
+              <label>Start Date</label>
+              <input type="date" class="form-control" formControlName="startDate">
+            </div>
+            <div class="col-lg-4 col-sm-12">
+              <label>End Date</label>
+              <input type="date" class="form-control" formControlName="endDate">
+            </div>
           </div>
           <div class="row mt-4">
-              <div class="col-lg-4 col-sm-12">
-                  <label>Inside Participants</label>
-                  <input type="number" class="form-control" formControlName="totalInsideParticipants">
-              </div>
-              <div class="col-lg-4 col-sm-12">
-                  <label>Outside Participants</label>
-                  <input type="number" class="form-control" formControlName="totalOutsideParticipants">
-                </div>
-                <div class="col-lg-4 col-sm-12">
-                    <label>Sponsors</label>
-                    <input type="text" class="form-control" formControlName="sponsors">
-                </div>
-              </div>
+            <div class="col-lg-4 col-sm-12">
+              <label>Inside Participants</label>
+              <input type="number" class="form-control" formControlName="totalInsideParticipants">
+            </div>
+            <div class="col-lg-4 col-sm-12">
+              <label>Outside Participants</label>
+              <input type="number" class="form-control" formControlName="totalOutsideParticipants">
+            </div>
+            <div class="col-lg-4 col-sm-12">
+              <label>Sponsors</label>
+              <input type="text" class="form-control" formControlName="sponsors">
+            </div>
           </div>
+        </div>
         <div class="modal-footer">
           <button class="btn-sp btn-primary" (click)="learningListView = true;">
             <span class="glyphicon glyphicon-arrow-left"></span> Back
@@ -160,69 +159,70 @@
         <div class="modal-body">
           <h5>
             <button class="float-right btn-sp btn-sp-small btn-primary" (click)="learningListView = false;">
-                <i class="fas fa-plus-circle"></i> Add New
+              <i class="fas fa-plus-circle"></i> Add New
             </button>
           </h5>
           <div class="table-responsive">
-          <table class="table table-bordered table-bordered">
-            <thead>
-              <tr>
-                <th>*</th>
-                <th>Learning</th>
-                <th>Learning Type</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Sponsor</th>
-                <th>No. of Inside Participants</th>
-                <th>No. of Outside Participants</th>
-                <th>Evidence</th>
-                <th *ngIf="role=='coordinator'">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let learning of selectedQuarter.communityLearnings;let p = index;">
-                <td>{{p+1}}</td>
-                <td>{{learning.title}}</td>
-                <td>{{learning.learningType}}</td>
-                <td>{{learning.startDate}}</td>
-                <td>{{learning.endDate}}</td>
-                <td>{{learning.sponsors}}</td>
-                <td>{{learning.totalInsideParticipants}}</td>
-                <td>{{learning.totalOutsideParticipants}}</td>
-                <td>
-                  <div class="dropdown">
-                    <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown">
-                     Files {{learning.evidance.length}}
-                    </a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu" class="d-flex justify-content-between flex-column list-group">
-                      <li role="presentation" *ngFor="let ev of learning.evidance;let e = index;" class="d-flex justify-content-between list-group-item">
-                        <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)">Evidance {{e+1}}</a>
-                        <button type="button" class="close" (click)="deleteEvidence(ev,learning.evidance)" [hidden]="selectedQuarter.status=='locked'">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </li>
-                      <li class="list-group-item" role="presentation" *ngIf="!learning.evidance.length">None</li>
-                      <li class="list-group-item" role="presentation">
-                        <button class="btn-sp btn-sp-small btn-primary" *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
-                          (click)="selectedForm = learning" [disabled]="selectedQuarter.disable">Upload</button>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td *ngIf="role=='coordinator'">
+            <table class="table table-bordered table-bordered">
+              <thead>
+                <tr>
+                  <th>*</th>
+                  <th>Learning</th>
+                  <th>Learning Type</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Sponsor</th>
+                  <th>No. of Inside Participants</th>
+                  <th>No. of Outside Participants</th>
+                  <th>Evidence</th>
+                  <th *ngIf="role=='coordinator'">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let learning of selectedQuarter.communityLearnings;let p = index;">
+                  <td>{{p+1}}</td>
+                  <td>{{learning.title}}</td>
+                  <td>{{learning.learningType}}</td>
+                  <td>{{learning.startDate}}</td>
+                  <td>{{learning.endDate}}</td>
+                  <td>{{learning.sponsors}}</td>
+                  <td>{{learning.totalInsideParticipants}}</td>
+                  <td>{{learning.totalOutsideParticipants}}</td>
+                  <td>
+                    <div class="dropdown">
+                      <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown">
+                        Files {{learning.evidance.length}}
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="menu" class="d-flex justify-content-between flex-column list-group">
+                        <li role="presentation" *ngFor="let ev of learning.evidance;let e = index;" class="d-flex justify-content-between list-group-item">
+                          <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)">Evidance {{e+1}}</a>
+                          <button type="button" class="close" (click)="deleteEvidence(ev,learning.evidance)" [hidden]="selectedQuarter.status=='locked'">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </li>
+                        <li class="list-group-item" role="presentation" *ngIf="!learning.evidance.length">None</li>
+                        <li class="list-group-item" role="presentation">
+                          <button class="btn-sp btn-sp-small btn-primary" *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'"
+                            data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
+                            (click)="selectedForm = learning" [disabled]="selectedQuarter.disable">Upload</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td *ngIf="role=='coordinator'">
                     <span class="option">
-                        <button class="btn btn-link" (click)="edit(learning)">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-link" (click)="delete(learning,selectedQuarter.communityLearnings)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                      </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                      <button class="btn btn-link" (click)="edit(learning)">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-link" (click)="delete(learning,selectedQuarter.communityLearnings)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-sp btn-primary" (click)="learningListView = false;resetForm()">
@@ -235,4 +235,5 @@
   </div>
 </div>
 
-<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId"
+  [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

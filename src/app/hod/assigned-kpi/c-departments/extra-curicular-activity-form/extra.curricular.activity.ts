@@ -13,6 +13,7 @@ import { StorageService } from '../../../../shared/storage.service';
 })
 export class ExtraCurricularActivity implements OnInit{
 
+  saving: boolean;
   @Output() selectEvidence: any = new EventEmitter();
  role: any;
  selectedProgram: any;
@@ -44,7 +45,7 @@ export class ExtraCurricularActivity implements OnInit{
    currentCost: ['', [Validators.required,Validators.min(0)]],
    activityDate: ['', [Validators.required]],
    activityType: ['', [Validators.required]],
-   internal: ['', [Validators.required]],
+   internal: [''],
    scopeId: ['', [Validators.required]],
    totalInsideParticipants: ['', [Validators.required]],
    totalOutsideParticipants: ['', [Validators.required]],
@@ -52,18 +53,28 @@ export class ExtraCurricularActivity implements OnInit{
  }
 
  submitForm() {
-  if(!this.isUpdating)
+  if(!this.isUpdating){
+    this.saving = true;
   this.utServ.postQuarterWithExtraCurricularActivity(this.selectedQuarter.id, this.extraCurricularActivityForm.value).subscribe((response: any) => {
+    this.saving = false;
     this.selectedQuarter.extraCurricularActivities.push(response);
+    alertify.success("Successfully Saved");
     this.activityListView = true;   
+  },error=>{
+    alertify.error("Somethig went wrong.");
+    this.saving = false;    
   });
-  else {
+  }else {
    alertify.confirm("Do You want to update it?", (ok: any) => {
+     this.saving = true;
     this.utServ.updateForm(this.url, this.extraCurricularActivityForm.value).subscribe((response: any) => {
      _.extend(this.selectedProgram,this.extraCurricularActivityForm.value);
      this.activityListView = true;
+     alertify.success("Successfully updated");
+     this.saving = false;
     }, (error: any) => {
-     
+      alertify.error("Somethig went wrong.");
+      this.saving = false; 
     });
    }).setHeader("Confirmation");
   }

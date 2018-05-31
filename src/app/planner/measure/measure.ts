@@ -504,9 +504,13 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       this.saving = true;        
         delete this.measureForm.value["activityId"];
         this.orgService.updateMeasure(this.selectedMeasure.opiId, formChanges).subscribe((response: any) => {
+          alertify.success("Successfully updated");
           this.saving = false;
           this.measureForm = this.setMeasure();
           this.getMeasure();
+        },error=>{
+          this.saving = false;
+          alertify.error("Something went wrong "+error);
         });
       }).setHeader("Confirmation");
       $('#add-opi').hide();

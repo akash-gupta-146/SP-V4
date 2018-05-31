@@ -35,8 +35,11 @@
         </div>
         <div class="d-flex justify-content-between mt-2 mx-2">
           <div>
-            <a data-toggle="modal" href="#internshipGraphModal" *ngIf="(lev.evidanceFormId==1&&lev.internshipGraph.length); else normal" (click)="selectedQuarter = lev;">Achievement </a>
-            <ng-template #normal><small>Achievement</small></ng-template>
+            <a data-toggle="modal" href="#internshipGraphModal" *ngIf="(lev.evidanceFormId==1&&lev.internshipGraph.length); else normal"
+              (click)="selectedQuarter = lev;">Achievement </a>
+            <ng-template #normal>
+              <small>Achievement</small>
+            </ng-template>
             <div>{{lev.currentTargetLevel}}</div>
           </div>
           <div class="text-right">
@@ -91,8 +94,8 @@
           </div>
         </div>
         <div class="d-flex justify-content-between mt-2 mx-2" *ngIf="lev.status!='unsubmitted'">
-          <div *ngIf="lev.status!='unsubmitted'" class="dropdown">
-            <div >
+          <div class="dropdown">
+            <div>
               <small>Evidence </small>
               <div>{{lev.evidance.length}}</div>
             </div>
@@ -101,18 +104,20 @@
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
               <li role="presentation" *ngFor="let ev of lev.evidance;let e = index;" class="d-flex justify-content-between px-2">
-                <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" href="#evidenceFileModal" (click)="storeEvidence(ev)" style="float:left">Evidence {{e+1}}</a>
-                <button type="button" class="close" (click)="deleteEvidence(lev.evidance,ev,e)" [hidden]="lev.disable" *ngIf="lev.status!='locked'" style="margin-top: -6px;">&times;</button>
+                <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" href="#evidenceFileModal" (click)="storeEvidence(ev)"
+                  style="float:left">Evidence {{e+1}}</a>
+                <button type="button" class="close" (click)="deleteEvidence(lev.evidance,ev,e)" [hidden]="lev.disable" *ngIf="lev.status!='locked'"
+                  style="margin-top: -6px;">&times;</button>
               </li>
               <li class="text-center" role="presentation" *ngIf="!lev.evidance.length">None</li>
               <li role="presentation" class="dropdown-divider" style="clear: both;"></li>
               <li class="text-center" role="presentation">
                 <button *ngIf="lev.status=='inprogress'||lev.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
-                (click)="selectedQuarter = lev;" [disabled]="lev.disable">Upload</button>
+                  (click)="selectedQuarter = lev;" [disabled]="lev.disable">Upload</button>
               </li>
             </ul>
           </div>
-          <div class="text-right" class="dropdown" *ngIf="lev.internshipDetails&&lev.internshipDetails.length">
+          <div class="text-right" class="dropdown" *ngIf="lev.internshipDetails&&lev.status!='unsubmitted'">
             <div class="text-right">
               <small>Internship Files </small>
               <div>{{lev.internshipDetails.length}}</div>
@@ -123,8 +128,8 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
               <li role="presentation" *ngFor="let file of lev.internshipDetails;let e = index;" class="d-flex justify-content-between px-2">
                 <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="file.internshipFileUrl" style="float:left">File {{e+1}}</a>
-                <button type="button" class="close" (click)="deleteFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable"
-                  style="margin-top: -6px;">&times;</button>
+                <!-- <button type="button" class="close" (click)="deleteFile(lev.internshipDetails,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable"
+                  style="margin-top: -6px;">&times;</button> -->
               </li>
               <li class="text-center" role="presentation" *ngIf="!lev.internshipDetails.length">None</li>
               <li role="presentation" class="dropdown-divider" style="clear: both;"></li>
@@ -133,7 +138,7 @@
               </li>
             </ul>
           </div>
-          <div class="text-right" class="dropdown" *ngIf="lev.facultyPublications&&lev.facultyPublications.length">
+          <div class="text-right" class="dropdown" *ngIf="lev.facultyPublications&&lev.status!='unsubmitted'">
             <div class="text-right">
               <small>Faculty Publications Files</small>
               <div>{{lev.facultyPublications.length}}</div>
@@ -144,8 +149,8 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
               <li role="presentation" *ngFor="let file of lev.facultyPublications;let e = index;" class="d-flex justify-content-between px-2">
                 <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="file.fileUrl" style="float:left">File {{e+1}}</a>
-                <button type="button" class="close" (click)="deleteFile(lev.facultyPublications,file,f)" *ngIf="lev.status!='locked'" [hidden]="lev.disable"
-                  style="margin-top: -6px;">&times;</button>
+                <!-- <button type="button" class="close" (click)="deleteFile(lev.facultyPublications,file,f)" *ngIf="lev.status!='locked'" [hidden]="lev.disable"
+                  style="margin-top: -6px;">&times;</button> -->
               </li>
               <li class="text-center" role="presentation" *ngIf="!lev.facultyPublications.length">None</li>
               <li role="presentation" class="dropdown-divider" style="clear: both;"></li>
@@ -154,7 +159,7 @@
               </li>
             </ul>
           </div>
-          <div class="text-right" class="dropdown" *ngIf="lev.studentPublications&&lev.studentPublications.length">
+          <div class="text-right" class="dropdown" *ngIf="lev.studentPublications&&lev.status!='unsubmitted'">
             <div class="text-right">
               <small>Student Publication Files</small>
               <div> {{lev.studentPublications.length}}</div>
@@ -165,8 +170,8 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
               <li role="presentation" *ngFor="let file of lev.studentPublications;let e = index;" class="d-flex justify-content-between px-2">
                 <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="file.fileUrl" style="float:left">File {{e+1}}</a>
-                <button type="button" class="close" (click)="deleteFile(lev.studentPublications,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable"
-                  style="margin-top: -6px;">&times;</button>
+                <!-- <button type="button" class="close" (click)="deleteFile(lev.studentPublications,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable"
+                  style="margin-top: -6px;">&times;</button> -->
               </li>
               <li class="text-center" role="presentation" *ngIf="!lev.studentPublications.length">None</li>
               <li role="presentation" class="dropdown-divider" style="clear: both;"></li>
@@ -175,7 +180,7 @@
               </li>
             </ul>
           </div>
-          <div class="text-right" class="dropdown" *ngIf="lev.professionalDevelopmentActivities&&lev.professionalDevelopmentActivities.length">
+          <div class="text-right" class="dropdown" *ngIf="lev.professionalDevelopmentActivities&&lev.status!='unsubmitted'">
             <div class="text-right">
               <small>Professional Development Activity Files </small>
               <div>{{lev.professionalDevelopmentActivities.length}}</div>
@@ -186,8 +191,8 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
               <li role="presentation" *ngFor="let file of lev.professionalDevelopmentActivities;let e = index;" class="d-flex justify-content-between px-2">
                 <a class="btn-link" role="menuitem" tabindex="-1" [attr.href]="file.fileUrl" style="float:left">File {{e+1}}</a>
-                <button type="button" class="close" (click)="deleteFile(lev.professionalDevelopmentActivities,file,f)" *ngIf="lev.status!='locked'" [disabled]="lev.disable"
-                  style="margin-top: -6px;">&times;</button>
+                <!-- <button type="button" class="close" (click)="deleteFile(lev.professionalDevelopmentActivities,file,f)" *ngIf="lev.status!='locked'"
+                  [disabled]="lev.disable" style="margin-top: -6px;">&times;</button> -->
               </li>
               <li class="text-center" role="presentation" *ngIf="!lev.professionalDevelopmentActivities.length">None</li>
               <li role="presentation" class="dropdown-divider" style="clear: both;"></li>
@@ -216,39 +221,41 @@
         </div>
 
         <div class="d-flex justify-content-end mt-3" *ngIf="!lev.disable">
-          <button class="btn-link link primary-link text-primary" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)" [disabled]="saving"
-            *ngIf="lev.status=='unsubmitted'&&!lev.isUpdating">
+          <button class="btn-link link primary-link text-primary" (click)="saveForm(lev)" [disabled]="lev.disable" [disabled]="!(lev.currentCost&&lev.file)"
+            [disabled]="saving" *ngIf="lev.status=='unsubmitted'&&!lev.isUpdating">
             <span *ngIf="saving;else save">
               <i class="fa fa-spinner fa-spin"></i> Saving
             </span>
             <ng-template #save>Save</ng-template>
           </button>
 
-          <button class="btn-link link primary-link text-primary" *ngIf="lev.status=='unsubmitted'&&lev.isUpdating" (click)="updateCurrentCost(lev);" [disabled]="lev.disable" [disabled]="saving">
+          <button class="btn-link link primary-link text-primary" *ngIf="lev.status=='unsubmitted'&&lev.isUpdating" (click)="updateCurrentCost(lev);"
+            [disabled]="lev.disable" [disabled]="saving">
             <span *ngIf="saving;else save">
               <i class="fa fa-spinner fa-spin"></i> Saving
             </span>
             <ng-template #save>Save</ng-template>
           </button>
 
-          <button class="btn-link link primary-link text-primary ml-1" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
+          <!-- <button class="btn-link link primary-link text-primary ml-1" *ngIf="lev.status=='inprogress'||lev.status=='rejected'" (click)="lev.status='unsubmitted';lev.isUpdating=true;"
             [disabled]="lev.disable">Edit</button>
 
           <button class="btn-link link primary-link text-primary ml-1" *ngIf="lev.isUpdating" (click)="lev.status='inprogress';lev.isUpdating=false;">
-            Cancel</button>
-          <button class="btn-link link primary-link text-primary ml-1" *ngIf="!lev.isUpdating&&!lev.disable&&lev.status != 'locked'&&role=='coordinator'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable||!lev.evidance.length">Lock</button>
+            Cancel</button> -->
+          <button class="btn-link link primary-link text-primary ml-1" *ngIf="!lev.isUpdating&&!lev.disable&&lev.status != 'locked'&&role=='coordinator'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">Lock</button>
         </div>
-        <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">          
+        <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
           <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)">
-          Approve/Reject</button>
+            Approve/Reject</button>
         </div>
       </div>
     </div>
-  </div>  
+  </div>
 </div>
 <!-- end of quarter boxes -->
 
-<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" [selectedQuarter]="selectedQuarter" *ngIf="selectedQuarter"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId"
+  [selectedForm]="selectedForm" [selectedQuarter]="selectedQuarter" *ngIf="selectedQuarter"></evidence-form>
 
 <div class="modal fade" [attr.id]="'internshipModal'+department.departmentId" *ngIf="selectedQuarter.internshipRecord">
   <div class="modal-dialog modal-lg" style="max-width: 900px;">
@@ -263,63 +270,69 @@
         <div class="modal-body">
           <div class="modal-box row mx-3">
             <div class="col-lg-12 col-sm-12 border-bottom pl-0">
-                <small><b>Student Details</b></small>
+              <small>
+                <b>Student Details</b>
+              </small>
             </div>
             <div class="form-group col-lg-6">
-                <label class="control-label">Name:</label>
-                <input class="form-control" type="text" formControlName="studentName">
-              </div>
-              <div class="form-group col-lg-6">
-                  <label class="control-label">Department:</label>
-                  <input class="form-control" type="text" formControlName="department">
-              </div>
-              <div class="form-group col-lg-6">
-                <label class="control-label">College:</label>
-                <input class="form-control" type="text" formControlName="college">
-              </div>
-              <div class="form-group col-lg-6">
-                  <label class="control-label">Internal Supervisor:</label>
-                  <input class="form-control" type="text" formControlName="internalSupervisor">
-                </div>
+              <label class="control-label">Name:</label>
+              <input class="form-control" type="text" formControlName="studentName">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Department:</label>
+              <input class="form-control" type="text" formControlName="department">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">College:</label>
+              <input class="form-control" type="text" formControlName="college">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Internal Supervisor:</label>
+              <input class="form-control" type="text" formControlName="internalSupervisor">
+            </div>
           </div>
           <div class="modal-box row mx-3">
-              <div class="col-lg-12 col-sm-12 border-bottom pl-0">
-                  <small><b>External Supervisor Details</b></small>
-              </div>
-              <div class="form-group col-lg-6">
-                  <label class="control-label">Name:</label>
-                  <input class="form-control" type="text" formControlName="externalSupervisor">
-                </div>
-                <div class="form-group col-lg-6">
-                  <label class="control-label">Email:</label>
-                  <input class="form-control" type="email" formControlName="externalSupervisorEmail">
-                </div>
-                <div class="form-group col-lg-6">
-                  <label class="control-label">Contact No.:</label>
-                  <input class="form-control" type="tel" formControlName="externalSupervisorMobile">
-                </div>
+            <div class="col-lg-12 col-sm-12 border-bottom pl-0">
+              <small>
+                <b>External Supervisor Details</b>
+              </small>
             </div>
-              <div class="modal-box row mx-3">
-                  <div class="col-lg-12 col-sm-12 border-bottom pl-0">
-                      <small><b>Organization Details</b></small>
-                  </div>
-                  <div class="form-group col-lg-6">
-                      <label class="control-label">Internship Domain:</label>
-                      <input class="form-control" type="text" formControlName="internshipDomain">
-                    </div>
-                    <div class="form-group col-lg-6">
-                      <label class="control-label">Organization Name:</label>
-                      <input class="form-control" type="text" formControlName="organization">
-                    </div>
-                    <div class="form-group col-lg-6">
-                      <label class="control-label">Address:</label>
-                      <input class="form-control" type="text" formControlName="organizationAddress">
-                    </div>
-                    <div class="form-group col-lg-6">
-                      <label class="control-label">Address Type:</label>
-                      <input class="form-control" type="text" formControlName="organizationAddressType">
-                    </div>
-                </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Name:</label>
+              <input class="form-control" type="text" formControlName="externalSupervisor">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Email:</label>
+              <input class="form-control" type="email" formControlName="externalSupervisorEmail">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Contact No.:</label>
+              <input class="form-control" type="tel" formControlName="externalSupervisorMobile">
+            </div>
+          </div>
+          <div class="modal-box row mx-3">
+            <div class="col-lg-12 col-sm-12 border-bottom pl-0">
+              <small>
+                <b>Organization Details</b>
+              </small>
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Internship Domain:</label>
+              <input class="form-control" type="text" formControlName="internshipDomain">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Organization Name:</label>
+              <input class="form-control" type="text" formControlName="organization">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Address:</label>
+              <input class="form-control" type="text" formControlName="organizationAddress">
+            </div>
+            <div class="form-group col-lg-6">
+              <label class="control-label">Address Type:</label>
+              <input class="form-control" type="text" formControlName="organizationAddressType">
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-sp btn-primary" (click)="listView = true;">
@@ -367,71 +380,71 @@
               </tfoot>
             </table>
           </div>
-        <!-- No content -->
-          <div no-content  *ngIf="!selectedQuarter.internshipRecord.length">
-              No Record available
+          <!-- No content -->
+          <div no-content *ngIf="!selectedQuarter.internshipRecord.length">
+            No Record available
           </div>
-        <!-- end of no content -->
+          <!-- end of no content -->
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
       <form class="form-horizontal" [formGroup]="recordForm" (submit)="updateInternshipRecord()" *ngIf="!listView">
-          <div class="modal-body row">
-            <div class="form-group col-lg-6">
-              <label class="control-label">Student:</label>
-              <input class="form-control" type="text" formControlName="studentName">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">College:</label>
-              <input class="form-control" type="text" formControlName="college">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">Department:</label>
-              <input class="form-control" type="text" formControlName="department">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">External Supervisor:</label>
-              <input class="form-control" type="text" formControlName="externalSupervisor">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">External Supervisor Email:</label>
-              <input class="form-control" type="email" formControlName="externalSupervisorEmail">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">External Supervisor Mobile:</label>
-              <input class="form-control" type="tel" formControlName="externalSupervisorMobile">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">Internal Supervisor:</label>
-              <input class="form-control" type="text" formControlName="internalSupervisor">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">Internship Domail:</label>
-              <input class="form-control" type="text" formControlName="internshipDomain">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">Organization:</label>
-              <input class="form-control" type="text" formControlName="organization">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">Organization Address:</label>
-              <input class="form-control" type="text" formControlName="organizationAddress">
-            </div>
-            <div class="form-group col-lg-6">
-              <label class="control-label">Organization Address Type:</label>
-              <input class="form-control" type="text" formControlName="organizationAddressType">
-            </div>
+        <div class="modal-body row">
+          <div class="form-group col-lg-6">
+            <label class="control-label">Student:</label>
+            <input class="form-control" type="text" formControlName="studentName">
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="listView = true;">
-              <span class="glyphicon glyphicon-arrow-left"></span> Back
-            </button>
-            <button type="submit" class="btn btn-default" [disabled]="recordForm.invalid">Submit</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <div class="form-group col-lg-6">
+            <label class="control-label">College:</label>
+            <input class="form-control" type="text" formControlName="college">
           </div>
-        </form>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Department:</label>
+            <input class="form-control" type="text" formControlName="department">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">External Supervisor:</label>
+            <input class="form-control" type="text" formControlName="externalSupervisor">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">External Supervisor Email:</label>
+            <input class="form-control" type="email" formControlName="externalSupervisorEmail">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">External Supervisor Mobile:</label>
+            <input class="form-control" type="tel" formControlName="externalSupervisorMobile">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Internal Supervisor:</label>
+            <input class="form-control" type="text" formControlName="internalSupervisor">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Internship Domail:</label>
+            <input class="form-control" type="text" formControlName="internshipDomain">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Organization:</label>
+            <input class="form-control" type="text" formControlName="organization">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Organization Address:</label>
+            <input class="form-control" type="text" formControlName="organizationAddress">
+          </div>
+          <div class="form-group col-lg-6">
+            <label class="control-label">Organization Address Type:</label>
+            <input class="form-control" type="text" formControlName="organizationAddressType">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="listView = true;">
+            <span class="glyphicon glyphicon-arrow-left"></span> Back
+          </button>
+          <button type="submit" class="btn btn-default" [disabled]="recordForm.invalid">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </form>
     </div>
 
   </div>
@@ -690,7 +703,7 @@
       </form>
       <div *ngIf="listView">
         <div class="modal-body">
-          <div class="table-responsive-sm" >
+          <div class="table-responsive-sm">
             <table class="table table-bordered table-card">
               <thead>
                 <tr>
@@ -752,25 +765,32 @@
             aria-describedby="fileHelp" (change)="selectedQuarter.file = $event.target.files[0];">
           <small id="fileHelp" class="form-text text-muted">Accept only .xls, .csv or excel sheets</small>
         </div>
+        <div class="form-group">
+          <label>Current Cost :</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedQuarter.currentCost">
+        </div>
         <div class="form-check form-check-inline">
           <label class="form-check-label">
             <input type="radio" name="replace" class="form-check-input" [(ngModel)]="selectedQuarter.replace" value="true" checked="true">Replace current records
           </label>
           <label class="form-check-label">
-            <input type="radio" name="replace" class="form-check-input" [(ngModel)]="selectedQuarter.replace" value="false" >Add to current records
+            <input type="radio" name="replace" class="form-check-input" [(ngModel)]="selectedQuarter.replace" value="false">Add to current records
           </label>
         </div>
       </div>
       <div class="progress" *ngIf="selectedQuarter.submitButton">
-        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-          <span>Uploading..<span class="dotdotdot"></span></span>
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+          style="width: 100%">
+          <span>Uploading..
+            <span class="dotdotdot"></span>
+          </span>
         </div>
       </div>
 
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="uploadFile(selectedQuarter);" [disabled]="!selectedQuarter.file">Upload</button>
-        <button type="button" class="btn-sp btn-clear" data-dismiss="modal" >Close</button>
+        <button type="button" class="btn btn-success" (click)="uploadFile(selectedQuarter);" [disabled]="!selectedQuarter.file&&!selectedQuarter.currentCost">Upload</button>
+        <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
       </div>
 
     </div>
@@ -806,7 +826,9 @@
               <td>{{record.internalSupervisor}}</td>
               <td>{{record.count}}</td>
             </tr>
-            <tr *ngIf="!selectedQuarter.internshipGraph.length"><td colspan="4">Report not generated</td></tr>
+            <tr *ngIf="!selectedQuarter.internshipGraph.length">
+              <td colspan="4">Report not generated</td>
+            </tr>
           </tbody>
         </table>
       </div>

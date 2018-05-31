@@ -10,8 +10,10 @@
       </div>
     </div>
     <div class="d-flex justify-content-center">
-      <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;" [style.border-color]="lev.successInfo.color">
-        <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color" [class.text-black]="lev.successInfo.color == '#FFEB3B'">
+      <div class="d-flex flex-column card-box small-box p-0 m-2 speed-p7 animate bounceIn" style="width:25%" *ngFor="let lev of tdl.levels;let in=index;"
+        [style.border-color]="lev.successInfo.color">
+        <div class="d-flex justify-content-between align-items-center text-white p-2" [style.background]="lev.successInfo.color"
+          [class.text-black]="lev.successInfo.color == '#FFEB3B'">
           <div>
             <!-- <small>Quarter</small> -->
             <div class="text-uppercase">{{lev.quarter}}</div>
@@ -66,16 +68,18 @@
           </div>
         </div>
         <div class="d-flex justify-content-center m-1" *ngIf="!lev.disable">
-          <button class="btn-link link primary-link text-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)" *ngIf="lev.status=='unsubmitted'">
+          <button class="btn-link link primary-link text-primary" data-toggle="modal" [attr.data-target]="'#myModal'+d" (click)="selectQuarter(lev)"
+            *ngIf="lev.status=='unsubmitted'">
             <i class="fas fa-sign-in-alt"></i> Fill
           </button>
-          <button class="btn-link link primary-link text-primary" *ngIf="lev.exchangePrograms.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">
+          <button class="btn-link link primary-link text-primary" *ngIf="lev.exchangePrograms.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
+            [disabled]="lev.disable">
             <i class="fas fa-lock"></i> Lock
           </button>
         </div>
         <div class="d-flex justify-content-end mt-3" *ngIf="(!lev.disable)&&(role!='coordinator')">
           <button class="btn-link link primary-link text-primary ml-1" data-toggle="modal" data-target="#feedbackModal" (click)="selectLevel(lev)">
-          Approve/Reject</button>
+            Approve/Reject</button>
         </div>
       </div>
     </div>
@@ -137,151 +141,159 @@
 
 <!-- Modal -->
 <div [attr.id]="'myModal'+d" class="modal fade" role="dialog">
- <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg">
 
-  <!-- Modal content-->
-  <div class="modal-content">
-   <div class="modal-header">
-      <h4 class="modal-title">Exchange Programs</h4>
-    <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
-   </div>
-   <form class="form-horizontal" [formGroup]="exchangeProgramForm" (submit)="submitForm()" *ngIf="!programListView">
-    <div class="modal-body">
-      <div class="row">
-     <div class="form-group col-lg-12 col-sm-12">
-      <label>Program</label>
-      
-       <input type="text" class="form-control" formControlName="program">
-      
-     </div>
-     <div class="form-group col-lg-12 col-sm-12">
-      <label>Description</label>
-      
-       <textarea class="form-control" formControlName="description" rows="2"></textarea>
-      
-     </div>
-     <div class="form-group col-lg-4 col-sm-12">
-      <label>Current Cost</label>
-      
-       <input type="number" class="form-control" formControlName="currentCost" min="0">
-      
-     </div>
-     <div class="form-group col-lg-4 col-sm-12">
-      <label>Partner Organization</label>
-      
-       <input type="text" class="form-control" formControlName="partnerOrganization">
-      
-     </div>
-     <div class="form-group col-lg-4 col-sm-12">
-      <label>Duration</label>
-      
-       <input type="text" class="form-control" formControlName="duration">
-      
-     </div>
-     <div class="form-group  col-lg-3 col-sm-12">
-      <label>Number ofInside Participants</label>
-      
-       <input type="number" class="form-control" formControlName="totalInsideParticipants">
-      
-     </div>
-     <div class="form-group col-lg-3 col-sm-12">
-      <label>Number of Female Inside Participants</label>
-      
-       <input type="number" class="form-control" formControlName="totalFemaleInsideParticipants">
-      
-     </div>
-     <div class="form-group col-lg-3 col-sm-12">
-      <label>Number of Outside Participants</label>
-      
-       <input type="number" class="form-control" formControlName="totalOutsideParticipants">
-      
-     </div>
-     <div class="form-group col-lg-3 col-sm-12">
-      <label>Number of National Participants </label>
-       <input type="number" class="form-control" formControlName="totalNationalParticipants">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Exchange Programs</h4>
+        <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
+      </div>
+      <form class="form-horizontal" [formGroup]="exchangeProgramForm" (submit)="submitForm()" *ngIf="!programListView">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-lg-12 col-sm-12">
+              <label>Program</label>
+
+              <input type="text" class="form-control" formControlName="program">
+
+            </div>
+            <div class="form-group col-lg-12 col-sm-12">
+              <label>Description</label>
+
+              <textarea class="form-control" formControlName="description" rows="2"></textarea>
+
+            </div>
+            <div class="form-group col-lg-4 col-sm-12">
+              <label>Current Cost</label>
+
+              <input type="number" class="form-control" formControlName="currentCost" min="0">
+
+            </div>
+            <div class="form-group col-lg-4 col-sm-12">
+              <label>Partner Organization</label>
+
+              <input type="text" class="form-control" formControlName="partnerOrganization">
+
+            </div>
+            <div class="form-group col-lg-4 col-sm-12">
+              <label>Duration</label>
+
+              <input type="text" class="form-control" formControlName="duration">
+
+            </div>
+            <div class="form-group  col-lg-3 col-sm-12">
+              <label>Number ofInside Participants</label>
+
+              <input type="number" class="form-control" formControlName="totalInsideParticipants">
+
+            </div>
+            <div class="form-group col-lg-3 col-sm-12">
+              <label>Number of Female Inside Participants</label>
+
+              <input type="number" class="form-control" formControlName="totalFemaleInsideParticipants">
+
+            </div>
+            <div class="form-group col-lg-3 col-sm-12">
+              <label>Number of Outside Participants</label>
+
+              <input type="number" class="form-control" formControlName="totalOutsideParticipants">
+
+            </div>
+            <div class="form-group col-lg-3 col-sm-12">
+              <label>Number of National Participants </label>
+              <input type="number" class="form-control" formControlName="totalNationalParticipants">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="programListView = true;">
+            Back
+          </button>
+          <button type="submit" class="btn-sp btn-primary" [disabled]="exchangeProgramForm.invalid">Save</button>
+          <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+      <div *ngIf="programListView">
+        <div class="modal-body">
+          <h5>
+            <button type="button" class="btn-sp btn-primary btn-sp-small float-right" (click)="programListView = false;resetForm()">
+              <i class="fas fa-plus-circle"></i> Add New
+            </button>
+          </h5>
+          <div class="table-responsive">
+            <table class="table table-bordered table-card" style="position: relative;">
+              <thead>
+                <tr>
+                  <th style="vertical-align:middle;">*</th>
+                  <th style="vertical-align:middle;">Program</th>
+                  <th style="vertical-align:middle;">Description</th>
+                  <th style="vertical-align:middle;">Duration</th>
+                  <th style="vertical-align:middle;">Partners' Organisation</th>
+                  <th style="vertical-align:middle;">No. of Inside Participants</th>
+                  <th style="vertical-align:middle;">No. of Female Participants</th>
+                  <th style="vertical-align:middle;">No. of Outside Participants</th>
+                  <th style="vertical-align:middle;">No. of National Participants</th>
+                  <th style="vertical-align: middle">Evidence</th>
+                  <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let program of selectedQuarter.exchangePrograms;let p = index;" style="position: relative;">
+                  <td>{{p+1}}</td>
+                  <td>{{program.program}}</td>
+                  <td>{{program.description}}</td>
+                  <td>{{program.duration}}</td>
+                  <td>{{program.partnerOrganization}}</td>
+                  <td>{{program.totalInsideParticipants}}</td>
+                  <td>{{program.totalFemaleInsideParticipants}}</td>
+                  <td>{{program.totalOutsideParticipants}}</td>
+                  <td>{{program.totalNationalParticipants}}</td>
+                  <td>
+                    <div class="dropdown">
+                      <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown">
+                        <small>Files</small> {{program.evidance.length}}
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
+                        <li role="presentation" *ngFor="let ev of program.evidance;let e = index;" class="d-flex justify-content-between">
+                          <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)"
+                            style="float:left">evidance {{e+1}}</a>
+                          <button type="button" class="close" (click)="deleteEvidence(ev,program.evidance)" [hidden]="selectedQuarter.status=='locked'">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </li>
+                        <li class="text-center" role="presentation" *ngIf="!program.evidance.length">None</li>
+                        <li role="presentation" class="divider" style="clear: both;"></li>
+                        <li class="text-center" role="presentation">
+                          <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectProgram(program)"> Upload</button> -->
+                          <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
+                            (click)="selectedForm = program" [disabled]="selectedQuarter.disable">Upload</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td *ngIf="role=='coordinator'">
+                    <span class="option">
+                      <button (click)="edit(program)" class="btn btn-link">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button (click)="delete(program,selectedQuarter.exchangePrograms)" class="btn btn-link">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
+        </div>
       </div>
     </div>
-     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default" (click)="programListView = true;">
-        Back
-      </button>
-      <button type="submit" class="btn-sp btn-primary" [disabled]="exchangeProgramForm.invalid">Save</button>
-     <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
-    </div>
-   </form>
-   <div *ngIf="programListView">
-    <div class="modal-body">
-        <h5>
-          <button type="button" class="btn-sp btn-primary btn-sp-small float-right" (click)="programListView = false;resetForm()">
-              <i class="fas fa-plus-circle"></i> Add New
-            </button>  
-        </h5>
-        <div class="table-responsive">
-     <table class="table table-bordered table-card" style="position: relative;">
-     <thead>
-      <tr>
-       <th style="vertical-align:middle;">*</th>
-       <th style="vertical-align:middle;">Program</th>
-       <th style="vertical-align:middle;">Description</th>
-       <th style="vertical-align:middle;">Duration</th>
-       <th style="vertical-align:middle;">Partners' Organisation</th>
-       <th style="vertical-align:middle;">No. of Inside Participants</th>
-       <th style="vertical-align:middle;">No. of Female Participants</th>
-       <th style="vertical-align:middle;">No. of Outside Participants</th>
-       <th style="vertical-align:middle;">No. of National Participants</th>
-       <th style="vertical-align: middle">Evidence</th>
-       <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
-      </tr>
-     </thead>
-     <tbody>
-      <tr *ngFor="let program of selectedQuarter.exchangePrograms;let p = index;" style="position: relative;">
-       <td>{{p+1}}</td>
-       <td>{{program.program}}</td>
-       <td>{{program.description}}</td>
-       <td>{{program.duration}}</td>
-       <td>{{program.partnerOrganization}}</td>
-       <td>{{program.totalInsideParticipants}}</td>
-       <td>{{program.totalFemaleInsideParticipants}}</td>
-       <td>{{program.totalOutsideParticipants}}</td>
-       <td>{{program.totalNationalParticipants}}</td>
-       <td>
-        <div class="dropdown">
-          <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown"><small>Files</small> {{program.evidance.length}}
-          </a>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-            <li role="presentation" *ngFor="let ev of program.evidance;let e = index;" class="d-flex justify-content-between">
-              <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)" style="float:left">evidance {{e+1}}</a>
-              <button type="button" class="close" (click)="deleteEvidence(ev,program.evidance)" [hidden]="selectedQuarter.status=='locked'">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </li>
-            <li class="text-center" role="presentation" *ngIf="!program.evidance.length">None</li>
-            <li role="presentation" class="divider" style="clear: both;"></li>
-            <li class="text-center" role="presentation">
-              <!-- <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" data-target="#evidenceForm" [disabled]="selectedQuarter.disable" (click)="selectProgram(program)"> Upload</button> -->
-              <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId" (click)="selectedForm = program" [disabled]="selectedQuarter.disable">Upload</button>
-            </li>
-          </ul>
-        </div>
-      </td>
-      <td *ngIf="role=='coordinator'">
-       <span class="option">
-        <button (click)="edit(program)" class="btn btn-link"><i class="fas fa-edit"></i></button>
-        <button (click)="delete(program,selectedQuarter.exchangePrograms)" class="btn btn-link">  <i class="fas fa-trash"></i></button>
-       </span>
-       </td>
-      </tr>
-     </tbody>
-     </table>
-    </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
-    </div>
-   </div>
   </div>
- </div>
 </div>
 
-<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId" [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
+<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId"
+  [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

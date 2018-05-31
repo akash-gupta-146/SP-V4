@@ -156,19 +156,12 @@ lockQuarterResult(quarter: any) {
   }).setHeader("Confirmation");
  }
 
-
-
-
-
-
-
-
   submitForm() {
     if (!this.isUpdating){
       this.saving = true;
       this.utServ.saveQuarterResultWithMou(this.selectedQuarter.id, this.mouForm.value).subscribe((response: any) => {
         this.saving = false;
-        this.selectedQuarter.mouDetails.push(response.mouDetails[0]);
+        this.selectedQuarter.mouDetails.push(response);
         this.selectedQuarter.currentCost += response.currentCost;
         this.selectedQuarter.status = 'inprogress';
         this.changeSelected.emit(this.selectedQuarter);
@@ -179,8 +172,8 @@ lockQuarterResult(quarter: any) {
         alertify.error("Something went wrong.");
       });
     }else {
-      this.saving = true;
       alertify.confirm("Do You want to update it?", (ok: any) => {
+        this.saving = true;
         this.utServ.updateForm(this.url, this.mouForm.value).subscribe((response: any) => {
           this.saving = false;
           _.extend(this.selectedmou, this.mouForm.value);
