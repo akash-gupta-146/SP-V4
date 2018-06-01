@@ -187,7 +187,6 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
         })
       }, () => {
         event.target.checked = !event.target.checked;
-        alertify.error("Action was not performed")
       }).setHeader("Confirmation");
   }
 

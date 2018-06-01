@@ -137,7 +137,7 @@ export class InitiativeComponent extends Filters implements OnInit{
         this.saving = false;
         // this.getInitiative(this.defaultCycle);
         $("#add-initiative").hide();
-        alertify.notify("Initiative Successfully Added.");
+        alertify.success("Initiative Successfully Added.");
         $('#add-btn').show();
         this.initiativeForm.controls["initiative"].reset();
         this.selectedGoal.initiatives.push(res);
@@ -153,7 +153,7 @@ export class InitiativeComponent extends Filters implements OnInit{
           $("#add-initiative").hide();
           $('#add-btn').show();
           this.getInitiative(this.defaultCycle);
-          alertify.notify(" Initiative Successfully Updated.");
+          alertify.success(" Initiative Successfully Updated.");
           this.isUpdating = false;
           //this.getAllCycles();          
         })
@@ -260,7 +260,6 @@ export class InitiativeComponent extends Filters implements OnInit{
         })
       }, () => {
         event.target.checked = !event.target.checked;
-        alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     else
       alertify.confirm("Are you sure you want to Active this Initiative ?", () => {
@@ -273,7 +272,6 @@ export class InitiativeComponent extends Filters implements OnInit{
         })
       }, () => {
         event.target.checked = !event.target.checked;
-        alertify.error("Action was not performed")
       }).setHeader("Confirmation");
   }
 

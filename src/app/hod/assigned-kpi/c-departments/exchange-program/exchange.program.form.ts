@@ -78,10 +78,10 @@ export class ExchangeProgram implements OnInit{
 
  lockQuarterResult(quarter: any) {
   alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
-   this.loaderService.setLoadingStatus("Locking");
-   this.loaderService.setTransactionLoader(true);
+   
+   
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
-    this.loaderService.setTransactionLoader(false);
+    
     
     quarter.disable = true;
     quarter.status = "locked";
@@ -94,10 +94,10 @@ export class ExchangeProgram implements OnInit{
  delete(program:any,exchangeProgram:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
-   this.loaderService.setTransactionLoader(true);
+   
    this.utServ.deleteExchangeProgram(program.exchangeProgramId).subscribe((response:any)=>{
     exchangeProgram.splice(exchangeProgram.indexOf(program),1);
-    this.loaderService.setTransactionLoader(false);
+    
    }, (error: any) => {
     alertify.error("Something went wrong");
    });
@@ -105,12 +105,12 @@ export class ExchangeProgram implements OnInit{
  }
 
  deleteEvidence(evidence:any,evidences:any[]){
-  alertify.confirm("Are you sure you want to Delete it?",()=>{
+  alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
-   this.loaderService.setTransactionLoader(true);
+   
    this.utServ.deleteEvidenceofExchangeProgram(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);
-    this.loaderService.setTransactionLoader(false);
+    
    }, (error: any) => {
     alertify.error("Something went wrong");
    });

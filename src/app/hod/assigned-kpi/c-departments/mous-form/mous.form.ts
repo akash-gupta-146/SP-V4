@@ -48,8 +48,8 @@ export class MousForm implements OnInit{
    "mouType": lev.mouType,
    "organization": lev.organization
   }
-  this.loaderService.setLoadingStatus("Saving");
-  this.loaderService.setTransactionLoader(true);
+  
+  
   this.utServ.saveQuarterResultWithMou(lev.id, object).subscribe((response: any) => {
    lev.currentCost = response.currentCost;
    if (lev.mouDetails.length) {
@@ -63,7 +63,7 @@ export class MousForm implements OnInit{
    lev.addMore = false;
    lev.mouType = '';
    lev.organization = '';
-   this.loaderService.setTransactionLoader(false);
+   
    alertify.success("Saved");
   });
  }
@@ -73,10 +73,10 @@ export class MousForm implements OnInit{
    "mouType": mou.mouType,
    "organization": mou.organization
   }
-  this.loaderService.setLoadingStatus("Updating");
-  this.loaderService.setTransactionLoader(true);
+  
+  
   this.utServ.updateMou(mou.id, object).subscribe((response: any) => {
-   this.loaderService.setTransactionLoader(false);
+   
    alertify.success("Updated");
    mou.edit = false;
   })
@@ -86,12 +86,12 @@ export class MousForm implements OnInit{
   var object = {
    "currentCost": lev.currentCost
   }
-  this.loaderService.setLoadingStatus("Updating");
-  this.loaderService.setTransactionLoader(true);
+  
+  
   this.utServ.updateQuarterResultCurrentCost(lev.id, object).subscribe((response: any) => {
    lev.edit = false;
    setTimeout(() => {
-    this.loaderService.setTransactionLoader(false);
+    
     alertify.success("Updated");
    }, 1000);
   });
@@ -197,10 +197,10 @@ lockQuarterResult(quarter: any) {
  }
 
  deleteEvidence(evidence:any,evidences:any[]){
-  alertify.confirm("Are you sure you want to Delete it?",()=>{
+  alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
    this.utServ.deleteMouEvidence(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);
-    this.loaderService.setTransactionLoader(false);
+    
    }, (error: any) => {
     alertify.error("Something went wrong");
    });

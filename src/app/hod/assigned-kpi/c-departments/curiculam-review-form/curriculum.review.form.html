@@ -154,6 +154,7 @@
                 <th style="vertical-align:middle;">*</th>
                 <th style="vertical-align:middle;">Program</th>
                 <th style="vertical-align:middle;">reviewType</th>
+                <th style="vertical-align:middle">Cost</th>
                 <th style="vertical-align:middle;">College&Staff Involved</th>
                 <th style="vertical-align:middle;">Evidence</th>
                 <th style="vertical-align:middle;" *ngIf="role=='coordinator'">Action</th>
@@ -164,6 +165,7 @@
                 <td>{{p+1}}</td>
                 <td>{{program.program}}</td>
                 <td>{{program.reviewType}}</td>
+                <td>{{program.currentCost}}</td>
                 <td>{{program.totalCollegeStaffInvolved}}</td>
                 <td>
                   <div class="dropdown">

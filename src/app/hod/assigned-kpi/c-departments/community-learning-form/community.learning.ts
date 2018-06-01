@@ -35,7 +35,7 @@ export class CommunityLearningForm implements OnInit{
   
  }
 
- ngOnInit(){
+ ngOnInit(){   
   this.role = this.storage.getData('userDetails').roleInfo[0].role;
   this.communityLearningForm = this.fb.group({
    "currentCost": ['',[Validators.required,Validators.min(0)]],
@@ -50,12 +50,21 @@ export class CommunityLearningForm implements OnInit{
   });
  }
 
+ getMinDate(){
+   return new Date().toISOString().split('T')[0];
+ } 
+
+ validateEndDate(){
+   return new Date(this.communityLearningForm.controls['startDate'].value).toISOString().split('T')[0];
+ }
+
  submitForm(){
   if(!this.isUpdating)
    this.utServ.postQuarterWithCommunityLearning(this.selectedQuarter.id,this.communityLearningForm.value).subscribe((response:any)=>{
     this.selectedQuarter.communityLearnings.push(response);
-    // this.selectedQuarter.currentCost += response.currentCost;
+    this.selectedQuarter.currentCost += response.currentCost;
     this.learningListView = true;
+    this.selectedQuarter.status = "inprogress";
     // $("#myModal"+this.d).modal('hide');
    });
   else {
@@ -76,10 +85,10 @@ export class CommunityLearningForm implements OnInit{
 
  lockQuarterResult(quarter: any) {
   alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
-   this.loaderService.setLoadingStatus("Locking");
-   this.loaderService.setTransactionLoader(true);
+   
+   
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
-    this.loaderService.setTransactionLoader(false);
+    
     quarter.disable = true;
     quarter.status = "locked";
    }, (error: any) => {
@@ -91,10 +100,10 @@ export class CommunityLearningForm implements OnInit{
  delete(learning:any,communityLearning:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
-   this.loaderService.setTransactionLoader(true);
+   
    this.utServ.deleteCommunityLearningProgram(learning.communityLearningId).subscribe((response:any)=>{
     communityLearning.splice(communityLearning.indexOf(learning),1);
-    this.loaderService.setTransactionLoader(false);
+    
    }, (error: any) => {
     alertify.error("Something went wrong");
    });
@@ -102,12 +111,12 @@ export class CommunityLearningForm implements OnInit{
  }
 
  deleteEvidence(evidence:any,evidences:any[]){
-  alertify.confirm("Are you sure you want to Delete it?",()=>{
+  alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
-   this.loaderService.setTransactionLoader(true);
+   
    this.utServ.deleteEvidenceofLearningProgram(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);
-    this.loaderService.setTransactionLoader(false);
+    
    }, (error: any) => {
     alertify.error("Something went wrong");
    });

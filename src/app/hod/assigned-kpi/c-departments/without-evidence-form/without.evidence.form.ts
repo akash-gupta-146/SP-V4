@@ -57,8 +57,8 @@ export class WithoutEvidenceForm implements OnInit{
     'currentCost': quarter.currentCost,
     'currentTargetLevel': quarter.currentTargetLevel,
    }
-   this.loaderService.setLoadingStatus("Updating");
-   this.loaderService.setTransactionLoader(true);
+   
+   
    this.utServ.updateQuarterResult(quarter.id, object).subscribe((response: any) => {
     this.saving = false;
     quarter.status = 'inprogress';
@@ -74,8 +74,8 @@ export class WithoutEvidenceForm implements OnInit{
 
  lockQuarterResult(quarter: any) {
   alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
-   this.loaderService.setLoadingStatus("Locking");
-   this.loaderService.setTransactionLoader(true);
+   
+   
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
     
     quarter.disable = true;

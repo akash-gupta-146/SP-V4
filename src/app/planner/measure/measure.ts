@@ -215,19 +215,16 @@ export class MeasureComponent extends Filters implements AfterViewInit {
       },(error)=>{
         alertify.error("Something went wrong.");
       });
-    });
+    }).setHeader("Confirmation");
   }
 
   updateOpiTarget(selectedMeasure: any, index: any) {
-    alertify.confirm("Do you realy want to update targets ?",()=>{
+    alertify.confirm("You sure you want to update the targets?",()=>{
       this.orgService.updateTarget(selectedMeasure.opiId, [this.editDepartmentForm.value]).subscribe((response: any) => {
         selectedMeasure.departmentInfo[index] = response[0];
         _.extend(selectedMeasure.departmentInfo[index] , response[0]);
       });
-    },(error)=>{
-      alertify.error("Something went wrong");
-    });
-      
+    }).setHeader("Confirmation");      
   }
 
   viewDepartmentFilter(){
@@ -367,7 +364,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         this.getDepartments();
         this.selectedDepartments = [];
         this.selectedDepartmentIds = [];
-        alertify.notify("Successfully assigned");
+        alertify.success("Successfully assigned");
         $('#detailModal').modal('show');
         $('#myModal').modal('hide');
         this.prev = true;this.next = false;
@@ -482,7 +479,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         this.selectedMeasure = response;
         console.log(this.selectedMeasure);
         $('#myModal').modal('show');
-        alertify.success("You have successfully added a new OPI.");
+        alertify.success("You have successfully added a new KPI.");
         // this.getMeasure();
         this.measureForm.reset({
           opi: '',
@@ -563,7 +560,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     alertify.confirm("Please confirm that you want to delete selected KPI?",()=>{
       if(!kpi.departmentInfo.length){
         this.orgService.deleteMeasure(kpi.opiId).subscribe((res: any) => {
-          alertify.success("OPI Deleted");
+          alertify.success("KPI Deleted");
           // this.getMeasure();
           measures.splice(measures.indexOf(kpi),1);
         },(error:any)=>{
@@ -652,7 +649,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         });
       }, () => {
         event.target.checked = !event.target.checked;
-        alertify.error("Action was not performed")
       }).setHeader("Confirmation");
     }
     else
@@ -666,7 +662,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
         })
       }, () => {
         event.target.checked = !event.target.checked;
-        alertify.error("Action was not performed")
       }).setHeader("Confirmation");
   }
 

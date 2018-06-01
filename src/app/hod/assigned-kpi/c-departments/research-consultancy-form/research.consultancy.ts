@@ -55,11 +55,15 @@ export class ResearchConsultancy implements OnInit{
   });
  }
 
+ getMinDate(){
+  return new Date().toISOString().split('T')[0];
+} 
+
  submitForm(){
   if(!this.isUpdating)
    this.utServ.postQuarterWithResearchConsultancy(this.selectedQuarter.id,this.researchConsultancyForm.value).subscribe((response:any)=>{
     this.selectedQuarter.researchConsultancies.push(response);
-    // this.selectedQuarter.currentCost += response.currentCost;
+    this.selectedQuarter.currentCost += response.currentCost;
     this.programListView = true;
     // $("#myModal"+this.d).modal('hide');
    });
@@ -83,10 +87,10 @@ export class ResearchConsultancy implements OnInit{
 
  lockQuarterResult(quarter: any) {
   alertify.confirm("Are you sure, you want to submit your results, once submitted you will not be able to edit them ?", () => {
-   this.loaderService.setLoadingStatus("Locking");
-   this.loaderService.setTransactionLoader(true);
+   
+   
    this.utServ.lockQuarterResult(quarter.id, { 'status': 'locked' }).subscribe((response: any) => {  quarter.role = this.role;
-    this.loaderService.setTransactionLoader(false);
+    
     
     quarter.disable = true;
     quarter.status = "locked";
@@ -99,10 +103,10 @@ export class ResearchConsultancy implements OnInit{
  delete(program:any,researchConsultancy:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
-   this.loaderService.setTransactionLoader(true);
+   
    this.utServ.deleteResearchConsultancy(program.exchangeProgramId).subscribe((response:any)=>{
     researchConsultancy.splice(researchConsultancy.indexOf(program),1);
-    this.loaderService.setTransactionLoader(false);
+    
    }, (error: any) => {
     alertify.error("Something went wrong");
    });
@@ -110,12 +114,12 @@ export class ResearchConsultancy implements OnInit{
  }
 
  deleteEvidence(evidence:any,evidences:any[]){
-  alertify.confirm("Are you sure you want to Delete it?",()=>{
+  alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
    this.loaderService.setLoadingStatus("Deleting");
-   this.loaderService.setTransactionLoader(true);
+   
    this.utServ.deleteEvidenceofResearchConsultancy(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);
-    this.loaderService.setTransactionLoader(false);
+    
    }, (error: any) => {
     alertify.error("Something went wrong");
    });

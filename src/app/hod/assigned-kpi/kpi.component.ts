@@ -41,6 +41,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   ngOnInit(){
+    console.log("came");
     this.role = this.storage.getData('user_roleInfo')[0].role; 
     this.departmentModel = 0;  
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
@@ -67,19 +68,12 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.utServ.getCycles().subscribe((response: any) => {
       this.cycles = response;
       this.route.params.subscribe((params: any) => {
+        this.departmentIds = [];
         if(params['cycleId'] && params['year'] && params['quarter'] && params['deptId']){
           this.cycles.forEach(element => {
             if (element.cycleId == params['cycleId']) {
               this.defaultCycle = element;
-              this.departmentIds = params['deptId'].toString().split(",");
-
-
-              
-              // if(typeof(params['deptId'])=='string'){
-                // this.departmentIds = params['deptId'].split(",");
-              // }else{
-              //   this.departmentIds = params['deptId'];
-              // }            
+              this.departmentIds = params['deptId'].toString().split(",");            
               this.departmentModel = parseInt(params['deptId']);
               this.selectedYear = params['year'];
               this.selectedQuarter = params['quarter'];
@@ -245,10 +239,10 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     if (data.feedback == 'true')
       alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
-          alertify.notify("Audit has been Approved");
+          alertify.success("Audit has been Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
-          alertify.notify("Something went wrong");
+          alertify.error("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
       }).setHeader("Confirmation");
@@ -256,10 +250,10 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
 
-          alertify.notify("Audit has been Rejected");
+          alertify.success("Audit has been Rejected");
         }, (error: any) => {
 
-          alertify.notify("Something went wrong");
+          alertify.error("Something went wrong");
         });
       }).setHeader("Confirmation");
   }

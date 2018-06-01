@@ -173,7 +173,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
           $("#add-activity").hide();
           $('#add-btn').show();
           this.saving = false;
-          alertify.notify("Saved successfully .,.");
+          alertify.success("Saved successfully .,.");
           this.selectedInitiative.activities.push(response);
           this.activityForm.controls["activity"].reset();
           //this.getAllCycles();

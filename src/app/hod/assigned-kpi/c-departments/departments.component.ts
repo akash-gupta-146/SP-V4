@@ -255,19 +255,19 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     if (data.feedback == 'true')
       alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approveActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
-          alertify.notify("Approved");
+          alertify.success("Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
-          alertify.notify("Something went wrong");
+          alertify.error("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
       }).setHeader("Confirmation");
     else
       alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.rejectActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
-          alertify.notify("Rejected");
+          alertify.success("Rejected");
         }, (error: any) => {
-          alertify.notify("Something went wrong");
+          alertify.error("Something went wrong");
         });
       }).setHeader("Confirmation");
   }
@@ -298,7 +298,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
   }
 
   assignEmployee(e:any) {    
-    alertify.confirm("Are  you sure to assign this action step?", (response: any) => {
+    alertify.confirm("Are you sure, you want to assign selected employees to this Action step?", (response: any) => {
       var ids = [];
       this.employeeIds.forEach(element => {
         ids.push(element.id)
@@ -360,10 +360,10 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Approved';
           data.disable = true;
-          alertify.notify("Audit has been Approved");
+          alertify.success("Audit has been Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
-          alertify.notify("Something went wrong");
+          alertify.error("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
       }).setHeader("Confirmation");
@@ -372,10 +372,10 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Rejected';
           data.disable = 'true';
-          alertify.notify("Audit has been Rejected");
+          alertify.success("Audit has been Rejected");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
-          alertify.notify("Something went wrong");
+          alertify.error("Something went wrong");
           $("#feedbackModal").modal('hide');
         });
       }).setHeader("Confirmation");
