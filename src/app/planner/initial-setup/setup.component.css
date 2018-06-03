@@ -138,7 +138,7 @@
 
 .add-value{
   border: 2px solid var(--color-primary);
-    margin-right: 15px;
+    margin: 15px;
 }
 
 .add-value .panel-body .control-label{

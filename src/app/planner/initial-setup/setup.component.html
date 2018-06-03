@@ -9,7 +9,7 @@
           <li class="active"><a data-toggle="tab" href="#mission">MISSION</a></li>
         </ul>
       </div>
-      <div class="col-sm-8">
+      <div class="col-sm-12">
         <textarea class="form-control" id="mission" formControlName="mission" placeholder="Write Your Mission..."></textarea>
       </div>
     </div>
@@ -19,7 +19,7 @@
           <li class="active"><a data-toggle="tab" href="#mission">VISSION</a></li>
         </ul>
       </div>
-      <div class="col-sm-8">
+      <div class="col-sm-12">
         <textarea class="form-control" id="vision" formControlName="vision" placeholder="Write Your Vission..."></textarea>
       </div>
     </div>
@@ -33,8 +33,7 @@
         <div class="form-group">
           <button type="button" class="btn btn-default pull-right margin" (click)="addValue()" [disabled]="setupForm.controls.values.invalid"><i class="fas fa-plus-circle"></i></button>
         </div>
-        <div class="col-sm-12">
-          <div class="col-sm-4" *ngFor="let stu of setupForm.controls.values['controls'];let j=index;" [formGroupName]="j" style="padding: 0px;">
+          <div class="col-sm-12 col-lg-12" *ngFor="let stu of setupForm.controls.values['controls'];let j=index;" [formGroupName]="j" style="padding: 0px;">
             <div class="panel add-value">
               <div class="panel-heading">
                 <button type="button" class="close" (click)="removeValue(j)" [disabled]="!j">&times;</button>
@@ -42,22 +41,21 @@
               <div class="panel-body">
                 <div class="form-group">
                   <label class="control-label col-sm-3" for="title">Title</label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-12">
                     <input type="text" class="form-control" id="title" formControlName="title" placeholder="Enter title">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-3" for="desc">Description</label>
-                  <div class="col-sm-8">
+                  <div class="col-sm-12">
                     <textarea class="form-control" id="desc" formControlName="description"></textarea>
                   </div>
                 </div>                
               </div>
             </div>
           </div>
-        </div>
         <div class="col-sm-12">
-          <button type="submit" class="btn btn-default submit-btn" [disabled]="setupForm.invalid">Submit</button>
+          <button type="submit" class="btn-sp btn-primary m-2" [disabled]="setupForm.invalid">Submit</button>
         </div>
       </div>
    </div>
