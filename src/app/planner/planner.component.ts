@@ -14,12 +14,12 @@ declare let $: any;
 export class PlannerComponent implements OnInit{
 	userDetails: any;
 	breadcrumb:boolean = false;
+	initialInfo:boolean = false;
 	constructor(public storageService: StorageService,
 		public utiService: UniversityService,
 		public router: Router,
 		private loaderService: LoaderService) {
 		this.loaderService.display(false);			
-		// this.storageService.breadcrumb.next(true);
 		this.userDetails = this.storageService.getData('userDetails');
 		$(document).ready(function () {
 			$('[data-toggle="tooltip"]').tooltip();

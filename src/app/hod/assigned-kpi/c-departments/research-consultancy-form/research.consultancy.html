@@ -49,9 +49,9 @@
             <div *ngIf="lev.status!='unsubmitted'">
               <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);programListView = true;">
                 <!-- <strong>Number of Rresearch Consultancy Project</strong> -->
-                <small>Research Consultancy Projects
+                <span>Research Consultancy Projects
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div>{{lev.researchConsultancies.length}}</div>
             </div>

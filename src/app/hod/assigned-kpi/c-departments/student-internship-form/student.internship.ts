@@ -15,7 +15,7 @@ declare let $: any;
 })
 export class StudentInternshipForm implements OnInit {
   saving: boolean;
-   @Output() selectEvidence: any = new EventEmitter();
+  @Output() selectEvidence: any = new EventEmitter();
   role: any;
   facultyPublicationForm: FormGroup;
   professionalDevelopmentActivitiesForm: FormGroup;

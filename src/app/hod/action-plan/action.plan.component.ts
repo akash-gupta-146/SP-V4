@@ -19,7 +19,7 @@ export class ActionPlan implements OnInit{
  selectedStep: any;
  actionForm: FormGroup;
  statusForm: FormGroup;
- actionSteps: any[] = [];
+ actionSteps: any[] = []; 
  employeeIds: any[] = [];
  constructor(public utServ: HodService, 
              public fb: FormBuilder, 
@@ -54,11 +54,7 @@ export class ActionPlan implements OnInit{
    url="/action-step";
   this.loaderService.display(true);
   this.utServ.getActionStep(url).subscribe((response: any) => {
-   if (response.status === 204) {
-    this.actionSteps = [];
-   } else {
     this.actionSteps = response;
-   }
    this.loaderService.display(false);
   })
  }

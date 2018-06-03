@@ -15,12 +15,29 @@
 </div>
 <!-- end of subheader -->
 
+<!-- filter -->
+<div class="filter animate slideInUp" id="top">
+  <div class="d-flex ml-5">
+    <div class="icon">
+      <i class="fas fa-expand"></i>
+    </div>
+    <div class="form-group dropdown-st">
+      <label class="control-label">Departments</label>
+      <select class="form-control" (ngModelChange)="selectDepartment($event)" [(ngModel)]="selectionModel">
+        <option value="0">All Departments</option>
+        <option *ngFor="let dept of actionStepsCopy;let d = index;" [ngValue]="dept.departmentId">{{dept.department}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<!-- end of filter -->
+
 <!-- Accordion -->
 <div class="container-fluid" id="accordion">
   <div *ngFor="let data of actionSteps;let s = index;" class="card my-2 p-3">
     <h6 class="mb-0">
       <a data-toggle="collapse" class="btn btn-link d-flex justify-content-between" [attr.href]="'#collapse'+ s">
-        <span>{{s+1}}. {{data.department}}</span>
+        <b>{{s+1}}. {{data.department}}</b>
         <i class="float-right fas fa-compress"></i>
       </a>
     </h6>
@@ -98,7 +115,7 @@
     <!-- end of collapse panel for KPI -->
   </div>
   <!-- No content -->
-  <div no-content *ngIf="!(actionSteps&&actionSteps.length)">
+  <div no-content *ngIf="!(loaderService.status.value||actionSteps.length)">
     No Action Steps Assigned yet
   </div>
   <!-- end of no content -->

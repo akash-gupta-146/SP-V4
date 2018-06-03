@@ -176,7 +176,7 @@ lockQuarterResult(quarter: any) {
         this.saving = true;
         this.utServ.updateForm(this.url, this.mouForm.value).subscribe((response: any) => {
           this.saving = false;
-          _.extend(this.selectedmou, this.mouForm.value);
+          _.extend(this.selectedmou, response);
           this.mouListView = true;
         }, (error: any) => {
           alertify.error("Something went wrong.");

@@ -63,7 +63,7 @@ export class ExchangeProgram implements OnInit{
   else {
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.exchangeProgramForm.value).subscribe((response: any) => {
-     _.extend(this.selectedProgram, this.exchangeProgramForm.value);
+     _.extend(this.selectedProgram, response);
      this.programListView = true;
     }, (error: any) => {
     });

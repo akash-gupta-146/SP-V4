@@ -70,7 +70,7 @@ export class CommunityLearningForm implements OnInit{
   else {
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.communityLearningForm.value).subscribe((response: any) => {
-     _.extend(this.selectedLearning,this.communityLearningForm.value);
+     _.extend(this.selectedLearning,response);
      this.learningListView = true;
     }, (error: any) => {
     });

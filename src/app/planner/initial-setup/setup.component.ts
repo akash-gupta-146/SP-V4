@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
-import { StorageService } from "../../../shared/storage.service";
-import { UniversityService } from "../../../shared/UTI.service";
-import { LoaderService } from '../../../shared/loader.service';
+import { StorageService } from '../../shared/storage.service';
+import { UniversityService } from '../../shared/UTI.service';
+import { Router } from '@angular/router';
+import * as alertify from 'alertifyjs';
 @Component({
   selector: 'initial-setup',
   templateUrl: './setup.component.html',
@@ -12,13 +13,15 @@ export class InitialSetup implements OnInit {
   public setupForm: FormGroup;
   constructor(public fb: FormBuilder,
     public st: StorageService,
-    public utiService: UniversityService) {
+    public utiService: UniversityService,
+    public router:Router) {
     this.setupForm = this.initForm();
     this.fetchOrganizationInfo();
   }
 
   ngOnInit() {
-
+    this.st.initialSetup.next(true);
+    this.st.breadcrumb.next(false);
   }
 
   initForm() {
@@ -44,7 +47,11 @@ export class InitialSetup implements OnInit {
 
   onSubmit() {
     this.utiService.saveInitialSetup(this.setupForm.value).subscribe((response: any) => {
-    })
+      alertify.success("Successfully Saved");
+      this.router.navigate(['planner/home']);
+    },error=>{
+      alertify.error("Something went wrong.");
+    });
   }
   inItValue() {
     return this.fb.group({

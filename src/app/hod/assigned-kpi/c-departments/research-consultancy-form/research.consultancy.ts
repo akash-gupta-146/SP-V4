@@ -71,7 +71,7 @@ export class ResearchConsultancy implements OnInit{
    alertify.confirm("Do You want to update it?", (ok: any) => {
     this.utServ.updateForm(this.url, this.researchConsultancyForm.value).subscribe((response: any) => {
      
-     _.extend(this.selectedProgram,this.researchConsultancyForm.value);
+     _.extend(this.selectedProgram,response);
      this.programListView = true;
     }, (error: any) => {
      

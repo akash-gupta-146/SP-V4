@@ -14,10 +14,15 @@ declare let $: any;
   styleUrls: ['hod.component.scss']
 })
 export class HodComponent{
+  role: any;
   userDetails: any = {};
 
   constructor(private storage: StorageService,private router:Router,private hs:HodService,private loaderService:LoaderService) {
+    this.role = this.storage.getData('user_roleInfo')[0].role; 
     this.userDetails = storage.getData('userDetails');
+  }
+
+  ngOnInit(){
   }
 
   logout(){

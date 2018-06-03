@@ -61,9 +61,9 @@
             <div *ngIf="lev.status!='unsubmitted'">
               <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);learningListView = true;">
                 <!-- <strong>Number of Community Learning Programs</strong> -->
-                <small>CLP
+                <span>Community Learnings
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div>{{lev.communityLearnings.length}}</div>
             </div>

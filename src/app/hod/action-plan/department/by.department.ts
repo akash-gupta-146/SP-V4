@@ -14,11 +14,13 @@ declare let $:any;
  styleUrls: ['./../../hod.component.scss']
 })
 export class ActionPlanByDepartment implements OnInit{
+ actionStepsCopy: any[]=[];
  selectedStep: any;
  actionForm: FormGroup;
- actionSteps: any;
+ actionSteps: any[]=[];
  departments: any[] = [];
  departmentIds: any[] = [];
+ selectionModel:number = 0;
  constructor(private storage: StorageService, 
   private utServ: HodService, 
   private fb: FormBuilder,
@@ -30,11 +32,8 @@ export class ActionPlanByDepartment implements OnInit{
  ngOnInit(){
   this.loaderService.display(true);
   this.utServ.getActionStepsWhenPlanMode().subscribe((response: any) => {
-   if(response.status === 204){
-    this.actionSteps = [];
-   }else{
     this.actionSteps = response;
-   }
+    this.actionStepsCopy = JSON.parse(JSON.stringify(this.actionSteps));
    this.loaderService.display(false);
   },(error:any)=>{
    this.loaderService.display(false);
@@ -63,6 +62,17 @@ export class ActionPlanByDepartment implements OnInit{
     alertify.error("Something went wrong");
    })
   }).setHeader("Confirmation");
+ }
+
+ selectDepartment(departmentId:number){
+  console.log(departmentId);
+  if(departmentId != 0)
+   this.actionSteps = this.actionStepsCopy.filter(element=>{
+    console.log("adsfdsf")
+    return element.departmentId === departmentId;
+   });
+  else
+   this.actionSteps = this.actionStepsCopy;
  }
 
 }

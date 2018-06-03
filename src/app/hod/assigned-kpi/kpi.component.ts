@@ -41,8 +41,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   ngOnInit(){
-    console.log("came");
-    this.role = this.storage.getData('user_roleInfo')[0].role; 
+    this.role = this.storage.getData('user_roleInfo')[0].role;
     this.departmentModel = 0;  
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
       this.goals = val;
@@ -228,7 +227,6 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
 
   onCycleChange(cycleId: any, year: any,quarter:any,deptId:any){
     if(this.departmentIds.length){
-      console.log("came");
       this.router.navigate(['./',{cycleId:cycleId,year:year,quarter:quarter,deptId:this.departmentIds.slice(0)}]);
     } else
     this.router.navigate(['./',{cycleId:cycleId,year:year,quarter:quarter}]);

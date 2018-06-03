@@ -19,36 +19,43 @@ export const routes: Routes = [
 	{
 		path: 'planner',
 		loadChildren: 'app/planner/planner.module#PlannerModule',
-		canActivate: [AuthGuard]
+		canActivate: [AuthGuard],
+		data:{role:'planner'}
 	},
 	{
 		path: 'coordinator',
 		// loadChildren: 'app/coordinator/coordinator.module#CoordinatorModule',
 		loadChildren: 'app/hod/hod.module#HodModule',		
-		canActivate: [AuthGuard]
+		canActivate: [AuthGuard],
+		data:{role:'coordinator'}
 	},
 	{
 		path: 'admin',
 		loadChildren: 'app/admin/admin.module#AdminModule',
-		canActivate: [AuthGuard]
+		canActivate: [AuthGuard],
+		data:{role:'admin'}
 	},
 	{
 		path: 'hod',
 		loadChildren: 'app/hod/hod.module#HodModule',
-		canActivate: [AuthGuard]
+		canActivate: [AuthGuard],
+		data:{role:''}
 	}, {
 		path: 'deputyViceChancellor',
 		loadChildren: 'app/hod/hod.module#HodModule',
-		canActivate: [AuthGuard]
+		canActivate: [AuthGuard],
+		data:{role:'hod'}
 	}, {
 		path: 'viceChancellor',
 		loadChildren: 'app/hod/hod.module#HodModule',
-		canActivate: [AuthGuard]
+		canActivate: [AuthGuard],
+		data:{role:'viceChancellor'}
 	},
 	{
 		path: 'chancellor',
 		loadChildren: 'app/hod/hod.module#HodModule',
-		canActivate: [AuthGuard]
+		canActivate: [AuthGuard],
+		data:{role:'chancellor'}
 	},
 ];
 @NgModule({

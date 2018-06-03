@@ -2,21 +2,16 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from "../../shared/shared.module";
-import { InitialSetup } from "./initial-setup/setup.component";
 
 @NgModule({
 	imports: [SharedModule, RouterModule.forChild([
 		{
 			path: '',
-			component: HomeComponent
-		},
-		{
-			path: 'initial-setup',
-			component: InitialSetup
+			component: HomeComponent,
 		}
 	])],
 	providers: [],
-	declarations: [HomeComponent, InitialSetup]
+	declarations: [HomeComponent]
 })
 export class HomeModule {
 }

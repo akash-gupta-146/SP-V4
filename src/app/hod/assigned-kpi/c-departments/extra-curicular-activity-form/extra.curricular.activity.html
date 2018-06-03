@@ -59,9 +59,9 @@
             <div *ngIf="lev.status!='unsubmitted'">
               <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);activityListView = true;">
                 <!-- <strong>Number of Extra Curricular Activities</strong> -->
-                <small>Extra Curricular Activities
+                <span>Extra Curricular Activities
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div> {{lev.extraCurricularActivities.length}}</div>
             </div>
@@ -227,11 +227,6 @@
       </form>
       <div *ngIf="activityListView">
         <div class="modal-body">
-          <h5>
-            <button type="button" class="btn-sp btn-sp-small btn-primary float-right" (click)="activityListView = false;resetForm()">
-              <i class="fas fa-plus-circle"></i> Add New
-            </button>
-          </h5>
           <div class="table-responsive">
             <table class="table table-bordered table-hoverable" style="position: relative;">
               <thead>
@@ -295,6 +290,8 @@
           </div>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn-sp btn-sp-small btn-primary float-right" (click)="activityListView = false;resetForm()">Add New
+          </button>
           <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { StorageService } from "../../shared/storage.service";
 import { UniversityService } from "../../shared/UTI.service";
 import { LoaderService } from '../../shared/loader.service';
 import * as alertify from 'alertifyjs';
+import { Router } from '@angular/router';
 
 declare let $: any;
 
@@ -19,7 +20,9 @@ export class HomeComponent {
   public organizationInfo: any;
   public selectedValue: any;
 
-  constructor(public commonService: StorageService, public orgSer: UniversityService) {
+  constructor(public commonService: StorageService, 
+    public orgSer: UniversityService,
+    public router:Router) {
     this.commonService.breadcrumb.next(false);    
     this.valueForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -33,6 +36,8 @@ export class HomeComponent {
 
   ngOnInit() {
     this.commonService.breadcrumb.next(false);
+    // if (!(this.organizationInfo.mission==null&&this.organizationInfo.vision==null))
+    //   this.router.navigate(['planner/home/initial-setup']);
   }
 
   public fetchOrganizationInfo() {

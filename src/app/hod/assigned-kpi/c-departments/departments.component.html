@@ -71,14 +71,14 @@
 
   <div class="container cards-area">
     <div class="row m-3">
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="card m-10 p-3 animate bounceInDown">
           <i class="fas fa-chart-line"></i>
           <b>Frequency</b>
           <p>{{data.frequency}}</p>
         </div>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="card m-10 p-3 animate bounceInDown">
           <i class="fas fa-hand-paper"></i>
           <b>EVIDENCE FORM TYPE</b>
@@ -87,11 +87,19 @@
           <p *ngIf="tempUrl">Template : <a [attr.href]="tempUrl"> file </a></p>
         </div>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
           <div class="card m-10 p-3 animate bounceInDown">
             <i class="fas fa-balance-scale"></i>
             <b>MEASURE UNIT</b>
             <p>{{data.measureUnit}}</p>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="card m-10 p-3 animate bounceInDown">
+            <i class="fas fa-compass"></i>
+            <b>Direction</b>
+            <span *ngIf="data.direction"> Ascending </span>
+            <span *ngIf="!data.direction"> Descending </span>
           </div>
         </div>
     </div>

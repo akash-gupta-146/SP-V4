@@ -10,10 +10,12 @@ export class StorageService {
   // public baseUrl: string = "http://localhost:8080/spv4/";
   // public baseUrl: string = "https://testing.ind-cloud.everdata.com/spv4/";
   public breadcrumb: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public initialSetup: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public cycle : BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public baseUrl: string = environment.api;
   public hasRole: boolean;
   constructor() {
+    
   }
 
   public storeData(field_name: any, data: any) {

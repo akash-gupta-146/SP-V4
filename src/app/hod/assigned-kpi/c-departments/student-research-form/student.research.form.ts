@@ -81,7 +81,7 @@ export class StudentResearch implements OnInit{
       this.utServ.updateForm(this.url, this.studentResearchForm.value).subscribe((response: any) => {
         this.saving = false;
         this.programListView = true;
-        _.extend(this.selectedProgram,this.studentResearchForm.value);
+        _.extend(this.selectedProgram,response);
         alertify.success("Successfully updated");
       }, (error: any) => {
         alertify.error("Somethig went wrong.");

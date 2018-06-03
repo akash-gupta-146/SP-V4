@@ -5,6 +5,8 @@ import { UniversityService } from "../shared/UTI.service";
 import { StorageService } from "../shared/storage.service";
 import { CustomHttpService } from "../shared/default.header.service";
 import { SharedModule } from "../shared/shared.module";
+import { InitialSetup } from './initial-setup/setup.component';
+import { InitialGuard } from './initial-setup/initial.gaurd';
 @NgModule({
 	imports: [SharedModule, RouterModule.forChild([
 		{
@@ -16,11 +18,17 @@ import { SharedModule } from "../shared/shared.module";
 			children: [
 				{
 					path: '',
-					loadChildren: 'app/planner/home/home.module#HomeModule'
+					loadChildren: 'app/planner/home/home.module#HomeModule',
+					canActivate:[InitialGuard]
+				},
+				{
+					path: 'initial-setup',
+					component: InitialSetup
 				},
 				{
 					path: 'home',
-					loadChildren: 'app/planner/home/home.module#HomeModule'
+					loadChildren: 'app/planner/home/home.module#HomeModule',
+					canActivate:[InitialGuard]
 				},
 				{ path: 'strategic-plan', loadChildren: 'app/planner/plan/plan.module#PlanModule' },
 				{ path: 'strategic-goal', loadChildren: 'app/planner/goal/goal.module#GoalModule' },				
@@ -33,8 +41,8 @@ import { SharedModule } from "../shared/shared.module";
 		},
 
 	])],
-	providers: [UniversityService, StorageService, CustomHttpService],
-	declarations: [PlannerComponent],
+	providers: [UniversityService, StorageService, CustomHttpService, InitialGuard],
+	declarations: [PlannerComponent,InitialSetup],
 	// exports: [RouterModule]
 })
 export class PlannerModule {

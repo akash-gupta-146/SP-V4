@@ -243,9 +243,9 @@
           <div>
             <div *ngIf="lev.status!='unsubmitted'">
               <a data-toggle="modal" [attr.href]="'#myModal'+d" (click)="selectQuarter(lev);mouListView = true;">
-                <small>MOU Forms
+                <span>MOU Forms
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div>{{lev.mouDetails.length}}</div>
             </div>
@@ -256,7 +256,8 @@
             *ngIf="lev.status=='unsubmitted'">
             <i class="fas fa-sign-in-alt"></i> Fill
           </button>
-          <button class="btn-link link primary-link text-primary" *ngIf="lev.mouDetails.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)" [disabled]="lev.disable">
+          <button class="btn-link link primary-link text-primary" *ngIf="lev.mouDetails.length&&lev.status!='locked'" (click)="lockQuarterResult(lev)"
+            [disabled]="lev.disable">
             <i class="fas fa-lock"></i> Lock
           </button>
         </div>
@@ -272,35 +273,35 @@
 <!-- Modal -->
 <div [attr.id]="'myModal'+d" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
- 
-   <!-- Modal content-->
-   <div class="modal-content">
-    <div class="modal-header">
-       <h5 class="modal-title">Mous</h5>
-     <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
-    </div>
-    <form class="form-horizontal" [formGroup]="mouForm" (submit)="submitForm()" *ngIf="!mouListView">
-      <div class="modal-body">
-        <div class="row">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Mous</h5>
+        <button type="button" class="close" data-dismiss="modal" (click)="isUpdating=false">&times;</button>
+      </div>
+      <form class="form-horizontal" [formGroup]="mouForm" (submit)="submitForm()" *ngIf="!mouListView">
+        <div class="modal-body">
+          <div class="row">
             <div class="form-group col-lg-12 col-sm-12">
-                <label>Mou Type </label>
-                <input type="text" class="form-control" formControlName="mouType">
-              </div>
-              <div class="form-group col-lg-12 col-sm-12">
-                <label>Organization</label>
-                <textarea class="form-control" formControlName="organization" rows="2"></textarea>
-              </div>
-              <div class="form-group col-lg-12 col-sm-12">
-                <label>Current Cost</label>
-                <input type="number" class="form-control" formControlName="currentCost" min="0">
-              </div>
-        </div>
+              <label>Mou Type </label>
+              <input type="text" class="form-control" formControlName="mouType">
+            </div>
+            <div class="form-group col-lg-12 col-sm-12">
+              <label>Organization</label>
+              <textarea class="form-control" formControlName="organization" rows="2"></textarea>
+            </div>
+            <div class="form-group col-lg-12 col-sm-12">
+              <label>Current Cost</label>
+              <input type="number" class="form-control" formControlName="currentCost" min="0">
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" (click)="mouListView = true;">
             Back
           </button>
-          <button type="submit" class="btn-sp btn-primary" [disabled]="mouForm.invalid" [disabled]="saving">
+          <button type="submit" class="btn-sp btn-primary" [disabled]="mouForm.invalid || saving">
             <span *ngIf="saving;else save">
               <i class="fa fa-spinner fa-spin"></i> Saving
             </span>
@@ -308,53 +309,51 @@
           </button>
           <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
         </div>
+      </form>
       <div *ngIf="mouListView">
         <div class="modal-body">
-          <h5>
-            <button type="button" class="btn-sp btn-primary btn-sp-small float-right" (click)="mouListView = false;resetForm()">
-              <i class="fas fa-plus-circle"></i> Add New
-            </button>
-          </h5>
           <div class="table-responsive">
-            <table class="table table-bordered table-card" style="position: relative;">
+            <table class="table table-bordered table-card">
               <thead>
                 <tr>
-                  <th style="vertical-align:middle;">*</th>
+                  <th style="vertical-align:middle;">#</th>
                   <th style="vertical-align:middle;">Mou Type</th>
                   <th style="vertical-align:middle;">Organization</th>
+                  <th style="vertical-align:middle;">Cost</th>
                   <th style="vertical-align: middle">Evidence</th>
                   <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let mou of selectedQuarter.mouDetails;let p = index;" style="position: relative;">
+                <tr *ngFor="let mou of selectedQuarter.mouDetails;let p = index;">
                   <td>{{p+1}}</td>
                   <td>{{mou.mouType}}</td>
                   <td>{{mou.organization}}</td>
+                  <td>{{mou.currentCost}}</td>
                   <td>
                     <div class="dropdown">
                       <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown">
                         <small>Files</small> {{mou.evidance.length}}
                       </a>
                       <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-                        <li role="presentation" *ngFor="let ev of mou.evidance;let e = index;" class="d-flex justify-content-between">
-                          <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)"
-                            style="float:left">evidance {{e+1}}</a>
-                          <button type="button" class="close" (click)="deleteEvidence(ev,mou.evidance)" [hidden]="selectedQuarter.status=='locked'">
-                            <span aria-hidden="true">&times;</span>
+                        <li role="presentation" *ngFor="let ev of mou.evidance;let e = index;" class="d-flex justify-content-between px-2">
+                          <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)">evidance {{e+1}}</a>
+                          <button type="button" class="btn btn-link p-0" (click)="deleteEvidence(ev,mou.evidance)" [hidden]="selectedQuarter.status=='locked'">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                           </button>
                         </li>
                         <li class="text-center" role="presentation" *ngIf="!mou.evidance.length">None</li>
                         <li role="presentation" class="divider" style="clear: both;"></li>
                         <li class="text-center" role="presentation">
-                          <button *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId"
-                            (click)="selectedForm = mou" [disabled]="selectedQuarter.disable">Upload</button>
+                          <button class="btn-link" *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal"
+                            [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId" (click)="selectedForm = mou"
+                            [disabled]="selectedQuarter.disable">Upload</button>
                         </li>
                       </ul>
                     </div>
                   </td>
                   <td *ngIf="role=='coordinator'">
-                    <span class="option">
+                    <span class="option d-flex justify-content-between">
                       <button (click)="edit(mou)" class="btn btn-link">
                         <i class="fas fa-edit"></i>
                       </button>
@@ -369,77 +368,12 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="mouListView = true;">
-            Back
-          </button>
-          <button type="submit" class="btn-sp btn-primary" [disabled]="mouForm.invalid" [disabled]="saving">
-            <span *ngIf="saving;else save">
-              <i class="fa fa-spinner fa-spin"></i> Saving
-            </span>
-            <ng-template #save>Save</ng-template>
-          </button>
-          <button type="button" class="btn-sp btn-clear" data-dismiss="modal">Close</button>
+          <button type="button" class="btn-sp btn-primary" data-dismiss="modal" (click)="mouListView = false;resetForm()">Add New</button>
+          <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
         </div>
       </div>
-    </form>
-    <div *ngIf="mouListView">
-     <div class="modal-body">
-         <div class="table-responsive">
-      <table class="table table-bordered table-card">
-      <thead>
-       <tr>
-        <th style="vertical-align:middle;">#</th>
-        <th style="vertical-align:middle;">Mou Type</th>
-        <th style="vertical-align:middle;">Organization</th>
-        <th style="vertical-align: middle">Evidence</th>
-        <th style="vertical-align: middle" *ngIf="role=='coordinator'">Action</th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr *ngFor="let mou of selectedQuarter.mouDetails;let p = index;">
-        <td>{{p+1}}</td>
-        <td>{{mou.mouType}}</td>
-        <td>{{mou.organization}}</td>
-        <td>
-         <div class="dropdown">
-           <a class="text-primary link primary-link dropdown-toggle" id="menu1" data-toggle="dropdown"><small>Files</small> {{mou.evidance.length}}
-           </a>
-           <ul class="dropdown-menu" role="menu" aria-labelledby="menu" style="right: 0;left:unset;font-size:12px;">
-             <li role="presentation" *ngFor="let ev of mou.evidance;let e = index;" class="d-flex justify-content-between px-2">
-               <a class="btn-link" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#evidenceFileModal" (click)="storeEvidence(ev)">evidance {{e+1}}</a>
-               <button type="button" class="btn btn-link p-0" (click)="deleteEvidence(ev,mou.evidance)" [hidden]="selectedQuarter.status=='locked'">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-               </button>
-             </li>
-             <li class="text-center" role="presentation" *ngIf="!mou.evidance.length">None</li>
-             <li role="presentation" class="divider" style="clear: both;"></li>
-             <li class="text-center" role="presentation">
-               <button class="btn-link" *ngIf="selectedQuarter.status=='inprogress'||selectedQuarter.status=='rejected'" data-toggle="modal" [attr.data-target]="'#evidenceForm'+ formId + 'd'+department.departmentId" (click)="selectedForm = mou" [disabled]="selectedQuarter.disable">Upload</button>
-             </li>
-           </ul>
-         </div>
-       </td>
-       <td *ngIf="role=='coordinator'">
-        <span class="option d-flex justify-content-between">
-         <button (click)="edit(mou)" class="btn btn-link"><i class="fas fa-edit"></i></button>
-         <button (click)="delete(mou,selectedQuarter.mouDetails)" class="btn btn-link">  <i class="fas fa-trash"></i></button>
-        </span>
-        </td>
-       </tr>
-      </tbody>
-      </table>
-     </div>
-     </div>
-     <div class="modal-footer">
-        <button type="button" class="btn-sp btn-primary" data-dismiss="modal" (click)="mouListView = false;resetForm()">Add New</button>
-       <button type="button" class="btn-sp btn-clear" data-dismiss="modal" (click)="isUpdating=false">Close</button>
-     </div>
     </div>
   </div>
-</div>
 
-<evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId"
-  [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>
-
-
-
+  <evidence-form [evFormId]="formId" [selectedQuarter]="selectedQuarter" [evidanceFormId]="formId + 'd'+department.departmentId"
+    [selectedForm]="selectedForm" *ngIf="selectedForm"></evidence-form>

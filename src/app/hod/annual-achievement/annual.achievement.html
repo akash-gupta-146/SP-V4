@@ -250,7 +250,7 @@
       </div>
     </div>
   </div>
-  <div no-content *ngIf="!goals.length&&!loaderService.status.value">
+  <div no-content *ngIf="!(goals.length||loaderService.status.value)">
     Data not available
   </div>
 </div>

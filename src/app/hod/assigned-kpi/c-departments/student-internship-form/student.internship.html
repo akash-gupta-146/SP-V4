@@ -51,9 +51,9 @@
           <div *ngIf="lev.evidanceFormId==1&&lev.internshipRecord.length">
             <div>
               <a data-toggle="modal" [attr.href]="'#internshipModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
-                <small>Internship Records
+                <span>Internship Records
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div> {{lev.internshipRecord.length}}</div>
             </div>
@@ -61,9 +61,9 @@
           <div *ngIf="lev.evidanceFormId==9&&lev.professionalDevelopmentActivityRecord.length">
             <div>
               <a data-toggle="modal" [attr.href]="'#professionalDevelopmentActivitiesModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
-                <small>Professional Development Activities Records
+                <span>Professional Development Activities Records
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div> {{lev.professionalDevelopmentActivityRecord.length}}</div>
             </div>
@@ -71,9 +71,9 @@
           <div *ngIf="lev.evidanceFormId==10&&lev.facultyPublicationRecord.length">
             <div>
               <a data-toggle="modal" [attr.href]="'#facultyPublicationModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
-                <small>Faculty Publication Records
+                <span>Faculty Publication Records
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div> {{lev.facultyPublicationRecord.length}}</div>
             </div>
@@ -81,9 +81,9 @@
           <div>
             <div *ngIf="lev.evidanceFormId==11&&lev.studentPublicationRecord.length">
               <a data-toggle="modal" [attr.href]="'#studentPublicationModal'+department.departmentId" (click)="selectedQuarter=lev;listView=true;">
-                <small>Student Publication Records
+                <span>Student Publication Records
                   <i class="fas fa-eye"></i>
-                </small>
+                </span>
               </a>
               <div> {{lev.studentPublicationRecord.length}}</div>
             </div>

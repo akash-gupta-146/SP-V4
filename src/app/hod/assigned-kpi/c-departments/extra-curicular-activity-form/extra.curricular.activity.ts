@@ -68,7 +68,7 @@ export class ExtraCurricularActivity implements OnInit{
    alertify.confirm("Do You want to update it?", (ok: any) => {
      this.saving = true;
     this.utServ.updateForm(this.url, this.extraCurricularActivityForm.value).subscribe((response: any) => {
-     _.extend(this.selectedProgram,this.extraCurricularActivityForm.value);
+     _.extend(this.selectedProgram,response);
      this.activityListView = true;
      alertify.success("Successfully updated");
      this.saving = false;
