@@ -36,6 +36,7 @@ export class HomeComponent {
 
   ngOnInit() {
     this.commonService.breadcrumb.next(false);
+    this.commonService.initialSetup.next(false);
     // if (!(this.organizationInfo.mission==null&&this.organizationInfo.vision==null))
     //   this.router.navigate(['planner/home/initial-setup']);
   }
