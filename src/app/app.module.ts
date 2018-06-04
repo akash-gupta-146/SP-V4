@@ -39,12 +39,12 @@ export const routes: Routes = [
 		path: 'hod',
 		loadChildren: 'app/hod/hod.module#HodModule',
 		canActivate: [AuthGuard],
-		data:{role:''}
+		data:{role:'hod'}
 	}, {
 		path: 'deputyViceChancellor',
 		loadChildren: 'app/hod/hod.module#HodModule',
 		canActivate: [AuthGuard],
-		data:{role:'hod'}
+		data:{role:'deputyViceChancellor'}
 	}, {
 		path: 'viceChancellor',
 		loadChildren: 'app/hod/hod.module#HodModule',

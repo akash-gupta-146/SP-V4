@@ -21,7 +21,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   departmentIds: any[] = [];
   selectedQuarter: string = "";
   defaultCycle: any;
-  cycles: any[];
+  cycles: any[]=[];
   selectedLevel: any;
   selectedOpi: any;
   selectedDepartment: any;
@@ -65,6 +65,10 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   getCycles() {
     this.loaderService.display(true);
     this.utServ.getCycles().subscribe((response: any) => {
+      if(!response.length){
+        this.loaderService.display(false);
+        return;
+      }
       this.cycles = response;
       this.route.params.subscribe((params: any) => {
         this.departmentIds = [];
@@ -130,6 +134,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.loaderService.display(true);    
     this.utServ.getOpiResultByCombination(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter).subscribe(response=>{
       this.loaderService.display(false);
+      this.utServ.goals.next(response);
       this.goals = response;
       this.goalsCopy = JSON.parse(JSON.stringify(response));
       this.loaderService.status.next(false);            
@@ -145,6 +150,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.utServ.getOpiResultByDepartment(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds).subscribe(response=>{
       this.loaderService.display(false);
       this.goals = response;
+      this.utServ.goals.next(response);
       this.goalsCopy = JSON.parse(JSON.stringify(response));
       this.loaderService.status.next(false);            
       this.initFilters(response);
