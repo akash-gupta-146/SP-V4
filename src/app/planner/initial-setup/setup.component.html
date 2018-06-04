@@ -1,31 +1,85 @@
-<div class="container-fluid">
-  <div class="container text-center" style="    padding: 20px;">
-    <img src="assets/gulf.png" style="height: 100px;">
-  </div>
+<div class="">
+    <img src="assets/gulf.png" class="d-block m-auto">
   <form class="form-horizontal form-fill" [formGroup]="setupForm" (submit)="onSubmit()" style="padding: 0px 64px 0px 64px;">
-    <div class="form-group">
-      <div id='cssmenu'>
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#mission">MISSION</a></li>
-        </ul>
+    <p>
+      <button class="btn-sp btn-primary" type="button" data-toggle="collapse" data-target="#mission" aria-expanded="false" aria-controls="mission">Mission</button>
+      <button class="btn-sp btn-primary" type="button" data-toggle="collapse" data-target="#vision" aria-expanded="false" aria-controls="vision">Vision</button>
+      <button class="btn-sp btn-primary" type="button" data-toggle="collapse" data-target="#values" aria-expanded="false" aria-controls="values">Values</button>
+    </p>
+    <div class="row">
+      <div class="col col-lg-12 col-sm-12 m-2">
+          <div class="collapse multi-collapse" id="mission">
+        <div class="card">
+          <div class="card-icon-title m-3">
+            <div class="icon">
+              <i class="fas fa-bullseye"></i>
+            </div>
+            <div class="title">
+              Mission
+            </div>
+          </div>
+          <div class="icon-card-body px-5">
+            <textarea id="mission" rows="5" formControlName="mission" placeholder="Write Your Mission..."></textarea>
+          </div>
+        </div>
+          </div>
       </div>
-      <div class="col-sm-12">
-        <textarea class="form-control" id="mission" formControlName="mission" placeholder="Write Your Mission..."></textarea>
+      <div class="col col-lg-12 col-sm-12 m-2">
+        <div class="collapse multi-collapse" id="vision">
+            <div class="card">
+                <div class="card-icon-title m-2">
+                  <div class="icon">
+                    <i class="fas fa-eye"></i>
+                  </div>
+                  <div class="title">
+                    Vision
+                  </div>
+                </div>
+                <div class="icon-card-body px-5">
+                    <textarea id="vision" rows="5" formControlName="vision" placeholder="Write Your Vission..."></textarea>
+                </div>
+              </div>
+        </div>
       </div>
+      <div class="col col-lg-12 col-sm-12 m-2">
+          <div class="collapse multi-collapse" id="values" formArrayName="values">
+              <div class="card">
+                  <div class="card-icon-title m-2">
+                    <div class="icon">
+                      <i class="fas fa-align-left"></i>
+                    </div>
+                    <div class="title">
+                      Values
+                    </div>
+                    <div class="right-action-btn">
+                       <button class="btn-link" (click)="addValue()"  [disabled]="setupForm.controls.values.invalid"> <i class="fas fa-plus"></i></button>
+                    </div>
+                  </div>
+                  <div class="icon-card-body p-4">
+                    <div class="row">
+                      <div class="col-lg-4 col-md-6 col-sm-12 card-box" *ngFor="let stu of setupForm.controls.values['controls'];let j=index;" [formGroupName]="j">
+                        <div class='d-flex flex-column justify-content-between h-100'>
+                          <h6>
+                            <span>{{j+1}}) </span> Add Value <input type="text" class="form-control" id="title" formControlName="title" placeholder="Enter title"></h6>
+                          <p>
+                              <textarea class="form-control" id="desc" formControlName="description"></textarea>
+                          </p>
+                          <div class="d-flex justify-content-between">
+                            <a data-toggle="modal" data-target="#valueForm" (click)="onValueSelected(val,i)" class="text-primary link primary-link">Edit</a>
+                            <a (click)="removeValue(j)" class="dull-text link dull-link">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </div>
     </div>
-    <div class="form-group">
-      <div id='cssmenu'>
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#mission">VISSION</a></li>
-        </ul>
-      </div>
-      <div class="col-sm-12">
-        <textarea class="form-control" id="vision" formControlName="vision" placeholder="Write Your Vission..."></textarea>
-      </div>
-    </div>
-    <div formArrayName="values">
-      <div class="form-group">
-        <div id='cssmenu'>
+    
+    
+
+        <!-- <div id='cssmenu'>
           <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#mission">VALUES</a></li>
           </ul>
@@ -53,11 +107,9 @@
                 </div>                
               </div>
             </div>
-          </div>
-        <div class="col-sm-12">
+          </div> -->
           <button type="submit" class="btn-sp btn-primary m-2" [disabled]="setupForm.invalid">Submit</button>
-        </div>
-      </div>
-   </div>
+     
+       
   </form>
 </div>
