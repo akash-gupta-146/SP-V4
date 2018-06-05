@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from "@angular/forms";
 import { StorageService } from '../../shared/storage.service';
 import { UniversityService } from '../../shared/UTI.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import * as alertify from 'alertifyjs';
 @Component({
   selector: 'initial-setup',
@@ -10,16 +11,19 @@ import * as alertify from 'alertifyjs';
   styleUrls: ['./setup.component.css']
 })
 export class InitialSetup implements OnInit {
+  orgnizationInfo: any;
   public setupForm: FormGroup;
   constructor(public fb: FormBuilder,
     public st: StorageService,
     public utiService: UniversityService,
-    public router:Router) {
+    public router:Router,
+    public location:Location,
+    private route:ActivatedRoute) {
     this.setupForm = this.initForm();
-    this.fetchOrganizationInfo();
   }
-
+  
   ngOnInit() {
+    this.fetchOrganizationInfo();
     this.st.initialSetup.next(true);
     this.st.breadcrumb.next(false);
   }
@@ -28,27 +32,29 @@ export class InitialSetup implements OnInit {
     return this.fb.group({
       "mission": ['', [Validators.required]],
       "vision": ['', [Validators.required]],
+      "universityId": ['', []],
       "values": this.fb.array([this.fb.group({
         "title": ['', [Validators.required]],
         "description": ['', [Validators.required]]
-      })]),
-      "universityId": ''
+      })])
     });
   }
 
   public fetchOrganizationInfo() {
     this.utiService.fetchOrganizationInfo().subscribe((res: any) => {
-      this.st.storeData("org_info", res);
-      this.setupForm.controls["universityId"] = this.st.getData('org_info').universityId;
+      this.orgnizationInfo = res;
+      this.st.storeData("org_info", res);      
     }, (err: any) => {
 
     });
   }
 
   onSubmit() {
+    this.setupForm.controls["universityId"].patchValue(this.orgnizationInfo.universityId);
     this.utiService.saveInitialSetup(this.setupForm.value).subscribe((response: any) => {
-      alertify.success("Successfully Saved");
+      this.st.storeData("org_info", response);
       this.router.navigate(['planner/home']);
+      alertify.success("Successfully Saved");
     },error=>{
       alertify.error("Something went wrong.");
     });

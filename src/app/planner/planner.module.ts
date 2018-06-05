@@ -30,12 +30,12 @@ import { InitialGuard } from './initial-setup/initial.gaurd';
 					loadChildren: 'app/planner/home/home.module#HomeModule',
 					canActivate:[InitialGuard]
 				},
-				{ path: 'strategic-plan', loadChildren: 'app/planner/plan/plan.module#PlanModule' },
-				{ path: 'strategic-goal', loadChildren: 'app/planner/goal/goal.module#GoalModule' },				
-				{ path: 'initiatives', loadChildren:'app/planner/initiative/initiative.module#InitiativeModule'},
-				{ path: 'activities', loadChildren: 'app/planner/activity/activity.module#ActivityModule' },
-				{ path: 'kpis', loadChildren: 'app/planner/measure/measure.module#MeasureModule' },
-				{ path: 'spi', loadChildren: 'app/planner/spi/spi.module#SPIModule' },
+				{ path: 'strategic-plan', loadChildren: 'app/planner/plan/plan.module#PlanModule' ,canActivate:[InitialGuard]},
+				{ path: 'strategic-goal', loadChildren: 'app/planner/goal/goal.module#GoalModule' ,canActivate:[InitialGuard]},				
+				{ path: 'initiatives', loadChildren:'app/planner/initiative/initiative.module#InitiativeModule',canActivate:[InitialGuard]},
+				{ path: 'activities', loadChildren: 'app/planner/activity/activity.module#ActivityModule' ,canActivate:[InitialGuard]},
+				{ path: 'kpis', loadChildren: 'app/planner/measure/measure.module#MeasureModule' ,canActivate:[InitialGuard]},
+				{ path: 'spi', loadChildren: 'app/planner/spi/spi.module#SPIModule' ,canActivate:[InitialGuard]},
 				{ path: 'result', loadChildren: 'app/planner/results/result.module#ResultModule'}
 			]
 		},

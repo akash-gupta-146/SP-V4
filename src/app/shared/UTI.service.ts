@@ -105,7 +105,6 @@ export class UniversityService {
   }
 
   public fetchOrganizationInfo() {
-
     return this.http.get(this.baseUrl + "/university")
       .map(this.extractData)
       .catch(this.handleError);

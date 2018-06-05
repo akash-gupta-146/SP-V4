@@ -15,7 +15,7 @@ export class StorageService {
   public baseUrl: string = environment.api;
   public hasRole: boolean;
   constructor() {
-    
+
   }
 
   public storeData(field_name: any, data: any) {
@@ -30,6 +30,8 @@ export class StorageService {
     let data = JSON.parse(localStorage.getItem(field_name));
     if (data) {
       return data;
+    }else{
+      return {};
     }
   }
 }

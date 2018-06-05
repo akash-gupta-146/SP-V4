@@ -10,14 +10,11 @@ export class InitialGuard implements CanActivate {
   constructor(private router: Router, 
     private storageService:StorageService,private utiService:UniversityService) {
     this.role = this.storageService.getData('role');
-    this.utiService.fetchOrganizationInfo().subscribe((res: any) => {
-      this.organisationInfo = this.storageService.getData('org_info');
-      this.storageService.storeData("org_info", res);
-    });
   }
-
+  
   canActivate(route: ActivatedRouteSnapshot) {
-    if (!(this.organisationInfo.mission==null&&this.organisationInfo.vision==null)) {
+    this.organisationInfo = this.storageService.getData('org_info');
+    if (this.organisationInfo.mission != null) {
       return true;
     }
     this.router.navigate(['planner/initial-setup']);

@@ -6,6 +6,5 @@
 export const environment = {
   production: false,
   api:"https://spdemo.ind-cloud.everdata.com/spv4/"
-  // api:"http://localhost:8080/spv4/"
-  // api:"https://testing.ind-cloud.everdata.com/spv4/"   
+  // api:"http://localhost:8080/spv4/"  
 };

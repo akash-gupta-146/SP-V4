@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CredentialService } from './login.service';
 // import { CommonService } from '../../providers/common.service';
 import { StorageService } from "../shared/storage.service";
+import { LoaderService } from '../shared/loader.service';
 // import { OrganizationService2 } from '../../providers/organization.service2';
 declare let $:any;
 
@@ -13,16 +14,14 @@ declare let $:any;
   styleUrls:['./login.component.css']
 })
 export class LoginComponent{
-  public loginForm: FormGroup;
-  public role:string;
-  public loginStart: boolean = false;
-  public error:boolean = false;
+  loginForm: FormGroup;
+  role:string;
+  loginStart: boolean = false;
+  error:boolean = false;
   constructor(public formBuilder: FormBuilder,
               public router:Router,
               private commonService: StorageService,
-              public credentialService: CredentialService,
-              // public org_ser: OrganizationService2,
-              ){
+              private credentialService: CredentialService){
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', [Validators.required]]
@@ -32,6 +31,7 @@ export class LoginComponent{
     if (localStorage.getItem('user_roleInfo')) {
       this.router.navigateByUrl("/"+this.commonService.getData('user_roleInfo')[0].role);
     }
+    this.fetchOrganizationInfo({});
   }
   ngAfterViewChecked() {
     $("#login-button").click(function(event:any) {
@@ -48,34 +48,33 @@ export class LoginComponent{
       this.commonService.storeData("userDetails",res.userDetails)
       this.commonService.storeData("user_roleInfo", res.userDetails.roleInfo);   
       this.role = res.userDetails.roleInfo[0].role;
-      if(this.role == "planner"||this.role == "admin"){
-        this.fetchOrganizationInfo(res);
-      } else {
-        this.onSuccess();
-      }
-      this.onSuccess();  
-        
+      // if(this.role == "planner"||this.role == "admin"){
+      //   this.fetchOrganizationInfo(res);
+      // } else {
+      //   this.onSuccess();
+      // }  
+      this.onSuccess();      
     }, (err) => {
       this.onError();
     });
   }
   
   public fetchOrganizationInfo(user_info:any) {
-    // this.org_ser.fetchOrganizationInfo().subscribe((res:any) => {
-    //   this.commonService.storeData("org_info", res);
-    //   this.onSuccess();    
-    // }, (err:any) => {
-    //   this.onError();
-    // });
+    this.credentialService.fetchOrganizationInfo().subscribe((res:any) => {
+      this.commonService.storeData("org_info", res);     
+      // this.onSuccess();    
+    }, (err:any) => {
+      // this.onError();
+    });
   }
 
   public onSuccess() {
-    this.loginStart = false;
     this.router.navigateByUrl("/"+this.role);
+    this.loginStart = false;
   }  
 
   public onError() {
-    this.loginStart = false;
     this.error = true;
+    this.loginStart = false;
   }
 }

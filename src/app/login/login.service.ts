@@ -6,11 +6,11 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import {StorageService} from '../shared/storage.service';
+import { environment } from '../../environments/environment';
 @Injectable()
 export class CredentialService {
-  // public baseUrl: string = "https://strategic-plannning.cloud.cms500.com/apiv2";
-  // public baseUrl: string = "https://testing.ind-cloud.everdata.com/spv4";  
-  public baseUrl: string = "https://spdemo.ind-cloud.everdata.com/spv4";  
+  public baseUrl: string = environment.api;  
+    
   
   login: any = false;
   headers: any;
@@ -18,6 +18,12 @@ export class CredentialService {
   private loggedIn = false;
   constructor(private http: Http, private storageService:StorageService) {    
     this.loggedIn = !!localStorage.getItem('access_token');
+  }
+
+  public fetchOrganizationInfo() {
+    return this.http.get(this.baseUrl + "/university")
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   resetLoginStatus() {
@@ -34,7 +40,7 @@ export class CredentialService {
   }
 
   verifyUser(data: Object) {
-    return this.http.post(this.baseUrl + "/login", data)
+    return this.http.post(this.baseUrl + "login", data)
                     .map(this.extractData)
                     .catch(this.handleError);
   }

@@ -11,36 +11,36 @@ declare let $: any;
 	templateUrl: './planner.component.html',
 	styleUrls: ['./planner.component.css']
 })
-export class PlannerComponent implements OnInit{
+export class PlannerComponent implements OnInit {
 	userDetails: any;
-	breadcrumb:boolean = false;
-	initialInfo:boolean = false;
+	breadcrumb: boolean = false;
+	initialInfo: boolean = false;
 	constructor(public storageService: StorageService,
 		public utiService: UniversityService,
 		public router: Router,
 		private loaderService: LoaderService) {
-		this.loaderService.display(false);			
+		this.loaderService.display(false);
 		this.userDetails = this.storageService.getData('userDetails');
 		$(document).ready(function () {
 			$('[data-toggle="tooltip"]').tooltip();
 		});
 	}
 
-	ngOnInit(){
-		this.storageService.breadcrumb.next(true);		
+	ngOnInit() {
+		this.storageService.breadcrumb.next(true);
 		this.storageService.breadcrumb.asObservable().subscribe((val: boolean) => {
 			this.breadcrumb = val;
-	});
+		});
 	}
 
-	logout(){
+	logout() {
 		this.loaderService.display(true);
-		this.utiService.logout().subscribe((response:any)=>{
-				localStorage.clear();
-				this.loaderService.display(false);
-				this.router.navigate(['/login']);
-				alertify.success(response);
+		this.utiService.logout().subscribe((response: any) => {
+			localStorage.clear();
+			this.loaderService.display(false);
+			this.router.navigate(['login']);
+			alertify.success(response);
 		});
-}
+	}
 
 }	
