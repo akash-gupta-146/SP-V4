@@ -92,7 +92,7 @@ body {
 }
 
 #topline {
-  background-color: #0091ea;
+  background-color: var(--color-primary);
   position: relative;
   height: 10px;
   width: 100%;
@@ -113,11 +113,11 @@ body {
 }
 
 #section-material {
-  background: #00adef;
-  background: -moz-linear-gradient(-45deg, #00adef 0%, #0076e5 100%);
-  background: -webkit-linear-gradient(-45deg, #00adef 0%, #0076e5 100%);
-  background: linear-gradient(135deg, #00adef 0%, #0076e5 100%);
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#00adef', endColorstr='#0076e5', GradientType=1);
+  background: black;
+  background: -moz-linear-gradient(-45deg, var(--color-primary) 0%, var(--color-primary) 100%);
+  background: -webkit-linear-gradient(-45deg, var(--color-primary) 0%, var(--color-primary) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%);
+  /* filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#00adef', endColorstr='#0076e5', GradientType=1); */
   position: relative;
   min-height: 97vh;
   width: 100%;
