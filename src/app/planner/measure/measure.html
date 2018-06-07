@@ -61,7 +61,7 @@
           <div class="col-sm-12 col-lg-12">
             <div class="form-group">
               <label>Goal</label>
-              <select class="form-control" id="sel1" formControlName="objectiveId" [ngModel]="defaultCycle" (ngModelChange)="getInitiative($event)">
+              <select class="form-control" id="sel1" formControlName="objectiveId" (ngModelChange)="getInitiative($event)">
                 <option *ngIf="!objectives.length" disabled>No Goal added in selected Plan</option>
                 <option *ngFor="let objective of objectives;let i=index;" [value]="objective.goalId">{{i+1}}.{{objective.goal}}</option>
               </select>
@@ -347,6 +347,9 @@
                           <div class="text-center">
                             <input type="checkbox" [checked]="!(goal.disable||initiate.disable||activit.disable||msr.disable)" (change)="disable($event,msr.opiId)">
                           </div>
+                          <button class="btn btn-link" href="#top" [disabled]="goal.disable||initiate.disable||activit.disable" (click)="addMeasure(goal,initiate,activit)">
+                            <i class="fas fa-plus"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -722,7 +725,7 @@
 
 
   <!-- add new -->
-  <button fab class="btn btn-primary" id="add-btn" (click)="addNewMeasure()" [disabled]="defaultCycle.disable">
+  <!-- <button fab class="btn btn-primary" id="add-btn" (click)="addNewMeasure()" [disabled]="defaultCycle.disable">
     <i class="fas fa-plus"></i>
-  </button>
+  </button> -->
   <!-- end of add new -->

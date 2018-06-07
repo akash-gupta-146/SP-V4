@@ -103,7 +103,7 @@ export class ExtraCurricularActivity implements OnInit{
 
  delete(activity:any,extraCurricularActivity:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteExtraCurricularActivity(activity.extraCurricularActivityId).subscribe((response:any)=>{
     extraCurricularActivity.splice(extraCurricularActivity.indexOf(activity),1);
@@ -116,7 +116,7 @@ export class ExtraCurricularActivity implements OnInit{
 
  deleteEvidence(evidence:any,evidences:any[]){
   alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteEvidenceofExtraCurricularActivity(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);

@@ -93,7 +93,7 @@ export class ExchangeProgram implements OnInit{
 
  delete(program:any,exchangeProgram:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteExchangeProgram(program.exchangeProgramId).subscribe((response:any)=>{
     exchangeProgram.splice(exchangeProgram.indexOf(program),1);
@@ -106,7 +106,7 @@ export class ExchangeProgram implements OnInit{
 
  deleteEvidence(evidence:any,evidences:any[]){
   alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteEvidenceofExchangeProgram(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);

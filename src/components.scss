@@ -537,6 +537,10 @@ button[disabled] {
       color: $primary;
       flex-direction: row;
     }
+    .modal-body{
+      max-height: 80vh;
+      overflow-y: scroll;
+      }
     .modal-footer {
       padding: 0px;
     }

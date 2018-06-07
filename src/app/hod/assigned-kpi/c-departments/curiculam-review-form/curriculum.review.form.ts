@@ -88,7 +88,7 @@ export class CurriculumReviewForm implements OnInit{
 
  delete(review:any,curriculumReview:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteCurriculumReviewProgram(review.curriculamReviewId).subscribe((response:any)=>{
     curriculumReview.splice(curriculumReview.indexOf(review),1);
@@ -101,7 +101,7 @@ export class CurriculumReviewForm implements OnInit{
 
  deleteEvidence(evidence:any,evidences:any[]){
   alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteEvidenceofCurriculumReviewProgram(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);

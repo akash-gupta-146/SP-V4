@@ -99,7 +99,7 @@ export class CommunityLearningForm implements OnInit{
 
  delete(learning:any,communityLearning:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteCommunityLearningProgram(learning.communityLearningId).subscribe((response:any)=>{
     communityLearning.splice(communityLearning.indexOf(learning),1);
@@ -112,7 +112,7 @@ export class CommunityLearningForm implements OnInit{
 
  deleteEvidence(evidence:any,evidences:any[]){
   alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteEvidenceofLearningProgram(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);

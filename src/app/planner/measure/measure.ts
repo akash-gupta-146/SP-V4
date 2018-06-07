@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit,OnDestroy } from '@angular/core';
 import { UniversityService } from "../../shared/UTI.service";
 import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from "@angular/forms";
 import { StorageService } from "../../shared/storage.service";
@@ -15,7 +15,7 @@ declare let $: any;
   templateUrl: './measure.html',
   styleUrls: ['./measure.scss', './../planner.component.css']
 })
-export class MeasureComponent extends Filters implements AfterViewInit {
+export class MeasureComponent extends Filters implements AfterViewInit, OnDestroy{
   saving: boolean;
   departmentLoader: boolean;
   activeCycle: any[];
@@ -99,6 +99,7 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
 
   getInitiative(objId: any) {
+    console.log(objId);
     if (objId) {
       this.objectives.forEach((element: any) => {
         if (element.goalId == objId) {
@@ -138,8 +139,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
     }, (error: any) => {
       this.loaderService.display(false);
     });
-    // this.goals = this.defaultCycle.goals;
-    // this.goalsCopy = JSON.parse(JSON.stringify(this.goals));
     this.initFilters(this.goals);
     this.loaderService.display(false);
     this.getActiveCycles();
@@ -164,7 +163,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   getDepartments() {
-    // this.departmentIds = [];
     this.orgService.getDepartments().subscribe((res: any) => {
       this.departments = res;
       this.departmentsCopy = res;
@@ -260,7 +258,6 @@ export class MeasureComponent extends Filters implements AfterViewInit {
 
   getOpi(){
     this.goals = this.goalsCopy;
-    // this.getMeasure();
     this.reloadBtn = false;
   }
 
@@ -610,6 +607,9 @@ export class MeasureComponent extends Filters implements AfterViewInit {
   }
 
   addMeasure(goal:any,initiative:any,activity:any) {
+    this.getObjective(this.defaultCycle.cycleId);
+    this.getInitiative(goal.goalId);
+    this.getActivities(initiative.initiativeId);
     this.selectedActivity = activity;
     this.newKpi = true;
     this.enableFields();

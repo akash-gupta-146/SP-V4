@@ -113,7 +113,7 @@ export class StudentResearch implements OnInit{
 
  delete(program:any,researchConsultancy:any[]){
   alertify.confirm("Are you sure you want to Delete it?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteStudentResearch(program.studentResearchId).subscribe((response:any)=>{
     researchConsultancy.splice(researchConsultancy.indexOf(program),1);
@@ -126,7 +126,7 @@ export class StudentResearch implements OnInit{
 
  deleteEvidence(evidence:any,evidences:any[]){
   alertify.confirm("Are you sure you want to delete the Evidence File?",()=>{
-   this.loaderService.setLoadingStatus("Deleting");
+   
    
    this.utServ.deleteEvidenceofStudentResearch(evidence.id).subscribe((response:any)=>{
     evidences.splice(evidences.indexOf(evidence),1);
