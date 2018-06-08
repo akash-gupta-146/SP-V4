@@ -243,7 +243,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     if (data.feedback == 'true')
       alertify.confirm("Do you realy want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
-          alertify.success("Audit has been Approved");
+          alertify.success("KPI data has been Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
           alertify.error("Something went wrong");
@@ -254,7 +254,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       alertify.confirm("Do you realy want to Reject this ?", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
 
-          alertify.success("Audit has been Rejected");
+          alertify.success("KPI data has been Rejected");
         }, (error: any) => {
 
           alertify.error("Something went wrong");

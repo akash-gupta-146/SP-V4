@@ -360,7 +360,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Approved';
           data.disable = true;
-          alertify.success("Audit has been Approved");
+          alertify.success("KPI data has been Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
           alertify.error("Something went wrong");
@@ -372,7 +372,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Rejected';
           data.disable = 'true';
-          alertify.success("Audit has been Rejected");
+          alertify.success("KPI data has been Rejected");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
           alertify.error("Something went wrong");
