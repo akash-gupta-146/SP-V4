@@ -65,6 +65,10 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy,AfterViewI
         $('.dept-list').collapse('hide');
       }
     });
+    $('#termSheetPopup').on('click', function(e) {
+      e.stopPropagation();
+    });
+
    }
 
   getFrequencies() {
@@ -336,4 +340,5 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy,AfterViewI
   showLoader(){    
     this.loaderService.display(true);
   }
+
 }

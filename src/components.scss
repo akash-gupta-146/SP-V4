@@ -1035,3 +1035,10 @@ div[no-content] {
 .modal-full{
   max-width: 95vw !important;
 }
+
+.high-shadow{
+  transition:0.3s;
+  &:hover{
+    box-shadow: 0 5px 19px 0 rgba(0, 0, 0, 0.46);
+  }
+}

@@ -15,18 +15,18 @@
         <option *ngFor="let dept of departments;let d = index;" [ngValue]="dept.departmentId">{{dept.department}}</option>
       </select>
     </div>
-    <ng-template #heirarchy>
-      <div class="form-group  dropdown-st">
-        <label class="control-label" >Organisation Unit</label>
-        <input [value]="departmentNames.join(',') || 'None Selected'" data-toggle="collapse" href="#collapseExample" readonly>
-        <div class="collapse dept-list" id="collapseExample">
-          <div class="card p-3 d-flex align-items-end">
-            <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="department($event)"></tree-view>
-            <button type="button" class="btn-sp btn-sp-small btn-primary float-right mt-2" style="width: 25%;" (click)="onCycleChange(defaultCycle.cycleId,selectedYear,selectedQuarter,departmentIds);" data-toggle="collapse" href="#collapseExample">Apply</button>
-          </div>
+    <div>
+        <div class="form-group" data-toggle="dropdown">
+            <label class="control-label" >Organisation Unit</label>
+            <input [value]="departmentNames.join(',') || 'None Selected'" readonly>
+        </div>
+        <div class="dropdown-menu p-0 border-0" style="margin-top:75px;position:absolute;right:0;max-width:max-content">
+            <div class="card p-3 d-flex align-items-end animate slideInDown high-shadow">
+                <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="department($event)"></tree-view>
+                <button type="button" class="btn-sp btn-sp-small btn-primary float-right mt-2" style="width: 25%;" (click)="onCycleChange(defaultCycle.cycleId,selectedYear,selectedQuarter,departmentIds);">Apply</button>
+              </div>
         </div>
       </div>
-    </ng-template>
   </div>
   <div class="d-flex ml-5" *ngIf="defaultCycle">
     <div class="icon">
