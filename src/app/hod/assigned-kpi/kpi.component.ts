@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Filters } from '../../shared/filters';
 import { HodService } from '../hod.service';
 import { StorageService } from '../../shared/storage.service';
@@ -13,7 +13,7 @@ declare let $: any;
   templateUrl: './kpi.component.html',
   styleUrls: ['./../hod.component.scss']
 })
-export class KPIComponent extends Filters implements OnInit,OnDestroy{
+export class KPIComponent extends Filters implements OnInit,OnDestroy,AfterViewInit{
   
   noData: boolean = false;
   departmentNames: string[]=[];
@@ -57,6 +57,16 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     }); 
   }
 
+  ngAfterViewInit(){
+    $(document).click(function(e) {
+      if ($(e.target).is('tree-view')) {
+        e.stopPropagation();   
+      }else{
+        $('.dept-list').collapse('hide');
+      }
+    });
+   }
+
   getFrequencies() {
     this.utServ.getFrequencies().subscribe((response: any) => {
       this.frequencies = response;
@@ -73,7 +83,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       }
       this.cycles = response;
       this.route.params.subscribe((params: any) => {
-        this.departmentIds = [];
+        this.departmentIds=[]; this.departmentNames = [];
         if(params['cycleId'] && params['year'] && params['quarter'] && params['deptId']){
           this.cycles.forEach(element => {
             if (element.cycleId == params['cycleId']) {
@@ -120,7 +130,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
               this.storage.cycle.next(element);
               this.defaultCycle = element;
                 this.getResultsByComination();
-                this.departmentIds = [];
+                this.departmentIds=[]; this.departmentNames = [];
                 this.getDepartments();
             }
           });
@@ -133,7 +143,8 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   }
 
   getResultsByComination(){
-    this.loaderService.display(true);    
+    this.loaderService.display(true);   
+    this.getDepartments(); 
     this.utServ.getOpiResultByCombination(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter).subscribe(response=>{
       this.noData = (response.length)?false:true;
       this.loaderService.display(false);
@@ -150,6 +161,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
 
   getOpiResultByDepartmentAndAll(){
     this.loaderService.display(true);
+    this.getDepartments();
     this.utServ.getOpiResultByDepartment(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds).subscribe(response=>{
       this.noData = (response.length)?false:true;
       this.loaderService.display(false);
@@ -213,15 +225,14 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   getCurrentQuarter(){
     this.utServ.getCurrentQuarter().subscribe((quarter:any)=>{
       this.selectedQuarter = quarter.quarter;
-      this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);
-      this.getDepartments();
+      this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);      
     }); 
   }
 
   reloadOpis(){
     this.selectedYear = new Date().getFullYear();
     this.departmentModel = 0;
-    this.departmentIds = [];
+    this.departmentIds=[]; this.departmentNames = [];
     this.getCurrentQuarter();
     if(this.departmentIds.length)
       this.getOpiResultByDepartmentAndAll();
@@ -255,8 +266,10 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
       return;
     departments.forEach(department => {
       this.departmentIds.forEach(id => {
-        if(id == department.departmentId)
+        if(id == department.departmentId){
           department.my = true;
+          this.departmentNames.push(department.department);
+        }
       });
       this.checkDepartment(department.reporteeDepartments);
     });
@@ -285,15 +298,16 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
           }
         } else {
           department.my = false;
-          this.departmentIds.splice(this.departmentIds.indexOf(''+department.departmentId), 1);
-          this.departmentIds.splice(this.departmentNames.indexOf(''+department.department), 1);
+          this.departmentIds.splice(this.departmentIds.indexOf(''+department.departmentId),1);
+          if(this.departmentNames.indexOf(department.department)!=-1)
+            this.departmentNames.splice(this.departmentNames.indexOf(department.department), 1);
         }
       }
     }
   }
 
   viewDepartment(departmentId: any) {
-    this.departmentIds = [];
+    this.departmentIds=[]; this.departmentNames = [];
     if(departmentId!=0)
       this.departmentIds.push(departmentId);
     this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);

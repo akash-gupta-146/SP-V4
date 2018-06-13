@@ -23,3 +23,18 @@
 .text-black{
     color:black !important;
 }
+
+.dropdown-st{
+position: relative;
+}
+
+.dropdown-st {
+    .dept-list{
+        font-size: 12px;
+        position: absolute;
+        z-index: 1;
+        width: max-content;
+        top: 50px;
+        right: 0;
+    }
+}
