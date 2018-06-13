@@ -32,7 +32,6 @@ export class ByKPIComponent {
   }
 
   ngOnInit(){
-    this.getOpi();
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
     if (!(this.role == 'coordinator' || this.role == 'hod')) {
       this.departments = this.storage.getData('user_roleInfo');
@@ -43,8 +42,12 @@ export class ByKPIComponent {
       });
     }
     this.utServ.goals.asObservable().subscribe((val: any[]) => {
-      this.goals = val;
-      this.goalsCopy = val;
+      if(val){
+        this.goals = val;
+        this.goalsCopy = val;
+      }else{
+        this.getOpi();
+      }
     });
   }
 
@@ -84,14 +87,9 @@ export class ByKPIComponent {
   getOpi(): any {
     this.initiatives = this.activities = this.opis = [];
     this.utServ.getOpiResult().subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-        this.goalsCopy = JSON.parse(JSON.stringify(response));
-        this.utServ.goals.next(response);
-      }
+      this.goals = response;
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
+      this.utServ.goals.next(response);
     });
   }
 

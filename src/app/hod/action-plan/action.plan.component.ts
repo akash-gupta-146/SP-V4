@@ -16,6 +16,7 @@ declare let $: any;
 export class ActionPlan implements OnInit{
  [x: string]: any;
  my: boolean = false;
+ noData:boolean = false;
  selectedStep: any;
  actionForm: FormGroup;
  statusForm: FormGroup;
@@ -54,8 +55,9 @@ export class ActionPlan implements OnInit{
    url="/action-step";
   this.loaderService.display(true);
   this.utServ.getActionStep(url).subscribe((response: any) => {
+    this.noData = (response.length)?false:true;
     this.actionSteps = response;
-   this.loaderService.display(false);
+    this.loaderService.display(false);
   })
  }
 
@@ -110,7 +112,9 @@ export class ActionPlan implements OnInit{
    this.selectedStep['statusLogs']=[];
    this.selectedStep.statusLogs.push(response);
    $('#postActionModal').modal('hide');
-   alertify.success("Success");
+   alertify.success("Status of action step has been changed.");
+  },(error)=>{
+    alertify.error("Something went wrong");
   });
  }
 

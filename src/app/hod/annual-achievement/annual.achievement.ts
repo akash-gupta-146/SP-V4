@@ -8,6 +8,7 @@ import * as alertify from 'alertifyjs';
   styleUrls: ['./annual.achievement.css', './../hod.component.scss']
 })
 export class AnnualAchievement implements OnInit,OnDestroy{
+  noData: boolean = false;
   defaultCycle: any ={};
   selectedYear:any = new Date().getFullYear();
   cycles: any;
@@ -15,8 +16,7 @@ export class AnnualAchievement implements OnInit,OnDestroy{
   goalsCopy: any[]=[];
   goals: any[]=[];
   constructor(private utServ: HodService,
-              private loaderService:LoaderService) {
-    this.loaderService.display(true);                
+              private loaderService:LoaderService) {               
   }
 
   ngOnInit(){
@@ -27,59 +27,25 @@ export class AnnualAchievement implements OnInit,OnDestroy{
       this.cycles.forEach(element => {
         if (element.defaultCycle){
           this.defaultCycle = element;
-          // this.getOpiResult(element);
           this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);
           }
       });
     });
   }
-  // getOpiResult() {
-  //   this.utServ.getAllOpiResult().subscribe((response: any) => {
-  //     if (response.status == 204) {
-  //       this.goals = [];
-  //       this.goalsCopy = []
-  //     } else {
-  //       this.goals = response;
-  //       this.utServ.goals.next(response);
-  //       this.goalsCopy = response;
-  //       this.getOpiResultByYear('2018');
-  //     }
-  //   });
-  // }
-
-  // getOpiResultByYear(year:any){
-    // this.utServ.getOpiResultByYearOnly(year).subscribe((response:any)=>{
-  //     if (response.status == 204) {
-  //       this.goals = [];
-  //       this.goalsCopy = []
-  //     } else {
-  //       this.goals = response;
-  //       this.utServ.goals.next(response);
-  //       this.goalsCopy = response;
-  //     }
-  //   })
-  // }
 
   getOpiResult(cycle: any) {
     this.utServ.getAllOpiResultByCycleId(cycle.cycleId).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-      }
+      this.goals = response;
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
     });
   }
 
   getOpiResultByYear(cycleId: any, year: any) {
     this.loaderService.display(true);
     this.utServ.getOpiAllResultByYear(cycleId, year).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-      }
+      this.noData = (response.length)?false:true;
+      this.goals = response;
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
       this.loaderService.display(false);
     },(error:any)=>{      
       this.loaderService.display(false);      

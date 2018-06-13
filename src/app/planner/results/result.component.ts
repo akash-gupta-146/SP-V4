@@ -11,6 +11,7 @@ declare let $:any;
  styleUrls:['result.component.css']
 })
 export class ResultComponent implements OnInit, AfterViewInit{
+  noData: boolean = false;
  departments: any[]=[];
  goals: any[]=[];
  goalsCopy: any;
@@ -50,13 +51,9 @@ export class ResultComponent implements OnInit, AfterViewInit{
 
  getResults() {
   this.utServ.getMeasuresByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-    if (response.status == 204) {
-      this.goals = [];
-      this.goalsCopy = [];
-    } else {
-      this.goals = response;
-      this.goalsCopy = response;
-    }
+    this.noData = (response.length)?false:true;
+    this.goals = response;
+    this.goalsCopy = JSON.parse(JSON.stringify(response));
     this.loaderService.display(false);
   }, (error: any) => {
     this.loaderService.display(false);
@@ -65,13 +62,8 @@ export class ResultComponent implements OnInit, AfterViewInit{
 
 getOpiResultByYear(cycleId: any, year: any) {
  this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
-   if (response.status == 204) {
-     this.goals = [];
-     this.goalsCopy = []
-   } else {
-     this.goals = response;
-     this.goalsCopy = JSON.parse(JSON.stringify(response));
-   }
+  this.goals = response;
+  this.goalsCopy = JSON.parse(JSON.stringify(response));
    this.loaderService.display(false);
  }, (error: any) => {
   this.loaderService.display(false);
@@ -82,20 +74,17 @@ getOpiResultByYear(cycleId: any, year: any) {
   return (y > new Date().getFullYear());
  }
 
- getResultByDepartment(department:any,e:any){  
+ getResultByDepartment(department:any,e:any){ 
   if(department.reporteeDepartments.length){
     e.stopPropagation();
     return;
   }
   this.deptSelect = department.department;
+  this.loaderService.display(true);
   this.utServ.getOpiResultByDepartment(this.defaultCycle.cycleId,department.departmentId,this.selectedYear).subscribe((response: any) => {
-    if (response.status == 204) {
-      this.goals = [];
-      this.goalsCopy = []
-    } else {
-      this.goals = response;
-      this.goalsCopy = JSON.parse(JSON.stringify(response));
-    }
+    this.noData = (response.length)?false:true;
+    this.goals = response;
+    this.goalsCopy = JSON.parse(JSON.stringify(response));
     this.loaderService.display(false);
   }, (error: any) => {
    this.loaderService.display(false);

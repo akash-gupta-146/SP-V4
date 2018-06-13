@@ -115,7 +115,7 @@
     <!-- end of collapse panel for KPI -->
   </div>
   <!-- No content -->
-  <div no-content *ngIf="!(loaderService.status.value||actionSteps.length)">
+  <div no-content *ngIf="noData">
     No Action Steps Assigned yet
   </div>
   <!-- end of no content -->

@@ -33,7 +33,7 @@ export class DeparmtmentComponent {
       this.hierarchy = [];
     });
     this.adminService.getUniversity().subscribe(response => {
-      if (response.status === 204) {
+      if (!response.length) {
         this.university = [];
         alertify.alert("There is not university Entry yet.\nFirst Feed the entries of University").setHeader("Alert");
       } else {

@@ -14,6 +14,7 @@ declare let $:any;
  styleUrls: ['./../../hod.component.scss']
 })
 export class ActionPlanByDepartment implements OnInit{
+  noData: boolean;
  actionStepsCopy: any[]=[];
  selectedStep: any;
  actionForm: FormGroup;
@@ -32,6 +33,7 @@ export class ActionPlanByDepartment implements OnInit{
  ngOnInit(){
   this.loaderService.display(true);
   this.utServ.getActionStepsWhenPlanMode().subscribe((response: any) => {
+    this.noData = (response.length)?false:true;
     this.actionSteps = response;
     this.actionStepsCopy = JSON.parse(JSON.stringify(this.actionSteps));
    this.loaderService.display(false);

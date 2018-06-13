@@ -15,6 +15,7 @@ declare let $: any;
 })
 export class KPIComponent extends Filters implements OnInit,OnDestroy{
   
+  noData: boolean = false;
   departmentNames: string[]=[];
   departmentModel: number;
   departments: any[];
@@ -67,6 +68,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.utServ.getCycles().subscribe((response: any) => {
       if(!response.length){
         this.loaderService.display(false);
+        this.noData=true;
         return;
       }
       this.cycles = response;
@@ -133,6 +135,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   getResultsByComination(){
     this.loaderService.display(true);    
     this.utServ.getOpiResultByCombination(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter).subscribe(response=>{
+      this.noData = (response.length)?false:true;
       this.loaderService.display(false);
       this.utServ.goals.next(response);
       this.goals = response;
@@ -148,6 +151,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
   getOpiResultByDepartmentAndAll(){
     this.loaderService.display(true);
     this.utServ.getOpiResultByDepartment(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds).subscribe(response=>{
+      this.noData = (response.length)?false:true;
       this.loaderService.display(false);
       this.goals = response;
       this.utServ.goals.next(response);
@@ -160,77 +164,6 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     });
   }
 
-  // getResult(cycleId,year){
-  //   this.getOpiResultByYear(cycleId,year);
-  // }
-
-  // getOpi(): any {
-  //   this.initiatives = this.activities = this.opis = [];
-  //   this.utServ.getOpiResult().subscribe((response: any) => {
-  //     if (response.status == 204) {
-  //       this.goals = [];
-  //       this.goalsCopy = []
-  //     } else {
-  //       this.goals = response;
-  //       this.goalsCopy = JSON.parse(JSON.stringify(response));
-  //       // this.utServ.goals.next(response);
-  //       this.initFilters(response);
-  //     }
-  //   });
-  // }
-
-  // getOpiResult(cycle: any) {
-  //   this.storage.cycle.next(cycle);
-  //   this.loaderService.display(true);
-  //   this.initiatives = this.activities = this.opis = [];
-  //   this.utServ.getOpiResultByCycleId(cycle.cycleId).subscribe((response: any) => {
-  //     if (response.status == 204) {
-  //       this.goals = [];
-  //       this.goalsCopy = []
-  //     } else {
-  //       this.goals = response;
-  //       this.goalsCopy = JSON.parse(JSON.stringify(response));
-  //       this.initFilters(response);
-  //     }
-  //     this.loaderService.display(false);
-  //   },(error:any)=>{
-  //     this.loaderService.display(false);
-  //     alertify.error("Something went wrong");
-  //   });
-  // }
-
-  // getOpiResultByYear(cycleId: any, year: any) {
-  //   this.loaderService.display(true);
-  //   this.initiatives = this.activities = this.opis = [];
-  //   this.utServ.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
-  //     this.goals = response;
-  //     this.goalsCopy = JSON.parse(JSON.stringify(response));
-  //     this.initFilters(response);
-  //     this.loaderService.display(false);
-  //     if(response.length)
-  //       this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
-  //   },(error:any)=>{
-  //     this.loaderService.display(false);
-  //     alertify.error("Something went wrong");
-  //   });
-  // }
-
-  // getOpiResultByDepartment(cycleId: any, year: any,departmentIds:any) {
-  //   this.loaderService.display(true);
-  //   this.initiatives = this.activities = this.opis = [];
-  //   this.utServ.getOpiResultByDeptIds(cycleId, year,departmentIds).subscribe((response: any) => {
-  //     this.goals = response;
-  //     this.goalsCopy = JSON.parse(JSON.stringify(response));
-  //     this.initFilters(response);
-  //     this.loaderService.display(false);
-  //     if(response.length)
-  //       this.selectedQuarter = response[0].initiatives[0].activities[0].opis[0].departmentInfo[0].opiAnnualTargets[0].levels[0].quarter;
-  //   },(error:any)=>{
-  //     this.loaderService.display(false);
-  //     alertify.error("Something went wrong");
-  //   });
-  // }
-
   onCycleChange(cycleId: any, year: any,quarter:any,deptId:any){
     if(this.departmentIds.length){
       this.router.navigate(['./',{cycleId:cycleId,year:year,quarter:quarter,deptId:this.departmentIds.slice(0)}]);
@@ -241,7 +174,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
 
   setQuarterFeedback(data: any) {
     if (data.feedback == 'true')
-      alertify.confirm("Do you realy want to Approve this ?", () => {
+      alertify.confirm("Do you really want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
           alertify.success("KPI data has been Approved");
           $("#feedbackModal").modal('hide');
@@ -251,7 +184,7 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
         });
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you realy want to Reject this ?", () => {
+      alertify.confirm("Do you really want to Reject this ?", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
 
           alertify.success("KPI data has been Rejected");
@@ -290,6 +223,10 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy{
     this.departmentModel = 0;
     this.departmentIds = [];
     this.getCurrentQuarter();
+    if(this.departmentIds.length)
+      this.getOpiResultByDepartmentAndAll();
+    else
+      this.getResultsByComination();
     // this.selectedQuarter = "q1";
     // this.getOpiResultByQuarter(this.selectedQuarter);
     // this.getOpiResultByYear(this.defaultCycle.cycleId,this.selectedYear);

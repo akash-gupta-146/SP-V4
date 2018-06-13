@@ -17,6 +17,7 @@ declare let $: any;
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorDepartmentsComponent implements OnInit {
+  saving: boolean;
   deptId: string;
   @Input() id: any;
   selectedEvidence: any;
@@ -213,16 +214,14 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     dept.actionStepView = true;
     this.selectedDepatrtmentId = dept.id;
     this.utServ.getActionSteps(dept.id).subscribe((response) => {
-      if (response.status === 204)
-        this.actionSteps = [];
-      else
-        this.actionSteps = response;
+      this.actionSteps = response;
     });
   }
 
   addNewActionStep(dept: any) {
     dept.isNew = true;
     dept.isEdit = false;
+    this.actionForm.reset();
     this.actionForm.controls['opiId'].patchValue(this.data.opiId);
   }
 
@@ -230,30 +229,32 @@ export class CoordinatorDepartmentsComponent implements OnInit {
     var actionSteps = [];
     actionSteps.push(this.actionForm.value);
     if (!dept.isEdit) {
+      this.saving = true;
       this.utServ.postActionSteps(dept.id, actionSteps).subscribe((response: any) => {
+        this.saving = false;
         response[0]['linked'] = true;
-        this.selectedStep = response[0];
         array.push(response[0]);
         dept.isNew = false;
         alertify.success("Action Step added and linked");
       });
     } else {
       alertify.confirm("Do you want to update this action step?", (response: any) => {
+        this.saving = true;
         this.utServ.updateActionStep(this.selectedStep.stepId, this.actionForm.value).subscribe((response: any) => {
+          this.saving = false;
           _.extendOwn(this.selectedStep, this.actionForm.value);
           dept.isNew = false;
           dept.isEdit = false;
           alertify.success("Updated");
         });
       }).setHeader("Confirmation");
-
     }
   }
 
   selectedAction: any = {};
   setActionFeedback(data: any) {
     if (data.feedback == 'true')
-      alertify.confirm("Do you realy want to Approve this ?", () => {
+      alertify.confirm("Do you really want to Approve this ?", () => {
         this.utServ.approveActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
           alertify.success("Approved");
           $("#feedbackModal").modal('hide');
@@ -263,7 +264,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         });
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you realy want to Reject this ?", () => {
+      alertify.confirm("Do you really want to Reject this ?", () => {
         this.utServ.rejectActionStep(data.linkingId, { comment: data.comment }).subscribe((reponse) => {
           alertify.success("Rejected");
         }, (error: any) => {
@@ -356,10 +357,12 @@ export class CoordinatorDepartmentsComponent implements OnInit {
 
   setQuarterFeedback(data: any) {
     if (data.feedback == 'true')
-      alertify.confirm("Do you realy want to Approve this ?", () => {
+      alertify.confirm("Do you really want to Approve this ?", () => {
         this.utServ.approve(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Approved';
           data.disable = true;
+          data.role = this.role;
+          this.passQuarter(data);
           alertify.success("KPI data has been Approved");
           $("#feedbackModal").modal('hide');
         }, (error: any) => {
@@ -368,7 +371,7 @@ export class CoordinatorDepartmentsComponent implements OnInit {
         });
       }).setHeader("Confirmation");
     else
-      alertify.confirm("Do you realy want to Reject this ?", () => {
+      alertify.confirm("Do you really want to Reject this ?", () => {
         this.utServ.reject(data.id, { comment: data.comment }).subscribe((reponse) => {
           data.status = 'Rejected';
           data.disable = 'true';

@@ -8,7 +8,6 @@ import { SharedModule } from "../../shared/shared.module";
 		path: '', component: MeasureComponent,
 		pathMatch: 'full'
 	}])],
-	providers: [],
 	declarations: [MeasureComponent]
 })
 export class MeasureModule {

@@ -32,15 +32,14 @@ export class EmployeeComponent {
    this.departments = [];
   });
   this.adminService.getRoles().subscribe(response => {
-   if (response.status === 204) {
+   if (!response.length) {
     this.roles = [];
-    alertify.alert("There is not Roles Entry yet.\nFirst Feed the entries of Roles").setHeader("Alert");
+    alertify.alert("There is not any Roles Entry yet.\nFirst Feed the entries of Roles").setHeader("Alert");
    } else {
     this.roles = response;
    }
   }, err => {
-   this.roles = [];
-   
+   this.roles = [];   
   });
   this.newEmployee = this.initForm();
  }

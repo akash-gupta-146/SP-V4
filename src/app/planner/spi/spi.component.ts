@@ -32,11 +32,7 @@ export class SPIComponent implements AfterViewInit {
 
   getCycles(flag: any) {
     this.orgService.getCycleWithChildren(flag).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.cycles = [];
-      } else {
-        this.cycles = response;
-      }
+      this.cycles = response;
     })
   }
 
@@ -47,11 +43,7 @@ export class SPIComponent implements AfterViewInit {
 
   getSpis() {
     this.orgService.getSpis().subscribe((res: any) => {
-      if (res.status == 204) {
-        this.spis = [];
-      } else {
-        this.spis = res;
-      }
+      this.spis = res;
     });
   }
 

@@ -16,6 +16,9 @@ declare let $: any;
   styleUrls: ['./measure.scss', './../planner.component.css']
 })
 export class MeasureComponent extends Filters implements AfterViewInit, OnDestroy{
+  selectedDepartment: any;
+  departmentFormChanges: boolean;
+  newDepartment: boolean;
   saving: boolean;
   departmentLoader: boolean;
   activeCycle: any[];
@@ -130,17 +133,16 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     this.loaderService.display(true);
     this.objectives = this.initiatives = this.activities = [];
     this.orgService.getCycleByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
-      this.noData = (response.goals.length)?false:true;      
       this.goals = response.goals;
       this.goalsCopy = JSON.parse(JSON.stringify(this.goals));
       this.selectedYear = new Date().getFullYear();
       this.getObjective(this.defaultCycle.cycleId);
+      this.noData = (response.goals.length)?false:true;      
       this.loaderService.display(false);
     }, (error: any) => {
       this.loaderService.display(false);
     });
     this.initFilters(this.goals);
-    this.loaderService.display(false);
     this.getActiveCycles();
   }
 
@@ -173,11 +175,22 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
   /**for editing opi target levels */
   editDepartmentForm: FormGroup;
   viewDepartment(dept: any) {
-    dept.edit = true;
+    this.departmentFormChanges=false;
+    if(this.selectedDepartment){
+      this.selectedDepartment.edit = false;
+      dept.edit = true;
+      this.selectedDepartment = dept;
+    }else{
+      dept.edit = true;
+      this.selectedDepartment = dept;
+    }
     this.editDepartmentForm = this.formBuilder.group({
       "id": [dept.id],
       "baseline": [dept.baseline],
       "opiAnnualTargets": this.formBuilder.array(this.getOpiAnnualTargets(dept.opiAnnualTargets))
+    });
+    this.editDepartmentForm.valueChanges.subscribe((changes:any)=>{
+      this.departmentFormChanges = true;
     });
   }
 
@@ -206,7 +219,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
 
   removeAssignedDept(selectedMeasure: any, index: any) {
     const departmentInfo: any[] = selectedMeasure.departmentInfo;
-    alertify.confirm("Do you realy want to unassign department ?",()=>{
+    alertify.confirm("Do you really want to unassign department ?",()=>{
       this.orgService.deleteAssignedDepartment(selectedMeasure.departmentInfo[index].id).subscribe((response: any) => {
         departmentInfo.splice(index, 1);
         alertify.success("Successfully Unassigned");
@@ -216,11 +229,12 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     }).setHeader("Confirmation");
   }
 
-  updateOpiTarget(selectedMeasure: any, index: any) {
+  updateOpiTarget(selectedMeasure: any, dept: any) {
     alertify.confirm("You sure you want to update the targets?",()=>{
       this.orgService.updateTarget(selectedMeasure.opiId, [this.editDepartmentForm.value]).subscribe((response: any) => {
-        selectedMeasure.departmentInfo[index] = response[0];
-        _.extend(selectedMeasure.departmentInfo[index] , response[0]);
+        dept.edit = false;
+        this.departmentFormChanges=false;
+        _.extend(dept , response[0]);
       });
     }).setHeader("Confirmation");      
   }
@@ -297,13 +311,12 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     }
   }
 
-  checkAssignDept(departmentInfo: any[]) {
-    setTimeout(function(){ $('#myModal').modal('show') }, 500);
-    $('#detailModal').modal('hide');    
+  checkAssignDept(msr: any) {
+    this.next=false;this.prev=true;
     this.selectedDepartmentIds = [];
     this.selectedDepartments = [];
     this.departments = JSON.parse(JSON.stringify(this.departmentsCopy));
-    departmentInfo.forEach(outerElement => {
+    msr.departmentInfo.forEach(outerElement => {
       this.departments.forEach(innerElement => {
         this.searchDepartment(innerElement, outerElement);
       });
@@ -331,6 +344,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
   }
 
   assignDepartment() {
+    this.prev=false;this.next=true;
     this.cycles.forEach(element => {
       if (this.defaultCycle.cycleId == element.cycleId)
         this.cycle = element.cycle;
@@ -358,12 +372,14 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     alertify.confirm("Are you sure you want to assign selected department(s) to KPI", () => {
       this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe((response: any) => {
         this.selectedMeasure.departmentInfo = this.selectedMeasure.departmentInfo.concat(response);
-        this.getDepartments();
+        // this.getDepartments();
+        this.checkAssignDept(this.selectedMeasure);
         this.selectedDepartments = [];
         this.selectedDepartmentIds = [];
         alertify.success("Successfully assigned");
-        $('#detailModal').modal('show');
-        $('#myModal').modal('hide');
+        // $('#detailModal').modal('show');
+        // $('#myModal').modal('hide');
+        this.newDepartment = false;
         this.prev = true;this.next = false;
       }, (error: any) => {
         alertify.error("Something went wrong");
@@ -376,7 +392,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     const departmentsArrayForEdit: any[] = [];
     this.selectedDepartments.forEach(element => {
       departmentsFormArray.push(this.formBuilder.group({
-        baseline: [0],
+        baseline: [0,Validators.required],
         departmentId: [element.departmentId],
         departmentName: [element.department],
         opiAnnualTargets: this.formBuilder.array(this.setAnnualTarget(element.opiAnnualTargets))
@@ -475,6 +491,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
         this.selectedActivity.opis.push(response);
         this.selectedMeasure = response;
         console.log(this.selectedMeasure);
+        this.newDepartment = true;
         $('#myModal').modal('show');
         alertify.success("You have successfully added a new KPI.");
         // this.getMeasure();
@@ -637,12 +654,12 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     });
   }
 
-  disable(event: any, opiId: any) {
+  disable(event: any, opi: any) {
     if (!event.target.checked){
       alertify.confirm("Are you sure you want to inactivate this KPI ?", () => {
-        this.orgService.disableKPI(opiId).subscribe((response: any) => {
+        this.orgService.disableKPI(opi.opiId).subscribe((response: any) => {
           alertify.success("Deactivated selected KPI");
-          this.getMeasure();
+          opi.disable = false;
         }, () => {
           event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
@@ -653,9 +670,9 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     }
     else
       alertify.confirm("Are you sure you want to activate this KPI ?", () => {
-        this.orgService.enableKPI(opiId).subscribe((response: any) => {
+        this.orgService.enableKPI(opi.opiId).subscribe((response: any) => {
           alertify.success("Activated the KPI..");
-          this.getMeasure();
+          opi.disable = true;
         }, () => {
           event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
@@ -667,14 +684,8 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
 
   getOpiResultByYear(cycleId: any, year: any) {
     this.orgService.getOpiResultByYear(cycleId, year).subscribe((response: any) => {
-      
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-        this.goalsCopy = JSON.parse(JSON.stringify(response));
-      }
+      this.goals = response;
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
     });
   }
 
@@ -718,12 +729,37 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
   }
 
   getDepartmentWithData(opi:any){
+    this.checkAssignDept(opi);
     this.selectedMeasure = opi;
     this.departmentLoader = true;
     this.orgService.getAssignedDepartmentWithData(opi.opiId).subscribe((response:any)=>{
       this.selectedMeasure.departmentInfo = response;
       this.departmentLoader = false;
     })
+  }
+
+  check(e){
+    e.stopPropagation();
+    if(this.departmentFormChanges){
+      alertify.confirm("Do you want to save changes ?",(yes)=>{
+        this.orgService.updateTarget(this.selectedMeasure.opiId, [this.editDepartmentForm.value]).subscribe((response: any) => {
+          this.selectedDepartment.edit = false;
+          _.extend(this.selectedDepartment , response[0]);
+        });
+        this.departmentFormChanges=false;
+      },(no)=>{
+        $('#myModal').modal('hide');
+        this.departmentFormChanges=false;        
+      }).setHeader("Confirmation").setting({
+        'closableByDimmer': false,
+        'movable': false,
+        'labels': { ok: 'Yes', cancel: 'No' },
+        })
+        .set({transition:'fade'})
+        .show();
+    }else{
+      $('#myModal').modal('hide');
+    }
   }
 
   ngOnDestroy(){

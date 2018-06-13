@@ -117,7 +117,6 @@ export class InitiativeComponent extends Filters implements OnInit{
 
     this.goalsCopy = this.goals;
     this.initFilters(this.goals);
-    this.loaderService.display(false);
     this.getActiveCycles();
   }
 

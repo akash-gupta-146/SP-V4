@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import * as alertify from 'alertifyjs';
 import {
   Router,
@@ -51,6 +51,8 @@ export class AppComponent implements OnInit{
     // });
 
   }
+
+
 
   // Shows and hides the loading spinner during RouterEvent changes
   // navigationInterceptor(event: RouterEvent): void {
