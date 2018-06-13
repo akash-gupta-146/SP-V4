@@ -77,6 +77,7 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
         }   
       }
       if (!flag) {
+        console.log("cccc");
         this.getActivities(this.defaultCycle);
       }
     });
@@ -99,8 +100,9 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     this.orgService.commonCycle = this.defaultCycle.cycleId;    
     this.objectives = this.initiatives = [];
     this.initiativeId = +this.route.snapshot.paramMap.get('initiativeId');
-
+    console.log("dddd");
     this.orgService.getCycleByCycleId(this.defaultCycle.cycleId).subscribe((response: any) => {
+      console.log("eeee : ",response);
       this.goals = response.goals;
       this.noData = (response.goals.length)?false:true; 
       if (this.initiativeId) {
@@ -129,7 +131,6 @@ export class ActivityComponent extends Filters implements OnInit, AfterViewInit 
     }
     this.goalsCopy = this.goals;
     this.initFilters(this.goals);
-    this.loaderService.display(false);
     this.getActiveCycles();
   }
 

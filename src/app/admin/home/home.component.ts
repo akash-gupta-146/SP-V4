@@ -12,14 +12,9 @@ export class HomeComponent{
 
   ngOnInit(){
     this.adminService.getUniversity().subscribe((response:any) => {
-      if (response.status === 204) {
-        this.organisationInfo = {};
-      } else {
-        this.organisationInfo = response;
-      }
+      this.organisationInfo = response;
     }, err => {
-      this.organisationInfo = {};
-      
+      this.organisationInfo = {};      
     });
   }
 }

@@ -118,28 +118,6 @@
     transition:background 0.3s;
     cursor: pointer;
 }
-.primary-link{
-    color:$primary !important;
-    &:hover{
-        color:var(--color-primary);
-        background:rgba(0, 122, 255, 0.10980392156862745);
-    }
-}
-.danger-link{
-    color:var(--color-danger);
-    &:hover{
-        background: rgba(255, 204, 204, 0.35);
-        color:var(--color-danger);
-    }
-}
-.dull-link{
-    color:gray !important; 
-    &:hover{
-        background:rgba(0, 122, 255, 0.10980392156862745);
-        color:gray;
-    } 
-}
-/* end of cards */
 
 /* text */
 .circle-letter{

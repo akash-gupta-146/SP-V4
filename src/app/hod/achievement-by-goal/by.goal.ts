@@ -47,13 +47,8 @@ export class ByGoal implements OnInit {
     this.selectedGoal = 0;
     this.loaderService.display(true);
     this.utServ.getOpiResultByGoalMode(cycle.cycleId).subscribe((response: any) => {
-      if (response.status == 204) {
-        this.goals = [];
-        this.goalsCopy = []
-      } else {
-        this.goals = response;
-        this.goalsCopy = response;
-      }
+      this.goals = response;
+      this.goalsCopy = JSON.parse(JSON.stringify(response));
       this.loaderService.display(false);
     });
   }

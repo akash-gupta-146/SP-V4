@@ -97,7 +97,7 @@
               <h6 class="text-primary">Achievement</h6>
               
           </div> -->
-        <div class="d-flex justify-content-end mt-3" *ngIf="!lev.disable">
+        <div class="d-flex justify-content-end mt-3" *ngIf="!lev.disable&&role=='coordinator'">
           <button class="btn-link link primary-link text-primary" *ngIf="lev.status=='unsubmitted'" [disabled]="!(lev.currentTargetLevel&&lev.currentCost)"
             (click)="saveQuarterResult(lev)" [disabled]="lev.disable"> 
             <span *ngIf="saving;else save">

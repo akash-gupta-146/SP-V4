@@ -84,9 +84,6 @@ export class GoalComponent extends Filters implements AfterViewInit, OnInit{
     }, (error: any) => {
       this.loaderService.display(false);
     });
-    // this.goals = this.defaultCycle.goals;
-    // this.goalsCopy = this.defaultCycle.goals;
-    this.loaderService.display(false);
   }
 
   initObjectiveForm() {

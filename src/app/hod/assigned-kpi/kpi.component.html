@@ -16,12 +16,13 @@
       </select>
     </div>
     <ng-template #heirarchy>
-      <div>
-        <label class="control-label" data-toggle="collapse" href="#collapseExample">Organisation Unit</label>
-        <div class="collapse" id="collapseExample">
+      <div class="form-group  dropdown-st">
+        <label class="control-label" >Organisation Unit</label>
+        <input [value]="departmentNames.join(',') || 'None Selected'" data-toggle="collapse" href="#collapseExample" readonly>
+        <div class="collapse dept-list" id="collapseExample">
           <div class="card p-3 d-flex align-items-end">
             <tree-view id="termSheetPopup" [treeData]="departments" (onSelected)="department($event)"></tree-view>
-            <button type="button" class="btn-sp btn-sp-small btn-primary float-right mt-2" style="width: 25%;" (click)="onCycleChange(defaultCycle.cycleId,selectedYear,selectedQuarter,departmentIds);">Apply</button>
+            <button type="button" class="btn-sp btn-sp-small btn-primary float-right mt-2" style="width: 25%;" (click)="onCycleChange(defaultCycle.cycleId,selectedYear,selectedQuarter,departmentIds);" data-toggle="collapse" href="#collapseExample">Apply</button>
           </div>
         </div>
       </div>
@@ -269,7 +270,7 @@
       </div>
     </div>
   </div>
-  <div no-content *ngIf="!(goals.length||loaderService.status.value)">
+  <div no-content *ngIf="noData">
     Data not available
   </div>
 </div>

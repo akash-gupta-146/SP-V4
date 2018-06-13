@@ -119,12 +119,12 @@
     </div>
   </div>
   <!-- No content -->
-  <div no-content *ngIf="my&& !(actionSteps.length||loaderService.status.value)">
+  <div no-content *ngIf="my && noData">
     No Action Steps Assigned To You
   </div>
   <!-- end of no content -->
   <!-- No content -->
-  <div no-content *ngIf="!my&& !(actionSteps.length||loaderService.status.value)">
+  <div no-content *ngIf="!my && noData">
     No Action Steps are linked
   </div>
   <!-- end of no content -->

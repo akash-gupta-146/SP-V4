@@ -57,7 +57,6 @@
        </li>
       </ul>
      </li>
-     <!-- <li (click)="getOpiResultByYear(defaultCycle.cycleId,selectedYear)">All department</li> -->
     </ul>
    </div>
   </div>
@@ -212,7 +211,7 @@
    </div>
  </div>
   <!-- No content -->
-  <div no-content *ngIf="!(goals.length||loaderService.status.value)">
+  <div no-content *ngIf="noData">
     No Content
   </div>
   <!-- end of no content -->
