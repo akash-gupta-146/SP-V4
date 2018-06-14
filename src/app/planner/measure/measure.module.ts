@@ -5,8 +5,7 @@ import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
 	imports: [SharedModule, RouterModule.forChild([{
-		path: '', component: MeasureComponent,
-		pathMatch: 'full'
+		path: '', component: MeasureComponent
 	}])],
 	declarations: [MeasureComponent]
 })

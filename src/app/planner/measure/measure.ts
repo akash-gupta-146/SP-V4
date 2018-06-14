@@ -174,7 +174,18 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
 
   /**for editing opi target levels */
   editDepartmentForm: FormGroup;
-  viewDepartment(dept: any) {
+  viewDepartment(dept: any,e:any) {
+    if(this.departmentFormChanges){
+      e.stopPropagation();
+      this.tellYesOrNo(e).then(()=>{
+        this.fillFormData(dept);
+      });
+    } else {
+      this.fillFormData(dept);
+    }
+  }
+
+  fillFormData(dept:any){
     this.departmentFormChanges=false;
     if(this.selectedDepartment){
       this.selectedDepartment.edit = false;
@@ -748,8 +759,8 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
         });
         this.departmentFormChanges=false;
       },(no)=>{
-        $('#myModal').modal('hide');
-        this.departmentFormChanges=false;        
+        // $('#myModal').modal('hide');
+        this.departmentFormChanges=false;      
       }).setHeader("Confirmation").setting({
         'closableByDimmer': false,
         'movable': false,
@@ -760,6 +771,29 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     }else{
       $('#myModal').modal('hide');
     }
+  }
+
+  tellYesOrNo(e){
+    return new Promise((resolve:any,reject:any)=>{
+      alertify.confirm("Do you want to save changes ?",(yes)=>{
+        this.orgService.updateTarget(this.selectedMeasure.opiId, [this.editDepartmentForm.value]).subscribe((response: any) => {
+          this.selectedDepartment.edit = false;
+          _.extend(this.selectedDepartment , response[0]);
+          resolve();
+        });
+        this.departmentFormChanges=false;
+      },(no)=>{
+        // $('#myModal').modal('hide');
+        this.departmentFormChanges=false;     
+        resolve(); 
+      }).setHeader("Confirmation").setting({
+        'closableByDimmer': false,
+        'movable': false,
+        'labels': { ok: 'Yes', cancel: 'No' },
+        })
+        .set({transition:'fade'})
+        .show();
+    });
   }
 
   ngOnDestroy(){

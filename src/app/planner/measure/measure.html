@@ -506,7 +506,7 @@
                 <li *ngFor="let dept of selectedMeasure.departmentInfo;let arr=index;" class="modal-box my-3" [hidden]="departmentLoader">
                   <div *ngIf="!dept.edit">
                     <div class="d-flex justify-content-end">
-                      <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
+                      <button class="btn btn-link" (click)="viewDepartment(dept,$event)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
                         title="Edit">
                         <i class="fas fa-edit"></i>
                       </button>
@@ -562,7 +562,7 @@
   
                   <fieldset [formGroup]="editDepartmentForm" *ngIf="dept.edit">
                     <div class="d-flex justify-content-end">
-                      <button class="btn btn-link" (click)="viewDepartment(dept)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
+                      <button class="btn btn-link" (click)="viewDepartment(dept,$event)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
                         title="Edit">
                         <i class="fas fa-edit"></i>
                       </button>
