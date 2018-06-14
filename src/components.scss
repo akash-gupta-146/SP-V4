@@ -1031,7 +1031,14 @@ div[no-content] {
   }
 // end of reference list
 
-
+//Centering vertical and horizontal center
+  .vh-center{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) !important;
+  }
+//End Centering vertical and horizontal center
 .modal-full{
   max-width: 95vw !important;
 }
@@ -1042,3 +1049,4 @@ div[no-content] {
     box-shadow: 0 5px 19px 0 rgba(0, 0, 0, 0.46);
   }
 }
+
