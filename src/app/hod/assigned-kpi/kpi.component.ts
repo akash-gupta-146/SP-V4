@@ -16,7 +16,7 @@ declare let $: any;
 export class KPIComponent extends Filters implements OnInit,OnDestroy,AfterViewInit{
   
   noData: boolean = false;
-  departmentNames: string[]=[];
+  departmentNames: any[]=[];
   departmentModel: number;
   departments: any[];
   departmentIds: any[] = [];
@@ -262,21 +262,28 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy,AfterViewI
 
   department(event: any) {
     this.travers(event, event.my);
-    // this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);
+    if(!this.departmentIds.length)
+    this.onCycleChange(this.defaultCycle.cycleId,this.selectedYear,this.selectedQuarter,this.departmentIds);
   }
 
   checkDepartment(departments:any[]): any {
+    var checkedChildrenLength:number=0;
     if(!departments.length)
-      return;
+      return 0;
     departments.forEach(department => {
+      var len:number=0;
       this.departmentIds.forEach(id => {
         if(id == department.departmentId){
           department.my = true;
+          checkedChildrenLength++;
           this.departmentNames.push(department.department);
         }
       });
-      this.checkDepartment(department.reporteeDepartments);
+      len = this.checkDepartment(department.reporteeDepartments);
+      if((len == department.reporteeDepartments.length)&&(len!=0))
+        department.my = true;
     });
+    return checkedChildrenLength;
   }
 
   travers(department: any, checked: boolean) {
@@ -295,16 +302,13 @@ export class KPIComponent extends Filters implements OnInit,OnDestroy,AfterViewI
         if (checked) {
           if (!department.disabled) {
             department.my = true;
-            if (this.departmentIds.indexOf(''+department.departmentId) === -1){
-              this.departmentIds.push(''+department.departmentId);
-              this.departmentNames.push(department.department);
-            }
+            this.departmentIds.push(''+department.departmentId);
+            this.departmentNames.push(department.department);
           }
         } else {
           department.my = false;
           this.departmentIds.splice(this.departmentIds.indexOf(''+department.departmentId),1);
-          if(this.departmentNames.indexOf(department.department)!=-1)
-            this.departmentNames.splice(this.departmentNames.indexOf(department.department), 1);
+          this.departmentNames.splice(this.departmentNames.indexOf(department.department),1);
         }
       }
     }
