@@ -197,7 +197,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     }
     this.editDepartmentForm = this.formBuilder.group({
       "id": [dept.id],
-      "baseline": [dept.baseline],
+      "baseline": [dept.baseline,[Validators.required, Validators.min(0)]],
       "opiAnnualTargets": this.formBuilder.array(this.getOpiAnnualTargets(dept.opiAnnualTargets))
     });
     this.editDepartmentForm.valueChanges.subscribe((changes:any)=>{
@@ -210,7 +210,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     opiAnnualTargets.forEach(element => {
       annualTargets.push(this.formBuilder.group({
         "id": [element.id],
-        "estimatedCost": [element.estimatedCost],
+        "estimatedCost": [element.estimatedCost,[Validators.required, Validators.min(0)]],
         "levels": this.formBuilder.array(this.getLevels(element.levels))
       }))
     });
@@ -219,12 +219,21 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
 
   getLevels(levelsArray) {
     const levels: any[] = [];
-    levelsArray.forEach(element => {
-      levels.push(this.formBuilder.group({
-        "id": element.id,
-        "estimatedTargetLevel": element.estimatedTargetLevel
-      }))
-    });
+    if(this.selectedMeasure.measureUnitId == 4)
+      levelsArray.forEach(element => {
+        levels.push(this.formBuilder.group({
+          "id": [element.id],
+          "estimatedTargetLevel": [element.estimatedTargetLevel,[Validators.required, Validators.min(0),Validators.max(100)]]
+        }))
+      });
+    else
+      levelsArray.forEach(element => {
+        levels.push(this.formBuilder.group({
+          "id": [element.id],
+          "estimatedTargetLevel": [element.estimatedTargetLevel,[Validators.required, Validators.min(0)]]
+        }))
+      });
+      
     return levels;
   }
 
@@ -323,6 +332,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
   }
 
   checkAssignDept(msr: any) {
+    this.selectedMeasure = msr;
     this.next=false;this.prev=true;
     this.selectedDepartmentIds = [];
     this.selectedDepartments = [];
@@ -355,6 +365,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
   }
 
   assignDepartment() {
+    console.log(this.selectedMeasure);
     this.prev=false;this.next=true;
     this.cycles.forEach(element => {
       if (this.defaultCycle.cycleId == element.cycleId)
@@ -363,7 +374,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     this.departmentForm = this.formBuilder.group({
       departmentsArray: this.formBuilder.array(this.getDepartmentFormArray())
     });
-    if(this.selectedMeasure.measureUnitId == 3 || this.selectedMeasure.measureUnitId == 4){
+    if(this.selectedMeasure.measureUnitId == 4){
       const departmentsArray = <FormArray>this.departmentForm.controls["departmentsArray"];
       departmentsArray.controls.forEach((element:FormGroup) => {
         const opiAnnualTargets = <FormArray>element.controls.opiAnnualTargets;
@@ -371,7 +382,17 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
           const levels = <FormArray>element.controls.levels;
           levels.controls.forEach((element:FormGroup) => {
             element.controls.estimatedTargetLevel.setValidators([Validators.required, Validators.min(0),Validators.max(100)]);
-            element.controls.estimatedTargetLevel.setValue(0,{'max':100});
+          });
+        });
+      });
+    }else{
+      const departmentsArray = <FormArray>this.departmentForm.controls["departmentsArray"];
+      departmentsArray.controls.forEach((element:FormGroup) => {
+        const opiAnnualTargets = <FormArray>element.controls.opiAnnualTargets;
+        opiAnnualTargets.controls.forEach((element:FormGroup) => {
+          const levels = <FormArray>element.controls.levels;
+          levels.controls.forEach((element:FormGroup) => {
+            element.controls.estimatedTargetLevel.setValidators([Validators.required, Validators.min(0)]);
           });
         });
       });
@@ -381,15 +402,14 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
   assign() {
     const departmentsArray: any[] = this.departmentForm.controls["departmentsArray"].value;
     alertify.confirm("Are you sure you want to assign selected department(s) to KPI", () => {
+      this.saving = true;
       this.orgService.assignOpi(this.selectedMeasure.opiId, departmentsArray).subscribe((response: any) => {
+        this.saving = false;
         this.selectedMeasure.departmentInfo = this.selectedMeasure.departmentInfo.concat(response);
-        // this.getDepartments();
         this.checkAssignDept(this.selectedMeasure);
         this.selectedDepartments = [];
         this.selectedDepartmentIds = [];
         alertify.success("Successfully assigned");
-        // $('#detailModal').modal('show');
-        // $('#myModal').modal('hide');
         this.newDepartment = false;
         this.prev = true;this.next = false;
       }, (error: any) => {
@@ -403,7 +423,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     const departmentsArrayForEdit: any[] = [];
     this.selectedDepartments.forEach(element => {
       departmentsFormArray.push(this.formBuilder.group({
-        baseline: [0,Validators.required],
+        baseline: [0,[Validators.required, Validators.min(0)]],
         departmentId: [element.departmentId],
         departmentName: [element.department],
         opiAnnualTargets: this.formBuilder.array(this.setAnnualTarget(element.opiAnnualTargets))
@@ -759,7 +779,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
         });
         this.departmentFormChanges=false;
       },(no)=>{
-        // $('#myModal').modal('hide');
+        $('#myModal').modal('hide');
         this.departmentFormChanges=false;      
       }).setHeader("Confirmation").setting({
         'closableByDimmer': false,

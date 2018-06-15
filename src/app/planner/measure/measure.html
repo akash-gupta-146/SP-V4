@@ -356,7 +356,9 @@
                   </div>
                 </div>
                 <div class="grid-inner-body" style="grid-template-columns:30.8% 69.2%;" *ngIf="!activit.opis.length">
-                  <div class="item text-center"><span class="vh-center message-danger m-0">No KPI added yet</span></div>
+                  <div class="item text-center">
+                    <span class="vh-center message-danger m-0">No KPI added yet</span>
+                  </div>
                   <div class="grid-inner-body" style="grid-template-columns:44.5% 55.5%;">
                     <div class="item text-center">
                       <span class="vh-center message-danger m-0">None</span>
@@ -424,18 +426,22 @@
                       <div>
                         <b>BaseLine:</b>
                         <input type="text" class="form-control" formControlName="baseline" id="exampleInputAmount" min="0">
+                        <div class="message-danger animate slideInUp" *ngIf="dept.controls.baseline.invalid">
+                          <span *ngIf="dept.controls.baseline.errors.min">Not accepting Negative value</span>
+                          <span *ngIf="dept.controls.baseline.errors.required">*required</span>
+                        </div>
                       </div>
                     </div>
                     <ng-container formArrayName="opiAnnualTargets">
                       <div class="d-flex justify-content-between my-2" *ngFor="let array of dept.controls.opiAnnualTargets.controls;let op=index;"
-                        [formGroupName]="op">  
+                        [formGroupName]="op">
                         <div class="px-1">
                           <small class="text-primary">
                             Year
                           </small>
                           <div>{{array.value.year}}</div>
                         </div>
-  
+
                         <div class="d-flex justify-content-between px-1">
                           <ng-container formArrayName="levels">
                             <div *ngFor="let level of array.controls.levels.controls;let l = index;" [formGroupName]="l" class='px-1'>
@@ -445,13 +451,18 @@
                                 </small>
                                 <input type="number" class="form-control w-10" id="exampleInputAmount" formControlName="estimatedTargetLevel" min="0">
                               </div>
-                              <div *ngIf="(selectedMeasure.measureUnitId==3||selectedMeasure.measureUnitId==4)&&level.invalid" class="message-danger animate slideInUp">
-                                Please enter value between 0 to 100
+                              <div *ngIf="selectedMeasure.measureUnitId==2&&level.invalid" class="message-danger animate slideInUp">
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.min">Not accepting Negative value</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
+                              </div>
+                              <div *ngIf="selectedMeasure.measureUnitId==4&&level.invalid" class="message-danger animate slideInUp">
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.min || level.controls.estimatedTargetLevel.errors.max">Please enter value between 0 to 100</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
                               </div>
                             </div>
                           </ng-container>
                         </div>
-  
+
                         <div class="px-1">
                           <small class="text-primary">
                             Estimated Cost
@@ -460,7 +471,7 @@
                         </div>
                       </div>
                     </ng-container>
-                    <div class="text-center mt-2" *ngIf="arr==0&&departmentForm.controls.departmentsArray.valid">
+                    <div class="text-center mt-2" *ngIf="arr==0&&departmentForm.controls.departmentsArray.controls.length>1&&departmentForm.controls.departmentsArray.valid">
                       <input type="checkbox" (change)="sameForAll(departmentForm.controls.departmentsArray)"> Same For All Department
                     </div>
                   </li>
@@ -469,20 +480,22 @@
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-end">
-            <button class="btn-sp btn-primary mr-1" *ngIf="next" (click)="prev = true;next = false;">
-              Back
-            </button>
+            <button class="btn-sp btn-primary mr-1" *ngIf="newDepartment&&prev&&selectedMeasure.departmentInfo.length" (click)="newDepartment = false;">Back</button>
+            <button class="btn-sp btn-primary mr-1" *ngIf="next" (click)="prev = true;next = false;">Back</button>
             <button type="button" class="btn-sp btn-primary mr-1" *ngIf="prev" (click)="assignDepartment()" [disabled]="!selectedDepartments.length">
               Continue
             </button>
             <button type="submit" class="btn-sp btn-primary mr-1" *ngIf="next" (click)="assign()" [disabled]="departmentForm.controls.departmentsArray.invalid">
-              Save
+              <span *ngIf="saving;else save">
+                <i class="fa fa-spinner fa-spin"></i> Saving
+              </span>
+              <ng-template #save>Save</ng-template>
             </button>
             <button data-dismiss="modal" class="btn-sp btn-clear">Close</button>
           </div>
         </div>
         <ng-template #departmentAssigned>
-          <div class="modal-body">  
+          <div class="modal-body">
             <div class="dept-list">
               <!-- No content -->
               <div no-content *ngIf="!selectedDepartments">
@@ -532,14 +545,14 @@
                       </div>
                     </div>
                     <div class="d-flex justify-content-between my-2 border-bottom p-2" *ngFor="let array of dept.opiAnnualTargets;let op=index;">
-  
+
                       <div class="px-1">
                         <small class="text-primary">
                           Year
                         </small>
                         <div>{{array.year}}</div>
                       </div>
-  
+
                       <div class="d-flex justify-content-between px-1">
                         <div *ngFor="let level of array.levels;let l = index;" class='px-3'>
                           <div>
@@ -550,7 +563,7 @@
                           </div>
                         </div>
                       </div>
-  
+
                       <div class="px-1">
                         <small class="text-primary">
                           Estimated Cost
@@ -559,7 +572,7 @@
                       </div>
                     </div>
                   </div>
-  
+
                   <fieldset [formGroup]="editDepartmentForm" *ngIf="dept.edit">
                     <div class="d-flex justify-content-end">
                       <button class="btn btn-link" (click)="viewDepartment(dept,$event)" [disabled]="dept.edit" data-toggle="tooltip" data-placement="top"
@@ -586,19 +599,23 @@
                       <div>
                         <b>BaseLine:</b>
                         <input type="number" class="animate bounceIn px-3" autofocus formControlName="baseline" id="exampleInputAmount">
+                        <div class="message-danger animate slideInUp" *ngIf="editDepartmentForm.controls.baseline.invalid">
+                          <span *ngIf="editDepartmentForm.controls.baseline.errors.min">Not accepting Negative value</span>
+                          <span *ngIf="editDepartmentForm.controls.baseline.errors.required">*required</span>
+                        </div>
                       </div>
+
                     </div>
                     <ng-container formArrayName="opiAnnualTargets">
                       <div class="d-flex justify-content-between my-2 border-bottom p-2" *ngFor="let array of editDepartmentForm.controls.opiAnnualTargets.controls;let op=index;"
                         [formGroupName]="op">
-  
                         <div class="px-1">
                           <small class="text-primary">
                             Year
                           </small>
                           <div>{{dept.opiAnnualTargets[op].year}}</div>
                         </div>
-  
+
                         <div class="d-flex justify-content-between px-1">
                           <ng-container formArrayName="levels">
                             <div *ngFor="let level of array.controls.levels.controls;let l = index;" [formGroupName]="l" class='px-3'>
@@ -608,10 +625,18 @@
                                 </small>
                                 <input type="number" class="form-control animate bounceIn" id="exampleInputAmount" formControlName="estimatedTargetLevel">
                               </div>
+                              <div *ngIf="selectedMeasure.measureUnitId==2&&level.invalid" class="message-danger animate slideInUp">
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.min">Not accepting Negative value</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
+                              </div>
+                              <div *ngIf="selectedMeasure.measureUnitId==4&&level.invalid" class="message-danger animate slideInUp">
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.min || level.controls.estimatedTargetLevel.errors.max">Please enter value between 0 to 100</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
+                              </div>
                             </div>
                           </ng-container>
                         </div>
-  
+
                         <div class="px-1">
                           <small class="text-primary">
                             Estimated Cost
@@ -621,7 +646,7 @@
                       </div>
                     </ng-container>
                   </fieldset>
-  
+
                 </li>
               </ul>
             </div>
@@ -629,7 +654,7 @@
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn-sp btn-clear" (click)="check($event)">Close</button>
           </div>
-        </ng-template>  
+        </ng-template>
       </div>
     </div>
   </div>
