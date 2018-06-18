@@ -143,7 +143,7 @@ export class UniversityService {
   }
 
   getCycleByCycleId(cycleId:any){
-    return this.http.get(this.baseUrl + "/cycle/" + cycleId, this.child)
+    return this.http.get(this.baseUrl + "/cycle/" + cycleId + "?hideDisable=false", this.child)
     .map(this.extractData)
     .catch(this.handleError);
   }

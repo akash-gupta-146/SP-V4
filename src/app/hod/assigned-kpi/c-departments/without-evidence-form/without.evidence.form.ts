@@ -3,6 +3,7 @@ import * as alertify from 'alertifyjs';
 import { LoaderService } from '../../../../shared/loader.service';
 import { HodService } from '../../../hod.service';
 import { StorageService } from '../../../../shared/storage.service';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'without-evidence-form',
@@ -13,34 +14,40 @@ export class WithoutEvidenceForm implements OnInit {
   saving: boolean;
   role: any;
   formId: any;
+  isUpdating: boolean = false;
+  targetForm:FormGroup;
   @Output() changeSelected: any = new EventEmitter();
   @Input() department: any;
   @Input() d: number;
   @Input() set evidanceFormId(id: any) {
     this.formId = id;
   }
-
   @Output() selectEvidence: any = new EventEmitter();
 
-  isUpdating: boolean = false;
   constructor(public utServ: HodService,
     public loaderService: LoaderService,
-    public storage: StorageService) {
+    public storage: StorageService,
+    private fb:FormBuilder) {
   }
 
   ngOnInit() {
     this.role = this.storage.getData('userDetails').roleInfo[0].role;
+    this.targetForm = this.fb.group({
+      currentCost:[0,[Validators.required,Validators.min(0)]],
+      currentTargetLevel:[0,[Validators.required,Validators.min(0)]]
+    });
   }
 
   public saveQuarterResult(quarter: any) {
     this.saving = true;
     if (!quarter.isUpdating) {
-      var object = {
-        'levelId': quarter.id,
-        'currentCost': quarter.currentCost,
-        'currentTargetLevel': quarter.currentTargetLevel,
-      }
-      this.utServ.saveQuarterResult(object).subscribe((response: any) => {
+      // var object = {
+      //   'levelId': quarter.id,
+      //   'currentCost': quarter.currentCost,
+      //   'currentTargetLevel': quarter.currentTargetLevel,
+      // }
+      this.targetForm.value['levelId']=quarter.id
+      this.utServ.saveQuarterResult(this.targetForm.value).subscribe((response: any) => {
         this.saving = false;
         quarter.isUpdating = false;
         quarter.status = 'inprogress';
@@ -53,11 +60,11 @@ export class WithoutEvidenceForm implements OnInit {
       });
     } else {
       this.saving = true;
-      let object = {
-        'currentCost': quarter.currentCost,
-        'currentTargetLevel': quarter.currentTargetLevel,
-      }
-      this.utServ.updateQuarterResult(quarter.id, object).subscribe((response: any) => {
+      // let object = {
+      //   'currentCost': quarter.currentCost,
+      //   'currentTargetLevel': quarter.currentTargetLevel,
+      // }
+      this.utServ.updateQuarterResult(quarter.id, this.targetForm.value).subscribe((response: any) => {
         this.saving = false;
         quarter.status = 'inprogress';
         quarter.isUpdating = false;

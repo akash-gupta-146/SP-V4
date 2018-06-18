@@ -449,7 +449,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     return this.formBuilder.group({
       "year": [year, [Validators.required]],
       "levels": this.formBuilder.array(this.setLevels(this.selectedMeasure.frequencyId)),
-      "estimatedCost": [0, [Validators.required]]
+      "estimatedCost": [0, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -532,6 +532,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
         });
         $('#add-opi').hide();
         $('#add-btn').show();
+        this.checkAssignDept(response);
       }, error => {
         
       });
@@ -550,13 +551,15 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
           this.saving = false;
           this.measureForm = this.setMeasure();
           this.getMeasure();
+          $('#add-opi').hide();
+          $('#add-btn').show();
         },error=>{
           this.saving = false;
+          $('#add-opi').hide();
+          $('#add-btn').show();
           alertify.error("Something went wrong "+error);
         });
       }).setHeader("Confirmation");
-      $('#add-opi').hide();
-      $('#add-btn').show();
     }
   }
 
@@ -690,7 +693,7 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
       alertify.confirm("Are you sure you want to inactivate this KPI ?", () => {
         this.orgService.disableKPI(opi.opiId).subscribe((response: any) => {
           alertify.success("Deactivated selected KPI");
-          opi.disable = false;
+          opi.disable = true;
         }, () => {
           event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")
@@ -702,8 +705,8 @@ export class MeasureComponent extends Filters implements AfterViewInit, OnDestro
     else
       alertify.confirm("Are you sure you want to activate this KPI ?", () => {
         this.orgService.enableKPI(opi.opiId).subscribe((response: any) => {
+          opi.disable = false;
           alertify.success("Activated the KPI..");
-          opi.disable = true;
         }, () => {
           event.target.checked = !event.target.checked;
           alertify.error("Something went wrong..")

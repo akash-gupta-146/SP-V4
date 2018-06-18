@@ -327,7 +327,7 @@
                             <a class="text-primary link primary-link float-right" data-toggle="modal" data-target="#myModal" (click)="newDepartment = false;getDepartmentWithData(msr);">View details</a>
                           </li>
                           <li class="list-group-item pt-5" *ngIf="!msr.departmentInfo.length">
-                            <button class="btn link mx-auto d-block" data-toggle="modal" data-target="#myModal" (click)="selectedMeasure=msr;newDepartment = true; checkAssignDept(msr);"
+                            <button class="btn link mx-auto d-block" data-toggle="modal" data-target="#myModal" (click)="newDepartment = true; checkAssignDept(msr);"
                               [disabled]="goal.disable||initiate.disable||activit.disable||msr.disable">
                               <a class="text-primary link primary-link float-right pull-right">Add</a>
                             </button>
@@ -345,7 +345,7 @@
                             <i class="fas fa-trash-alt"></i>
                           </button>
                           <div class="text-center">
-                            <input type="checkbox" [checked]="!(goal.disable||initiate.disable||activit.disable||msr.disable)" (change)="disable($event,msr)">
+                            <input type="checkbox" [checked]="!(goal.disable||initiate.disable||activit.disable||msr.disable)" (change)="disable($event,msr)" [disabled]="goal.disable||initiate.disable||activit.disable" data-toggle="tooltip" [title]="(goal.disable||initiate.disable||activit.disable)?'This KPI can not be activated because either of its Goal, Initiative or Activity is inactive':'Active/Inactive'">
                           </div>
                           <button class="btn btn-link" href="#top" [disabled]="goal.disable||initiate.disable||activit.disable" (click)="addMeasure(goal,initiate,activit)">
                             <i class="fas fa-plus"></i>
@@ -425,10 +425,10 @@
                       </div>
                       <div>
                         <b>BaseLine:</b>
-                        <input type="text" class="form-control" formControlName="baseline" id="exampleInputAmount" min="0">
+                        <input type="number" class="form-control" formControlName="baseline" id="exampleInputAmount" min="0">
                         <div class="message-danger animate slideInUp" *ngIf="dept.controls.baseline.invalid">
                           <span *ngIf="dept.controls.baseline.errors.min">Not accepting Negative value</span>
-                          <span *ngIf="dept.controls.baseline.errors.required">*required</span>
+                          <span *ngIf="dept.controls.baseline.errors.required">This field is required</span>
                         </div>
                       </div>
                     </div>
@@ -453,11 +453,11 @@
                               </div>
                               <div *ngIf="selectedMeasure.measureUnitId==2&&level.invalid" class="message-danger animate slideInUp">
                                 <span *ngIf="level.controls.estimatedTargetLevel.errors.min">Not accepting Negative value</span>
-                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">This field is required</span>
                               </div>
                               <div *ngIf="selectedMeasure.measureUnitId==4&&level.invalid" class="message-danger animate slideInUp">
                                 <span *ngIf="level.controls.estimatedTargetLevel.errors.min || level.controls.estimatedTargetLevel.errors.max">Please enter value between 0 to 100</span>
-                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">This field is required</span>
                               </div>
                             </div>
                           </ng-container>
@@ -468,6 +468,10 @@
                             Estimated Cost
                           </small>
                           <input type="number" class="form-control" formControlName="estimatedCost" id="exampleInputAmount" min="0">
+                          <div class="message-danger animate slideInUp" *ngIf="array.controls.estimatedCost.invalid">
+                            <span *ngIf="array.controls.estimatedCost.errors.min">Not accepting Negative value</span>
+                            <span *ngIf="array.controls.estimatedCost.errors.required">This field is required</span>
+                          </div>
                         </div>
                       </div>
                     </ng-container>
@@ -508,7 +512,7 @@
                     <b>Assigned Departments</b>
                   </div>
                   <div>
-                    <button class="btn-sp btn-sp-small btn-primary" (click)="newDepartment=true;">
+                    <button class="btn-sp btn-sp-small btn-primary" (click)="newDepartment=true;" *ngIf="!selectedMeasure.disable">
                       Add departments
                     </button>
                   </div>
@@ -601,7 +605,7 @@
                         <input type="number" class="animate bounceIn px-3" autofocus formControlName="baseline" id="exampleInputAmount">
                         <div class="message-danger animate slideInUp" *ngIf="editDepartmentForm.controls.baseline.invalid">
                           <span *ngIf="editDepartmentForm.controls.baseline.errors.min">Not accepting Negative value</span>
-                          <span *ngIf="editDepartmentForm.controls.baseline.errors.required">*required</span>
+                          <span *ngIf="editDepartmentForm.controls.baseline.errors.required">This field is required</span>
                         </div>
                       </div>
 
@@ -627,11 +631,11 @@
                               </div>
                               <div *ngIf="selectedMeasure.measureUnitId==2&&level.invalid" class="message-danger animate slideInUp">
                                 <span *ngIf="level.controls.estimatedTargetLevel.errors.min">Not accepting Negative value</span>
-                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">This field is required</span>
                               </div>
                               <div *ngIf="selectedMeasure.measureUnitId==4&&level.invalid" class="message-danger animate slideInUp">
                                 <span *ngIf="level.controls.estimatedTargetLevel.errors.min || level.controls.estimatedTargetLevel.errors.max">Please enter value between 0 to 100</span>
-                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">*required</span>
+                                <span *ngIf="level.controls.estimatedTargetLevel.errors.required">This field is required</span>
                               </div>
                             </div>
                           </ng-container>
@@ -642,6 +646,10 @@
                             Estimated Cost
                           </small>
                           <input type="number" class="form-control animate bounceIn" formControlName="estimatedCost" id="exampleInputAmount">
+                          <div class="message-danger animate slideInUp" *ngIf="array.controls.estimatedCost.invalid">
+                            <span *ngIf="array.controls.estimatedCost.errors.min">Not accepting Negative value</span>
+                            <span *ngIf="array.controls.estimatedCost.errors.required">This field is required</span>
+                          </div>
                         </div>
                       </div>
                     </ng-container>
@@ -688,3 +696,5 @@
     <i class="fas fa-plus"></i>
   </button> -->
   <!-- end of add new -->
+
+  </div>
